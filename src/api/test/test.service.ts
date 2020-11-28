@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { DeleteResult, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateTestDto, TEST_PROVIDER, UpdateTestDto } from './test.dto';
 import { Test } from './test.entity';
 
@@ -21,7 +21,7 @@ export class TestService {
     return await this.testRepository.update(id, data);
   }
 
-  async delete(id: number){
+  async delete(id: number) {
     return await this.testRepository.delete(id);
   }
 }
