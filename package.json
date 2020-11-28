@@ -12,6 +12,7 @@
     "start": "nest start",
     "start:debug": "nest start --debug --watch",
     "start:local": "export NODE_ENV=local&&nest start --watch",
+    "start:localw": "set NODE_ENV=local&&nest start --watch",
     "start:prod": "export NODE_ENV=production&&node dist/main",
     "start:dev": "export NODE_ENV=development&&nest start --watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",

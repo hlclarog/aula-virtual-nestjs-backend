@@ -5,17 +5,17 @@ import { ConfigService } from './config.service';
 @Module({})
 export class ConfigModule {
   static forRoot(path: any): DynamicModule {
+    const provides = [
+      {
+        provide: ConfigService,
+        useValue: new ConfigService(path),
+      },
+    ];
 
-    const provides = [{
-      provide: ConfigService,
-      useValue: new ConfigService(path),
-    }];
-
-    return ({
+    return {
       module: ConfigModule,
       providers: provides,
       exports: provides,
-    });
+    };
   }
-
 }

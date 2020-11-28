@@ -1,6 +1,6 @@
 import { createConnection } from 'typeorm';
 import { DATABASE_PROVIDER } from './database.dto';
-import { ConfigService } from './../config/config.service';
+import { ConfigService } from '../config/config.service';
 
 export const databaseProviders = [
   {
