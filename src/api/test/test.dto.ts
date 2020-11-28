@@ -7,7 +7,7 @@ import {
   IsBoolean,
 } from 'class-validator';
 
-export const TEST_PROVIDER = 'TEST_RESPOSITORY';
+export const TEST_PROVIDER = 'TEST_REPOSITORY';
 
 export class CreateTestDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
