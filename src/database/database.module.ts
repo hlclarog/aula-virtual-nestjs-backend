@@ -2,14 +2,13 @@ import { Module, Global, DynamicModule } from '@nestjs/common';
 import { databaseProviders } from './database.providers';
 
 @Global()
-@Module({
-})
+@Module({})
 export class DatabaseModule {
   static forRoot(): DynamicModule {
-    return ({
+    return {
       module: DatabaseModule,
       providers: [...databaseProviders],
       exports: [...databaseProviders],
-    });
+    };
   }
-};
+}

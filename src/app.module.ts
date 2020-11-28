@@ -21,10 +21,12 @@ const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
     AppService,
     {
       provide: APP_PIPE,
-      useValue: new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }),
+      useValue: new ValidationPipe({
+        transform: true,
+        whitelist: true,
+        forbidNonWhitelisted: true,
+      }),
     },
   ],
 })
-export class AppModule {
-  
-}
+export class AppModule {}
