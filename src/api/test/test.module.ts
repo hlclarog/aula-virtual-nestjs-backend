@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { DATABASE_PROVIDER, TENANCY_PROVIDER } from '../../database/database.dto';
+import { TENANCY_PROVIDER } from '../../database/database.dto';
 import { TestController } from './test.controller';
 import { TEST_PROVIDER } from './test.dto';
 import { Test } from './test.entity';
