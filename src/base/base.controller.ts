@@ -1,33 +1,35 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { BaseService } from './base.service';
-import { CreateBaseDto, UpdateBaseDto } from './dto/create-base.dto';
+import { Base } from './base.entity';
 
-@Controller('api/base')
-export class BaseController {
-  constructor(private readonly baseService: BaseService) {}
+export abstract class BaseController<C, U> {
+  private service: BaseService<Base, C, U>;
+  protected constructor(service) {
+    this.service = service;
+  }
 
   @Post()
-  create(@Body() createBaseDto: CreateBaseDto) {
-    return this.baseService.create(createBaseDto);
+  create(@Body() createDto: C) {
+    return this.service.create(createDto);
   }
 
   @Get()
   findAll() {
-    return this.baseService.findAll();
+    return this.service.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.baseService.findOne(+id);
+    return this.service.findOne(+id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateBaseDto: UpdateBaseDto) {
-    return this.baseService.update(+id, updateBaseDto);
+  update(@Param('id') id: string, @Body() updateDto: U) {
+    return this.service.update(+id, updateDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.baseService.remove(+id);
+    return this.service.remove(+id);
   }
 }

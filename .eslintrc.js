@@ -20,5 +20,10 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    /*
+     * TODO The following code is added to solve =>
+     *   Why do I keep getting Delete 'cr' [prettier/prettier]?
+     */
+    'prettier/prettier': ["error",{"endOfLine": "auto"}]
   },
 };

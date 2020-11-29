@@ -1,35 +1,28 @@
-import { Inject, Injectable } from '@nestjs/common';
-import {
-  BASE_PROVIDER,
-  CreateBaseDto,
-  UpdateBaseDto,
-} from './dto/create-base.dto';
-import { Repository } from 'typeorm';
-import { Base } from './entities/base.entity';
+import { Injectable } from '@nestjs/common';
+import { BaseRepo } from './base-repo';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
 @Injectable()
-export class BaseService {
-  constructor(
-    @Inject(BASE_PROVIDER) private baseRepository: Repository<Base>,
-  ) {}
+export abstract class BaseService<E, C, U> {
+  public abstract getRepo(): BaseRepo<E>;
 
-  create(createBaseDto: CreateBaseDto) {
-    return 'This action adds a new base';
+  async create(createDto: C) {
+    return await this.getRepo().save(createDto);
   }
 
-  async findAll(): Promise<Base[]> {
-    return await this.baseRepository.find();
+  async findAll(): Promise<E[]> {
+    return await this.getRepo().find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} base`;
+  async findOne(id: number): Promise<E> {
+    return this.getRepo().findOneOrFail(id);
   }
 
-  update(id: number, updateBaseDto: UpdateBaseDto) {
-    return `This action updates a #${id} base`;
+  async update(id: number, updateDto: U): Promise<UpdateResult> {
+    return await this.getRepo().update(id, updateDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} base`;
+  async remove(id: number): Promise<DeleteResult> {
+    return await this.getRepo().softDelete(id);
   }
 }
