@@ -1,9 +1,8 @@
 import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { BaseService } from './base.service';
-import { CreateBaseDto } from './dto/create-base.dto';
-import { UpdateBaseDto } from './dto/update-base.dto';
+import { CreateBaseDto, UpdateBaseDto } from './dto/create-base.dto';
 
-@Controller('base')
+@Controller('api/base')
 export class BaseController {
   constructor(private readonly baseService: BaseService) {}
 
