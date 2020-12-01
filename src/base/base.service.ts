@@ -14,7 +14,7 @@ export abstract class BaseService<ENTITY, CREATE_DTO, UPDATE_DTO> {
   }
 
   async findOne(id: number): Promise<ENTITY> {
-    return this.repository.findOne(id);
+    return this.repository.findOneOrFail(id);
   }
 
   async update(id: number, updateDto: UPDATE_DTO): Promise<UpdateResult> {
