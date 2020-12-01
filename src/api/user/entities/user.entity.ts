@@ -8,7 +8,4 @@ export class User extends Base {
 
   @Column('text')
   description: string;
-
-  @Column('int')
-  state: number;
 }

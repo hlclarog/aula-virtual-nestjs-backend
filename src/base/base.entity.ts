@@ -1,5 +1,6 @@
 import {
   BaseEntity,
+  Column,
   CreateDateColumn,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
@@ -15,6 +16,9 @@ export abstract class Base extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column('int', { default: 1 })
+  state: number;
 
   @DeleteDateColumn()
   deletedAt: Date;

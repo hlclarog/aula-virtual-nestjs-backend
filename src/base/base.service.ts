@@ -3,26 +3,25 @@ import { BaseRepo } from './base-repo';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
 @Injectable()
-export abstract class BaseService<E, C, U> {
-  public abstract getRepo(): BaseRepo<E>;
+export abstract class BaseService<ENTITY, CREATE_DTO, UPDATE_DTO> {
+  public abstract repository: BaseRepo<ENTITY>;
 
-  async create(createDto: C) {
-    return await this.getRepo().save(createDto);
+  async create(createDto: CREATE_DTO) {
+    return await this.repository.save(createDto);
+  }
+  async findAll(): Promise<ENTITY[]> {
+    return await this.repository.find();
   }
 
-  async findAll(): Promise<E[]> {
-    return await this.getRepo().find();
+  async findOne(id: number): Promise<ENTITY> {
+    return this.repository.findOne(id);
   }
 
-  async findOne(id: number): Promise<E> {
-    return this.getRepo().findOneOrFail(id);
-  }
-
-  async update(id: number, updateDto: U): Promise<UpdateResult> {
-    return await this.getRepo().update(id, updateDto);
+  async update(id: number, updateDto: UPDATE_DTO): Promise<UpdateResult> {
+    return await this.repository.update(id, updateDto);
   }
 
   async remove(id: number): Promise<DeleteResult> {
-    return await this.getRepo().softDelete(id);
+    return await this.repository.softDelete(id);
   }
 }

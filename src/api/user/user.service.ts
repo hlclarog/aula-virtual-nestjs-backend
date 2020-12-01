@@ -14,8 +14,5 @@ export class UserService extends BaseService<
   CreateUserDto,
   UpdateUserDto
 > {
-  @Inject(USER_PROVIDER) private userRepo: BaseRepo<User>;
-  getRepo(): BaseRepo<User> {
-    return this.userRepo;
-  }
+  @Inject(USER_PROVIDER) repository: BaseRepo<User>;
 }
