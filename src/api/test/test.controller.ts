@@ -8,13 +8,16 @@ import {
   Post,
   Put,
   Response,
+  UseFilters,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { HttpExceptionFilter } from './../../filters/http-exception.filter';
 import { CreateTestDto, UpdateTestDto } from './test.dto';
 import { TestService } from './test.service';
 
 @ApiTags('test')
 @Controller('/api/test')
+@UseFilters(new HttpExceptionFilter())
 export class TestController {
   constructor(private testService: TestService) {}
 

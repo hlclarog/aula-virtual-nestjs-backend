@@ -1,8 +1,8 @@
-import { Scope } from '@nestjs/common';
+import { BadRequestException, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { createConnection, getConnectionManager } from 'typeorm';
 import { ConfigService } from '../config/config.service';
-import { TENANCY_PROVIDER } from './database.dto';
+import { NO_FOUND_CLIENT, TENANCY_PROVIDER } from './database.dto';
 
 export const tenancyProvider = {
   provide: TENANCY_PROVIDER,
@@ -12,14 +12,14 @@ export const tenancyProvider = {
     const clientName = req.headers['x-mangus-client'];
     if (clientName) {
       const connectionName = `tenant_${clientName}`;
-      const connectionManager = getConnectionManager();
+      const connectionManager = await getConnectionManager();
       if (connectionManager.has(connectionName)) {
-        const connection = connectionManager.get(connectionName);
+        const connection = await connectionManager.get(connectionName);
         return Promise.resolve(
           connection.isConnected ? connection : connection.connect(),
         );
       }
-      return createConnection({
+      const con = await createConnection({
         type: 'postgres',
         host: config.hostDatabase(),
         port: config.portDatabase(),
@@ -33,6 +33,11 @@ export const tenancyProvider = {
         synchronize: true,
         name: connectionName,
         schema: clientName,
+      });
+      return con;
+    } else {
+      throw new BadRequestException({
+        message: NO_FOUND_CLIENT,
       });
     }
   },
