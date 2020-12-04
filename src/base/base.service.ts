@@ -10,11 +10,15 @@ export abstract class BaseService<ENTITY, CREATE_DTO, UPDATE_DTO> {
     return await this.repository.save(createDto);
   }
   async findAll(): Promise<ENTITY[]> {
-    return await this.repository.find();
+    return await this.repository.find({
+      relations: [],
+    });
   }
 
   async findOne(id: number): Promise<ENTITY> {
-    return this.repository.findOneOrFail(id);
+    return this.repository.findOneOrFail(id, {
+      loadEagerRelations: true,
+    });
   }
 
   async update(id: number, updateDto: UPDATE_DTO): Promise<UpdateResult> {
