@@ -20,6 +20,10 @@ async function bootstrap() {
     .addTag('email_activities_template')
     .addTag('email_templates')
     .addTag('clients')
+    .addTag('tenancies')
+    .addTag('tenancy_domains')
+    .addTag('tenancy_emails')
+    .addTag('tenancy_languages')
     .addApiKey(
       {
         type: 'apiKey',

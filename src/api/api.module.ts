@@ -8,6 +8,10 @@ import { TestModule } from './test/test.module';
 import { UserModule } from './user/user.module';
 import { EmailActivitiesTemplateModule } from './email_activities_template/email_activities_template.module';
 import { ClientsModule } from './clients/clients.module';
+import { TenanciesModule } from './tenancies/tenancies.module';
+import { TenancyLanguagesModule } from './tenancy_languages/tenancy_languages.module';
+import { TenancyEmailsModule } from './tenancy_emails/tenancy_emails.module';
+import { TenancyDomainsModule } from './tenancy_domains/tenancy_domains.module';
 
 @Module({
   imports: [
@@ -20,6 +24,10 @@ import { ClientsModule } from './clients/clients.module';
     EmailActivitiesModule,
     EmailActivitiesTemplateModule,
     ClientsModule,
+    TenanciesModule,
+    TenancyLanguagesModule,
+    TenancyEmailsModule,
+    TenancyDomainsModule,
   ],
   controllers: [],
   providers: [],
