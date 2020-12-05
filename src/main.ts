@@ -13,6 +13,19 @@ async function bootstrap() {
     .setDescription('The mangus app API REST documentation')
     .setVersion('1.0')
     .addTag('test')
+    .addTag('languages')
+    .addTag('identification_types')
+    .addTag('tenancy_status')
+    .addTag('email_activities')
+    .addTag('email_activities_template')
+    .addTag('email_templates')
+    .addTag('clients')
+    .addTag('tenancies')
+    .addTag('tenancy_domains')
+    .addTag('tenancy_emails')
+    .addTag('tenancy_languages')
+    .addTag('users')
+    .addTag('auth')
     .addApiKey(
       {
         type: 'apiKey',
