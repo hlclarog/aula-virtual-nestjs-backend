@@ -12,6 +12,7 @@ import { TenanciesModule } from './tenancies/tenancies.module';
 import { TenancyLanguagesModule } from './tenancy_languages/tenancy_languages.module';
 import { TenancyEmailsModule } from './tenancy_emails/tenancy_emails.module';
 import { TenancyDomainsModule } from './tenancy_domains/tenancy_domains.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { TenancyDomainsModule } from './tenancy_domains/tenancy_domains.module';
     TenancyLanguagesModule,
     TenancyEmailsModule,
     TenancyDomainsModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],
