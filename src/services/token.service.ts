@@ -39,10 +39,15 @@ export class TokenService {
 
   public async createTokenKey(dataToken, time, key): Promise<string> {
     return new Promise(async (resolve) => {
-      const token = this.jwtService.sign(dataToken, {
-        privateKey: key,
-        expiresIn: time,
-      });
+      const token = this.jwtService.sign(
+        {
+          data: dataToken,
+        },
+        {
+          privateKey: key,
+          expiresIn: time,
+        },
+      );
       resolve(token);
     });
   }
@@ -50,7 +55,9 @@ export class TokenService {
   public async verifyTokenKey(dataToken, key): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
-        const tokenDecoded = this.jwtService.verify(dataToken, key);
+        const tokenDecoded = this.jwtService.verify(dataToken, {
+          secret: key,
+        });
         resolve(tokenDecoded);
       } catch (err) {
         reject(err);

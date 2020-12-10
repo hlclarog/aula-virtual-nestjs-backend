@@ -1,5 +1,5 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 import { CreateUsersDto } from 'src/api/users/users.dto';
 
 export const DEFAULT_TIME_TOKEN_AUTH = '10h';
@@ -14,25 +14,14 @@ export class LoginDto {
   @ApiProperty() @IsString() @IsNotEmpty() password: string;
 }
 
-export class ChangePasswordDto {
-  @ApiProperty() @IsString() @IsNotEmpty() readonly email: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly password: string;
-}
-
 export class RequestPasswordEmailDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly email: string;
 }
 export class ChangePasswordEmailDto {
-  @ApiProperty() @IsString() @IsNotEmpty() readonly id: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly access_token: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly password: string;
 }
-
-export class RequestPasswordNumberDto {
-  @ApiProperty() @IsString() @IsNotEmpty() readonly email: string;
-}
-export class ChangePasswordNumberDto {
-  @ApiProperty() @IsString() @IsNotEmpty() readonly id: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly token: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly number: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly password: string;
+export class ChangePasswordDto {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly id: number;
+  @ApiProperty() @IsString() @IsNotEmpty() password: string;
 }
