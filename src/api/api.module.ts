@@ -5,7 +5,6 @@ import { IdentificationTypesModule } from './identification_types/identification
 import { LanguagesModule } from './languages/languages.module';
 import { TenancyStatusModule } from './tenancy_status/tenancy_status.module';
 import { TestModule } from './test/test.module';
-import { UserModule } from './user/user.module';
 import { EmailActivitiesTemplateModule } from './email_activities_template/email_activities_template.module';
 import { ClientsModule } from './clients/clients.module';
 import { TenanciesModule } from './tenancies/tenancies.module';
@@ -17,7 +16,6 @@ import { UsersModule } from './users/users.module';
 @Module({
   imports: [
     TestModule,
-    UserModule,
     LanguagesModule,
     IdentificationTypesModule,
     TenancyStatusModule,
