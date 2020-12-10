@@ -15,7 +15,6 @@ export class AuthService {
   ) {}
   async login(data: LoginDto) {
     const user = await this.usersService.verifyUser(data);
-    console.log(user);
     if (user) {
       const payload = { ...data };
       const token = await this.tokenService
