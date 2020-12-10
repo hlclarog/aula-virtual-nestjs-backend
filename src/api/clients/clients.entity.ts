@@ -9,8 +9,26 @@ export class Clients extends Base {
   @Column({ length: 500, type: 'varchar' })
   name: string;
 
-  @Column({ length: 500, type: 'varchar' })
-  last_name: string;
+  @Column({ length: 20, type: 'varchar' })
+  dni: string;
+
+  @Column({ type: 'varchar' })
+  agent_name: string;
+  @Column({ type: 'varchar' })
+  agent_phone: string;
+  @Column({ type: 'varchar' })
+  agent_email: string;
+  @Column({ type: 'varchar' })
+  agent_cellphone: string;
+
+  @Column({ type: 'varchar' })
+  billing_name: string;
+  @Column({ type: 'varchar' })
+  billing_phone: string;
+  @Column({ type: 'varchar' })
+  billing_email: string;
+  @Column({ type: 'varchar' })
+  billing_cellphone: string;
 
   @ManyToOne(
     () => IdentificationTypes,

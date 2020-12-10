@@ -7,7 +7,15 @@ export const CLIENTS_ENTITY = 'clients';
 export class CreateClientsDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly identification_type: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly last_name: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly dni: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly agent_name: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly agent_phone: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly agent_email: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly agent_cellphone: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly billing_name: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly billing_phone: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly billing_email: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly billing_cellphone: string;
 }
 
 export class UpdateClientsDto {
@@ -22,5 +30,37 @@ export class UpdateClientsDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly last_name?: string;
+  readonly dni?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly agent_name?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly agent_phone?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly agent_email?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly agent_cellphone?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly billing_name?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly billing_phone?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly billing_email?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly billing_cellphone?: string;
 }
