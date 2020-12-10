@@ -28,4 +28,6 @@ example:
 | DATABASE_PORT | number | puerto de la base de datos |
 | DATABASE_USER | string | usuario de la base de datos |
 | DATABASE_PASS | string | contraseña de la base de datos |
+| TOKEN_SECRET | string | key token para autenticacion |
+| TOKEN_SECRET_PASSWORDSREQ | string | key token para cambio de password |
 | PORT | number | Puerto de la aplicacion (Solo de referencia) |

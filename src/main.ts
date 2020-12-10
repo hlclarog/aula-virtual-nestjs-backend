@@ -24,6 +24,8 @@ async function bootstrap() {
     .addTag('tenancy_domains')
     .addTag('tenancy_emails')
     .addTag('tenancy_languages')
+    .addTag('users')
+    .addTag('auth')
     .addApiKey(
       {
         type: 'apiKey',

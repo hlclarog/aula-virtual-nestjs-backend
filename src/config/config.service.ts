@@ -34,6 +34,12 @@ export class ConfigService {
   isDevelopment(): string {
     return this.envConfig.DEVELOPMENT;
   }
+  hashTokenSecret(): string {
+    return this.envConfig.TOKEN_SECRET;
+  }
+  hashTokenSecretPasswordReq(): string {
+    return this.envConfig.TOKEN_SECRET_PASSWORDSREQ;
+  }
 
   private static validateInput(envConfig: EnvConfig): EnvConfig {
     const envVarsSchema: Joi.ObjectSchema = Joi.object({
@@ -42,6 +48,8 @@ export class ConfigService {
       DATABASE_PORT: Joi.number().required(),
       DATABASE_USER: Joi.string().required(),
       DATABASE_PASS: Joi.string().required(),
+      TOKEN_SECRET: Joi.string().required(),
+      TOKEN_SECRET_PASSWORDSREQ: Joi.string().required(),
       PORT: Joi.string().required(),
     });
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(

@@ -5,18 +5,17 @@ import { IdentificationTypesModule } from './identification_types/identification
 import { LanguagesModule } from './languages/languages.module';
 import { TenancyStatusModule } from './tenancy_status/tenancy_status.module';
 import { TestModule } from './test/test.module';
-import { UserModule } from './user/user.module';
 import { EmailActivitiesTemplateModule } from './email_activities_template/email_activities_template.module';
 import { ClientsModule } from './clients/clients.module';
 import { TenanciesModule } from './tenancies/tenancies.module';
 import { TenancyLanguagesModule } from './tenancy_languages/tenancy_languages.module';
 import { TenancyEmailsModule } from './tenancy_emails/tenancy_emails.module';
 import { TenancyDomainsModule } from './tenancy_domains/tenancy_domains.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     TestModule,
-    UserModule,
     LanguagesModule,
     IdentificationTypesModule,
     TenancyStatusModule,
@@ -28,6 +27,7 @@ import { TenancyDomainsModule } from './tenancy_domains/tenancy_domains.module';
     TenancyLanguagesModule,
     TenancyEmailsModule,
     TenancyDomainsModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],
