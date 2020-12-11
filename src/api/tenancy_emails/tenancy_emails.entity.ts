@@ -27,5 +27,5 @@ export class TenancyEmails extends Base {
   authentication_required: string;
 
   @ManyToOne(() => Tenancies, (tenancies) => tenancies.emails, { eager: true })
-  tenancy: Tenancies[];
+  tenancy: Tenancies;
 }

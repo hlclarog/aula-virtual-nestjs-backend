@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export const USERS_PROVIDER = 'USERS_REPOSITORY';
 export const USERS_ENTITY = 'users';
@@ -8,6 +8,10 @@ export class CreateUsersDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly email: string;
   @ApiProperty() @IsString() @IsNotEmpty() password: string;
+  @ApiProperty()
+  @IsArray()
+  @IsNotEmpty()
+  roles: Array<number>;
 }
 
 export class UpdateUsersDto {
@@ -19,4 +23,8 @@ export class UpdateUsersDto {
   @IsString()
   @IsOptional()
   readonly email?: string;
+  @ApiProperty({ required: false })
+  @IsArray()
+  @IsOptional()
+  roles?: Array<number>;
 }

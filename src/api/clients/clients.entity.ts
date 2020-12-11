@@ -35,7 +35,7 @@ export class Clients extends Base {
     (identification_type) => identification_type.clients,
     { eager: true },
   )
-  identification_type: IdentificationTypes[];
+  identification_type: IdentificationTypes;
 
   @OneToMany(() => Tenancies, (tenancies) => tenancies.tenancy_status)
   tenancies: Tenancies[];

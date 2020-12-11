@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUsersDto, UpdateUsersDto } from './users.dto';
-import { BaseController } from '../../base/base.controller';
+import { BaseController } from '../../../base/base.controller';
 import { Users } from './users.entity';
 import { ApiTags } from '@nestjs/swagger';
 
