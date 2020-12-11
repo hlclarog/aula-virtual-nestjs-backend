@@ -9,5 +9,5 @@ export class TenancyDomains extends Base {
   description: string;
 
   @ManyToOne(() => Tenancies, (tenancies) => tenancies.domains, { eager: true })
-  tenancy: Tenancies[];
+  tenancy: Tenancies;
 }

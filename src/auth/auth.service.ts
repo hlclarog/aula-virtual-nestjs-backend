@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { UsersService } from 'src/api/users/users.service';
+import { UsersService } from 'src/api/acl/users/users.service';
 import { ConfigService } from 'src/config/config.service';
 import { TokenService } from './../services/token.service';
 import {

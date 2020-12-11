@@ -11,7 +11,12 @@ import { TenanciesModule } from './tenancies/tenancies.module';
 import { TenancyLanguagesModule } from './tenancy_languages/tenancy_languages.module';
 import { TenancyEmailsModule } from './tenancy_emails/tenancy_emails.module';
 import { TenancyDomainsModule } from './tenancy_domains/tenancy_domains.module';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './acl/users/users.module';
+import { ModulesModule } from './acl/modules/modules.module';
+import { PermissionsModule } from './acl/permissions/permissions.module';
+import { RolesModule } from './acl/roles/roles.module';
+import { RolesPermissionsModule } from './acl/roles_permissions/roles_permissions.module';
+import { UsersRolesModule } from './acl/users_roles/users_roles.module';
 
 @Module({
   imports: [
@@ -27,7 +32,12 @@ import { UsersModule } from './users/users.module';
     TenancyLanguagesModule,
     TenancyEmailsModule,
     TenancyDomainsModule,
+    ModulesModule,
+    PermissionsModule,
+    RolesModule,
+    RolesPermissionsModule,
     UsersModule,
+    UsersRolesModule,
   ],
   controllers: [],
   providers: [],

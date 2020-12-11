@@ -12,10 +12,10 @@ export class TenancyLanguages extends Base {
   @ManyToOne(() => Tenancies, (tenancies) => tenancies.languages, {
     eager: true,
   })
-  tenancy: Tenancies[];
+  tenancy: Tenancies;
 
   @ManyToOne(() => Languages, (languages) => languages.tenancy_languages, {
     eager: true,
   })
-  language: Languages[];
+  language: Languages;
 }

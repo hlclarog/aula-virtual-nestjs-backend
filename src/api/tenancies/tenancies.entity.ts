@@ -10,14 +10,14 @@ import { TENANCIES_ENTITY } from './tenancies.dto';
 @Entity(TENANCIES_ENTITY)
 export class Tenancies extends Base {
   @ManyToOne(() => Clients, (client) => client.tenancies, { eager: true })
-  client: Clients[];
+  client: Clients;
 
   @ManyToOne(
     () => TenancyStatus,
     (tenancy_status) => tenancy_status.tenancies,
     { eager: true },
   )
-  tenancy_status: TenancyStatus[];
+  tenancy_status: TenancyStatus;
 
   @Column({ type: 'varchar' })
   name: string;

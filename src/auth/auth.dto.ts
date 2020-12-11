@@ -1,6 +1,6 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
-import { CreateUsersDto } from 'src/api/users/users.dto';
+import { CreateUsersDto } from 'src/api/acl/users/users.dto';
 
 export const DEFAULT_TIME_TOKEN_AUTH = '10h';
 export const DEFAULT_TIME_TOKEN_REQUEST_PASS_EMAIL = '2h';
