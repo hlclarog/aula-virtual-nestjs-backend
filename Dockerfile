@@ -4,5 +4,5 @@ COPY . ./
 RUN npm install
 RUN npm build
 EXPOSE 80
-CMD ["npm","run","start:dev"]
+CMD ["npm","run","start:local"]
 
