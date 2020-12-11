@@ -1,8 +1,6 @@
 FROM node:12.19.0
-WORKDIR /usr/src/app
-COPY package*.json ./
+WORKDIR /app
+COPY . ./
 RUN npm install
-COPY . .
-RUN npm run build
-CMD ["npm", "run", "start:dev"]
-EXPOSE 80
+RUN npm build
+CMD ["npm","run","start:dev"]
