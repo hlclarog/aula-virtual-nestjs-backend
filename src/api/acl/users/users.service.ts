@@ -31,16 +31,21 @@ export class UsersService extends BaseService<
 
   async create(createDto: CreateUsersDto) {
     const data: any = Object.assign({}, createDto);
+    data.password = this.cryptoService.hashPassword(data.password);
     delete data.roles;
     const dataNew = await this.repository.save(data);
-    await this.usersRolesService.set(dataNew.id, createDto.roles);
+    if (createDto.roles) {
+      await this.usersRolesService.set(dataNew.id, createDto.roles);
+    }
     return dataNew;
   }
 
   async update(id: number, updateDto: UpdateUsersDto): Promise<UpdateResult> {
     const data: any = Object.assign({}, updateDto);
     delete data.roles;
-    await this.usersRolesService.set(id, updateDto.roles);
+    if (updateDto.roles) {
+      await this.usersRolesService.set(id, updateDto.roles);
+    }
     return await this.repository.update(id, data);
   }
 
