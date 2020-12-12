@@ -6,6 +6,7 @@ import { TransformInterceptor } from './interceptors/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
 
   // SWAGER CONFIG
   const options = new DocumentBuilder()
