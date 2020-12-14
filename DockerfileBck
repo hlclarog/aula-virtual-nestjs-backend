@@ -4,5 +4,5 @@ COPY . ./
 RUN npm install
 RUN npm build
 EXPOSE 3000
-CMD ["npm","run","start:local"]
+CMD ["npm","run","start:start:dev"]
 
