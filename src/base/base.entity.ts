@@ -17,8 +17,8 @@ export abstract class Base extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column('int', { default: 1 })
-  state: number;
+  @Column('boolean', { default: true })
+  active: boolean;
 
   @DeleteDateColumn()
   deletedAt: Date;
