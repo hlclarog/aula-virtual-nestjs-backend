@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { TenancyEmailsService } from './tenancy_emails.service';
 import {
   CreateTenancyEmailsDto,
@@ -6,7 +14,7 @@ import {
 } from './tenancy_emails.dto';
 import { BaseController } from '../../base/base.controller';
 import { TenancyEmails } from './tenancy_emails.entity';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('tenancy_emails')
 @Controller('/api/tenancy_emails')
@@ -20,10 +28,6 @@ export class TenancyEmailsController extends BaseController<
   }
 
   @Post()
-  // TODO Asi se adiciona la description personalizada del servicio
-  @ApiOperation({
-    description: 'Asi se adiciona la description personalizada del servicio',
-  })
   async post(@Body() createDto: CreateTenancyEmailsDto) {
     return await this.create(createDto);
   }

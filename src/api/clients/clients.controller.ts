@@ -11,7 +11,7 @@ import { ClientsService } from './clients.service';
 import { CreateClientsDto, UpdateClientsDto } from './clients.dto';
 import { BaseController } from '../../base/base.controller';
 import { Clients } from './clients.entity';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('clients')
 @Controller('/api/clients')
@@ -25,10 +25,6 @@ export class ClientsController extends BaseController<
   }
 
   @Post()
-  // TODO Asi se adiciona la description personalizada del servicio
-  @ApiOperation({
-    description: 'Asi se adiciona la description personalizada del servicio',
-  })
   async post(@Body() createDto: CreateClientsDto) {
     return await this.create(createDto);
   }

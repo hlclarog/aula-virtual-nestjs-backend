@@ -1,9 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { PermissionsService } from './permissions.service';
 import { CreatePermissionsDto, UpdatePermissionsDto } from './permissions.dto';
 import { BaseController } from '../../../base/base.controller';
 import { Permissions } from './permissions.entity';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('permissions')
 @Controller('/api/permissions')
@@ -17,10 +25,6 @@ export class PermissionsController extends BaseController<
   }
 
   @Post()
-  // TODO Asi se adiciona la description personalizada del servicio
-  @ApiOperation({
-    description: 'Asi se adiciona la description personalizada del servicio',
-  })
   async post(@Body() createDto: CreatePermissionsDto) {
     return await this.create(createDto);
   }

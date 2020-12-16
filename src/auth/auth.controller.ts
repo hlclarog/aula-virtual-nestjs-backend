@@ -7,8 +7,8 @@ import {
 } from './auth.dto';
 import { AuthService } from './auth.service';
 
-@Controller('auth')
 @ApiTags('auth')
+@Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 

@@ -1,9 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { UsersRolesService } from './users_roles.service';
 import { CreateUsersRolesDto, UpdateUsersRolesDto } from './users_roles.dto';
 import { BaseController } from '../../../base/base.controller';
 import { UsersRoles } from './users_roles.entity';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('users_roles')
 @Controller('/api/users_roles')
@@ -17,10 +25,6 @@ export class UsersRolesController extends BaseController<
   }
 
   @Post()
-  // TODO Asi se adiciona la description personalizada del servicio
-  @ApiOperation({
-    description: 'Asi se adiciona la description personalizada del servicio',
-  })
   async post(@Body() createDto: CreateUsersRolesDto) {
     return await this.create(createDto);
   }

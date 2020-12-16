@@ -8,10 +8,14 @@ export class CreateRolesDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly display_name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
-  @ApiProperty()
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+  })
   @IsArray()
   @IsNotEmpty()
-  permissions: Array<number>;
+  permissions: number[];
 }
 
 export class UpdateRolesDto {
@@ -27,8 +31,13 @@ export class UpdateRolesDto {
   @IsString()
   @IsOptional()
   readonly description?: string;
-  @ApiProperty({ required: false })
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
   @IsArray()
   @IsOptional()
-  permissions?: Array<number>;
+  permissions?: number[];
 }

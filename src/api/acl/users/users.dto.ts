@@ -8,7 +8,11 @@ export class CreateUsersDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly email: string;
   @ApiProperty() @IsString() @IsNotEmpty() password: string;
-  @ApiProperty()
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+  })
   @IsArray()
   @IsNotEmpty()
   roles: number[];
@@ -23,7 +27,12 @@ export class UpdateUsersDto {
   @IsString()
   @IsOptional()
   readonly email?: string;
-  @ApiProperty({ required: false })
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
   @IsArray()
   @IsOptional()
   roles?: number[];

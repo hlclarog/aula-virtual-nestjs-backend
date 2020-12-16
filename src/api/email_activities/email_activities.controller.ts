@@ -14,7 +14,7 @@ import {
 } from './email_activities.dto';
 import { BaseController } from '../../base/base.controller';
 import { EmailActivities } from './email_activities.entity';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('email_activities')
 @Controller('/api/email_activities')
@@ -28,10 +28,6 @@ export class EmailActivitiesController extends BaseController<
   }
 
   @Post()
-  // TODO Asi se adiciona la description personalizada del servicio
-  @ApiOperation({
-    description: 'Asi se adiciona la description personalizada del servicio',
-  })
   async post(@Body() createDto: CreateEmailActivitiesDto) {
     return await this.create(createDto);
   }
