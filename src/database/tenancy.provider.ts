@@ -27,7 +27,7 @@ export const tenancyProvider = {
         password: config.passDatabase(),
         database: config.nameDatabase(),
         migrationsTableName: 'migrations_registers',
-        migrations: [__dirname + '/../migrations/*.{.ts,.js}'],
+        migrations: [__dirname + '/../migrations/*{.ts,.js}'],
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         cli: { migrationsDir: __dirname + '/../migrations' },
         synchronize: true,
