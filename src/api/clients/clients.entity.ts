@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { IdentificationTypes } from '../identification_types/identification_types.entity';
 import { Tenancies } from '../tenancies/tenancies.entity';
@@ -36,6 +36,9 @@ export class Clients extends Base {
     { eager: true },
   )
   identification_type: IdentificationTypes;
+
+  @RelationId((client: Clients) => client.identification_type)
+  identification_type_id: number;
 
   @OneToMany(() => Tenancies, (tenancies) => tenancies.tenancy_status)
   tenancies: Tenancies[];

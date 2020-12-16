@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { EmailActivitiesTemplate } from '../email_activities_template/email_activities_template.entity';
 import { Languages } from '../languages/languages.entity';
@@ -14,6 +14,9 @@ export class EmailTemplates extends Base {
 
   @ManyToOne(() => Languages, (language) => language.templates, { eager: true })
   language: Languages;
+
+  @RelationId((email_templates: EmailTemplates) => email_templates.language)
+  language_id: number;
 
   @OneToMany(
     () => EmailActivitiesTemplate,

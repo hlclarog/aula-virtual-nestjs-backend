@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Clients } from '../clients/clients.entity';
 import { TenancyDomains } from '../tenancy_domains/tenancy_domains.entity';
@@ -12,12 +12,18 @@ export class Tenancies extends Base {
   @ManyToOne(() => Clients, (client) => client.tenancies, { eager: true })
   client: Clients;
 
+  @RelationId((tenancies: Tenancies) => tenancies.client)
+  client_id: number;
+
   @ManyToOne(
     () => TenancyStatus,
     (tenancy_status) => tenancy_status.tenancies,
     { eager: true },
   )
   tenancy_status: TenancyStatus;
+
+  @RelationId((tenancies: Tenancies) => tenancies.tenancy_status)
+  tenancy_status_id: number;
 
   @Column({ type: 'varchar' })
   name: string;

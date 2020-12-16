@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { EmailActivities } from '../email_activities/email_activities.entity';
 import { EmailTemplates } from '../email_templates/email_templates.entity';
@@ -13,12 +13,24 @@ export class EmailActivitiesTemplate extends Base {
   )
   email_template: EmailTemplates;
 
+  @RelationId(
+    (email_activities_template: EmailActivitiesTemplate) =>
+      email_activities_template.email_template,
+  )
+  email_template_id: number;
+
   @ManyToOne(
     () => EmailActivities,
     (email_activity) => email_activity.templates,
     { eager: true },
   )
   email_activity: EmailActivities;
+
+  @RelationId(
+    (email_activities_template: EmailActivitiesTemplate) =>
+      email_activities_template.email_activity,
+  )
+  email_activity_id: number;
 
   @Column({ length: 500, type: 'varchar' })
   subject: string;

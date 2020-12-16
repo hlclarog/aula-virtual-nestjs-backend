@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Tenancies } from '../tenancies/tenancies.entity';
 import { TENANCY_EMAILS_ENTITY } from './tenancy_emails.dto';
@@ -28,4 +28,7 @@ export class TenancyEmails extends Base {
 
   @ManyToOne(() => Tenancies, (tenancies) => tenancies.emails, { eager: true })
   tenancy: Tenancies;
+
+  @RelationId((tenancy_emails: TenancyEmails) => tenancy_emails.tenancy)
+  tenancy_id: number;
 }

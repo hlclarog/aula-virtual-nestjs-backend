@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, RelationId } from 'typeorm';
 import { Base } from '../../../base/base.entity';
 import { Modules } from '../modules/modules.entity';
 import { RolesPermissions } from '../roles_permissions/roles_permissions.entity';
@@ -17,6 +17,9 @@ export class Permissions extends Base {
 
   @ManyToOne(() => Modules, (modules) => modules.permissions, { eager: true })
   module: Modules;
+
+  @RelationId((permission: Permissions) => permission.module)
+  module_id: number;
 
   @OneToMany(
     () => RolesPermissions,

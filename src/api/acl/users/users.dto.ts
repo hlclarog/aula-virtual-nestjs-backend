@@ -11,7 +11,7 @@ export class CreateUsersDto {
   @ApiProperty()
   @IsArray()
   @IsNotEmpty()
-  roles: Array<number>;
+  roles: number[];
 }
 
 export class UpdateUsersDto {
@@ -26,5 +26,5 @@ export class UpdateUsersDto {
   @ApiProperty({ required: false })
   @IsArray()
   @IsOptional()
-  roles?: Array<number>;
+  roles?: number[];
 }
