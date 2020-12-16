@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
-  IsJSON,
+  IsObject,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -20,8 +20,8 @@ export class CreateModulesDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly icon: string;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly display_order: number;
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly show_in_menu: boolean;
-  @ApiProperty() @IsJSON() @IsNotEmpty() readonly crud: any;
-  @ApiProperty() @IsJSON() @IsNotEmpty() readonly rules: any;
+  @ApiProperty() @IsObject() @IsNotEmpty() readonly crud: any;
+  @ApiProperty() @IsObject() @IsNotEmpty() readonly rules: any;
 }
 
 export class UpdateModulesDto {
@@ -45,9 +45,9 @@ export class UpdateModulesDto {
   @IsBoolean()
   @IsOptional()
   readonly show_in_menu?: boolean;
-  @ApiProperty({ required: false }) @IsJSON() @IsOptional() readonly crud?: any;
+  @ApiProperty({ required: false }) @IsObject() @IsOptional() readonly crud?: any;
   @ApiProperty({ required: false })
-  @IsJSON()
+  @IsObject()
   @IsOptional()
   readonly rules?: any;
 }
