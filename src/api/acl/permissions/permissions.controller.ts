@@ -3,9 +3,9 @@ import { PermissionsService } from './permissions.service';
 import { CreatePermissionsDto, UpdatePermissionsDto } from './permissions.dto';
 import { BaseController } from '../../../base/base.controller';
 import { Permissions } from './permissions.entity';
-import { ControllerApi } from '../../../database/database.dto';
+import { ControllerApi } from '../../../utils/decorators/controllers.decorator';
 
-@ControllerApi('permissions')
+@ControllerApi({ name: 'permissions' })
 export class PermissionsController extends BaseController<
   Permissions,
   CreatePermissionsDto,

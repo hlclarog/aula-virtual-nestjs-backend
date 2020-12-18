@@ -5,7 +5,7 @@ import {
   TENANCY_LANGUAGES_PROVIDER,
 } from './tenancy_languages.dto';
 import { BaseService } from '../../base/base.service';
-import { BaseRepo } from '../../base/base-repo';
+import { BaseRepo } from '../../base/base.repository';
 import { TenancyLanguages } from './tenancy_languages.entity';
 
 @Injectable()

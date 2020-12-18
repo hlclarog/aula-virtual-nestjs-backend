@@ -5,7 +5,7 @@ import {
   TENANCY_DOMAINS_PROVIDER,
 } from './tenancy_domains.dto';
 import { BaseService } from '../../base/base.service';
-import { BaseRepo } from '../../base/base-repo';
+import { BaseRepo } from '../../base/base.repository';
 import { TenancyDomains } from './tenancy_domains.entity';
 
 @Injectable()

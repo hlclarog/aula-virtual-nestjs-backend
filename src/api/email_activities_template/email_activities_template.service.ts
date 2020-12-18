@@ -5,7 +5,7 @@ import {
   EMAIL_ACTIVITIES_TEMPLATE_PROVIDER,
 } from './email_activities_template.dto';
 import { BaseService } from '../../base/base.service';
-import { BaseRepo } from '../../base/base-repo';
+import { BaseRepo } from '../../base/base.repository';
 import { EmailActivitiesTemplate } from './email_activities_template.entity';
 
 @Injectable()

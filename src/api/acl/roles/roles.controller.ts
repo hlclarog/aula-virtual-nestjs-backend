@@ -3,9 +3,9 @@ import { RolesService } from './roles.service';
 import { CreateRolesDto, UpdateRolesDto } from './roles.dto';
 import { BaseController } from '../../../base/base.controller';
 import { Roles } from './roles.entity';
-import { ControllerApi } from '../../../database/database.dto';
+import { ControllerApi } from '../../../utils/decorators/controllers.decorator';
 
-@ControllerApi('roles')
+@ControllerApi({ name: 'roles' })
 export class RolesController extends BaseController<
   Roles,
   CreateRolesDto,

@@ -1,8 +1,9 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Get, Inject } from '@nestjs/common';
 import { DATABASE_TENANCY_PROVIDER } from '../database/database.dto';
 import { Connection } from 'typeorm';
+import { ControllerMigrations } from './../utils/decorators/controllers.decorator';
 
-@Controller('migrations')
+@ControllerMigrations({ name: '' })
 export class MigrationsController {
   @Inject(DATABASE_TENANCY_PROVIDER) connection: Connection;
 
@@ -11,6 +12,11 @@ export class MigrationsController {
   @Get('run')
   async run() {
     await this.connection.runMigrations();
-    return { data: 'Migrations runing' };
+    return { message: 'Migrations runing' };
+  }
+
+  @Get('verify')
+  async verify() {
+    return { data: await this.connection.showMigrations() };
   }
 }

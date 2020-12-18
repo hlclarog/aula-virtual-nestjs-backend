@@ -5,7 +5,7 @@ import {
   MODULES_PROVIDER,
 } from './modules.dto';
 import { BaseService } from '../../../base/base.service';
-import { BaseRepo } from '../../../base/base-repo';
+import { BaseRepo } from '../../../base/base.repository';
 import { Modules } from './modules.entity';
 
 @Injectable()

@@ -6,9 +6,9 @@ import {
 } from './roles_permissions.dto';
 import { BaseController } from '../../../base/base.controller';
 import { RolesPermissions } from './roles_permissions.entity';
-import { ControllerApi } from '../../../database/database.dto';
+import { ControllerApi } from '../../../utils/decorators/controllers.decorator';
 
-@ControllerApi('roles_permissions')
+@ControllerApi({ name: 'roles_permissions' })
 export class RolesPermissionsController extends BaseController<
   RolesPermissions,
   CreateRolesPermissionsDto,

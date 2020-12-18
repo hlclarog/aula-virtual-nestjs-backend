@@ -3,9 +3,9 @@ import { ModulesService } from './modules.service';
 import { CreateModulesDto, UpdateModulesDto } from './modules.dto';
 import { BaseController } from '../../../base/base.controller';
 import { Modules } from './modules.entity';
-import { ControllerApi } from '../../../database/database.dto';
+import { ControllerApi } from '../../../utils/decorators/controllers.decorator';
 
-@ControllerApi('modules')
+@ControllerApi({ name: 'modules' })
 export class ModulesController extends BaseController<
   Modules,
   CreateModulesDto,

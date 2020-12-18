@@ -3,9 +3,9 @@ import { UsersService } from './users.service';
 import { CreateUsersDto, UpdateUsersDto } from './users.dto';
 import { BaseController } from '../../../base/base.controller';
 import { Users } from './users.entity';
-import { ControllerApi } from '../../../database/database.dto';
+import { ControllerApi } from '../../../utils/decorators/controllers.decorator';
 
-@ControllerApi('users')
+@ControllerApi({ name: 'users' })
 export class UsersController extends BaseController<
   Users,
   CreateUsersDto,

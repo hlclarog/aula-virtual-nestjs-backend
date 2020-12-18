@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Get, Headers, Post } from '@nestjs/common';
+import { ControllerAuth } from './../utils/decorators/controllers.decorator';
 import {
   ChangePasswordEmailDto,
   LoginDto,
@@ -7,8 +7,7 @@ import {
 } from './auth.dto';
 import { AuthService } from './auth.service';
 
-@ApiTags('auth')
-@Controller('auth')
+@ControllerAuth({ name: '' })
 export class AuthController {
   constructor(private authService: AuthService) {}
 

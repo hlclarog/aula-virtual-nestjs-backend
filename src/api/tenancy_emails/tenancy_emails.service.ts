@@ -5,7 +5,7 @@ import {
   TENANCY_EMAILS_PROVIDER,
 } from './tenancy_emails.dto';
 import { BaseService } from '../../base/base.service';
-import { BaseRepo } from '../../base/base-repo';
+import { BaseRepo } from '../../base/base.repository';
 import { TenancyEmails } from './tenancy_emails.entity';
 
 @Injectable()

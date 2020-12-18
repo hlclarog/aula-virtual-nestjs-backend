@@ -5,7 +5,7 @@ import {
   IDENTIFICATION_TYPES_PROVIDER,
 } from './identification_types.dto';
 import { BaseService } from '../../base/base.service';
-import { BaseRepo } from '../../base/base-repo';
+import { BaseRepo } from '../../base/base.repository';
 import { IdentificationTypes } from './identification_types.entity';
 
 @Injectable()

@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { EmailActivitiesService } from './email_activities.service';
 import {
   CreateEmailActivitiesDto,
@@ -14,10 +6,9 @@ import {
 } from './email_activities.dto';
 import { BaseController } from '../../base/base.controller';
 import { EmailActivities } from './email_activities.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 
-@ApiTags('email_activities')
-@Controller('/api/email_activities')
+@ControllerApi({ name: 'email_activities' })
 export class EmailActivitiesController extends BaseController<
   EmailActivities,
   CreateEmailActivitiesDto,

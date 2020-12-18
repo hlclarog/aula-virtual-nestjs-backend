@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { TenancyLanguagesService } from './tenancy_languages.service';
 import {
   CreateTenancyLanguagesDto,
@@ -14,10 +6,9 @@ import {
 } from './tenancy_languages.dto';
 import { BaseController } from '../../base/base.controller';
 import { TenancyLanguages } from './tenancy_languages.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 
-@ApiTags('tenancy_languages')
-@Controller('/api/tenancy_languages')
+@ControllerApi({ name: 'tenancy_languages' })
 export class TenancyLanguagesController extends BaseController<
   TenancyLanguages,
   CreateTenancyLanguagesDto,
@@ -43,7 +34,10 @@ export class TenancyLanguagesController extends BaseController<
   }
 
   @Put(':id')
-  async edit(@Param('id') id: string, @Body() updateDto: UpdateTenancyLanguagesDto) {
+  async edit(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateTenancyLanguagesDto,
+  ) {
     return await this.update(id, updateDto);
   }
 
