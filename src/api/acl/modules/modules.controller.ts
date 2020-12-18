@@ -1,20 +1,11 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ModulesService } from './modules.service';
 import { CreateModulesDto, UpdateModulesDto } from './modules.dto';
 import { BaseController } from '../../../base/base.controller';
 import { Modules } from './modules.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ControllerApi } from '../../../database/database.dto';
 
-@ApiTags('modules')
-@Controller('/api/modules')
+@ControllerApi('modules')
 export class ModulesController extends BaseController<
   Modules,
   CreateModulesDto,

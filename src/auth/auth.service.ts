@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { UsersService } from './../api/acl/users/users.service';
 import { ConfigService } from './../config/config.service';
-import { TokenService } from './../services/token.service';
+import { TokenService } from './../utils/services/token.service';
 import {
   LoginDto,
   MESSAGE_FORBIDDEN,

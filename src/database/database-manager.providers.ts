@@ -1,10 +1,10 @@
 import { createConnection } from 'typeorm';
-import { DATABASE_PROVIDER } from './database.dto';
+import { DATABASE_MANAGER_PROVIDER } from './database.dto';
 import { ConfigService } from '../config/config.service';
 
-export const databaseProviders = [
+export const databaseManagerProviders = [
   {
-    provide: DATABASE_PROVIDER,
+    provide: DATABASE_MANAGER_PROVIDER,
     inject: [ConfigService],
     useFactory: async (config: ConfigService) =>
       await createConnection({
@@ -15,8 +15,8 @@ export const databaseProviders = [
         password: config.passDatabase(),
         database: config.nameDatabase(),
         migrationsTableName: 'migrations_registers',
-        migrations: [__dirname + '/../migrations/*.{.ts,.js}'],
-        cli: { migrationsDir: __dirname + '/../migrations' },
+        migrations: [__dirname + '/../migrations/files/*{.ts,.js}'],
+        cli: { migrationsDir: __dirname + '/../migrations/files' },
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         synchronize: true,
       }),

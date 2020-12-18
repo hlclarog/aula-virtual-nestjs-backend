@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { PermissionsService } from './permissions.service';
 import { PermissionsController } from './permissions.controller';
-import { TENANCY_PROVIDER } from '../../../database/database.dto';
+import { DATABASE_TENANCY_PROVIDER } from '../../../database/database.dto';
 import { Connection } from 'typeorm';
 import { PERMISSIONS_PROVIDER } from './permissions.dto';
 import { Permissions } from './permissions.entity';
@@ -11,7 +11,7 @@ import { Permissions } from './permissions.entity';
   providers: [
     {
       provide: PERMISSIONS_PROVIDER,
-      inject: [TENANCY_PROVIDER],
+      inject: [DATABASE_TENANCY_PROVIDER],
       useFactory: (connection: Connection) =>
         connection.getRepository(Permissions),
     },

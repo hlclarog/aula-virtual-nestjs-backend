@@ -1,20 +1,11 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { PermissionsService } from './permissions.service';
 import { CreatePermissionsDto, UpdatePermissionsDto } from './permissions.dto';
 import { BaseController } from '../../../base/base.controller';
 import { Permissions } from './permissions.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ControllerApi } from '../../../database/database.dto';
 
-@ApiTags('permissions')
-@Controller('/api/permissions')
+@ControllerApi('permissions')
 export class PermissionsController extends BaseController<
   Permissions,
   CreatePermissionsDto,

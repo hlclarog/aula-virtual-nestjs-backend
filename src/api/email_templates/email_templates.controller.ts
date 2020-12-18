@@ -43,7 +43,10 @@ export class EmailTemplatesController extends BaseController<
   }
 
   @Put(':id')
-  async edit(@Param('id') id: string, @Body() updateDto: UpdateEmailTemplatesDto) {
+  async edit(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateEmailTemplatesDto,
+  ) {
     return await this.update(id, updateDto);
   }
 

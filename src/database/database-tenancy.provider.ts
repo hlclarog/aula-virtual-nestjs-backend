@@ -2,14 +2,18 @@ import { BadRequestException, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { createConnection, getConnectionManager } from 'typeorm';
 import { ConfigService } from '../config/config.service';
-import { NO_FOUND_CLIENT, TENANCY_PROVIDER } from './database.dto';
+import {
+  NAME_HEADER_CLIENT,
+  NO_FOUND_CLIENT,
+  DATABASE_TENANCY_PROVIDER,
+} from './database.dto';
 
-export const tenancyProvider = {
-  provide: TENANCY_PROVIDER,
+export const databaseTenancyProvider = {
+  provide: DATABASE_TENANCY_PROVIDER,
   scope: Scope.REQUEST,
   inject: [REQUEST, ConfigService],
   useFactory: async (req, config: ConfigService) => {
-    const clientName = req.headers['x-mangus-client'];
+    const clientName = req.headers[NAME_HEADER_CLIENT];
     if (clientName) {
       const connectionName = `tenant_${clientName}`;
       const connectionManager = await getConnectionManager();
@@ -27,9 +31,9 @@ export const tenancyProvider = {
         password: config.passDatabase(),
         database: config.nameDatabase(),
         migrationsTableName: 'migrations_registers',
-        migrations: [__dirname + '/../migrations/*{.ts,.js}'],
+        migrations: [__dirname + '/../migrations/files/*{.ts,.js}'],
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-        cli: { migrationsDir: __dirname + '/../migrations' },
+        cli: { migrationsDir: __dirname + '/../migrations/files' },
         synchronize: true,
         name: connectionName,
         schema: clientName,

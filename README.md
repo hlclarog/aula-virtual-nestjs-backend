@@ -31,3 +31,13 @@ example:
 | TOKEN_SECRET | string | key token para autenticacion |
 | TOKEN_SECRET_PASSWORDSREQ | string | key token para cambio de password |
 | PORT | number | Puerto de la aplicacion (Solo de referencia) |
+
+### Migrations
+
+- Generar migracion
+  ```sh
+  $ npm run typeorm migration:create -- -n 'name_migration' -d src/migrations/files
+  ```
+- Correr migraciones
+  Las migraciones se corren mediante el endpoint, el cual correra en la tenencia actual de la solicitud
+  GET [/migrations/run]

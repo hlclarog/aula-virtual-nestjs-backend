@@ -43,7 +43,10 @@ export class IdentificationTypesController extends BaseController<
   }
 
   @Put(':id')
-  async edit(@Param('id') id: string, @Body() updateDto: UpdateIdentificationTypesDto) {
+  async edit(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateIdentificationTypesDto,
+  ) {
     return await this.update(id, updateDto);
   }
 

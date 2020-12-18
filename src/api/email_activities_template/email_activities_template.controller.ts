@@ -8,7 +8,10 @@ import {
   Put,
 } from '@nestjs/common';
 import { EmailActivitiesTemplateService } from './email_activities_template.service';
-import { CreateEmailActivitiesTemplateDto, UpdateEmailActivitiesTemplateDto } from './email_activities_template.dto';
+import {
+  CreateEmailActivitiesTemplateDto,
+  UpdateEmailActivitiesTemplateDto,
+} from './email_activities_template.dto';
 import { BaseController } from '../../base/base.controller';
 import { EmailActivitiesTemplate } from './email_activities_template.entity';
 import { ApiTags } from '@nestjs/swagger';
@@ -42,7 +45,10 @@ export class EmailActivitiesTemplateController extends BaseController<
   }
 
   @Put(':id')
-  async edit(@Param('id') id: string, @Body() updateDto: CreateEmailActivitiesTemplateDto) {
+  async edit(
+    @Param('id') id: string,
+    @Body() updateDto: CreateEmailActivitiesTemplateDto,
+  ) {
     return await this.update(id, updateDto);
   }
 

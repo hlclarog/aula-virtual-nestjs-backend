@@ -11,7 +11,7 @@ import { ClientsService } from './clients.service';
 import { CreateClientsDto, UpdateClientsDto } from './clients.dto';
 import { BaseController } from '../../base/base.controller';
 import { Clients } from './clients.entity';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('clients')
 @Controller('/api/clients')
