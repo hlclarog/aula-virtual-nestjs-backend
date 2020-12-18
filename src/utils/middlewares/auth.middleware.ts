@@ -9,7 +9,7 @@ import { Request, Response } from 'express';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, validate } from 'class-validator';
 import { TokenService } from './../services/token.service';
-import { ConfigService } from './../config/config.service';
+import { ConfigService } from './../../config/config.service';
 
 export class HeadersTokenDto {
   @ApiProperty()

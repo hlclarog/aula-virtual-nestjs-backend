@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateRolesDto, UpdateRolesDto, ROLES_PROVIDER } from './roles.dto';
 import { BaseService } from '../../../base/base.service';
-import { BaseRepo } from '../../../base/base-repo';
+import { BaseRepo } from '../../../base/base.repository';
 import { Roles } from './roles.entity';
 import { UpdateResult } from 'typeorm';
 import { RolesPermissionsService } from '../roles_permissions/roles_permissions.service';

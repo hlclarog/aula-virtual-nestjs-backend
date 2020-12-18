@@ -5,7 +5,7 @@ import {
   LANGUAGES_PROVIDER,
 } from './languages.dto';
 import { BaseService } from '../../base/base.service';
-import { BaseRepo } from '../../base/base-repo';
+import { BaseRepo } from '../../base/base.repository';
 import { Languages } from './languages.entity';
 
 @Injectable()

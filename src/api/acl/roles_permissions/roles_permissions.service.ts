@@ -5,7 +5,7 @@ import {
   ROLES_PERMISSIONS_PROVIDER,
 } from './roles_permissions.dto';
 import { BaseService } from '../../../base/base.service';
-import { BaseRepo } from '../../../base/base-repo';
+import { BaseRepo } from '../../../base/base.repository';
 import { RolesPermissions } from './roles_permissions.entity';
 
 @Injectable()

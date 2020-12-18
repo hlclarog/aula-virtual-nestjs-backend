@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { TenancyEmailsService } from './tenancy_emails.service';
 import {
   CreateTenancyEmailsDto,
@@ -14,10 +6,9 @@ import {
 } from './tenancy_emails.dto';
 import { BaseController } from '../../base/base.controller';
 import { TenancyEmails } from './tenancy_emails.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 
-@ApiTags('tenancy_emails')
-@Controller('/api/tenancy_emails')
+@ControllerApi({ name: 'tenancy_emails' })
 export class TenancyEmailsController extends BaseController<
   TenancyEmails,
   CreateTenancyEmailsDto,
@@ -43,7 +34,10 @@ export class TenancyEmailsController extends BaseController<
   }
 
   @Put(':id')
-  async edit(@Param('id') id: string, @Body() updateDto: UpdateTenancyEmailsDto) {
+  async edit(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateTenancyEmailsDto,
+  ) {
     return await this.update(id, updateDto);
   }
 

@@ -1,20 +1,11 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { UsersRolesService } from './users_roles.service';
 import { CreateUsersRolesDto, UpdateUsersRolesDto } from './users_roles.dto';
 import { BaseController } from '../../../base/base.controller';
 import { UsersRoles } from './users_roles.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ControllerApi } from './../../../utils/decorators/controllers.decorator';
 
-@ApiTags('users_roles')
-@Controller('/api/users_roles')
+@ControllerApi({ name: 'users_roles' })
 export class UsersRolesController extends BaseController<
   UsersRoles,
   CreateUsersRolesDto,

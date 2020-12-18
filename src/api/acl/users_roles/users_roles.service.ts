@@ -5,7 +5,7 @@ import {
   USERS_ROLES_PROVIDER,
 } from './users_roles.dto';
 import { BaseService } from '../../../base/base.service';
-import { BaseRepo } from '../../../base/base-repo';
+import { BaseRepo } from '../../../base/base.repository';
 import { UsersRoles } from './users_roles.entity';
 
 @Injectable()

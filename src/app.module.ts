@@ -12,10 +12,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from './config/config.module';
-import { DatabaseModule } from './database/database.module';
-import { TenancyModule } from './database/tenancy.module';
-import { AuthVerifyTokenMiddleware } from './middlewares/auth.middleware';
-import { TokenService } from './services/token.service';
+import { DatabaseManagerModule } from './database/database-manager.module';
+import { DatabaseTenancyModule } from './database/database-tenancy.module';
+import { MigrationsModule } from './migrations/migrations.module';
+import { AuthVerifyTokenMiddleware } from './utils/middlewares/auth.middleware';
+import { TokenService } from './utils/services/token.service';
 
 const FOLDER_ENV = join(__dirname, '..', 'env');
 const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
@@ -23,10 +24,11 @@ const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
 @Module({
   imports: [
     ConfigModule.forRoot(FILE_ENV),
-    DatabaseModule.forRoot(),
-    TenancyModule,
+    DatabaseManagerModule.forRoot(),
+    DatabaseTenancyModule,
     ApiModule,
     AuthModule,
+    MigrationsModule,
     JwtModule.register({}),
   ],
   controllers: [AppController],

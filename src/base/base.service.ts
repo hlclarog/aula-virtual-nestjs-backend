@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BaseRepo } from './base-repo';
+import { BaseRepo } from './base.repository';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
 @Injectable()

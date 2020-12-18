@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { EmailTemplatesService } from './email_templates.service';
 import {
   CreateEmailTemplatesDto,
@@ -14,10 +6,9 @@ import {
 } from './email_templates.dto';
 import { BaseController } from '../../base/base.controller';
 import { EmailTemplates } from './email_templates.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 
-@ApiTags('email_templates')
-@Controller('/api/email_templates')
+@ControllerApi({ name: 'email_templates' })
 export class EmailTemplatesController extends BaseController<
   EmailTemplates,
   CreateEmailTemplatesDto,
@@ -43,7 +34,10 @@ export class EmailTemplatesController extends BaseController<
   }
 
   @Put(':id')
-  async edit(@Param('id') id: string, @Body() updateDto: UpdateEmailTemplatesDto) {
+  async edit(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateEmailTemplatesDto,
+  ) {
     return await this.update(id, updateDto);
   }
 

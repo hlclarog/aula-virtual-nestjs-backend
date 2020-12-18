@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TenancyEmailsService } from './tenancy_emails.service';
 import { TenancyEmailsController } from './tenancy_emails.controller';
-import { TENANCY_PROVIDER } from '../../database/database.dto';
+import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { TENANCY_EMAILS_PROVIDER } from './tenancy_emails.dto';
 import { TenancyEmails } from './tenancy_emails.entity';
@@ -11,7 +11,7 @@ import { TenancyEmails } from './tenancy_emails.entity';
   providers: [
     {
       provide: TENANCY_EMAILS_PROVIDER,
-      inject: [TENANCY_PROVIDER],
+      inject: [DATABASE_TENANCY_PROVIDER],
       useFactory: (connection: Connection) =>
         connection.getRepository(TenancyEmails),
     },

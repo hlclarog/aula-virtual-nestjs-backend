@@ -5,7 +5,7 @@ import {
   EMAIL_TEMPLATES_PROVIDER,
 } from './email_templates.dto';
 import { BaseService } from '../../base/base.service';
-import { BaseRepo } from '../../base/base-repo';
+import { BaseRepo } from '../../base/base.repository';
 import { EmailTemplates } from './email_templates.entity';
 
 @Injectable()

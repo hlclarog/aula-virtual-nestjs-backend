@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateUsersDto, UpdateUsersDto, USERS_PROVIDER } from './users.dto';
 import { BaseService } from '../../../base/base.service';
-import { BaseRepo } from '../../../base/base-repo';
+import { BaseRepo } from '../../../base/base.repository';
 import { Users } from './users.entity';
-import { CryptoService } from '../../../services/crypto.service';
+import { CryptoService } from '../../../utils/services/crypto.service';
 import { ChangePasswordDto, LoginDto } from '../../../auth/auth.dto';
 import { UpdateResult } from 'typeorm';
 import { UsersRolesService } from '../users_roles/users_roles.service';

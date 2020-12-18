@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { RolesPermissionsService } from './roles_permissions.service';
 import {
   CreateRolesPermissionsDto,
@@ -14,10 +6,9 @@ import {
 } from './roles_permissions.dto';
 import { BaseController } from '../../../base/base.controller';
 import { RolesPermissions } from './roles_permissions.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ControllerApi } from '../../../utils/decorators/controllers.decorator';
 
-@ApiTags('roles_permissions')
-@Controller('/api/roles_permissions')
+@ControllerApi({ name: 'roles_permissions' })
 export class RolesPermissionsController extends BaseController<
   RolesPermissions,
   CreateRolesPermissionsDto,
@@ -43,7 +34,10 @@ export class RolesPermissionsController extends BaseController<
   }
 
   @Put(':id')
-  async edit(@Param('id') id: string, @Body() updateDto: UpdateRolesPermissionsDto) {
+  async edit(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateRolesPermissionsDto,
+  ) {
     return await this.update(id, updateDto);
   }
 

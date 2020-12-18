@@ -1,20 +1,11 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { LanguagesService } from './languages.service';
 import { CreateLanguagesDto, UpdateLanguagesDto } from './languages.dto';
 import { BaseController } from '../../base/base.controller';
 import { Languages } from './languages.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 
-@ApiTags('languages')
-@Controller('/api/languages')
+@ControllerApi({ name: 'languages' })
 export class LanguagesController extends BaseController<
   Languages,
   CreateLanguagesDto,

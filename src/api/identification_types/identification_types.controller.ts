@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { IdentificationTypesService } from './identification_types.service';
 import {
   CreateIdentificationTypesDto,
@@ -14,10 +6,9 @@ import {
 } from './identification_types.dto';
 import { BaseController } from '../../base/base.controller';
 import { IdentificationTypes } from './identification_types.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 
-@ApiTags('identification_types')
-@Controller('/api/identification_types')
+@ControllerApi({ name: 'identification_types' })
 export class IdentificationTypesController extends BaseController<
   IdentificationTypes,
   CreateIdentificationTypesDto,
@@ -43,7 +34,10 @@ export class IdentificationTypesController extends BaseController<
   }
 
   @Put(':id')
-  async edit(@Param('id') id: string, @Body() updateDto: UpdateIdentificationTypesDto) {
+  async edit(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateIdentificationTypesDto,
+  ) {
     return await this.update(id, updateDto);
   }
 
