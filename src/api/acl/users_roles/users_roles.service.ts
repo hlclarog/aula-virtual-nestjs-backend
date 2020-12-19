@@ -21,20 +21,17 @@ export class UsersRolesService extends BaseService<
   }
 
   async findAll(): Promise<UsersRoles[]> {
-    return await this.repository.find({
-      relations: ['parent', 'parent.parent'],
-    });
+    return await this.repository.find();
   }
 
   async findOne(id: number): Promise<UsersRoles> {
-    return this.repository.findOneOrFail(id, {
-      relations: [
-        'parent',
-        'parent.parent',
-        'children',
-        'children.parent',
-        'permissions',
-      ],
+    return this.repository.findOneOrFail(id);
+  }
+
+  async findForUser(idUser: number): Promise<UsersRoles[]> {
+    return this.repository.find({
+      where: { user: idUser },
+      relations: ['rol', 'rol.permissions'],
     });
   }
 

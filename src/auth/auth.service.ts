@@ -21,7 +21,11 @@ export class AuthService {
   async login(data: LoginDto) {
     const user = await this.usersService.verifyUser(data);
     if (user) {
-      const payload = { ...data };
+      const payload = {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+      };
       const token = await this.tokenService
         .createToken(payload, DEFAULT_TIME_TOKEN_AUTH)
         .then((res) => res);

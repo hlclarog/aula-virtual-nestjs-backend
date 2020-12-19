@@ -7,9 +7,7 @@ import { USERS_ROLES_ENTITY } from './users_roles.dto';
 @Entity(USERS_ROLES_ENTITY)
 @Tree('materialized-path')
 export class UsersRoles extends Base {
-  @ManyToOne(() => Users, (user) => user.roles, {
-    eager: true,
-  })
+  @ManyToOne(() => Users, (user) => user.roles)
   user: Users;
 
   @RelationId((users_roles: UsersRoles) => users_roles.user)

@@ -29,6 +29,10 @@ export class UsersService extends BaseService<
     });
   }
 
+  async findRoles(id: number) {
+    return this.usersRolesService.findForUser(id);
+  }
+
   async create(createDto: CreateUsersDto) {
     const data: any = Object.assign({}, createDto);
     data.password = this.cryptoService.hashPassword(data.password);

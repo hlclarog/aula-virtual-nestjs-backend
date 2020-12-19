@@ -17,9 +17,11 @@ import { PermissionsModule } from './acl/permissions/permissions.module';
 import { RolesModule } from './acl/roles/roles.module';
 import { RolesPermissionsModule } from './acl/roles_permissions/roles_permissions.module';
 import { UsersRolesModule } from './acl/users_roles/users_roles.module';
+import { InfoUserModule } from 'src/utils/providers/info-user.module';
 
 @Module({
   imports: [
+    InfoUserModule.forRoot(),
     TestModule,
     LanguagesModule,
     IdentificationTypesModule,
