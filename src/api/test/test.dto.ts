@@ -9,6 +9,13 @@ import {
 
 export const TEST_PROVIDER = 'TEST_REPOSITORY';
 
+export enum TEST_PERMISSIONS {
+  CREATE = 'create-users',
+  UPDATE = 'update-users',
+  DELETE = 'delete-users',
+  LIST = 'list-users',
+}
+
 export class CreateTestDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;

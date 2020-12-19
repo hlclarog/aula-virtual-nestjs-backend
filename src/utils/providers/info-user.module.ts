@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsersService } from './../../api/acl/users/users.service';
 import { TokenService } from '../services/token.service';
 import { UsersModule } from './../../api/acl/users/users.module';
-import { UsersRoles } from 'src/api/acl/users_roles/users_roles.entity';
+import { UsersRoles } from './../../api/acl/users_roles/users_roles.entity';
 
 export const INFO_USER_PROVIDER = 'INFO_USER_PROVIDER';
 
@@ -12,7 +12,7 @@ export interface InfoUserProvider {
   id: number;
   email: string;
   name: string;
-  roles: UsersRoles;
+  roles: UsersRoles[];
 }
 
 @Global()
