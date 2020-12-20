@@ -15,7 +15,7 @@ export class CreateRolesDto {
   })
   @IsArray()
   @IsNotEmpty()
-  permissions_roles: number[];
+  roles_permissions: number[];
 }
 
 export class UpdateRolesDto {
@@ -39,5 +39,5 @@ export class UpdateRolesDto {
   })
   @IsArray()
   @IsOptional()
-  permissions_roles?: number[];
+  roles_permissions?: number[];
 }
