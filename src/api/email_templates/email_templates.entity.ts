@@ -13,7 +13,7 @@ export class EmailTemplates extends Base {
   observations: string;
 
   @ManyToOne(() => Languages, (language) => language.templates, { eager: true })
-  language: Languages;
+  language: Languages | number;
 
   @RelationId((email_templates: EmailTemplates) => email_templates.language)
   language_id: number;
@@ -22,5 +22,5 @@ export class EmailTemplates extends Base {
     () => EmailActivitiesTemplate,
     (email_template_activity) => email_template_activity.email_template,
   )
-  activities: EmailActivitiesTemplate[];
+  email_activities_template: EmailActivitiesTemplate[];
 }
