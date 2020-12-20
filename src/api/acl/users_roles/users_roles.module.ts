@@ -12,7 +12,8 @@ import { UsersRoles } from './users_roles.entity';
     {
       provide: USERS_ROLES_PROVIDER,
       inject: [DATABASE_TENANCY_PROVIDER],
-      useFactory: (connection: Connection) => connection.getRepository(UsersRoles),
+      useFactory: (connection: Connection) =>
+        connection.getRepository(UsersRoles),
     },
     UsersRolesService,
   ],

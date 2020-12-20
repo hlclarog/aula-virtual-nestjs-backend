@@ -3,8 +3,9 @@ import { REQUEST } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersService } from './../../api/acl/users/users.service';
 import { TokenService } from '../services/token.service';
-import { UsersModule } from './../../api/acl/users/users.module';
 import { UsersRoles } from './../../api/acl/users_roles/users_roles.entity';
+import { DATABASE_TENANCY_PROVIDER } from './../../database/database.dto';
+import { Connection } from 'typeorm';
 
 export const INFO_USER_PROVIDER = 'INFO_USER_PROVIDER';
 
@@ -22,17 +23,20 @@ export class InfoUserModule {
     const infoTokenProvider = {
       provide: INFO_USER_PROVIDER,
       scope: Scope.REQUEST,
-      inject: [REQUEST, TokenService, UsersService],
+      inject: [REQUEST, TokenService, DATABASE_TENANCY_PROVIDER],
       useFactory: async (
         req: Request,
         tokenService: TokenService,
-        usersService: UsersService,
+        connection: Connection,
       ) => {
         const token = req.headers['authorization'];
         const dataToken = await tokenService
           .verifyToken(token.split(' ')[1])
           .then((result: any) => result.data);
-        const dataRoles = await usersService.findRoles(dataToken.id);
+        const dataRoles = await connection.getRepository(UsersRoles).find({
+          where: { user: dataToken.id },
+          relations: ['rol', 'rol.permissions'],
+        });
         const dataUser: InfoUserProvider = {
           ...dataToken,
           roles: dataRoles,
@@ -42,10 +46,11 @@ export class InfoUserModule {
     };
     return {
       module: InfoUserModule,
-      imports: [JwtModule.register({}), UsersModule],
+      imports: [JwtModule.register({})],
       providers: [infoTokenProvider, TokenService],
       exports: [infoTokenProvider],
     };
   }
 }
+
 // @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider

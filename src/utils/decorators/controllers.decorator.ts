@@ -5,7 +5,7 @@ import { PermissionsGuard } from './../guards/permissions.guard';
 
 export function ControllerApi({ name }) {
   return applyDecorators(
-    // UseGuards(PermissionsGuard),
+    UseGuards(PermissionsGuard),
     ApiHeader({
       name: NAME_HEADER_CLIENT,
       description: 'Code of tenancy',
