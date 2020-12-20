@@ -9,7 +9,7 @@ export class TenancyLanguages extends Base {
   @Column({ length: 500, type: 'varchar' })
   description: string;
 
-  @ManyToOne(() => Tenancies, (tenancies) => tenancies.languages, {
+  @ManyToOne(() => Tenancies, (tenancies) => tenancies.tenancy_languages, {
     eager: true,
   })
   tenancy: Tenancies;

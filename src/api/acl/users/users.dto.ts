@@ -15,7 +15,7 @@ export class CreateUsersDto {
   })
   @IsArray()
   @IsNotEmpty()
-  roles: number[];
+  users_roles: number[];
 }
 
 export class UpdateUsersDto {
@@ -35,5 +35,5 @@ export class UpdateUsersDto {
   })
   @IsArray()
   @IsOptional()
-  roles?: number[];
+  users_roles?: number[];
 }

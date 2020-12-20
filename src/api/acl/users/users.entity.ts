@@ -15,5 +15,5 @@ export class Users extends Base {
   password: string;
 
   @OneToMany(() => UsersRoles, (user_rol) => user_rol.user)
-  roles: UsersRoles[];
+  users_roles: UsersRoles[];
 }

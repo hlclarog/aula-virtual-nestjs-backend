@@ -56,5 +56,5 @@ export class Tenancies extends Base {
     () => TenancyLanguages,
     (tenancy_language) => tenancy_language.tenancy,
   )
-  languages: TenancyLanguages[];
+  tenancy_languages: TenancyLanguages[];
 }

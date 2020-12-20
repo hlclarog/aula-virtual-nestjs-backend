@@ -20,28 +20,31 @@ export class RolesService extends BaseService<
 
   async findAll(): Promise<Roles[]> {
     return await this.repository.find({
-      relations: ['permissions'],
+      relations: ['permissions_roles'],
     });
   }
 
   async findOne(id: number): Promise<Roles> {
     return this.repository.findOneOrFail(id, {
-      relations: ['permissions'],
+      relations: ['permissions_roles'],
     });
   }
 
   async create(createDto: CreateRolesDto) {
     const data: any = Object.assign({}, createDto);
-    delete data.permissions;
+    delete data.permissions_roles;
     const dataNew = await this.repository.save(data);
-    await this.rolesPermissionsService.set(dataNew.id, createDto.permissions);
+    await this.rolesPermissionsService.set(
+      dataNew.id,
+      createDto.permissions_roles,
+    );
     return dataNew;
   }
 
   async update(id: number, updateDto: UpdateRolesDto): Promise<UpdateResult> {
     const data: any = Object.assign({}, updateDto);
-    delete data.permissions;
-    await this.rolesPermissionsService.set(id, updateDto.permissions);
+    delete data.permissions_roles;
+    await this.rolesPermissionsService.set(id, updateDto.permissions_roles);
     return await this.repository.update(id, data);
   }
 }

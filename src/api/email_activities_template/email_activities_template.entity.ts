@@ -21,7 +21,7 @@ export class EmailActivitiesTemplate extends Base {
 
   @ManyToOne(
     () => EmailActivities,
-    (email_activity) => email_activity.templates,
+    (email_activity) => email_activity.email_activities_template,
     { eager: true },
   )
   email_activity: EmailActivities;

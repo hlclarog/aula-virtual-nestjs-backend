@@ -25,7 +25,7 @@ export class UsersService extends BaseService<
 
   async findOne(id: number): Promise<Users> {
     return this.repository.findOneOrFail(id, {
-      relations: ['roles'],
+      relations: ['users_roles'],
     });
   }
 
@@ -36,19 +36,19 @@ export class UsersService extends BaseService<
   async create(createDto: CreateUsersDto) {
     const data: any = Object.assign({}, createDto);
     data.password = this.cryptoService.hashPassword(data.password);
-    delete data.roles;
+    delete data.users_roles;
     const dataNew = await this.repository.save(data);
-    if (createDto.roles) {
-      await this.usersRolesService.set(dataNew.id, createDto.roles);
+    if (createDto.users_roles) {
+      await this.usersRolesService.set(dataNew.id, createDto.users_roles);
     }
     return dataNew;
   }
 
   async update(id: number, updateDto: UpdateUsersDto): Promise<UpdateResult> {
     const data: any = Object.assign({}, updateDto);
-    delete data.roles;
-    if (updateDto.roles) {
-      await this.usersRolesService.set(id, updateDto.roles);
+    delete data.users_roles;
+    if (updateDto.users_roles) {
+      await this.usersRolesService.set(id, updateDto.users_roles);
     }
     return await this.repository.update(id, data);
   }

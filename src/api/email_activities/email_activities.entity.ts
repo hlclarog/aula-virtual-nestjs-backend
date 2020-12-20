@@ -15,5 +15,5 @@ export class EmailActivities extends Base {
     () => EmailActivitiesTemplate,
     (email_template_activity) => email_template_activity.email_activity,
   )
-  templates: EmailActivitiesTemplate[];
+  email_activities_template: EmailActivitiesTemplate[];
 }
