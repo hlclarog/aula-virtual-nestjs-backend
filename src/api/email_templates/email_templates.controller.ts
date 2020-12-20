@@ -20,7 +20,8 @@ export class EmailTemplatesController extends BaseController<
 
   @Post()
   async post(@Body() createDto: CreateEmailTemplatesDto) {
-    return await this.create(createDto);
+    const dataSave = await this.create(createDto);
+    return this.findOne(String(dataSave.data.id));
   }
 
   @Get()

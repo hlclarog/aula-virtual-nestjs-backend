@@ -17,5 +17,6 @@ import { EmailActivities } from './email_activities.entity';
     },
     EmailActivitiesService,
   ],
+  exports: [EmailActivitiesService],
 })
 export class EmailActivitiesModule {}

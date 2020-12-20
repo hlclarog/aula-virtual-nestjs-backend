@@ -17,5 +17,6 @@ import { EmailActivitiesTemplate } from './email_activities_template.entity';
     },
     EmailActivitiesTemplateService,
   ],
+  exports: [EmailActivitiesTemplateService],
 })
 export class EmailActivitiesTemplateModule {}

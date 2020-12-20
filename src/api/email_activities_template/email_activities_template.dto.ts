@@ -8,9 +8,18 @@ export const EMAIL_ACTIVITIES_TEMPLATE_ENTITY = 'email_activities_template';
 export class CreateEmailActivitiesTemplateDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly email_template: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly email_activity: number;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly subject: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly body: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly observations: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly subject?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly body?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly observations?: string;
 }
 
 export class UpdateEmailActivitiesTemplateDto {

@@ -8,7 +8,7 @@ import { EMAIL_ACTIVITIES_TEMPLATE_ENTITY } from './email_activities_template.dt
 export class EmailActivitiesTemplate extends Base {
   @ManyToOne(
     () => EmailTemplates,
-    (email_template) => email_template.activities,
+    (email_template) => email_template.email_activities_template,
     { eager: true },
   )
   email_template: EmailTemplates;
@@ -32,12 +32,12 @@ export class EmailActivitiesTemplate extends Base {
   )
   email_activity_id: number;
 
-  @Column({ length: 500, type: 'varchar' })
-  subject: string;
+  @Column({ length: 500, type: 'varchar', nullable: true })
+  subject?: string;
 
-  @Column({ length: 500, type: 'varchar' })
-  body: string;
+  @Column({ length: 500, type: 'varchar', nullable: true })
+  body?: string;
 
-  @Column({ length: 500, type: 'varchar' })
-  observations: string;
+  @Column({ length: 500, type: 'varchar', nullable: true })
+  observations?: string;
 }

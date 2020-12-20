@@ -5,8 +5,11 @@ import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { EMAIL_TEMPLATES_PROVIDER } from './email_templates.dto';
 import { EmailTemplates } from './email_templates.entity';
+import { EmailActivitiesTemplateModule } from '../email_activities_template/email_activities_template.module';
+import { EmailActivitiesModule } from '../email_activities/email_activities.module';
 
 @Module({
+  imports: [EmailActivitiesTemplateModule, EmailActivitiesModule],
   controllers: [EmailTemplatesController],
   providers: [
     {
