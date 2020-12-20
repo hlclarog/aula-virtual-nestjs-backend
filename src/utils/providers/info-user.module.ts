@@ -35,7 +35,7 @@ export class InfoUserModule {
           .then((result: any) => result.data);
         const dataRoles = await connection.getRepository(UsersRoles).find({
           where: { user: dataToken.id },
-          relations: ['rol', 'rol.permissions'],
+          relations: ['rol', 'rol.roles_permissions'],
         });
         const dataUser: InfoUserProvider = {
           ...dataToken,

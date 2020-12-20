@@ -25,5 +25,5 @@ export class Permissions extends Base {
     () => RolesPermissions,
     (rol_permission) => rol_permission.permission,
   )
-  permissions_roles: RolesPermissions[];
+  roles_permissions: RolesPermissions[];
 }

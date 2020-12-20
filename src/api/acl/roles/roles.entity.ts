@@ -16,7 +16,7 @@ export class Roles extends Base {
   description: string;
 
   @OneToMany(() => RolesPermissions, (rol_permission) => rol_permission.rol)
-  permissions_roles: RolesPermissions[];
+  roles_permissions: RolesPermissions[];
 
   @OneToMany(() => UsersRoles, (user_rol) => user_rol.user)
   users_roles: UsersRoles[];
