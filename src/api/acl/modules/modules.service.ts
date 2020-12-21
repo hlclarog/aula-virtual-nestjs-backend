@@ -22,7 +22,7 @@ export class ModulesService extends BaseService<
 
   async findAll(): Promise<Modules[]> {
     return await this.repository.find({
-      relations: ['parent', 'parent.parent'],
+      relations: ['parent', 'parent.parent', 'permissions'],
     });
   }
 
