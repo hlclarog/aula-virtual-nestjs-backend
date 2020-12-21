@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { CreateBaseDto } from '../../base/base.dto';
 
 export const CLIENTS_PROVIDER = 'CLIENTS_REPOSITORY';
 export const CLIENTS_ENTITY = 'clients';
 
-export class CreateClientsDto {
+export class CreateClientsDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly identification_type: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly dni: string;

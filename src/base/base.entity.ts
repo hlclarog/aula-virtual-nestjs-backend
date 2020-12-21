@@ -12,14 +12,14 @@ export abstract class Base extends BaseEntity {
   id: number;
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 
   @Column('boolean', { default: true })
   active: boolean;
 
   @DeleteDateColumn()
-  deletedAt: Date;
+  deleted_at: Date;
 }
