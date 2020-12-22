@@ -7,13 +7,19 @@ export const TENANCIES_ENTITY = 'tenancies';
 export class CreateTenanciesDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly identification_type: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly tenancy_status: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly client: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly alias: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly databasename: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly serveraddress: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly administrator: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly password: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly activation_time: string;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly front_server: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly back_server: number;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly activation_time?: string;
 }
 
 export class UpdateTenanciesDto {
@@ -25,6 +31,10 @@ export class UpdateTenanciesDto {
   @IsNumber()
   @IsOptional()
   readonly tenancy_status?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly client?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -53,4 +63,12 @@ export class UpdateTenanciesDto {
   @IsString()
   @IsOptional()
   readonly activation_time?: string;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly front_server?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly back_server?: number;
 }

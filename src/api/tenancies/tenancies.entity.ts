@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Clients } from '../clients/clients.entity';
+import { Servers } from '../instance/servers/servers.entity';
 import { TenancyDomains } from '../tenancy_domains/tenancy_domains.entity';
 import { TenancyEmails } from '../tenancy_emails/tenancy_emails.entity';
 import { TenancyLanguages } from '../tenancy_languages/tenancy_languages.entity';
@@ -43,7 +44,7 @@ export class Tenancies extends Base {
   @Column({ type: 'varchar' })
   password: string;
 
-  @Column({ type: 'timestamp', default: new Date() })
+  @Column({ type: 'timestamp', default: new Date(), nullable: true })
   activation_time: any;
 
   @OneToMany(() => TenancyDomains, (tenancy_domain) => tenancy_domain.tenancy)
@@ -57,4 +58,16 @@ export class Tenancies extends Base {
     (tenancy_language) => tenancy_language.tenancy,
   )
   tenancy_languages: TenancyLanguages[];
+
+  @ManyToOne(() => Servers, (server) => server.tenancies_front, { eager: true })
+  front_server: Servers;
+
+  @RelationId((tenancie: Tenancies) => tenancie.front_server)
+  front_server_id: number;
+
+  @ManyToOne(() => Servers, (server) => server.tenancies_back, { eager: true })
+  back_server: Servers;
+
+  @RelationId((tenancie: Tenancies) => tenancie.back_server)
+  back_server_id: number;
 }

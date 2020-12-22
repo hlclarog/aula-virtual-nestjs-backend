@@ -18,6 +18,9 @@ import { RolesModule } from './acl/roles/roles.module';
 import { RolesPermissionsModule } from './acl/roles_permissions/roles_permissions.module';
 import { UsersRolesModule } from './acl/users_roles/users_roles.module';
 import { InfoUserModule } from './../utils/providers/info-user.module';
+import { ServersModule } from './instance/servers/servers.module';
+import { ServerTypesModule } from './instance/server_types/server_types.module';
+import { ConnectionTypesModule } from './instance/connection_types/connection_types.module';
 
 @Module({
   imports: [
@@ -40,6 +43,9 @@ import { InfoUserModule } from './../utils/providers/info-user.module';
     RolesPermissionsModule,
     UsersModule,
     UsersRolesModule,
+    ServersModule,
+    ServerTypesModule,
+    ConnectionTypesModule,
   ],
   controllers: [],
   providers: [],
