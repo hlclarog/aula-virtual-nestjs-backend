@@ -7,11 +7,12 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { CreateBaseDto, UpdateBaseDto } from '../../../base/base.dto';
 
 export const MODULES_PROVIDER = 'MODULES_REPOSITORY';
 export const MODULES_ENTITY = 'modules';
 
-export class CreateModulesDto {
+export class CreateModulesDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
@@ -24,7 +25,7 @@ export class CreateModulesDto {
   @ApiProperty() @IsObject() @IsNotEmpty() readonly rules: any;
 }
 
-export class UpdateModulesDto {
+export class UpdateModulesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()

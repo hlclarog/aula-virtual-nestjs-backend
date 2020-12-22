@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-import { CreateBaseDto } from '../../base/base.dto';
+import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 
 export const CLIENTS_PROVIDER = 'CLIENTS_REPOSITORY';
 export const CLIENTS_ENTITY = 'clients';
@@ -19,7 +19,7 @@ export class CreateClientsDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly billing_cellphone: string;
 }
 
-export class UpdateClientsDto {
+export class UpdateClientsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
