@@ -6,11 +6,12 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 
 export const TENANCY_EMAILS_PROVIDER = 'TENANCY_EMAILS_REPOSITORY';
 export const TENANCY_EMAILS_ENTITY = 'tenancy_emails';
 
-export class CreateTenancyEmailsDto {
+export class CreateTenancyEmailsDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly tenancy: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly email_address: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly email_name: string;
@@ -24,7 +25,7 @@ export class CreateTenancyEmailsDto {
   readonly authentication_required: boolean;
 }
 
-export class UpdateTenancyEmailsDto {
+export class UpdateTenancyEmailsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()

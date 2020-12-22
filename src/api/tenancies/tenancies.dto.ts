@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 
 export const TENANCIES_PROVIDER = 'TENANCIES_REPOSITORY';
 export const TENANCIES_ENTITY = 'tenancies';
 
-export class CreateTenanciesDto {
+export class CreateTenanciesDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly identification_type: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly tenancy_status: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
@@ -16,7 +17,7 @@ export class CreateTenanciesDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly activation_time: string;
 }
 
-export class UpdateTenanciesDto {
+export class UpdateTenanciesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()

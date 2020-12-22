@@ -1,17 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { CreateBaseDto, UpdateBaseDto } from '../../../base/base.dto';
 
 export const PERMISSIONS_PROVIDER = 'PERMISSIONS_REPOSITORY';
 export const PERMISSIONS_ENTITY = 'permissions';
 
-export class CreatePermissionsDto {
+export class CreatePermissionsDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly module: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly display_name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
 }
 
-export class UpdatePermissionsDto {
+export class UpdatePermissionsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()

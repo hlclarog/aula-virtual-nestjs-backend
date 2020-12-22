@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { CreateBaseDto, UpdateBaseDto } from '../../../base/base.dto';
 
 export const ROLES_PROVIDER = 'ROLES_REPOSITORY';
 export const ROLES_ENTITY = 'roles';
 
-export class CreateRolesDto {
+export class CreateRolesDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly display_name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
@@ -18,7 +19,7 @@ export class CreateRolesDto {
   roles_permissions: number[];
 }
 
-export class UpdateRolesDto {
+export class UpdateRolesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
