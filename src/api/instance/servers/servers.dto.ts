@@ -6,11 +6,12 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { CreateBaseDto, UpdateBaseDto } from './../../../base/base.dto';
 
 export const SERVERS_PROVIDER = 'SERVERS_REPOSITORY';
 export const SERVERS_ENTITY = 'servers';
 
-export class CreateServersDto {
+export class CreateServersDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsIP() readonly ip_public: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name_server: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly user: string;
@@ -21,7 +22,7 @@ export class CreateServersDto {
   @ApiProperty() @IsNumber() @IsIP() readonly connection_type: number;
 }
 
-export class UpdateServersDto {
+export class UpdateServersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsIP()
   @IsOptional()
