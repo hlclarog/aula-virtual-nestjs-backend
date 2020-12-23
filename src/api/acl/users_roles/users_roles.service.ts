@@ -41,19 +41,27 @@ export class UsersRolesService extends BaseService<
       .createQueryBuilder()
       .delete()
       .from(UsersRoles)
-      .where('userId = :idUser and rolId not in (:roles)', {
-        idUser,
-        roles: roles.length > 0 ? roles.join() : [0].join(),
-      })
+      .where(
+        `userId = :idUser and rolId not in (${
+          roles.length > 0 ? roles.join() : [0].join()
+        })`,
+        {
+          idUser,
+        },
+      )
       .execute();
     // SEARCH ITEMS ACTUALS FOR NO DUPLICATE
     const founds = await this.repository
       .createQueryBuilder('item')
       .leftJoinAndSelect('item.rol', 'rol')
-      .where('item.userId = :idUser and item.rolId in (:roles)', {
-        idUser,
-        roles: roles.length > 0 ? roles.join() : [0].join(),
-      })
+      .where(
+        `item.userId = :idUser and item.rolId in (${
+          roles.length > 0 ? roles.join() : [0].join()
+        })`,
+        {
+          idUser,
+        },
+      )
       .getMany();
     // SAVE ITEMS NEWS
     const values: any[] = roles.map((p) => {

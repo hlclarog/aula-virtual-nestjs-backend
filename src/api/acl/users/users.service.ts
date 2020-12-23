@@ -25,7 +25,7 @@ export class UsersService extends BaseService<
 
   async findOne(id: number): Promise<Users> {
     return this.repository.findOneOrFail(id, {
-      relations: ['users_roles'],
+      relations: ['users_roles', 'users_roles.rol'],
     });
   }
 
