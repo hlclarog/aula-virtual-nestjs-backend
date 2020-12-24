@@ -15,6 +15,7 @@ import { ConfigModule } from './config/config.module';
 import { DatabaseManagerModule } from './database/database-manager.module';
 import { DatabaseTenancyModule } from './database/database-tenancy.module';
 import { MigrationsModule } from './migrations/migrations.module';
+import { QueuesModule } from './queues/queues.module';
 import { AuthVerifyTokenMiddleware } from './utils/middlewares/auth.middleware';
 import { TokenService } from './utils/services/token.service';
 
@@ -30,6 +31,7 @@ const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
     AuthModule,
     MigrationsModule,
     JwtModule.register({}),
+    QueuesModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ConfigService } from './config/config.service';
 import { HttpExceptionFilter } from './utils/filters/http-exception.filter';
 import { TransformInterceptor } from './utils/interceptors/transform.interceptor';
 
@@ -21,6 +22,8 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new TransformInterceptor());
 
-  await app.listen(process.env.PORT || 3000);
+  const configService = app.get(ConfigService);
+
+  await app.listen(configService.portApi());
 }
 bootstrap();

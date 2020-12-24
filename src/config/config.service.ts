@@ -40,6 +40,9 @@ export class ConfigService {
   hashTokenSecretPasswordReq(): string {
     return this.envConfig.TOKEN_SECRET_PASSWORDSREQ;
   }
+  portApi(): number {
+    return this.envConfig.PORT;
+  }
 
   private static validateInput(envConfig: EnvConfig): EnvConfig {
     const envVarsSchema: Joi.ObjectSchema = Joi.object({
@@ -51,6 +54,8 @@ export class ConfigService {
       TOKEN_SECRET: Joi.string().required(),
       TOKEN_SECRET_PASSWORDSREQ: Joi.string().required(),
       PORT: Joi.string().required(),
+      QUEUE_HOST: Joi.string().required(),
+      QUEUE_PORT: Joi.string().required(),
     });
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(
       envConfig,

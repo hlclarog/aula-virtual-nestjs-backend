@@ -31,6 +31,8 @@ example:
 | TOKEN_SECRET | string | key token para autenticacion |
 | TOKEN_SECRET_PASSWORDSREQ | string | key token para cambio de password |
 | PORT | number | Puerto de la aplicacion (Solo de referencia) |
+| QUEUE_HOST | string | Host de redis |
+| QUEUE_PORT | string | Puerto de redis |
 
 ### Migrations
 
