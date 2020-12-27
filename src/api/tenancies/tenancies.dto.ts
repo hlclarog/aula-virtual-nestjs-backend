@@ -6,7 +6,6 @@ export const TENANCIES_PROVIDER = 'TENANCIES_REPOSITORY';
 export const TENANCIES_ENTITY = 'tenancies';
 
 export class CreateTenanciesDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly identification_type: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly tenancy_status: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly client: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
@@ -24,10 +23,6 @@ export class CreateTenanciesDto extends CreateBaseDto {
 }
 
 export class UpdateTenanciesDto extends UpdateBaseDto {
-  @ApiProperty({ required: false })
-  @IsNumber()
-  @IsOptional()
-  readonly identification_type?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()

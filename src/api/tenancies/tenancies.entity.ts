@@ -10,22 +10,6 @@ import { TENANCIES_ENTITY } from './tenancies.dto';
 
 @Entity(TENANCIES_ENTITY)
 export class Tenancies extends Base {
-  @ManyToOne(() => Clients, (client) => client.tenancies, { eager: true })
-  client: Clients;
-
-  @RelationId((tenancies: Tenancies) => tenancies.client)
-  client_id: number;
-
-  @ManyToOne(
-    () => TenancyStatus,
-    (tenancy_status) => tenancy_status.tenancies,
-    { eager: true },
-  )
-  tenancy_status: TenancyStatus;
-
-  @RelationId((tenancies: Tenancies) => tenancies.tenancy_status)
-  tenancy_status_id: number;
-
   @Column({ type: 'varchar' })
   name: string;
 
@@ -58,6 +42,22 @@ export class Tenancies extends Base {
     (tenancy_language) => tenancy_language.tenancy,
   )
   tenancy_languages: TenancyLanguages[];
+
+  @ManyToOne(() => Clients, (client) => client.tenancies, { eager: true })
+  client: Clients;
+
+  @RelationId((tenancies: Tenancies) => tenancies.client)
+  client_id: number;
+
+  @ManyToOne(
+    () => TenancyStatus,
+    (tenancy_status) => tenancy_status.tenancies,
+    { eager: true },
+  )
+  tenancy_status: TenancyStatus;
+
+  @RelationId((tenancies: Tenancies) => tenancies.tenancy_status)
+  tenancy_status_id: number;
 
   @ManyToOne(() => Servers, (server) => server.tenancies_front, { eager: true })
   front_server: Servers;

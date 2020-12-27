@@ -15,6 +15,9 @@ export class Roles extends Base {
   @Column({ type: 'text' })
   description: string;
 
+  @Column({ type: 'varchar', default: '' })
+  translate: string;
+
   @OneToMany(() => RolesPermissions, (rol_permission) => rol_permission.rol)
   roles_permissions: RolesPermissions[];
 

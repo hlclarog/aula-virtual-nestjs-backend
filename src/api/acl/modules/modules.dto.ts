@@ -19,6 +19,8 @@ export class CreateModulesDto extends CreateBaseDto {
   readonly parent?: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly icon: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly path: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly translate: string;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly display_order: number;
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly show_in_menu: boolean;
   @ApiProperty() @IsObject() @IsNotEmpty() readonly crud: any;
@@ -39,6 +41,14 @@ export class UpdateModulesDto extends UpdateBaseDto {
   @IsOptional()
   readonly icon?: string;
   @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly path?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly translate?: string;
+  @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
   readonly display_order?: number;
@@ -46,7 +56,10 @@ export class UpdateModulesDto extends UpdateBaseDto {
   @IsBoolean()
   @IsOptional()
   readonly show_in_menu?: boolean;
-  @ApiProperty({ required: false }) @IsObject() @IsOptional() readonly crud?: any;
+  @ApiProperty({ required: false })
+  @IsObject()
+  @IsOptional()
+  readonly crud?: any;
   @ApiProperty({ required: false })
   @IsObject()
   @IsOptional()

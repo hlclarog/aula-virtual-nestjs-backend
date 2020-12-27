@@ -19,6 +19,12 @@ export class Modules extends Base {
   @Column({ type: 'varchar' })
   icon: string;
 
+  @Column({ type: 'varchar', default: '/' })
+  path: string;
+
+  @Column({ type: 'varchar', default: '' })
+  translate: string;
+
   @Column({ type: 'int' })
   display_order: number;
 

@@ -9,6 +9,7 @@ export class CreateRolesDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly display_name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly translate: string;
   @ApiProperty({
     type: 'number',
     isArray: true,
@@ -32,6 +33,10 @@ export class UpdateRolesDto extends UpdateBaseDto {
   @IsString()
   @IsOptional()
   readonly description?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly translate?: string;
   @ApiProperty({
     type: 'number',
     isArray: true,
