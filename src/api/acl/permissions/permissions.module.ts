@@ -17,6 +17,6 @@ import { Permissions } from './permissions.entity';
     },
     PermissionsService,
   ],
-  exports: [PermissionsService],
+  exports: [PERMISSIONS_PROVIDER, PermissionsService],
 })
 export class PermissionsModule {}

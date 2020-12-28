@@ -11,7 +11,7 @@ export class RolesController extends BaseController<
   CreateRolesDto,
   UpdateRolesDto
 > {
-  constructor(rolesService: RolesService) {
+  constructor(private rolesService: RolesService) {
     super(rolesService);
   }
 
@@ -38,5 +38,11 @@ export class RolesController extends BaseController<
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.remove(id);
+  }
+
+  @Get('/menu/fuse')
+  async menu() {
+    const result = await this.rolesService.menuUser();
+    return { data: result };
   }
 }

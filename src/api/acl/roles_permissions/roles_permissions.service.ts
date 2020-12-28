@@ -39,24 +39,27 @@ export class RolesPermissionsService extends BaseService<
   }
 
   async set(idRol: number, permissions: Array<number>): Promise<any> {
+    const permissionsList =
+      permissions.length > 0 ? permissions.join() : [0].join();
     // DELETE ITEMS NOT RECEIVED
     await this.repository
       .createQueryBuilder()
       .delete()
       .from(RolesPermissions)
-      .where('rolId = :idRol and permissionId not in (:permissions)', {
+      .where(`rolId = :idRol and permissionId not in (${permissionsList})`, {
         idRol,
-        permissions: permissions.length > 0 ? permissions.join() : [0].join(),
       })
       .execute();
     // SEARCH ITEMS ACTUALS FOR NO DUPLICATE
     const founds = await this.repository
       .createQueryBuilder('item')
       .leftJoinAndSelect('item.permission', 'permission')
-      .where('item.rolId = :idRol and item.permissionId in (:permissions)', {
-        idRol,
-        permissions: permissions.length > 0 ? permissions.join() : [0].join(),
-      })
+      .where(
+        `item.rolId = :idRol and item.permissionId in (${permissionsList})`,
+        {
+          idRol,
+        },
+      )
       .getMany();
     // SAVE ITEMS NEWS
     const values: any[] = permissions.map((p) => {

@@ -16,6 +16,6 @@ import { Modules } from './modules.entity';
     },
     ModulesService,
   ],
-  exports: [ModulesService],
+  exports: [MODULES_PROVIDER, ModulesService],
 })
 export class ModulesModule {}

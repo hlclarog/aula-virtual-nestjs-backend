@@ -47,3 +47,14 @@ export class UpdateRolesDto extends UpdateBaseDto {
   @IsOptional()
   roles_permissions?: number[];
 }
+
+export interface Menu {
+  id: number;
+  title: string;
+  translate?: string;
+  type: string;
+  icon?: string;
+  url?: string;
+  view?: boolean;
+  children: Menu[];
+}

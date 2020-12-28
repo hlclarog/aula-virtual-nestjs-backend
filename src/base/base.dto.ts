@@ -1,9 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateBaseDto {
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly active: boolean;
 }
 export class UpdateBaseDto {
-  @ApiProperty() @IsBoolean() @IsNotEmpty() readonly active: boolean;
+  @ApiProperty({ required: false })
+  @IsBoolean()
+  @IsOptional()
+  readonly active?: boolean;
 }

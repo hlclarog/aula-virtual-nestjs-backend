@@ -1,7 +1,6 @@
 import { Scope, Request, DynamicModule, Global, Module } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-import { UsersService } from './../../api/acl/users/users.service';
 import { TokenService } from '../services/token.service';
 import { UsersRoles } from './../../api/acl/users_roles/users_roles.entity';
 import { DATABASE_TENANCY_PROVIDER } from './../../database/database.dto';

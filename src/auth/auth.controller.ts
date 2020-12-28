@@ -1,4 +1,4 @@
-import { Body, Get, Headers, Post } from '@nestjs/common';
+import { Body, Get, Param, Post } from '@nestjs/common';
 import { ControllerAuth } from './../utils/decorators/controllers.decorator';
 import {
   ChangePasswordEmailDto,
@@ -17,9 +17,9 @@ export class AuthController {
     return result;
   }
 
-  @Get('verify')
-  async verify(@Headers() headers) {
-    const result = await this.authService.verify(headers['tokenaccept']);
+  @Get('verify/:token')
+  async verify(@Param('token') token: string) {
+    const result = await this.authService.verify(token);
     return result;
   }
 
