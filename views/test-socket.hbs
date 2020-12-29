@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Socket</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>
+                    Suscripcion manual del canal <br>
+                    <code>Conexion al servidor de sockets</code>
+                </h2>
+                <div class="row">
+                    <div class="col-md-4 col-sm-8">
+                        <label for="host">Host</label>
+                        <input type="text" class="form-control inut-sm" id="host">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-4">
+                <button type="button" id="sendSocket" class="btn btn-primary btn-block">Enviar</button>
+            </div>
+            <div class="col-md-12">
+                <br>
+                <div id="logs" class="jumbotron">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        $(function () {
+            var socket = io('http://localhost:81');
+            socket.on('connect', () => {
+                console.log('conectted');
+            });
+            socket.on('disconnect', () => {
+                console.log('user disconnected');
+            });
+            socket.on('subcribe', (data) => {
+                console.log('your user is: ' + data);
+            });
+        });
+    </script>
+
+</body>
+</html>

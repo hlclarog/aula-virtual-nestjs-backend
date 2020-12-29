@@ -18,6 +18,7 @@ import { MigrationsModule } from './migrations/migrations.module';
 import { QueuesModule } from './queues/queues.module';
 import { AuthVerifyTokenMiddleware } from './utils/middlewares/auth.middleware';
 import { TokenService } from './utils/services/token.service';
+import { WebsocketModule } from './websocket/websocket.module';
 
 const FOLDER_ENV = join(__dirname, '..', 'env');
 const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
@@ -32,6 +33,7 @@ const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
     MigrationsModule,
     JwtModule.register({}),
     QueuesModule,
+    WebsocketModule,
   ],
   controllers: [AppController],
   providers: [
