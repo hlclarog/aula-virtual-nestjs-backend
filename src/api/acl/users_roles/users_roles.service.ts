@@ -35,7 +35,11 @@ export class UsersRolesService extends BaseService<
     });
   }
 
-  async set(idUser: number, roles: Array<number>): Promise<any> {
+  async set(
+    idUser: number,
+    roles: Array<number>,
+    rolDefault?: number,
+  ): Promise<any> {
     // DELETE ITEMS NOT RECEIVED
     await this.repository
       .createQueryBuilder()
@@ -65,7 +69,7 @@ export class UsersRolesService extends BaseService<
       .getMany();
     // SAVE ITEMS NEWS
     const values: any[] = roles.map((p) => {
-      return { user: idUser, rol: p };
+      return { user: idUser, rol: p, default: rolDefault == p };
     });
     await this.repository
       .createQueryBuilder()

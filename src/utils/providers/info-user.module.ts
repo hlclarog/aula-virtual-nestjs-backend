@@ -29,13 +29,17 @@ export class InfoUserModule {
         connection: Connection,
       ) => {
         const token = req.headers['authorization'];
-        const dataToken = await tokenService
-          .verifyToken(token.split(' ')[1])
-          .then((result: any) => result.data);
-        const dataRoles = await connection.getRepository(UsersRoles).find({
-          where: { user: dataToken.id },
-          relations: ['rol', 'rol.roles_permissions'],
-        });
+        const dataToken = token
+          ? await tokenService
+              .verifyToken(token.split(' ')[1])
+              .then((result: any) => result.data)
+          : null;
+        const dataRoles = dataToken
+          ? await connection.getRepository(UsersRoles).find({
+              where: { user: dataToken.id },
+              relations: ['rol', 'rol.roles_permissions'],
+            })
+          : [];
         const dataUser: InfoUserProvider = {
           ...dataToken,
           roles: dataRoles,
