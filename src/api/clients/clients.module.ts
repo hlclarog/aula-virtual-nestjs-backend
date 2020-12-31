@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { ClientsController } from './clients.controller';
-import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
+import { DATABASE_MANAGER_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { CLIENTS_PROVIDER } from './clients.dto';
 import { Clients } from './clients.entity';
@@ -11,7 +11,7 @@ import { Clients } from './clients.entity';
   providers: [
     {
       provide: CLIENTS_PROVIDER,
-      inject: [DATABASE_TENANCY_PROVIDER],
+      inject: [DATABASE_MANAGER_PROVIDER],
       useFactory: (connection: Connection) => connection.getRepository(Clients),
     },
     ClientsService,
