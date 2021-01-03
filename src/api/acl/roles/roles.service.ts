@@ -74,7 +74,14 @@ export class RolesService extends BaseService<
         (rolPer) => rolPer.permission_id,
       );
       const modules = await this.repositoryModules.find({
-        select: ['id', 'name', 'path', 'display_order', 'show_in_menu'],
+        select: [
+          'id',
+          'name',
+          'path',
+          'parent',
+          'display_order',
+          'show_in_menu',
+        ],
         relations: ['permissions', 'children', 'children.children'],
         where: { parent: null },
       });
@@ -87,6 +94,7 @@ export class RolesService extends BaseService<
       dataMenu.push({
         id: rolElement.rol.id,
         name: rolElement.rol.name,
+        default: rolElement.default,
         menu,
       });
     }
@@ -95,14 +103,14 @@ export class RolesService extends BaseService<
 
   filtchilds(list: Modules[], permisos: Permissions[], path, result) {
     for (let i = 0; i < list.length; i++) {
-      const element = list[i];
+      const element: Modules | any = list[i];
       const daty: Menu = {
         id: element.id,
         title: element.name,
         translate: element.translate,
         icon: element.icon,
         url: `${path}/${element.path}`,
-        type: 'collapsable',
+        type: element.parent_id ? 'collapsable' : 'group',
         view: this.validPermission(permisos, element.id).view,
         children: [],
       };

@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   OneToMany,
+  RelationId,
   Tree,
   TreeChildren,
   TreeParent,
@@ -45,4 +46,7 @@ export class Modules extends Base {
 
   @TreeParent()
   parent: Modules;
+
+  @RelationId((module: Modules) => module.parent)
+  parent_id: number;
 }

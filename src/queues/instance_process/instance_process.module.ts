@@ -1,15 +1,11 @@
-import { BullModule } from '@nestjs/bull';
-import { Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { InstanceProcessController } from './instance_process.controller';
 import { InstanceProcessProcessor } from './instance_process.processor';
-import { INSTANCE_PROCESS_QUEUE } from './instance_process.dto';
+import { InstanceProcessQueueModule } from './instance_process.dto';
 
 @Module({
-  imports: [
-    BullModule.registerQueue({
-      name: INSTANCE_PROCESS_QUEUE,
-    }),
-  ],
+  imports: [HttpModule, InstanceProcessQueueModule],
+  exports: [InstanceProcessQueueModule],
   controllers: [InstanceProcessController],
   providers: [InstanceProcessProcessor],
 })

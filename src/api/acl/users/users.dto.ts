@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { CreateBaseDto, UpdateBaseDto } from '../../../base/base.dto';
 
 export const USERS_PROVIDER = 'USERS_REPOSITORY';
@@ -17,6 +23,10 @@ export class CreateUsersDto extends CreateBaseDto {
   @IsArray()
   @IsNotEmpty()
   users_roles: number[];
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly rol_default?: number;
 }
 
 export class UpdateUsersDto extends UpdateBaseDto {
@@ -37,4 +47,8 @@ export class UpdateUsersDto extends UpdateBaseDto {
   @IsArray()
   @IsOptional()
   users_roles?: number[];
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly rol_default?: number;
 }

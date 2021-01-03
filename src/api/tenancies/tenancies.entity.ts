@@ -17,16 +17,19 @@ export class Tenancies extends Base {
   alias: string;
 
   @Column({ type: 'varchar' })
-  databasename: string;
+  database_name: string;
 
   @Column({ type: 'varchar' })
-  serveraddress: string;
+  server_address: string;
 
   @Column({ type: 'varchar' })
   administrator: string;
 
   @Column({ type: 'varchar' })
   password: string;
+
+  @Column({ type: 'varchar' })
+  schema: string;
 
   @Column({ type: 'timestamp', default: new Date(), nullable: true })
   activation_time: any;
@@ -44,7 +47,7 @@ export class Tenancies extends Base {
   tenancy_languages: TenancyLanguages[];
 
   @ManyToOne(() => Clients, (client) => client.tenancies, { eager: true })
-  client: Clients;
+  client: Clients | number;
 
   @RelationId((tenancies: Tenancies) => tenancies.client)
   client_id: number;
@@ -54,19 +57,19 @@ export class Tenancies extends Base {
     (tenancy_status) => tenancy_status.tenancies,
     { eager: true },
   )
-  tenancy_status: TenancyStatus;
+  tenancy_status: TenancyStatus | number;
 
   @RelationId((tenancies: Tenancies) => tenancies.tenancy_status)
   tenancy_status_id: number;
 
   @ManyToOne(() => Servers, (server) => server.tenancies_front, { eager: true })
-  front_server: Servers;
+  front_server: Servers | number;
 
   @RelationId((tenancie: Tenancies) => tenancie.front_server)
   front_server_id: number;
 
   @ManyToOne(() => Servers, (server) => server.tenancies_back, { eager: true })
-  back_server: Servers;
+  back_server: Servers | number;
 
   @RelationId((tenancie: Tenancies) => tenancie.back_server)
   back_server_id: number;

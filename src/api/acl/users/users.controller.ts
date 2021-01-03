@@ -11,7 +11,7 @@ export class UsersController extends BaseController<
   CreateUsersDto,
   UpdateUsersDto
 > {
-  constructor(usersService: UsersService) {
+  constructor(private usersService: UsersService) {
     super(usersService);
   }
 
@@ -38,5 +38,11 @@ export class UsersController extends BaseController<
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.remove(id);
+  }
+
+  @Get('profile/info')
+  async profile() {
+    const result = await this.usersService.profile();
+    return result;
   }
 }
