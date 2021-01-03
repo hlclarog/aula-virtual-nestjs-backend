@@ -88,8 +88,12 @@ export class UsersService extends BaseService<
 
   async profile() {
     const data = await this.findOne(this.infoUser.id);
+    const rolDefault = await this.usersRolesService.findRolDefault(
+      this.infoUser.id,
+    );
     return {
       ...data,
+      rol_default: rolDefault.rol,
     };
   }
 }
