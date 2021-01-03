@@ -6,20 +6,20 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { CreateBaseDto, UpdateBaseDto } from './../../../base/base.dto';
+import { CreateBaseDto, UpdateBaseDto } from '../../../base/base.dto';
 
 export const SERVERS_PROVIDER = 'SERVERS_REPOSITORY';
 export const SERVERS_ENTITY = 'servers';
 
 export class CreateServersDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsIP() readonly ip_public: string;
+  @ApiProperty() @IsString() @IsIP() readonly ip_address: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name_server: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly user: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly pass: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly ssh_key: string;
-  @ApiProperty() @IsString() @IsIP() readonly ip_address: string;
-  @ApiProperty() @IsNumber() @IsIP() readonly server_type: number;
-  @ApiProperty() @IsNumber() @IsIP() readonly connection_type: number;
+  @ApiProperty() @IsNumber() @IsNumber() readonly server_type: number;
+  @ApiProperty() @IsNumber() @IsNumber() readonly connection_type: number;
 }
 
 export class UpdateServersDto extends UpdateBaseDto {

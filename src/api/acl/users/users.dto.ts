@@ -23,7 +23,10 @@ export class CreateUsersDto extends CreateBaseDto {
   @IsArray()
   @IsNotEmpty()
   users_roles: number[];
-  @ApiProperty() @IsNumber() @IsNotEmpty() rol_id_default: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly rol_default?: number;
 }
 
 export class UpdateUsersDto extends UpdateBaseDto {
@@ -47,5 +50,5 @@ export class UpdateUsersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  rol_id_default?: number;
+  readonly rol_default?: number;
 }

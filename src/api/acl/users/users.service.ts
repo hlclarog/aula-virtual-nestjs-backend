@@ -42,13 +42,13 @@ export class UsersService extends BaseService<
     const data: any = Object.assign({}, createDto);
     data.password = this.cryptoService.hashPassword(data.password);
     delete data.users_roles;
-    delete data.rol_id_default;
+    delete data.rol_default;
     const dataNew = await this.repository.save(data);
     if (createDto.users_roles) {
       await this.usersRolesService.set(
         dataNew.id,
         createDto.users_roles,
-        createDto.rol_id_default,
+        createDto.rol_default,
       );
     }
     return dataNew;
@@ -57,12 +57,12 @@ export class UsersService extends BaseService<
   async update(id: number, updateDto: UpdateUsersDto): Promise<UpdateResult> {
     const data: any = Object.assign({}, updateDto);
     delete data.users_roles;
-    delete data.rol_id_default;
+    delete data.rol_default;
     if (updateDto.users_roles) {
       await this.usersRolesService.set(
         id,
         updateDto.users_roles,
-        updateDto.rol_id_default,
+        updateDto.rol_default,
       );
     }
     return await this.repository.update(id, data);

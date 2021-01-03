@@ -19,6 +19,6 @@ export class UsersRoles extends Base {
   @RelationId((users_roles: UsersRoles) => users_roles.rol)
   rol_id: number;
 
-  @Column({ default: false })
+  @Column({ type: 'boolean', default: false })
   default: boolean;
 }

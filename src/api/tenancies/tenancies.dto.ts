@@ -6,14 +6,15 @@ export const TENANCIES_PROVIDER = 'TENANCIES_REPOSITORY';
 export const TENANCIES_ENTITY = 'tenancies';
 
 export class CreateTenanciesDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly tenancy_status: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly client: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly tenancy_status: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly alias: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly databasename: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly serveraddress: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly database_name: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly server_address: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly administrator: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly password: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly schema: string;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly front_server: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly back_server: number;
   @ApiProperty({ required: false })
@@ -26,11 +27,11 @@ export class UpdateTenanciesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly tenancy_status?: number;
+  readonly client?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly client?: number;
+  readonly tenancy_status?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -42,11 +43,11 @@ export class UpdateTenanciesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly databasename?: string;
+  readonly database_name?: string;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly serveraddress?: string;
+  readonly server_address?: string;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -58,7 +59,7 @@ export class UpdateTenanciesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly activation_time?: string;
+  readonly schema?: string;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
@@ -67,4 +68,8 @@ export class UpdateTenanciesDto extends UpdateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly back_server?: number;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly activation_time?: string;
 }

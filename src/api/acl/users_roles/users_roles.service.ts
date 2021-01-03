@@ -35,10 +35,17 @@ export class UsersRolesService extends BaseService<
     });
   }
 
+  async findRolDefault(idUser: number): Promise<UsersRoles> {
+    return this.repository.findOne({
+      where: { user: idUser, default: true },
+      relations: ['rol'],
+    });
+  }
+
   async set(
     idUser: number,
     roles: Array<number>,
-    rolDefault?: number,
+    rol_default?: number,
   ): Promise<any> {
     // DELETE ITEMS NOT RECEIVED
     await this.repository
@@ -68,19 +75,52 @@ export class UsersRolesService extends BaseService<
       )
       .getMany();
     // SAVE ITEMS NEWS
-    const values: any[] = roles.map((p) => {
-      return { user: idUser, rol: p, default: rolDefault == p };
+    const newItems: any[] = roles.map((p) => {
+      return { user: idUser, rol: p, default: p == rol_default };
     });
     await this.repository
       .createQueryBuilder()
       .insert()
       .into(UsersRoles)
       .values(
-        values.filter((v) =>
+        newItems.filter((v) =>
           founds.map((f: any) => f.rol.id).indexOf(v.rol) >= 0 ? false : true,
         ),
       )
       .execute();
+    if (rol_default) {
+      // SET MARKER DEFAULT ROL FOR DEFAULT TO USER
+      await this.repository
+        .createQueryBuilder()
+        .update(UsersRoles)
+        .set({ default: true })
+        .where(`userId = :idUser and rolId = :idRol`, {
+          idUser,
+          idRol: rol_default,
+        })
+        .execute();
+      // REMOVE MARKER DEFAULT OTHERS ROLES FOR USER
+      const updateItems: any[] = roles
+        .map((p) => {
+          return { user: idUser, rol: p, default: p == rol_default };
+        })
+        .filter((f) => !f.default)
+        .map((k) => k.rol);
+      await this.repository
+        .createQueryBuilder()
+        .update(UsersRoles)
+        .set({ default: false })
+        .where(
+          `userId = :idUser and default = TRUE and rolId in (${
+            updateItems.length > 0 ? updateItems.join() : [0].join()
+          })`,
+          {
+            idUser,
+          },
+        )
+        .execute();
+    }
+
     return { update: true };
   }
 }

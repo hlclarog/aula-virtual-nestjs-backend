@@ -7,6 +7,9 @@ import {
 import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
 import { Tenancies } from './tenancies.entity';
+import { InjectQueue } from '@nestjs/bull';
+import { INSTANCE_PROCESS_QUEUE } from '../../queues/instance_process/instance_process.dto';
+import { Queue } from 'bull';
 
 @Injectable()
 export class TenanciesService extends BaseService<
@@ -15,4 +18,24 @@ export class TenanciesService extends BaseService<
   UpdateTenanciesDto
 > {
   @Inject(TENANCIES_PROVIDER) repository: BaseRepo<Tenancies>;
+
+  constructor(
+    @InjectQueue(INSTANCE_PROCESS_QUEUE)
+    private readonly instanceProcessQueue: Queue,
+  ) {
+    super();
+  }
+
+  async create(createDto: CreateTenanciesDto): Promise<any> {
+    const dataSave = await this.repository.save(createDto);
+    await this.instanceProcessQueue.add('create', {
+      name: createDto.name,
+      alias: createDto.alias,
+      schema: createDto.schema,
+    });
+    return {
+      message: 'Processing',
+      data: dataSave,
+    };
+  }
 }
