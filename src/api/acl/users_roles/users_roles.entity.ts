@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, RelationId, Tree } from 'typeorm';
+import { Column, Entity, ManyToOne, RelationId, Tree } from 'typeorm';
 import { Base } from '../../../base/base.entity';
 import { Roles } from '../roles/roles.entity';
 import { Users } from '../users/users.entity';
@@ -18,4 +18,7 @@ export class UsersRoles extends Base {
 
   @RelationId((users_roles: UsersRoles) => users_roles.rol)
   rol_id: number;
+
+  @Column({ type: 'boolean', default: false })
+  default: boolean;
 }

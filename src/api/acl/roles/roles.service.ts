@@ -87,6 +87,7 @@ export class RolesService extends BaseService<
       dataMenu.push({
         id: rolElement.rol.id,
         name: rolElement.rol.name,
+        default: rolElement.default,
         menu,
       });
     }
