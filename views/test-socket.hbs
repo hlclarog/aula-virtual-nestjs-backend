@@ -17,8 +17,8 @@
                 </h2>
                 <div class="row">
                     <div class="col-md-4 col-sm-8">
-                        <label for="host">Host</label>
-                        <input type="text" class="form-control inut-sm" id="host">
+                        <label for="host">CHANNEL</label>
+                        <input type="text" class="form-control inut-sm" id="channel">
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
         $(function () {
-            var socket = io('http://localhost:81');
+            var socket = io('http://localhost:3001');
             socket.on('connect', () => {
                 console.log('conectted');
             });
@@ -47,6 +47,12 @@
             });
             socket.on('subcribe', (data) => {
                 console.log('your user is: ' + data);
+            });
+            document.getElementById("sendSocket").addEventListener("click", () => {
+                let data = {
+                    name: document.getElementById('channel').value,
+                }
+                socket.emit('register', data);
             });
         });
     </script>

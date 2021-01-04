@@ -43,6 +43,18 @@ export class ConfigService {
   portApi(): number {
     return this.envConfig.PORT;
   }
+  portSocket(): number {
+    return this.envConfig.SOCKET;
+  }
+  hostMongo(): string {
+    return this.envConfig.MONGO_HOST;
+  }
+  dbMongo(): string {
+    return this.envConfig.MONGO_DB;
+  }
+  portMongo(): number {
+    return this.envConfig.MONGO_PORT;
+  }
 
   private static validateInput(envConfig: EnvConfig): EnvConfig {
     const envVarsSchema: Joi.ObjectSchema = Joi.object({
@@ -51,11 +63,15 @@ export class ConfigService {
       DATABASE_PORT: Joi.number().required(),
       DATABASE_USER: Joi.string().required(),
       DATABASE_PASS: Joi.string().required(),
+      MONGO_HOST: Joi.string().required(),
+      MONGO_DB: Joi.string().required(),
+      MONGO_PORT: Joi.number().required(),
       TOKEN_SECRET: Joi.string().required(),
       TOKEN_SECRET_PASSWORDSREQ: Joi.string().required(),
-      PORT: Joi.string().required(),
+      PORT: Joi.number().required(),
       QUEUE_HOST: Joi.string().required(),
       QUEUE_PORT: Joi.string().required(),
+      SOCKET: Joi.number().required(),
     });
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(
       envConfig,

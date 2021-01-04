@@ -32,7 +32,7 @@ export const databaseTenancyProvider = {
         database: config.nameDatabase(),
         migrationsTableName: 'migrations_registers',
         migrations: [__dirname + '/../migrations/files/*{.ts,.js}'],
-        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+        entities: [__dirname + '/../api/**/*.entity{.ts,.js}'],
         cli: { migrationsDir: __dirname + '/../migrations/files' },
         synchronize: true,
         name: connectionName,
