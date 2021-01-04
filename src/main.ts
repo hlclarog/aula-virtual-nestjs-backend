@@ -9,7 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
 
-  // SWAGER CONFIG
+  // SWAGER CONFIG Se configura ruta para Swager
   const options = new DocumentBuilder()
     .setTitle('MANGUS API')
     .setDescription('The mangus app API REST documentation')
