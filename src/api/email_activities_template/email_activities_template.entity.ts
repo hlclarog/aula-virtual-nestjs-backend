@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { EmailActivities } from '../email_activities/email_activities.entity';
 import { EmailTemplates } from '../email_templates/email_templates.entity';
@@ -11,6 +11,7 @@ export class EmailActivitiesTemplate extends Base {
     (email_template) => email_template.email_activities_template,
     { eager: true },
   )
+  @JoinColumn({ name: 'email_template_id' })
   email_template: EmailTemplates;
 
   @RelationId(
@@ -24,6 +25,7 @@ export class EmailActivitiesTemplate extends Base {
     (email_activity) => email_activity.email_activities_template,
     { eager: true },
   )
+  @JoinColumn({ name: 'email_activity_id' })
   email_activity: EmailActivities;
 
   @RelationId(
@@ -32,12 +34,12 @@ export class EmailActivitiesTemplate extends Base {
   )
   email_activity_id: number;
 
-  @Column({ length: 500, type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   subject?: string;
 
-  @Column({ length: 500, type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   body?: string;
 
-  @Column({ length: 500, type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   observations?: string;
 }

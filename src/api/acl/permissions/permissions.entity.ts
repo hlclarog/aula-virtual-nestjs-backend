@@ -1,10 +1,17 @@
-import { Column, Entity, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  RelationId,
+} from 'typeorm';
 import { Base } from '../../../base/base.entity';
 import { Modules } from '../modules/modules.entity';
 import { RolesPermissions } from '../roles_permissions/roles_permissions.entity';
 import { PERMISSIONS_ENTITY } from './permissions.dto';
 
-@Entity(PERMISSIONS_ENTITY)
+@Entity({ name: PERMISSIONS_ENTITY, schema: 'public' })
 export class Permissions extends Base {
   @Column({ type: 'varchar', unique: true })
   name: string;
@@ -16,6 +23,7 @@ export class Permissions extends Base {
   description: string;
 
   @ManyToOne(() => Modules, (modules) => modules.permissions, { eager: true })
+  @JoinColumn({ name: 'module_id' })
   module: Modules;
 
   @RelationId((permission: Permissions) => permission.module)

@@ -20,14 +20,6 @@ export class UsersRolesService extends BaseService<
     super();
   }
 
-  async findAll(): Promise<UsersRoles[]> {
-    return await this.repository.find();
-  }
-
-  async findOne(id: number): Promise<UsersRoles> {
-    return this.repository.findOneOrFail(id);
-  }
-
   async findForUser(idUser: number): Promise<UsersRoles[]> {
     return this.repository.find({
       where: { user: idUser },
@@ -53,7 +45,7 @@ export class UsersRolesService extends BaseService<
       .delete()
       .from(UsersRoles)
       .where(
-        `userId = :idUser and rolId not in (${
+        `user_id = :idUser and rol_id not in (${
           roles.length > 0 ? roles.join() : [0].join()
         })`,
         {
@@ -66,7 +58,7 @@ export class UsersRolesService extends BaseService<
       .createQueryBuilder('item')
       .leftJoinAndSelect('item.rol', 'rol')
       .where(
-        `item.userId = :idUser and item.rolId in (${
+        `item.user_id = :idUser and item.rol_id in (${
           roles.length > 0 ? roles.join() : [0].join()
         })`,
         {
@@ -94,7 +86,7 @@ export class UsersRolesService extends BaseService<
         .createQueryBuilder()
         .update(UsersRoles)
         .set({ default: true })
-        .where(`userId = :idUser and rolId = :idRol`, {
+        .where(`user_id = :idUser and rol_id = :idRol`, {
           idUser,
           idRol: rol_default,
         })
@@ -111,7 +103,7 @@ export class UsersRolesService extends BaseService<
         .update(UsersRoles)
         .set({ default: false })
         .where(
-          `userId = :idUser and default = TRUE and rolId in (${
+          `user_id = :idUser and default = TRUE and rol_id in (${
             updateItems.length > 0 ? updateItems.join() : [0].join()
           })`,
           {

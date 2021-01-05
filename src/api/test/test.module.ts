@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
+import { DATABASE_MANAGER_PROVIDER } from '../../database/database.dto';
 import { TestController } from './test.controller';
 import { TEST_PROVIDER } from './test.dto';
 import { Test } from './test.entity';
@@ -11,7 +11,7 @@ import { TestService } from './test.service';
   providers: [
     {
       provide: TEST_PROVIDER,
-      inject: [DATABASE_TENANCY_PROVIDER],
+      inject: [DATABASE_MANAGER_PROVIDER],
       useFactory: (connection: Connection) => connection.getRepository(Test),
     },
     TestService,

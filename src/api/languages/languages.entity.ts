@@ -4,7 +4,7 @@ import { EmailTemplates } from '../email_templates/email_templates.entity';
 import { TenancyLanguages } from '../tenancy_languages/tenancy_languages.entity';
 import { LANGUAGES_ENTITY } from './languages.dto';
 
-@Entity(LANGUAGES_ENTITY)
+@Entity({ name: LANGUAGES_ENTITY, schema: 'public' })
 export class Languages extends Base {
   @Column({ length: 500, type: 'varchar' })
   description: string;
