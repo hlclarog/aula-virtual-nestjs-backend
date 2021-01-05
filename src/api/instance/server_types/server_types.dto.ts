@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { CreateBaseDto, UpdateBaseDto } from './../../../base/base.dto';
+import { CreateBaseDto, UpdateBaseDto } from '../../../base/base.dto';
 
 export const SERVER_TYPES_PROVIDER = 'SERVER_TYPES_REPOSITORY';
 export const SERVER_TYPES_ENTITY = 'server_types';

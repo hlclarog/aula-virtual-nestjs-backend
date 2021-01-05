@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Testtwo } from '../testtwo/entities/testtwo.entity';
 
-@Entity()
+@Entity('test', { schema: 'public' })
 export class Test {
   @PrimaryGeneratedColumn()
   id: number;
@@ -11,9 +12,21 @@ export class Test {
   @Column('text')
   description: string;
 
+  @Column({ type: 'text', nullable: true })
+  file: string;
+
+  @Column({ type: 'text', nullable: true })
+  file_name: string;
+
+  @Column({ type: 'text', nullable: true })
+  file_name_two: string;
+
   @Column('int')
   state: number;
 
   @Column()
   active: boolean;
+
+  @OneToMany(() => Testtwo, (testtwo) => testtwo.test)
+  testtwo: Testtwo[];
 }

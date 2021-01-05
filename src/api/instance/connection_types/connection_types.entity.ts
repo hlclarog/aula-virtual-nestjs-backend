@@ -3,9 +3,9 @@ import { Base } from '../../../base/base.entity';
 import { Servers } from '../servers/servers.entity';
 import { CONNECTION_TYPES_ENTITY } from './connection_types.dto';
 
-@Entity(CONNECTION_TYPES_ENTITY)
+@Entity({ name: CONNECTION_TYPES_ENTITY, schema: 'public' })
 export class ConnectionTypes extends Base {
-  @Column({ length: 500, type: 'varchar' })
+  @Column({ type: 'varchar' })
   description: string;
 
   @OneToMany(() => Servers, (server) => server.connection_type)

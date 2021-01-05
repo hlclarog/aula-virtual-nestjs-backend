@@ -2,8 +2,8 @@ import { Body, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { CreateTestDto, TEST_PERMISSIONS, UpdateTestDto } from './test.dto';
 import { TestService } from './test.service';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
-import { PermissionsGuard } from './../../utils/guards/permissions.guard';
-import { RequirePermissions } from './../../utils/decorators/permissions.decorator';
+import { PermissionsGuard } from '../../utils/guards/permissions.guard';
+import { RequirePermissions } from '../../utils/decorators/permissions.decorator';
 
 @UseGuards(PermissionsGuard)
 @ControllerApi({ name: 'test' })
@@ -11,7 +11,6 @@ export class TestController {
   constructor(private testService: TestService) {}
 
   @Get()
-  @RequirePermissions([TEST_PERMISSIONS.LIST])
   public async get() {
     const result = await this.testService.findAll();
     return { data: result };

@@ -3,7 +3,7 @@ import { Base } from '../../base/base.entity';
 import { Clients } from '../clients/clients.entity';
 import { IDENTIFICATION_TYPES_ENTITY } from './identification_types.dto';
 
-@Entity(IDENTIFICATION_TYPES_ENTITY)
+@Entity({ name: IDENTIFICATION_TYPES_ENTITY, schema: 'public' })
 export class IdentificationTypes extends Base {
   @Column({ length: 500, type: 'varchar' })
   description: string;

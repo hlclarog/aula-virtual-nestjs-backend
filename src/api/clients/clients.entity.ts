@@ -1,12 +1,19 @@
-import { Column, Entity, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  RelationId,
+} from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { IdentificationTypes } from '../identification_types/identification_types.entity';
 import { Tenancies } from '../tenancies/tenancies.entity';
 import { CLIENTS_ENTITY } from './clients.dto';
 
-@Entity(CLIENTS_ENTITY)
+@Entity({ name: CLIENTS_ENTITY, schema: 'public' })
 export class Clients extends Base {
-  @Column({ length: 500, type: 'varchar' })
+  @Column({ type: 'varchar' })
   name: string;
 
   @Column({ length: 20, type: 'varchar' })
@@ -35,6 +42,7 @@ export class Clients extends Base {
     (identification_type) => identification_type.clients,
     { eager: true },
   )
+  @JoinColumn({ name: 'identification_type_id' })
   identification_type: IdentificationTypes;
 
   @RelationId((client: Clients) => client.identification_type)

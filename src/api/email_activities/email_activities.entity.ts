@@ -3,12 +3,12 @@ import { Base } from '../../base/base.entity';
 import { EmailActivitiesTemplate } from '../email_activities_template/email_activities_template.entity';
 import { EMAIL_ACTIVITIES_ENTITY } from './email_activities.dto';
 
-@Entity(EMAIL_ACTIVITIES_ENTITY)
+@Entity({ name: EMAIL_ACTIVITIES_ENTITY, schema: 'public' })
 export class EmailActivities extends Base {
-  @Column({ length: 500, type: 'varchar' })
+  @Column({ type: 'varchar' })
   description: string;
 
-  @Column({ length: 500, type: 'varchar' })
+  @Column({ type: 'varchar' })
   observations: string;
 
   @OneToMany(

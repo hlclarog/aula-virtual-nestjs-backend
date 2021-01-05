@@ -1,10 +1,10 @@
-import { Column, Entity, ManyToOne, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Languages } from '../languages/languages.entity';
 import { Tenancies } from '../tenancies/tenancies.entity';
 import { TENANCY_LANGUAGES_ENTITY } from './tenancy_languages.dto';
 
-@Entity(TENANCY_LANGUAGES_ENTITY)
+@Entity({ name: TENANCY_LANGUAGES_ENTITY, schema: 'public' })
 export class TenancyLanguages extends Base {
   @Column({ length: 500, type: 'varchar' })
   description: string;
@@ -12,6 +12,7 @@ export class TenancyLanguages extends Base {
   @ManyToOne(() => Tenancies, (tenancies) => tenancies.tenancy_languages, {
     eager: true,
   })
+  @JoinColumn({ name: 'tenancy_id' })
   tenancy: Tenancies;
 
   @RelationId(
@@ -22,6 +23,7 @@ export class TenancyLanguages extends Base {
   @ManyToOne(() => Languages, (languages) => languages.tenancy_languages, {
     eager: true,
   })
+  @JoinColumn({ name: 'language_id' })
   language: Languages;
 
   @RelationId(
