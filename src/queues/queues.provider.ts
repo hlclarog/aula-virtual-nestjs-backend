@@ -1,5 +1,5 @@
 import { Scope } from '@nestjs/common';
-import { ConfigService } from 'src/config/config.service';
+import { ConfigService } from './../config/config.service';
 import { QUEUES_PROVIDER } from './queues.dto';
 
 export const queuesProvider = {

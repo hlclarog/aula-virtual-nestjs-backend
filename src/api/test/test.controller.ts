@@ -11,7 +11,7 @@ export class TestController {
   constructor(private testService: TestService) {}
 
   @Get()
-  @RequirePermissions([TEST_PERMISSIONS.LIST])
+  // @RequirePermissions([TEST_PERMISSIONS.LIST])
   public async get() {
     const result = await this.testService.findAll();
     return { data: result };
@@ -25,7 +25,7 @@ export class TestController {
   }
 
   @Put('/:id')
-  @RequirePermissions([TEST_PERMISSIONS.UPDATE])
+  // @RequirePermissions([TEST_PERMISSIONS.UPDATE])
   public async update(@Param('id') id: number, @Body() test: UpdateTestDto) {
     const result = await this.testService.update(id, test);
     return { data: result };

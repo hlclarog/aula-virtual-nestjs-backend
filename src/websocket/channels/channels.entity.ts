@@ -5,7 +5,7 @@ export class Channels {
   @ObjectIdColumn()
   id: ObjectID;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @Column()

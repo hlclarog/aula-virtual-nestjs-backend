@@ -1,4 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
+import { GatewayService } from './../../utils/services/gateway.service';
 import { Repository } from 'typeorm';
 import { CreateTestDto, TEST_PROVIDER, UpdateTestDto } from './test.dto';
 import { Test } from './test.entity';
@@ -7,6 +8,7 @@ import { Test } from './test.entity';
 export class TestService {
   constructor(
     @Inject(TEST_PROVIDER) private testRepository: Repository<Test>,
+    private gatewayService: GatewayService,
   ) {}
 
   async findAll(): Promise<Test[]> {
@@ -18,6 +20,7 @@ export class TestService {
   }
 
   async update(id: number, data: UpdateTestDto) {
+    this.gatewayService.sendEvent('test-update', { id, data });
     return await this.testRepository.update(id, data);
   }
 

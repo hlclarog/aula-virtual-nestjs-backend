@@ -47,7 +47,6 @@ export class PermissionsGuard implements CanActivate {
       }
       i++;
     }
-    console.log(requiredPermissions, permissions, match);
     return match;
   }
 }

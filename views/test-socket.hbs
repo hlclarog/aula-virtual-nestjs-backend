@@ -45,14 +45,14 @@
             socket.on('disconnect', () => {
                 console.log('user disconnected');
             });
-            socket.on('subcribe', (data) => {
+            socket.on('subscribe', (data) => {
                 console.log('your user is: ' + data);
             });
-            document.getElementById("sendSocket").addEventListener("click", () => {
-                let data = {
-                    name: document.getElementById('channel').value,
-                }
-                socket.emit('register', data);
+            socket.on('testEvent', (data) => {
+                console.log('dataTest: ' + data);
+            });
+            socket.on('test-update', (data) => {
+                console.log('dataTest: ' + JSON.stringify(data));
             });
         });
     </script>

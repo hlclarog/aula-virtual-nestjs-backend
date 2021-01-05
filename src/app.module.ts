@@ -19,6 +19,7 @@ import { QueuesModule } from './queues/queues.module';
 import { AuthVerifyTokenMiddleware } from './utils/middlewares/auth.middleware';
 import { TokenService } from './utils/services/token.service';
 import { WebsocketModule } from './websocket/websocket.module';
+import { InfoChannelModule } from './utils/providers/info-channel.module';
 
 const FOLDER_ENV = join(__dirname, '..', 'env');
 const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
@@ -27,6 +28,7 @@ const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
   imports: [
     ConfigModule.forRoot(FILE_ENV),
     DatabaseManagerModule.forRoot(),
+    InfoChannelModule.forRoot(),
     DatabaseTenancyModule,
     ApiModule,
     AuthModule,

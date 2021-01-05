@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { WebsocketModule } from './../../websocket/websocket.module';
 import { Connection } from 'typeorm';
 import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { TestController } from './test.controller';
@@ -7,6 +8,7 @@ import { Test } from './test.entity';
 import { TestService } from './test.service';
 
 @Module({
+  imports: [WebsocketModule],
   controllers: [TestController],
   providers: [
     {

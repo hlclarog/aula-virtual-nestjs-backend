@@ -8,7 +8,7 @@ export class ChannelsService {
   @Inject(CHANNELS_PROVIDER) repository: Repository<Channels>;
 
   async create(client: string, name: string) {
-    const channel = await this.repository.findOne({ name: name });
+    const channel: any = await this.repository.findOne({ name });
     if (!channel) {
       await this.repository.save({
         name: name,
@@ -26,12 +26,16 @@ export class ChannelsService {
     }
   }
 
+  async find(name: string): Promise<Channels> {
+    return await this.repository.findOne({ name });
+  }
+
   async findAll(): Promise<Channels[]> {
     return await this.repository.find();
   }
 
   async removeClient(socket: string, channel: string) {
-    const channelData = await this.repository.findOne({ name: channel });
+    const channelData: any = await this.repository.findOne({ name: channel });
     if (channelData) {
       const idx = channelData.clients.map((c) => c).indexOf(socket);
       if (idx >= 0) {
