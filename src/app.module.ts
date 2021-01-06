@@ -20,6 +20,7 @@ import { AuthVerifyTokenMiddleware } from './utils/middlewares/auth.middleware';
 import { TokenService } from './utils/services/token.service';
 import { WebsocketModule } from './websocket/websocket.module';
 import { InfoChannelModule } from './utils/providers/info-channel.module';
+import { DatabaseManualModule } from './database/database-manual.module';
 
 const FOLDER_ENV = join(__dirname, '..', 'env');
 const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
@@ -30,6 +31,7 @@ const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
     DatabaseManagerModule.forRoot(),
     InfoChannelModule.forRoot(),
     DatabaseTenancyModule,
+    DatabaseManualModule,
     ApiModule,
     AuthModule,
     MigrationsModule,

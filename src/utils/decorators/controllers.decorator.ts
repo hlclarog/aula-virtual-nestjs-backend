@@ -6,11 +6,6 @@ import { PermissionsGuard } from '../guards/permissions.guard';
 export function ControllerApi({ name }) {
   return applyDecorators(
     UseGuards(PermissionsGuard),
-    ApiHeader({
-      name: NAME_HEADER_CLIENT,
-      description: 'Code of tenancy',
-      required: true,
-    }),
     ApiBearerAuth(),
     ApiTags(name),
     Controller(`/api/${name}`),
@@ -18,11 +13,6 @@ export function ControllerApi({ name }) {
 }
 export function ControllerAuth({ name }) {
   return applyDecorators(
-    ApiHeader({
-      name: NAME_HEADER_CLIENT,
-      description: 'Code of tenancy',
-      required: true,
-    }),
     ApiTags('auth'),
     Controller(`/auth${name ? `/${name}` : ''}`),
   );

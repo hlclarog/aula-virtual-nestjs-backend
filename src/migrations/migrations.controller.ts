@@ -1,14 +1,14 @@
 import { Get, Inject } from '@nestjs/common';
 import {
   DATABASE_MANAGER_PROVIDER,
-  DATABASE_TENANCY_PROVIDER,
+  DATABASE_MANUAL_PROVIDER,
 } from '../database/database.dto';
 import { Connection } from 'typeorm';
 import { ControllerMigrations } from '../utils/decorators/controllers.decorator';
 
 @ControllerMigrations({ name: '' })
 export class MigrationsController {
-  @Inject(DATABASE_TENANCY_PROVIDER) connection: Connection;
+  @Inject(DATABASE_MANUAL_PROVIDER) connection: Connection;
   @Inject(DATABASE_MANAGER_PROVIDER) connectionPublic: Connection;
 
   constructor() {}

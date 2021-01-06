@@ -15,4 +15,11 @@ export class TenancyDomainsService extends BaseService<
   UpdateTenancyDomainsDto
 > {
   @Inject(TENANCY_DOMAINS_PROVIDER) repository: BaseRepo<TenancyDomains>;
+
+  async findForDomain(domain: string): Promise<TenancyDomains> {
+    return this.repository.findOneOrFail({
+      relations: ['tenancy'],
+      where: { description: domain },
+    });
+  }
 }
