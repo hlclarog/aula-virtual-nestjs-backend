@@ -48,7 +48,6 @@ export class WebSocketAppGateway
     await client.emit(EVENTS_SOCKET.SUBSCRIBE, client.client.id);
   }
   async handleDisconnect(client: Client) {
-    console.log(`Disconnect.. ${client.id}`);
     await this.clientsService.remove(client.id);
   }
 }

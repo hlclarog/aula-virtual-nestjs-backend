@@ -22,19 +22,27 @@ export class ModulesService extends BaseService<
 
   async findAll(): Promise<Modules[]> {
     return await this.repository.find({
-      relations: ['parent', 'parent.parent', 'permissions'],
+      relations: ['parent', 'parent.parent'],
+      join: {
+        alias: 'modules',
+        leftJoinAndSelect: { permissions: 'modules.permissions' },
+      },
+      where: (qb) => {
+        qb.where('permissions.deleted_at is null', {});
+      },
     });
   }
 
   async findOne(id: number): Promise<Modules> {
     return this.repository.findOneOrFail(id, {
-      relations: [
-        'parent',
-        'parent.parent',
-        'children',
-        'children.parent',
-        'permissions',
-      ],
+      relations: ['parent', 'parent.parent', 'children', 'children.parent'],
+      join: {
+        alias: 'modules',
+        leftJoinAndSelect: { permissions: 'modules.permissions' },
+      },
+      where: (qb) => {
+        qb.where('permissions.deleted_at is null', {});
+      },
     });
   }
 }

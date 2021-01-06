@@ -1,4 +1,4 @@
-import { Tenancies } from 'src/api/tenancies/tenancies.entity';
+import { Tenancies } from './../../tenancies/tenancies.entity';
 import {
   Column,
   Entity,
