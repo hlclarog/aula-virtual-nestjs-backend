@@ -21,6 +21,8 @@ import { TokenService } from './utils/services/token.service';
 import { WebsocketModule } from './websocket/websocket.module';
 import { InfoChannelModule } from './utils/providers/info-channel.module';
 import { DatabaseManualModule } from './database/database-manual.module';
+import { InfoTenancyModule } from './utils/providers/info-tenancy.module';
+import { InfoTenancyService } from './utils/services/info-tenancy.service';
 
 const FOLDER_ENV = join(__dirname, '..', 'env');
 const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
@@ -30,6 +32,7 @@ const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
     ConfigModule.forRoot(FILE_ENV),
     DatabaseManagerModule.forRoot(),
     InfoChannelModule.forRoot(),
+    InfoTenancyModule.forRoot(),
     DatabaseTenancyModule,
     DatabaseManualModule,
     ApiModule,
@@ -51,6 +54,7 @@ const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
       }),
     },
     TokenService,
+    InfoTenancyService,
   ],
 })
 export class AppModule {

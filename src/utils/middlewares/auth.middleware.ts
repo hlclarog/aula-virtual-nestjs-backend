@@ -4,12 +4,14 @@ import {
   HttpStatus,
   ForbiddenException,
   UnauthorizedException,
+  Inject,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, validate } from 'class-validator';
 import { TokenService } from './../services/token.service';
 import { ConfigService } from './../../config/config.service';
+import { InfoTenancyService } from '../services/info-tenancy.service';
 
 export class HeadersTokenDto {
   @ApiProperty()
@@ -23,32 +25,32 @@ export class AuthVerifyTokenMiddleware implements NestMiddleware {
   constructor(
     private tokenService: TokenService,
     private configService: ConfigService,
+    private infoTenancyService: InfoTenancyService,
   ) {}
 
-  use(req: Request, res: Response, next) {
+  async use(req: Request, res: Response, next) {
     const headers: any = req.headers;
     const headerData: HeadersTokenDto = new HeadersTokenDto();
     headerData.authorization = headers.authorization;
-    const dev = this.configService.isDevelopment();
-    if (!dev) {
-      validate(headerData).then(async (errors) => {
-        if (errors.length > 0) {
-          res.status(HttpStatus.FORBIDDEN).json(new ForbiddenException(errors));
-        } else {
-          await this.tokenService
-            .verifyToken(headers.authorization.split(' ')[1])
-            .then(() => {
-              next();
-            })
-            .catch((err) => {
-              res
-                .status(HttpStatus.UNAUTHORIZED)
-                .json(new UnauthorizedException(err));
-            });
-        }
-      });
-    } else {
-      next();
-    }
+    const dataTenant = await this.infoTenancyService.getData();
+    validate(headerData).then(async (errors) => {
+      if (errors.length > 0) {
+        res.status(HttpStatus.FORBIDDEN).json(new ForbiddenException(errors));
+      } else {
+        await this.tokenService
+          .verifyTokenKey(
+            headers.authorization.split(' ')[1],
+            dataTenant.secret,
+          )
+          .then(() => {
+            next();
+          })
+          .catch((err) => {
+            res
+              .status(HttpStatus.UNAUTHORIZED)
+              .json(new UnauthorizedException(err));
+          });
+      }
+    });
   }
 }

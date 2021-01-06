@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import {
+  InfoTenancyDomain,
+  INFO_TENANCY_PROVIDER,
+} from './../utils/providers/info-tenancy.module';
 import { UsersService } from './../api/acl/users/users.service';
 import { ConfigService } from './../config/config.service';
 import { TokenService } from './../utils/services/token.service';
@@ -13,6 +17,7 @@ import {
 
 @Injectable()
 export class AuthService {
+  @Inject(INFO_TENANCY_PROVIDER) dataDomain: InfoTenancyDomain;
   constructor(
     private tokenService: TokenService,
     private usersService: UsersService,
@@ -27,7 +32,11 @@ export class AuthService {
         name: user.name,
       };
       const token = await this.tokenService
-        .createToken(payload, DEFAULT_TIME_TOKEN_AUTH)
+        .createTokenKey(
+          payload,
+          DEFAULT_TIME_TOKEN_AUTH,
+          this.dataDomain.secret,
+        )
         .then((res) => res);
       return { payload, token };
     } else {
@@ -39,7 +48,7 @@ export class AuthService {
 
   async verify(tokenaccept) {
     return await this.tokenService
-      .verifyToken(tokenaccept)
+      .verifyTokenKey(tokenaccept, this.dataDomain.secret)
       .then((result) => {
         return result;
       })

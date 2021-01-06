@@ -17,5 +17,6 @@ import { TenancyDomains } from './tenancy_domains.entity';
     },
     TenancyDomainsService,
   ],
+  exports: [TenancyDomainsService],
 })
 export class TenancyDomainsModule {}

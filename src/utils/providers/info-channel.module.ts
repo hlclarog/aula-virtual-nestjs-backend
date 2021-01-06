@@ -18,7 +18,7 @@ export class InfoChannelModule {
       scope: Scope.REQUEST,
       inject: [REQUEST, ChannelsService],
       useFactory: async (req: Request, channelService: ChannelsService) => {
-        const host = getHostFromOrigin(req.headers.host);
+        const host = getHostFromOrigin(req.headers.origin);
         const channel = await channelService.find(host);
         return channel;
       },
