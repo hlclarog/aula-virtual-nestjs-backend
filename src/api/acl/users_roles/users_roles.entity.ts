@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../../base/base.entity';
 import { Roles } from '../roles/roles.entity';
 import { Users } from '../users/users.entity';
@@ -10,9 +10,15 @@ export class UsersRoles extends Base {
   @JoinColumn({ name: 'user_id' })
   user: Users;
 
+  @RelationId((users_roles: UsersRoles) => users_roles.user)
+  user_id: number;
+
   @ManyToOne(() => Roles, (rol) => rol.users_roles)
   @JoinColumn({ name: 'rol_id' })
   rol: Roles;
+
+  @RelationId((users_roles: UsersRoles) => users_roles.rol)
+  rol_id: number;
 
   @Column({ type: 'boolean', default: false })
   default: boolean;

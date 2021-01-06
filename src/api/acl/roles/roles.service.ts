@@ -106,7 +106,7 @@ export class RolesService extends BaseService<
       const element: Modules | any = list[i];
       const daty: Menu = {
         id: element.id,
-        title: element.name,
+        title: element.translate,
         translate: element.translate,
         icon: element.icon,
         url: `${path}/${element.path}`,
