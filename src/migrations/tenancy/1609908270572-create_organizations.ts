@@ -34,7 +34,7 @@ export class createOrganizations1609908270572 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'seconday_color',
+            name: 'secondary_color',
             type: 'varchar',
           },
           {

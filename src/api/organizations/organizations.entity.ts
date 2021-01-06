@@ -20,7 +20,7 @@ export class Organizations extends Base {
   primary_color: string;
 
   @Column({ type: 'varchar' })
-  seconday_color: string;
+  secondary_color: string;
 
   @Column({ type: 'varchar' })
   tertiary_color: string;

@@ -11,7 +11,7 @@ export class CreateOrganizationsDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly code: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly primary_color: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly seconday_color: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly secondary_color: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly tertiary_color: string;
 }
 
@@ -39,7 +39,7 @@ export class UpdateOrganizationsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly seconday_color?: string;
+  readonly secondary_color?: string;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
