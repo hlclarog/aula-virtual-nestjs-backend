@@ -3,7 +3,8 @@ import { HttpService, Inject, Logger } from '@nestjs/common';
 import { Job } from 'bull';
 import { INSTANCE_PROCESS_QUEUE } from './instance_process.dto';
 import { DATABASE_MANAGER_PROVIDER } from '../../database/database.dto';
-import { Connection } from 'typeorm';
+import { Connection, createConnection } from 'typeorm';
+import { ConfigService } from '../../config/config.service';
 
 @Processor(INSTANCE_PROCESS_QUEUE)
 export class InstanceProcessProcessor {
@@ -12,6 +13,7 @@ export class InstanceProcessProcessor {
   constructor(
     private httpService: HttpService,
     @Inject(DATABASE_MANAGER_PROVIDER) private connection: Connection,
+    private config: ConfigService,
   ) {}
 
   @Process('create')
@@ -65,10 +67,30 @@ export class InstanceProcessProcessor {
 
     this.logger.debug(runningJobJenkins.data, 'End Running Job Jenkins...');
     this.logger.debug('Initial Create Schema...');
-    const resultCreateSchema = await this.connection.query(
-      `CREATE SCHEMA ${data.schema}`,
-    );
-    this.logger.debug(resultCreateSchema);
+    await this.connection.createQueryRunner().createSchema(data.schema);
+
     this.logger.debug('End Create Schema...');
+
+    this.logger.debug('Run Migrations...');
+
+    const con = await createConnection({
+      type: 'postgres',
+      host: this.config.hostDatabase(),
+      port: this.config.portDatabase(),
+      username: this.config.userDatabase(),
+      password: this.config.passDatabase(),
+      database: this.config.nameDatabase(),
+      migrationsTableName: 'migrations_registers',
+      migrations: [__dirname + '/../../migrations/tenancy/*{.ts,.js}'],
+      cli: { migrationsDir: __dirname + '/../../migrations/tenancy' },
+      entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
+      synchronize: false,
+      name: data.schema,
+      schema: data.schema,
+    });
+
+    await con.runMigrations();
+
+    this.logger.debug('End Migration...');
   }
 }

@@ -20,24 +20,6 @@ export class RolesPermissionsService extends BaseService<
     super();
   }
 
-  async findAll(): Promise<RolesPermissions[]> {
-    return await this.repository.find({
-      relations: ['parent', 'parent.parent'],
-    });
-  }
-
-  async findOne(id: number): Promise<RolesPermissions> {
-    return this.repository.findOneOrFail(id, {
-      relations: [
-        'parent',
-        'parent.parent',
-        'children',
-        'children.parent',
-        'permissions',
-      ],
-    });
-  }
-
   async set(idRol: number, permissions: Array<number>): Promise<any> {
     const permissionsList =
       permissions.length > 0 ? permissions.join() : [0].join();
@@ -46,7 +28,7 @@ export class RolesPermissionsService extends BaseService<
       .createQueryBuilder()
       .delete()
       .from(RolesPermissions)
-      .where(`rolId = :idRol and permissionId not in (${permissionsList})`, {
+      .where(`rol_id = :idRol and permission_id not in (${permissionsList})`, {
         idRol,
       })
       .execute();
@@ -55,7 +37,7 @@ export class RolesPermissionsService extends BaseService<
       .createQueryBuilder('item')
       .leftJoinAndSelect('item.permission', 'permission')
       .where(
-        `item.rolId = :idRol and item.permissionId in (${permissionsList})`,
+        `item.rol_id = :idRol and item.permission_id in (${permissionsList})`,
         {
           idRol,
         },

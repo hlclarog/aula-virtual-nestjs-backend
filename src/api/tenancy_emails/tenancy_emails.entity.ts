@@ -1,9 +1,9 @@
-import { Column, Entity, ManyToOne, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Tenancies } from '../tenancies/tenancies.entity';
 import { TENANCY_EMAILS_ENTITY } from './tenancy_emails.dto';
 
-@Entity(TENANCY_EMAILS_ENTITY)
+@Entity({ name: TENANCY_EMAILS_ENTITY, schema: 'public' })
 export class TenancyEmails extends Base {
   @Column({ type: 'varchar' })
   email_address: string;
@@ -27,6 +27,7 @@ export class TenancyEmails extends Base {
   authentication_required: string;
 
   @ManyToOne(() => Tenancies, (tenancies) => tenancies.emails, { eager: true })
+  @JoinColumn({ name: 'tenancy_id' })
   tenancy: Tenancies;
 
   @RelationId((tenancy_emails: TenancyEmails) => tenancy_emails.tenancy)

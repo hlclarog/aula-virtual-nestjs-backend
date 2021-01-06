@@ -1,4 +1,11 @@
-import { Column, Entity, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  RelationId,
+} from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Clients } from '../clients/clients.entity';
 import { Servers } from '../instance/servers/servers.entity';
@@ -8,7 +15,7 @@ import { TenancyLanguages } from '../tenancy_languages/tenancy_languages.entity'
 import { TenancyStatus } from '../tenancy_status/tenancy_status.entity';
 import { TENANCIES_ENTITY } from './tenancies.dto';
 
-@Entity(TENANCIES_ENTITY)
+@Entity({ name: TENANCIES_ENTITY, schema: 'public' })
 export class Tenancies extends Base {
   @Column({ type: 'varchar' })
   name: string;
@@ -47,6 +54,7 @@ export class Tenancies extends Base {
   tenancy_languages: TenancyLanguages[];
 
   @ManyToOne(() => Clients, (client) => client.tenancies, { eager: true })
+  @JoinColumn({ name: 'client_id' })
   client: Clients | number;
 
   @RelationId((tenancies: Tenancies) => tenancies.client)
@@ -57,18 +65,21 @@ export class Tenancies extends Base {
     (tenancy_status) => tenancy_status.tenancies,
     { eager: true },
   )
+  @JoinColumn({ name: 'tenancy_status_id' })
   tenancy_status: TenancyStatus | number;
 
   @RelationId((tenancies: Tenancies) => tenancies.tenancy_status)
   tenancy_status_id: number;
 
   @ManyToOne(() => Servers, (server) => server.tenancies_front, { eager: true })
+  @JoinColumn({ name: 'front_server_id' })
   front_server: Servers | number;
 
   @RelationId((tenancie: Tenancies) => tenancie.front_server)
   front_server_id: number;
 
   @ManyToOne(() => Servers, (server) => server.tenancies_back, { eager: true })
+  @JoinColumn({ name: 'back_server_id' })
   back_server: Servers | number;
 
   @RelationId((tenancie: Tenancies) => tenancie.back_server)

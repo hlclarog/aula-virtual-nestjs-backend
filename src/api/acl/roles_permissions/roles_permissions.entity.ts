@@ -1,13 +1,13 @@
-import { Entity, ManyToOne, RelationId, Tree } from 'typeorm';
+import { Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../../base/base.entity';
 import { Permissions } from '../permissions/permissions.entity';
 import { Roles } from '../roles/roles.entity';
 import { ROLES_PERMISSIONS_ENTITY } from './roles_permissions.dto';
 
 @Entity(ROLES_PERMISSIONS_ENTITY)
-@Tree('materialized-path')
 export class RolesPermissions extends Base {
   @ManyToOne(() => Roles, (rol) => rol.roles_permissions)
+  @JoinColumn({ name: 'rol_id' })
   rol: Roles;
 
   @RelationId((role_permission: RolesPermissions) => role_permission.rol)
@@ -16,6 +16,7 @@ export class RolesPermissions extends Base {
   @ManyToOne(() => Permissions, (permission) => permission.roles_permissions, {
     eager: true,
   })
+  @JoinColumn({ name: 'permission_id' })
   permission: Permissions;
 
   @RelationId((role_permission: RolesPermissions) => role_permission.permission)

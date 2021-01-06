@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
   RelationId,
   Tree,
@@ -11,7 +12,7 @@ import { Base } from '../../../base/base.entity';
 import { Permissions } from '../permissions/permissions.entity';
 import { MODULES_ENTITY } from './modules.dto';
 
-@Entity(MODULES_ENTITY)
+@Entity({ name: MODULES_ENTITY, schema: 'public' })
 @Tree('materialized-path')
 export class Modules extends Base {
   @Column({ type: 'varchar' })
@@ -45,6 +46,7 @@ export class Modules extends Base {
   children: Modules[];
 
   @TreeParent()
+  @JoinColumn({ name: 'parent_id' })
   parent: Modules;
 
   @RelationId((module: Modules) => module.parent)

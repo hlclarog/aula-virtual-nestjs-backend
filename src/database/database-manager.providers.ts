@@ -15,10 +15,10 @@ export const databaseManagerProviders = [
         password: config.passDatabase(),
         database: config.nameDatabase(),
         migrationsTableName: 'migrations_registers',
-        migrations: [__dirname + '/../migrations/files/*{.ts,.js}'],
-        cli: { migrationsDir: __dirname + '/../migrations/files' },
+        migrations: [__dirname + '/../migrations/manager/*{.ts,.js}'],
+        cli: { migrationsDir: __dirname + '/../migrations/manager' },
         entities: [__dirname + '/../api/**/*.entity{.ts,.js}'],
-        synchronize: true,
+        synchronize: false,
       }),
   },
 ];
