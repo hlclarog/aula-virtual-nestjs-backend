@@ -10,7 +10,7 @@ import { getHostFromOrigin } from '../helper';
 import { Request } from 'express';
 import { TenancyDomains } from './../../api/tenancy_domains/tenancy_domains.entity';
 import { ConfigService } from './../../config/config.service';
-import { ConfigModule } from 'src/config/config.module';
+import { ConfigModule } from './../../config/config.module';
 import { join } from 'path';
 
 const FOLDER_ENV = join(__dirname, '..', '..', '..', 'env');

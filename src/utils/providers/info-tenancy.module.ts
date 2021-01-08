@@ -4,10 +4,10 @@ import { REQUEST } from '@nestjs/core';
 import { getHostFromOrigin } from '../helper';
 import { TenancyDomainsModule } from './../../api/tenancy_domains/tenancy_domains.module';
 import { TenancyDomainsService } from './../../api/tenancy_domains/tenancy_domains.service';
-import { TenancyDomains } from 'src/api/tenancy_domains/tenancy_domains.entity';
+import { TenancyDomains } from './../../api/tenancy_domains/tenancy_domains.entity';
 import { CryptoService } from '../services/crypto.service';
-import { ConfigService } from 'src/config/config.service';
-import { ConfigModule } from 'src/config/config.module';
+import { ConfigService } from './../../config/config.service';
+import { ConfigModule } from './../../config/config.module';
 
 export const INFO_TENANCY_PROVIDER = 'INFO_TENANCY_PROVIDER';
 export interface InfoTenancyDomain {

@@ -6,9 +6,10 @@ import { Connection } from 'typeorm';
 import { TENANCIES_PROVIDER } from './tenancies.dto';
 import { Tenancies } from './tenancies.entity';
 import { InstanceProcessModule } from '../../queues/instance_process/instance_process.module';
+import { InstanceProcessLogModule } from './../../queues/instance_process_log/instance_process_log.module';
 
 @Module({
-  imports: [InstanceProcessModule],
+  imports: [InstanceProcessModule, InstanceProcessLogModule],
   controllers: [TenanciesController],
   providers: [
     {
