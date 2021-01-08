@@ -4,7 +4,9 @@ import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 
 export const TENANCIES_PROVIDER = 'TENANCIES_REPOSITORY';
 export const TENANCIES_ENTITY = 'tenancies';
-
+export enum TENANCY_STATUS_ENUM {
+  StartProcessing = 1,
+}
 export class CreateTenanciesDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly client: number;
   @ApiProperty({ required: false })

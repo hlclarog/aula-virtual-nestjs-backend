@@ -3,6 +3,7 @@ import {
   CreateTenanciesDto,
   UpdateTenanciesDto,
   TENANCIES_PROVIDER,
+  TENANCY_STATUS_ENUM,
 } from './tenancies.dto';
 import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
@@ -10,8 +11,7 @@ import { Tenancies } from './tenancies.entity';
 import { InjectQueue } from '@nestjs/bull';
 import { INSTANCE_PROCESS_QUEUE } from '../../queues/instance_process/instance_process.dto';
 import { Queue } from 'bull';
-import { TENANCY_STATUS_ENUM } from '../tenancy_status/tenancy_status.dto';
-import { InstanceProcessLogService } from './../../queues/instance_process_log/instance_process_log.service';
+import { InstanceProcessLogService } from '../../queues/instance_process_log/instance_process_log.service';
 
 @Injectable()
 export class TenanciesService extends BaseService<
