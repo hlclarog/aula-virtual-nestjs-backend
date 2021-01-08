@@ -7,7 +7,10 @@ export const TENANCIES_ENTITY = 'tenancies';
 
 export class CreateTenanciesDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly client: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly tenancy_status: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  tenancy_status?: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly alias: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly database_name: string;
