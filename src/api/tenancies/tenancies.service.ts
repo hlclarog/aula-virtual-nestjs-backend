@@ -10,6 +10,7 @@ import { Tenancies } from './tenancies.entity';
 import { InjectQueue } from '@nestjs/bull';
 import { INSTANCE_PROCESS_QUEUE } from '../../queues/instance_process/instance_process.dto';
 import { Queue } from 'bull';
+import { InstanceProcessLogService } from './../../queues/instance_process_log/instance_process_log.service';
 import { TENANCY_STATUS_ENUM } from '../tenancy_status/tenancy_status.dto';
 
 @Injectable()
@@ -23,6 +24,7 @@ export class TenanciesService extends BaseService<
   constructor(
     @InjectQueue(INSTANCE_PROCESS_QUEUE)
     private readonly instanceProcessQueue: Queue,
+    private readonly instanceProcessLogService: InstanceProcessLogService,
   ) {
     super();
   }
@@ -39,5 +41,10 @@ export class TenanciesService extends BaseService<
       message: 'Processing',
       data: dataSave,
     };
+  }
+
+  async processStaus() {
+    const data = await this.instanceProcessLogService.findAll();
+    return { data };
   }
 }

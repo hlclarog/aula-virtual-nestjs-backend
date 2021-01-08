@@ -11,7 +11,7 @@ export class TenanciesController extends BaseController<
   CreateTenanciesDto,
   UpdateTenanciesDto
 > {
-  constructor(tenanciesService: TenanciesService) {
+  constructor(private tenanciesService: TenanciesService) {
     super(tenanciesService);
   }
 
@@ -23,6 +23,11 @@ export class TenanciesController extends BaseController<
   @Get()
   async fetchAll() {
     return await this.findAll();
+  }
+
+  @Get('process/status')
+  async processStaus() {
+    return await this.tenanciesService.processStaus();
   }
 
   @Get(':id')

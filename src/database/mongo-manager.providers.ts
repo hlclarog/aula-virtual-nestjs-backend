@@ -12,7 +12,10 @@ export const mongoManagerProviders = [
         host: config.hostMongo(),
         database: config.dbMongo(),
         port: config.portMongo(),
-        entities: [__dirname + '/../websocket/**/*.entity{.ts,.js}'],
+        entities: [
+          __dirname + '/../websocket/**/*.entity{.ts,.js}',
+          __dirname + '/../queues/**/*.entity{.ts,.js}',
+        ],
         useNewUrlParser: true,
         useUnifiedTopology: true,
       }),
