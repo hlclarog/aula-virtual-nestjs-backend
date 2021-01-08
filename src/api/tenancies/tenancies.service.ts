@@ -10,6 +10,7 @@ import { Tenancies } from './tenancies.entity';
 import { InjectQueue } from '@nestjs/bull';
 import { INSTANCE_PROCESS_QUEUE } from '../../queues/instance_process/instance_process.dto';
 import { Queue } from 'bull';
+import { TENANCY_STATUS_ENUM } from '../tenancy_status/tenancy_status.dto';
 
 @Injectable()
 export class TenanciesService extends BaseService<
@@ -27,6 +28,7 @@ export class TenanciesService extends BaseService<
   }
 
   async create(createDto: CreateTenanciesDto): Promise<any> {
+    createDto.tenancy_status = TENANCY_STATUS_ENUM.StartProcessing;
     const dataSave = await this.repository.save(createDto);
     await this.instanceProcessQueue.add('create', {
       name: createDto.name,
