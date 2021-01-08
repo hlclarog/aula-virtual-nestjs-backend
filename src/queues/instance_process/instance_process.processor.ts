@@ -62,13 +62,13 @@ export class InstanceProcessProcessor {
       );
       await this.instanceProcessLogService.setStatusSubdomine({
         tenant: 'test',
-        status_subdominie: true,
+        status_subdomain: true,
       });
     } catch (error) {
       this.logger.error(`Failed to create Godaddy Subdomain ${data.alias}`);
       await this.instanceProcessLogService.setStatusSubdomine({
         tenant: data.alias,
-        status_subdominie: false,
+        status_subdomain: false,
       });
     }
 
