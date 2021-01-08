@@ -15,11 +15,17 @@ export class IntanceProcessLog {
   status_register: boolean;
 
   @Column({ nullable: true })
-  status_subdominie: boolean;
+  status_subdomain: boolean;
 
   @Column({ nullable: true })
   status_virtualhost: boolean;
 
   @Column({ nullable: true })
   status_schema: boolean;
+
+  @Column({ nullable: true })
+  status_migrations: boolean;
+
+  @Column({ nullable: true })
+  status_seeders: boolean;
 }

@@ -13,7 +13,7 @@ export class SetRegisterStatusInstanceProcessDto {
 }
 export class SetSubdomineStatusInstanceProcessDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly tenant: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly status_subdominie: boolean;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly status_subdomain: boolean;
 }
 export class SetVirtualhostStatusInstanceProcessDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly tenant: string;
@@ -22,4 +22,12 @@ export class SetVirtualhostStatusInstanceProcessDto {
 export class SetSchemaStatusInstanceProcessDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly tenant: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly status_schema: boolean;
+}
+export class SetMigrationsStatusInstanceProcessDto {
+  @ApiProperty() @IsString() @IsNotEmpty() readonly tenant: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly status_migrations: boolean;
+}
+export class SetSeedersStatusInstanceProcessDto {
+  @ApiProperty() @IsString() @IsNotEmpty() readonly tenant: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly status_seeders: boolean;
 }

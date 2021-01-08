@@ -3,8 +3,10 @@ import { Repository } from 'typeorm';
 import {
   INSTANCE_PROCESS_LOG_PROVIDER,
   SetInstanceProcessDto,
+  SetMigrationsStatusInstanceProcessDto,
   SetRegisterStatusInstanceProcessDto,
   SetSchemaStatusInstanceProcessDto,
+  SetSeedersStatusInstanceProcessDto,
   SetSubdomineStatusInstanceProcessDto,
   SetVirtualhostStatusInstanceProcessDto,
 } from './instance_process_log.dto';
@@ -38,7 +40,7 @@ export class InstanceProcessLogService {
   async setStatusSubdomine(data: SetSubdomineStatusInstanceProcessDto) {
     await this.repository.update(
       { tenant: data.tenant },
-      { status_subdominie: data.status_subdominie },
+      { status_subdomain: data.status_subdomain },
     );
   }
 
@@ -53,6 +55,20 @@ export class InstanceProcessLogService {
     await this.repository.update(
       { tenant: data.tenant },
       { status_schema: data.status_schema },
+    );
+  }
+
+  async setStatusMigrations(data: SetMigrationsStatusInstanceProcessDto) {
+    await this.repository.update(
+      { tenant: data.tenant },
+      { status_migrations: data.status_migrations },
+    );
+  }
+
+  async setStatusSeeders(data: SetSeedersStatusInstanceProcessDto) {
+    await this.repository.update(
+      { tenant: data.tenant },
+      { status_seeders: data.status_seeders },
     );
   }
 
