@@ -4,7 +4,8 @@ import { Server } from 'socket.io';
 import { Channels } from './../../websocket/channels/channels.entity';
 import { INFO_CHANNEL_PROVIDER } from '../providers/info-channel.module';
 import { ControlleSocket } from '../decorators/socket.decorator';
-import { WebSocketAppGateway } from './../../websocket/websocket.gateway';
+import { PublicGateway } from '../../websocket/getways/public.gateway';
+import { PrivateGateway } from '../../websocket/getways/private.gateway';
 
 @Injectable()
 @ControlleSocket('')
@@ -12,10 +13,17 @@ export class GatewayService {
   @WebSocketServer() server: Server;
   @Inject(INFO_CHANNEL_PROVIDER) private channel: Channels;
 
-  constructor(private webSocketAppGateway: WebSocketAppGateway) {}
+  constructor(
+    private publicGateway: PublicGateway,
+    private privateGateway: PrivateGateway,
+  ) {}
 
   sendEvent(event: string, data: any) {
     const clients = Object.assign([], this.channel.clients);
-    this.webSocketAppGateway.sendEvent(event, data, clients);
+    this.publicGateway.sendEvent(event, data, clients);
+  }
+
+  sendEventPrivate(event: string, data: any) {
+    this.privateGateway.sendEvent(event, data);
   }
 }

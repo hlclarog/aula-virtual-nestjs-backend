@@ -3,6 +3,16 @@ import { IsNotEmpty, IsString } from 'class-validator';
 
 export const INSTANCE_PROCESS_LOG_PROVIDER = 'INSTANCE_PROCESS_LOG_COLLECTION';
 
+export enum EVENTS_PROCESS {
+  NEW_TENANCY = 'new_tenancy',
+  STATUS_REGISTER = 'status_register',
+  STATUS_SUBDOMAIN = 'status_subdomain',
+  STATUS_VIRTUALHOST = 'status_virtualhost',
+  STATUS_SCHEMA = 'status_schema',
+  STATUS_MIGRATIONS = 'status_migrations',
+  STATUS_SEEDERS = 'status_seeders',
+}
+
 export class SetInstanceProcessDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly tenant: string;
 }

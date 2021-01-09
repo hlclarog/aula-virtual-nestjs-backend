@@ -4,9 +4,10 @@ import { Connection } from 'typeorm';
 import { IntanceProcessLog } from './instance_process_log.entity';
 import { INSTANCE_PROCESS_LOG_PROVIDER } from './instance_process_log.dto';
 import { InstanceProcessLogService } from './instance_process_log.service';
+import { WebsocketModule } from './../../websocket/websocket.module';
 
 @Module({
-  imports: [],
+  imports: [WebsocketModule],
   providers: [
     {
       provide: INSTANCE_PROCESS_LOG_PROVIDER,

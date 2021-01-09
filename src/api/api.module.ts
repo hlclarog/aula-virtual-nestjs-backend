@@ -21,7 +21,6 @@ import { InfoUserModule } from '../utils/providers/info-user.module';
 import { ServersModule } from './instance/servers/servers.module';
 import { ServerTypesModule } from './instance/server_types/server_types.module';
 import { ConnectionTypesModule } from './instance/connection_types/connection_types.module';
-import { TesttwoModule } from './testtwo/testtwo.module';
 import { OrganizationsModule } from './organizations/organizations.module';
 
 @Module({
@@ -48,7 +47,6 @@ import { OrganizationsModule } from './organizations/organizations.module';
     ServersModule,
     ServerTypesModule,
     ConnectionTypesModule,
-    TesttwoModule,
     OrganizationsModule,
   ],
   controllers: [],

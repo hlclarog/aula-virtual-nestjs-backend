@@ -6,14 +6,14 @@ import {
 } from '@nestjs/websockets';
 import { Request } from 'express';
 import { Client, Server, Socket } from 'socket.io';
-import { getHostFromOrigin } from './../utils/helper';
-import { ControlleSocket } from './../utils/decorators/socket.decorator';
-import { ChannelsService } from './channels/channels.service';
-import { ClientsService } from './clients/clients.service';
-import { EVENTS_SOCKET } from './websocket.dto';
+import { getHostFromOrigin } from '../../utils/helper';
+import { ControlleSocket } from '../../utils/decorators/socket.decorator';
+import { ChannelsService } from '../channels/channels.service';
+import { ClientsService } from '../clients/clients.service';
+import { EVENTS_SOCKET } from '../websocket.dto';
 
-@ControlleSocket('')
-export class WebSocketAppGateway
+@ControlleSocket('/public')
+export class PublicGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
 
