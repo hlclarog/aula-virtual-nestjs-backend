@@ -36,13 +36,16 @@ example:
 | PORT | number | Puerto de la aplicacion (Solo de referencia) |
 | QUEUE_HOST | string | Host de redis |
 | QUEUE_PORT | string | Puerto de redis |
+| URL_BACKEND | string | Url del backend |
 
 ### Migrations
 
-- Generar migracion
+- Generar migracion 
   ```sh
-  $ npm run typeorm migration:create -- -n 'name_migration' -d src/migrations/files
+  $ npm run typeorm migration:create -- -n 'name_migration' -d src/migrations/manager #Para procesos en manager (Public)
+  $ npm run typeorm migration:create -- -n 'name_migration' -d src/migrations/tenancy #Para procesos en las tenencias
   ```
 - Correr migraciones
   Las migraciones se corren mediante el endpoint, el cual correra en la tenencia actual de la solicitud
   GET [/migrations/run]
+  GET [/tenancy/run]

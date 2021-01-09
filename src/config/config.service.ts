@@ -55,6 +55,9 @@ export class ConfigService {
   portMongo(): number {
     return this.envConfig.MONGO_PORT;
   }
+  urlBackend(): string {
+    return this.envConfig.URL_BACKEND;
+  }
 
   private static validateInput(envConfig: EnvConfig): EnvConfig {
     const envVarsSchema: Joi.ObjectSchema = Joi.object({
@@ -72,6 +75,7 @@ export class ConfigService {
       QUEUE_HOST: Joi.string().required(),
       QUEUE_PORT: Joi.string().required(),
       SOCKET: Joi.number().required(),
+      URL_BACKEND: Joi.string().required(),
     });
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(
       envConfig,

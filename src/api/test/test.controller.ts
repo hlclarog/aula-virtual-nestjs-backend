@@ -1,40 +1,26 @@
-import { Body, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { CreateTestDto, TEST_PERMISSIONS, UpdateTestDto } from './test.dto';
-import { TestService } from './test.service';
+import { Get, Param, UseGuards } from '@nestjs/common';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { PermissionsGuard } from '../../utils/guards/permissions.guard';
-import { RequirePermissions } from '../../utils/decorators/permissions.decorator';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+import { INSTANCE_PROCESS_QUEUE } from './../../queues/instance_process/instance_process.dto';
 
 @UseGuards(PermissionsGuard)
 @ControllerApi({ name: 'test' })
 export class TestController {
-  constructor(private testService: TestService) {}
+  constructor(
+    @InjectQueue(INSTANCE_PROCESS_QUEUE)
+    private readonly instanceProcessQueue: Queue,
+  ) {}
 
-  @Get()
+  @Get('queue_tenancy/:name')
   // @RequirePermissions([TEST_PERMISSIONS.LIST])
-  public async get() {
-    const result = await this.testService.findAll();
-    return { data: result };
-  }
-
-  @Post()
-  @RequirePermissions([TEST_PERMISSIONS.CREATE])
-  public async save(@Body() test: CreateTestDto) {
-    const result = await this.testService.create(test);
-    return { data: result };
-  }
-
-  @Put('/:id')
-  // @RequirePermissions([TEST_PERMISSIONS.UPDATE])
-  public async update(@Param('id') id: number, @Body() test: UpdateTestDto) {
-    const result = await this.testService.update(id, test);
-    return { data: result };
-  }
-
-  @Delete('/:id')
-  @RequirePermissions([TEST_PERMISSIONS.DELETE])
-  public async delete(@Param('id') id: number) {
-    const result = await this.testService.delete(id);
-    return { data: result };
+  public async get(@Param('name') name: string) {
+    await this.instanceProcessQueue.add('create', {
+      name: name,
+      alias: name,
+      schema: name,
+    });
+    return { data: true };
   }
 }

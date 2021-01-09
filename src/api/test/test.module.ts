@@ -1,22 +1,11 @@
 import { Module } from '@nestjs/common';
+import { InstanceProcessModule } from './../../queues/instance_process/instance_process.module';
 import { WebsocketModule } from './../../websocket/websocket.module';
-import { Connection } from 'typeorm';
-import { DATABASE_MANAGER_PROVIDER } from '../../database/database.dto';
 import { TestController } from './test.controller';
-import { TEST_PROVIDER } from './test.dto';
-import { Test } from './test.entity';
-import { TestService } from './test.service';
 
 @Module({
-  imports: [WebsocketModule],
+  imports: [InstanceProcessModule, WebsocketModule],
   controllers: [TestController],
-  providers: [
-    {
-      provide: TEST_PROVIDER,
-      inject: [DATABASE_MANAGER_PROVIDER],
-      useFactory: (connection: Connection) => connection.getRepository(Test),
-    },
-    TestService,
-  ],
+  providers: [],
 })
 export class TestModule {}

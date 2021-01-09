@@ -17,13 +17,13 @@
                 </h2>
                 <div class="row">
                     <div class="col-md-4 col-sm-8">
-                        <label for="host">CHANNEL</label>
+                        <label for="host">CANAL</label>
                         <input type="text" class="form-control inut-sm" id="channel">
                     </div>
                 </div>
             </div>
             <div class="col-md-12 mt-4">
-                <button type="button" id="sendSocket" class="btn btn-primary btn-block">Enviar</button>
+                <button type="button" id="connectSocket" class="btn btn-primary btn-block">Enviar</button>
             </div>
             <div class="col-md-12">
                 <br>
@@ -38,22 +38,44 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
         $(function () {
-            var socket = io('http://localhost:3001');
-            socket.on('connect', () => {
-                console.log('conectted');
-            });
-            socket.on('disconnect', () => {
-                console.log('user disconnected');
-            });
-            socket.on('subscribe', (data) => {
-                console.log('your user is: ' + data);
-            });
-            socket.on('testEvent', (data) => {
-                console.log('dataTest: ' + data);
-            });
-            socket.on('test-update', (data) => {
-                console.log('dataTest: ' + JSON.stringify(data));
-            });
+            document.getElementById('connectSocket').addEventListener('click', () =>{
+                const url = document.getElementById('channel').value;
+                if(url) {
+                    const socket = io('{{host}}/' + url);
+                    socket.on('connect', () => {
+                        console.log('conectted to ' + url);
+                    });
+                    socket.on('disconnect', () => {
+                        console.log('user disconnected');
+                    });
+                    socket.on('subscribe', (data) => {
+                        console.log('your user is: ' + data);
+                    });
+                    socket.on('new_tenancy', (data) => {
+                        console.log('new_tenancy', data);
+                    });
+                    socket.on('status_register', (data) => {
+                        console.log('status_register', data);
+                    });
+                    socket.on('status_subdomain', (data) => {
+                        console.log('status_subdomain', data);
+                    });
+                    socket.on('status_virtualhost', (data) => {
+                        console.log('status_virtualhost', data);
+                    });
+                    socket.on('status_schema', (data) => {
+                        console.log('status_schema', data);
+                    });
+                    socket.on('status_migrations', (data) => {
+                        console.log('status_migrations', data);
+                    });
+                    socket.on('status_seeders', (data) => {
+                        console.log('status_seeders', data);
+                    });
+                } else {
+                    alert('Digitar canal');
+                }
+            })
         });
     </script>
 
