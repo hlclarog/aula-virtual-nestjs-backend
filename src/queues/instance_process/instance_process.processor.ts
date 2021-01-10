@@ -166,14 +166,13 @@ export class InstanceProcessProcessor {
           password: 'Aa12345',
           active: true,
         };
-        await con.getRepository(Users).save(userAdmin);
         const user: Partial<Users> = {
           name: data.name,
           email: data.administrator,
           password: data.password,
           active: true,
         };
-        await con.getRepository(Users).save(user);
+        await con.getRepository(Users).save([userAdmin, user]);
         const tenancyDomain: Partial<TenancyDomains> = {
           description: `${data.alias}.${domain}`,
           tenancy: data.id,
