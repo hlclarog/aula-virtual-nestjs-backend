@@ -22,6 +22,8 @@ import { ServersModule } from './instance/servers/servers.module';
 import { ServerTypesModule } from './instance/server_types/server_types.module';
 import { ConnectionTypesModule } from './instance/connection_types/connection_types.module';
 import { OrganizationsModule } from './organizations/organizations.module';
+import { PlansModule } from './plans/plans.module';
+import { PlanModulesModule } from './plan_modules/plan_modules.module';
 
 @Module({
   imports: [
@@ -48,6 +50,8 @@ import { OrganizationsModule } from './organizations/organizations.module';
     ServerTypesModule,
     ConnectionTypesModule,
     OrganizationsModule,
+    PlansModule,
+    PlanModulesModule,
   ],
   controllers: [],
   providers: [],

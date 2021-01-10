@@ -9,9 +9,11 @@ import {
 import { Base } from '../../base/base.entity';
 import { Clients } from '../clients/clients.entity';
 import { Servers } from '../instance/servers/servers.entity';
+import { Plans } from '../plans/plans.entity';
 import { TenancyDomains } from '../tenancy_domains/tenancy_domains.entity';
 import { TenancyEmails } from '../tenancy_emails/tenancy_emails.entity';
 import { TenancyLanguages } from '../tenancy_languages/tenancy_languages.entity';
+import { TenancyModules } from '../tenancy_modules/tenancy_modules.entity';
 import { TenancyStatus } from '../tenancy_status/tenancy_status.entity';
 import { TENANCIES_ENTITY } from './tenancies.dto';
 
@@ -23,7 +25,7 @@ export class Tenancies extends Base {
   @Column({ type: 'varchar', unique: true })
   alias: string;
 
-  @Column({ type: 'varchar', unique: true})
+  @Column({ type: 'varchar', unique: true })
   database_name: string;
 
   @Column({ type: 'varchar' })
@@ -52,6 +54,9 @@ export class Tenancies extends Base {
     (tenancy_language) => tenancy_language.tenancy,
   )
   tenancy_languages: TenancyLanguages[];
+
+  @OneToMany(() => TenancyModules, (tenancy_module) => tenancy_module.tenancy)
+  tenancy_modules: TenancyModules[];
 
   @ManyToOne(() => Clients, (client) => client.tenancies, { eager: true })
   @JoinColumn({ name: 'client_id' })
@@ -84,4 +89,11 @@ export class Tenancies extends Base {
 
   @RelationId((tenancie: Tenancies) => tenancie.back_server)
   back_server_id: number;
+
+  @ManyToOne(() => Plans, (plan) => plan.tenancies, { eager: true })
+  @JoinColumn({ name: 'plan_id' })
+  plan: Plans | number;
+
+  @RelationId((tenancie: Tenancies) => tenancie.plan)
+  plan_id: number;
 }

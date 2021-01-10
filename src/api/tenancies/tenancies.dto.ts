@@ -22,6 +22,7 @@ export class CreateTenanciesDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly schema: string;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly front_server: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly back_server: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly plan: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -73,6 +74,10 @@ export class UpdateTenanciesDto extends UpdateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly back_server?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly plan?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
