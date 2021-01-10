@@ -105,7 +105,7 @@ export class InstanceProcessLogService {
   }
 
   async findAll(): Promise<IntanceProcessLog[]> {
-    return await this.repository.find({ order: { id: 'DESC' } });
+    return await this.repository.find({ order: { date: 'DESC' } });
   }
 
   async remove(tenant: string) {
