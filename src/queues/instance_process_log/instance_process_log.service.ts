@@ -29,6 +29,8 @@ export class InstanceProcessLogService {
       status_subdominio: null,
       status_virtualhost: null,
       status_schema: null,
+      status_migrations: null,
+      status_seeders: null,
     });
     this.datewayService.sendEventPrivate(EVENTS_PROCESS.NEW_TENANCY, {
       tenant: data.tenant,

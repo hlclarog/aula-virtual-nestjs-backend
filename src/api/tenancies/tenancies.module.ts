@@ -7,6 +7,7 @@ import { TENANCIES_PROVIDER } from './tenancies.dto';
 import { Tenancies } from './tenancies.entity';
 import { InstanceProcessModule } from '../../queues/instance_process/instance_process.module';
 import { InstanceProcessLogModule } from './../../queues/instance_process_log/instance_process_log.module';
+import { CryptoService } from '../../utils/services/crypto.service';
 
 @Module({
   imports: [InstanceProcessModule, InstanceProcessLogModule],
@@ -19,6 +20,7 @@ import { InstanceProcessLogModule } from './../../queues/instance_process_log/in
         connection.getRepository(Tenancies),
     },
     TenanciesService,
+    CryptoService,
   ],
 })
 export class TenanciesModule {}

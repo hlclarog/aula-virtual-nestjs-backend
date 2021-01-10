@@ -18,7 +18,7 @@ export class CreateTenanciesDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly database_name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly server_address: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly administrator: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly password: string;
+  @ApiProperty() @IsString() @IsNotEmpty() password: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly schema: string;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly front_server: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly back_server: number;

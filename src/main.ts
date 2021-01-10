@@ -6,7 +6,7 @@ import { AppModule } from './app.module';
 import { ConfigService } from './config/config.service';
 import { HttpExceptionFilter } from './utils/filters/http-exception.filter';
 import { TransformInterceptor } from './utils/interceptors/transform.interceptor';
-import { RedisIoAdapter } from './websocket/websocket.adapter';
+//import { RedisIoAdapter } from './websocket/websocket.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -17,7 +17,7 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
 
-  app.useWebSocketAdapter(new RedisIoAdapter(app));
+  //app.useWebSocketAdapter(new RedisIoAdapter(app));
 
   // SWAGER CONFIG
   const options = new DocumentBuilder()

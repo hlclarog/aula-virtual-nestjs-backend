@@ -20,10 +20,10 @@ export class Tenancies extends Base {
   @Column({ type: 'varchar' })
   name: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', unique: true })
   alias: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', unique: true})
   database_name: string;
 
   @Column({ type: 'varchar' })
@@ -35,7 +35,7 @@ export class Tenancies extends Base {
   @Column({ type: 'varchar' })
   password: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', unique: true })
   schema: string;
 
   @Column({ type: 'timestamp', default: new Date(), nullable: true })

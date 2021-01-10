@@ -1,4 +1,4 @@
-export const SERVER_TYPE_DATA_SEED = [
+export const USERS_DATA_SEED = [
   {
     description: 'FRONT END',
   },

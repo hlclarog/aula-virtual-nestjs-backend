@@ -1,4 +1,4 @@
-import { Get, Param, UseGuards } from '@nestjs/common';
+import { Body, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { PermissionsGuard } from '../../utils/guards/permissions.guard';
 import { InjectQueue } from '@nestjs/bull';
@@ -13,14 +13,10 @@ export class TestController {
     private readonly instanceProcessQueue: Queue,
   ) {}
 
-  @Get('queue_tenancy/:name')
+  @Post('queue_tenancy')
   // @RequirePermissions([TEST_PERMISSIONS.LIST])
-  public async get(@Param('name') name: string) {
-    await this.instanceProcessQueue.add('create', {
-      name: name,
-      alias: name,
-      schema: name,
-    });
+  public async get(@Body() data: any) {
+    await this.instanceProcessQueue.add('create', data);
     return { data: true };
   }
 }

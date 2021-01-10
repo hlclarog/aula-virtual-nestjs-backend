@@ -12,6 +12,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { INSTANCE_PROCESS_QUEUE } from '../../queues/instance_process/instance_process.dto';
 import { Queue } from 'bull';
 import { InstanceProcessLogService } from '../../queues/instance_process_log/instance_process_log.service';
+import { CryptoService } from '../../utils/services/crypto.service';
 
 @Injectable()
 export class TenanciesService extends BaseService<
@@ -25,21 +26,20 @@ export class TenanciesService extends BaseService<
     @InjectQueue(INSTANCE_PROCESS_QUEUE)
     private readonly instanceProcessQueue: Queue,
     private readonly instanceProcessLogService: InstanceProcessLogService,
+    private cryptoService: CryptoService,
   ) {
     super();
   }
 
   async create(createDto: CreateTenanciesDto): Promise<any> {
+    createDto.password = this.cryptoService.hashPassword(createDto.password);
     createDto.tenancy_status = TENANCY_STATUS_ENUM.StartProcessing;
     const dataSave = await this.repository.save(createDto);
-    await this.instanceProcessQueue.add('create', {
-      name: createDto.name,
-      alias: createDto.alias,
-      schema: createDto.schema,
-    });
+    const tenancy = await this.findOne(dataSave.id);
+    await this.instanceProcessQueue.add('create', tenancy);
     return {
       message: 'Processing',
-      data: dataSave,
+      data: tenancy,
     };
   }
 

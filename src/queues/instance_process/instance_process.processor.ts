@@ -6,6 +6,9 @@ import { DATABASE_MANAGER_PROVIDER } from '../../database/database.dto';
 import { Connection, createConnection } from 'typeorm';
 import { ConfigService } from '../../config/config.service';
 import { InstanceProcessLogService } from '../instance_process_log/instance_process_log.service';
+import { Users } from '../../api/acl/users/users.entity';
+import { TenancyDomains } from '../../api/tenancy_domains/tenancy_domains.entity';
+import { Tenancies } from '../../api/tenancies/tenancies.entity';
 
 @Processor(INSTANCE_PROCESS_QUEUE)
 export class InstanceProcessProcessor {
@@ -27,11 +30,15 @@ export class InstanceProcessProcessor {
       await this.instanceProcessLogService.create({
         tenant: data.schema,
       });
+      await this.instanceProcessLogService.setStatusRegister({
+        tenant: data.schema,
+        status_register: true,
+      });
       try {
         this.logger.debug('Initial Create Godaddy Subdomain...');
         const body = [
           {
-            data: '3.131.64.94',
+            data: data.front_server.ip_public,
             name: data.alias,
             port: 80,
             priority: 0,
@@ -63,12 +70,13 @@ export class InstanceProcessProcessor {
           tenant: data.schema,
           status_subdomain: true,
         });
-      } catch (error) {
+      } catch (e) {
         this.logger.error(`Failed to create Godaddy Subdomain ${data.alias}`);
         await this.instanceProcessLogService.setStatusSubdomine({
           tenant: data.schema,
           status_subdomain: false,
         });
+        throw new Error(e);
       }
 
       try {
@@ -90,6 +98,7 @@ export class InstanceProcessProcessor {
           tenant: data.schema,
           status_virtualhost: false,
         });
+        throw new Error(e);
       }
 
       try {
@@ -106,11 +115,13 @@ export class InstanceProcessProcessor {
           tenant: data.schema,
           status_schema: false,
         });
+        throw new Error(e);
       }
 
+      let con = null;
+
       try {
-        this.logger.debug('Run Migrations...');
-        const con = await createConnection({
+        con = await createConnection({
           type: 'postgres',
           host: this.config.hostDatabase(),
           port: this.config.portDatabase(),
@@ -120,11 +131,18 @@ export class InstanceProcessProcessor {
           migrationsTableName: 'migrations_registers',
           migrations: [__dirname + '/../../migrations/tenancy/*{.ts,.js}'],
           cli: { migrationsDir: __dirname + '/../../migrations/tenancy' },
-          entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
+          entities: [__dirname + '/../../api/**/*.entity{.ts,.js}'],
           synchronize: false,
-          name: data.schema,
+          name: `tenant_${data.schema}`,
           schema: data.schema,
         });
+      } catch (e) {
+        this.logger.debug(`Error Create Connect... tenant_${data.schema}`);
+        throw new Error(e);
+      }
+
+      try {
+        this.logger.debug('Run Migrations...');
         await con.runMigrations();
         await this.instanceProcessLogService.setStatusMigrations({
           tenant: data.schema,
@@ -137,13 +155,49 @@ export class InstanceProcessProcessor {
           tenant: data.schema,
           status_migrations: false,
         });
+        throw new Error(e);
       }
+
+      try {
+        this.logger.debug('Created Seeders...');
+        const user: Partial<Users> = {
+          name: data.name,
+          email: data.administrator,
+          password: data.password,
+          active: true,
+        };
+        await con.getRepository(Users).save(user);
+        const tenancyDomain: Partial<TenancyDomains> = {
+          description: `${data.alias}.${domain}`,
+          tenancy: data.id,
+        };
+        await this.connection.getRepository(TenancyDomains).save(tenancyDomain);
+        await this.instanceProcessLogService.setStatusSeeders({
+          tenant: data.schema,
+          status_seeders: true,
+        });
+        this.logger.debug('End Created Seeders...');
+      } catch (e) {
+        this.logger.error('Error Add Seeders...');
+        await this.instanceProcessLogService.setStatusSeeders({
+          tenant: data.schema,
+          status_seeders: false,
+        });
+        throw new Error(e);
+      }
+
+      await this.connection
+        .getRepository(Tenancies)
+        .update(data.id, { tenancy_status: 2 });
     } catch (e) {
       this.logger.error(`Failed to Create Tenancy ${data.alias}`);
-      await this.instanceProcessLogService.setStatusSubdomine({
+      await this.instanceProcessLogService.setStatusRegister({
         tenant: data.schema,
-        status_subdomain: false,
+        status_register: false,
       });
+      await this.connection
+        .getRepository(Tenancies)
+        .update(data.id, { tenancy_status: 3 });
     }
   }
 }

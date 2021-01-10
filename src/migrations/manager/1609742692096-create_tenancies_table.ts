@@ -24,10 +24,12 @@ export class createTenanciesTable1609742692096 implements MigrationInterface {
           {
             name: 'alias',
             type: 'varchar',
+            isUnique: true,
           },
           {
             name: 'database_name',
             type: 'varchar',
+            isUnique: true,
           },
           {
             name: 'server_address',
@@ -44,6 +46,7 @@ export class createTenanciesTable1609742692096 implements MigrationInterface {
           {
             name: 'schema',
             type: 'varchar',
+            isUnique: true,
           },
           {
             name: 'activation_time',
