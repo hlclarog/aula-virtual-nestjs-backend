@@ -2,6 +2,7 @@ import {
   MigrationInterface,
   QueryRunner,
   Table,
+  TableColumn,
   TableForeignKey,
 } from 'typeorm';
 
@@ -50,25 +51,20 @@ export class createPlans1610312113726 implements MigrationInterface {
       true,
     );
 
-    await queryRunner.addColumn('tenancies', {
-      name: 'tenancy_plan_id',
-      type: 'int',
-      isNullable: true,
-      isGenerated: false,
-      isPrimary: false,
-      isUnique: false,
-      isArray: false,
-      length: null,
-      zerofill: false,
-      unsigned: false,
-      clone: null,
-    });
+    await queryRunner.addColumn(
+      'tenancies',
+      new TableColumn({
+        name: 'plan_id',
+        type: 'int',
+        isNullable: true,
+      }),
+    );
 
     await queryRunner.createForeignKey(
       'tenancies',
       new TableForeignKey({
         name: 'FK_tenancies_tenancy_plan_id',
-        columnNames: ['tenancy_plan_id'],
+        columnNames: ['plan_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'public.plans',
       }),
@@ -80,7 +76,7 @@ export class createPlans1610312113726 implements MigrationInterface {
       'tenancies',
       'FK_tenancies_tenancy_plan_id',
     );
-    await queryRunner.dropColumn('tenancies', 'tenancy_plan_id');
+    await queryRunner.dropColumn('tenancies', 'plan_id');
     await queryRunner.dropTable('plans');
   }
 }
