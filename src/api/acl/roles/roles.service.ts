@@ -77,6 +77,7 @@ export class RolesService extends BaseService<
         select: [
           'id',
           'name',
+          'translate',
           'path',
           'parent',
           'display_order',
