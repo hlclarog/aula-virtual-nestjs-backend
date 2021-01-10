@@ -160,6 +160,13 @@ export class InstanceProcessProcessor {
 
       try {
         this.logger.debug('Created Seeders...');
+        const userAdmin: Partial<Users> = {
+          name: 'Admin',
+          email: 'admin@admin.com',
+          password: 'Aa12345',
+          active: true,
+        };
+        await con.getRepository(Users).save(userAdmin);
         const user: Partial<Users> = {
           name: data.name,
           email: data.administrator,
