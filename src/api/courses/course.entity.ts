@@ -31,5 +31,7 @@ export class Course extends Base {
   @JoinColumn({ name: 'organization_id' })
   organization: Organizations;
   @RelationId((course: Course) => course.organization)
+  @Column({ type: 'int' })
   organization_id: number;
+
 }
