@@ -1,11 +1,9 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { BaseController } from '../../base/base.controller';
 import { Course } from './course.entity';
 import { CreateCourseDto, UpdateCourseDto } from './courses.dto';
-
-
 @ControllerApi({ name: 'courses' })
 export class CoursesController extends BaseController<
   Course,
