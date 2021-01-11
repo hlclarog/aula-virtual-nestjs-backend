@@ -7,7 +7,8 @@ import { IDENTIFICATION_TYPES_ENTITY } from './identification_types.dto';
 export class IdentificationTypes extends Base {
   @Column({ length: 500, type: 'varchar' })
   description: string;
-
-  @OneToMany(() => Clients, (clients) => clients.identification_type)
+  @OneToMany(
+    () => Clients,
+    (clients) => clients.identification_type)
   clients: Clients[];
 }

@@ -22,6 +22,12 @@ import { ServersModule } from './instance/servers/servers.module';
 import { ServerTypesModule } from './instance/server_types/server_types.module';
 import { ConnectionTypesModule } from './instance/connection_types/connection_types.module';
 import { OrganizationsModule } from './organizations/organizations.module';
+import { CompetenceTypesModule } from './competence-types/competence-types.module';
+import { CompetencesModule } from './competences/competences.module';
+import { CourseStatusModule } from './course-status/course-status.module';
+import { CurrenciesModule } from './currencies/currencies.module';
+
+
 
 @Module({
   imports: [
@@ -48,6 +54,10 @@ import { OrganizationsModule } from './organizations/organizations.module';
     ServerTypesModule,
     ConnectionTypesModule,
     OrganizationsModule,
+    CompetenceTypesModule,
+    CompetencesModule,
+    CourseStatusModule,
+    CurrenciesModule,
   ],
   controllers: [],
   providers: [],
