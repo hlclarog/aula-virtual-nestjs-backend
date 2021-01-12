@@ -1,6 +1,12 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
-import { ORGANIZATIONS_ENTITY } from "../../api/organizations/organizations.dto";
-import { USERS_ENTITY } from "../../api/acl/users/users.dto";
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
+import { ORGANIZATIONS_ENTITY } from '../../api/organizations/organizations.dto';
+import { USERS_ENTITY } from '../../api/acl/users/users.dto';
+import { COURSE_STATUS_ENTITY } from '../../api/course-status/course-status.dto';
 
 export class Courses1610318990560 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -39,6 +45,10 @@ export class Courses1610318990560 implements MigrationInterface {
             type: 'int',
           },
           {
+            name: 'course_status_id',
+            type: 'int',
+          },
+          {
             name: 'free',
             type: 'bool',
             default: true,
@@ -72,23 +82,24 @@ export class Courses1610318990560 implements MigrationInterface {
       }),
       true,
     );
-    await queryRunner.createForeignKey(
-      'courses',
+    await queryRunner.createForeignKeys('courses', [
       new TableForeignKey({
         columnNames: ['organization_id'],
         referencedColumnNames: ['id'],
         referencedTableName: ORGANIZATIONS_ENTITY,
         onUpdate: 'CASCADE',
       }),
-    );
-    await queryRunner.createForeignKey(
-      'courses',
       new TableForeignKey({
         columnNames: ['user_id'],
         referencedColumnNames: ['id'],
         referencedTableName: USERS_ENTITY,
       }),
-    );
+      new TableForeignKey({
+        columnNames: ['course_status_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: COURSE_STATUS_ENTITY,
+      }),
+    ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

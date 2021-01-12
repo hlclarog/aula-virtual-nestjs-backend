@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Organizations } from '../organizations/organizations.entity';
 import { COURSE_ENTITY } from './courses.dto';
 import { Users } from '../acl/users/users.entity';
+import { CourseStatus } from '../course-status/course-status.entity';
 @Entity({ name: COURSE_ENTITY })
 export class Course extends Base {
   @Column({ type: 'varchar' }) name: string;
@@ -33,5 +34,15 @@ export class Course extends Base {
   @RelationId((course: Course) => course.organization)
   @Column({ type: 'int' })
   organization_id: number;
-
+  /**
+   * Relation with Course Status
+   */
+  @ManyToOne(() => CourseStatus, (coursestatus) => coursestatus.course, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'course_status_id' })
+  course_status: CourseStatus;
+  @RelationId((course: Course) => course.course_status)
+  @Column({ type: 'int' })
+  course_status_id: number;
 }

@@ -27,6 +27,7 @@ import { CompetencesModule } from './competences/competences.module';
 import { CourseStatusModule } from './course-status/course-status.module';
 import { CurrenciesModule } from './currencies/currencies.module';
 import { CoursesModule } from './courses/courses.module';
+import { CourseFeeScheduleModule } from './course-fee-schedule/course-fee-schedule.module';
 
 
 
@@ -61,6 +62,7 @@ import { CoursesModule } from './courses/courses.module';
     CourseStatusModule,
     CurrenciesModule,
     CoursesModule,
+    CourseFeeScheduleModule,
   ],
   controllers: [],
   providers: [],

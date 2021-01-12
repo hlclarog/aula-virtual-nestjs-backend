@@ -52,6 +52,26 @@ export class createCourseFeeSchedule1610324466361
             default: 0.0,
             precision: 2,
           },
+          {
+            name: 'active',
+            type: 'bool',
+            default: true,
+          },
+          {
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'now()',
+          },
+          {
+            name: 'updated_at',
+            type: 'timestamp',
+            default: 'now()',
+          },
+          {
+            name: 'deleted_at',
+            type: 'timestamp',
+            isNullable: true,
+          },
         ],
       }),
     );
