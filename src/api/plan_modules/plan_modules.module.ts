@@ -17,5 +17,6 @@ import { PlanModules } from './plan_modules.entity';
     },
     PlanModulesService,
   ],
+  exports: [PlanModulesService],
 })
 export class PlanModulesModule {}

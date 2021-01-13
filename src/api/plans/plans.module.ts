@@ -5,8 +5,10 @@ import { DATABASE_MANAGER_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { PLANS_PROVIDER } from './plans.dto';
 import { Plans } from './plans.entity';
+import { PlanModulesModule } from '../plan_modules/plan_modules.module';
 
 @Module({
+  imports: [PlanModulesModule],
   controllers: [PlansController],
   providers: [
     {
