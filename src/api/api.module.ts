@@ -25,6 +25,12 @@ import { OrganizationsModule } from './organizations/organizations.module';
 import { PlansModule } from './plans/plans.module';
 import { PlanModulesModule } from './plan_modules/plan_modules.module';
 import { TenancyModulesModule } from './tenancy_modules/tenancy_modules.module';
+import { CompetenceTypesModule } from './competence-types/competence-types.module';
+import { CompetencesModule } from './competences/competences.module';
+import { CourseStatusModule } from './course-status/course-status.module';
+import { CurrenciesModule } from './currencies/currencies.module';
+import { CoursesModule } from './courses/courses.module';
+import { CourseFeeScheduleModule } from './course-fee-schedule/course-fee-schedule.module';
 
 @Module({
   imports: [
@@ -54,6 +60,12 @@ import { TenancyModulesModule } from './tenancy_modules/tenancy_modules.module';
     PlansModule,
     PlanModulesModule,
     TenancyModulesModule,
+    CompetenceTypesModule,
+    CompetencesModule,
+    CourseStatusModule,
+    CurrenciesModule,
+    CoursesModule,
+    CourseFeeScheduleModule,
   ],
   controllers: [],
   providers: [],
