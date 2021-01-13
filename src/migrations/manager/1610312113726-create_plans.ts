@@ -56,7 +56,6 @@ export class createPlans1610312113726 implements MigrationInterface {
       new TableColumn({
         name: 'plan_id',
         type: 'int',
-        isNullable: true,
       }),
     );
 

@@ -1,5 +1,5 @@
-import { PlanModules } from 'src/api/plan_modules/plan_modules.entity';
-import { TenancyModules } from 'src/api/tenancy_modules/tenancy_modules.entity';
+import { PlanModules } from './../../plan_modules/plan_modules.entity';
+import { TenancyModules } from './../../tenancy_modules/tenancy_modules.entity';
 import {
   Column,
   Entity,
@@ -47,7 +47,7 @@ export class Modules extends Base {
   @OneToMany(() => PlanModules, (plan_modules) => plan_modules.module)
   plan_modules: PlanModules[];
 
-  @OneToMany(() => TenancyModules, (tenancy_modules) => tenancy_modules.module)
+  @OneToMany(() => TenancyModules, (tenancy_module) => tenancy_module.module)
   tenancy_modules: TenancyModules[];
 
   @TreeChildren()

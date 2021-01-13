@@ -15,9 +15,10 @@ import {
   InfoUserProvider,
 } from './../../../utils/providers/info-user.module';
 import { Modules } from '../modules/modules.entity';
-import { MODULES_PROVIDER } from '../modules/modules.dto';
 import { PERMISSIONS_PROVIDER } from '../permissions/permissions.dto';
 import { Permissions } from '../permissions/permissions.entity';
+import { TENANCY_MODULES_PROVIDER } from './../../tenancy_modules/tenancy_modules.dto';
+import { TenancyModules } from './../../tenancy_modules/tenancy_modules.entity';
 
 @Injectable()
 export class RolesService extends BaseService<
@@ -26,8 +27,9 @@ export class RolesService extends BaseService<
   UpdateRolesDto
 > {
   @Inject(ROLES_PROVIDER) repository: BaseRepo<Roles>;
-  @Inject(MODULES_PROVIDER) repositoryModules: BaseRepo<Modules>;
   @Inject(PERMISSIONS_PROVIDER) repositoryPermissions: BaseRepo<Permissions>;
+  @Inject(TENANCY_MODULES_PROVIDER)
+  repositoryTenanciesModules: BaseRepo<TenancyModules>;
 
   constructor(
     private rolesPermissionsService: RolesPermissionsService,
@@ -73,25 +75,20 @@ export class RolesService extends BaseService<
       const permissionsListIds = rolElement.rol.roles_permissions.map(
         (rolPer) => rolPer.permission_id,
       );
-      const modules = await this.repositoryModules.find({
-        select: [
-          'id',
-          'name',
-          'translate',
-          'path',
-          'parent',
-          'display_order',
-          'show_in_menu',
-        ],
-        relations: ['permissions', 'children', 'children.children'],
-        where: { parent: null },
+      const modules = await this.repositoryTenanciesModules.find({
+        where: {
+          module: {
+            parent: null,
+          },
+        },
       });
       const permisos = await this.repositoryPermissions.find({
         select: ['id', 'name', 'display_name', 'description'],
         relations: ['module'],
         where: { id: In(permissionsListIds), name: Like('view-%') },
       });
-      const menu = this.filtchilds(modules, permisos, '', []);
+      const modulesList = modules.map((m) => m.module);
+      const menu = this.filtchilds(modulesList, permisos, '', []);
       dataMenu.push({
         id: rolElement.rol.id,
         name: rolElement.rol.name,

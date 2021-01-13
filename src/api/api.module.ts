@@ -24,6 +24,7 @@ import { ConnectionTypesModule } from './instance/connection_types/connection_ty
 import { OrganizationsModule } from './organizations/organizations.module';
 import { PlansModule } from './plans/plans.module';
 import { PlanModulesModule } from './plan_modules/plan_modules.module';
+import { TenancyModulesModule } from './tenancy_modules/tenancy_modules.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { PlanModulesModule } from './plan_modules/plan_modules.module';
     OrganizationsModule,
     PlansModule,
     PlanModulesModule,
+    TenancyModulesModule,
   ],
   controllers: [],
   providers: [],
