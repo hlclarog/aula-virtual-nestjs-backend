@@ -19,7 +19,7 @@ export class TenancyModules extends Base {
     eager: true,
   })
   @JoinColumn({ name: 'module_id' })
-  module: Modules;
+  module: Modules | number;
 
   @RelationId((tenancy_modules: TenancyModules) => tenancy_modules.module)
   module_id: number;

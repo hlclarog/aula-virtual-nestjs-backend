@@ -8,7 +8,7 @@ import { ROLES_PERMISSIONS_ENTITY } from './roles_permissions.dto';
 export class RolesPermissions extends Base {
   @ManyToOne(() => Roles, (rol) => rol.roles_permissions)
   @JoinColumn({ name: 'rol_id' })
-  rol: Roles;
+  rol: Roles | number;
 
   @RelationId((role_permission: RolesPermissions) => role_permission.rol)
   rol_id: number;
@@ -17,7 +17,7 @@ export class RolesPermissions extends Base {
     eager: true,
   })
   @JoinColumn({ name: 'permission_id' })
-  permission: Permissions;
+  permission: Permissions | number;
 
   @RelationId((role_permission: RolesPermissions) => role_permission.permission)
   permission_id: number;
