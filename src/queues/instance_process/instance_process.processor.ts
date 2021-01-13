@@ -3,12 +3,23 @@ import { HttpService, Inject, Logger } from '@nestjs/common';
 import { Job } from 'bull';
 import { INSTANCE_PROCESS_QUEUE } from './instance_process.dto';
 import { DATABASE_MANAGER_PROVIDER } from '../../database/database.dto';
-import { Connection, createConnection } from 'typeorm';
+import {
+  Connection,
+  createConnection,
+  getConnectionManager,
+  In,
+} from 'typeorm';
 import { ConfigService } from '../../config/config.service';
 import { InstanceProcessLogService } from '../instance_process_log/instance_process_log.service';
 import { Users } from '../../api/acl/users/users.entity';
 import { TenancyDomains } from '../../api/tenancy_domains/tenancy_domains.entity';
 import { Tenancies } from '../../api/tenancies/tenancies.entity';
+import { PlanModules } from '../../api/plan_modules/plan_modules.entity';
+import { TenancyModules } from '../../api/tenancy_modules/tenancy_modules.entity';
+import { Roles } from '../../api/acl/roles/roles.entity';
+import { Permissions } from '../../api/acl/permissions/permissions.entity';
+import { RolesPermissions } from '../../api/acl/roles_permissions/roles_permissions.entity';
+import { UsersRoles } from '../../api/acl/users_roles/users_roles.entity';
 
 @Processor(INSTANCE_PROCESS_QUEUE)
 export class InstanceProcessProcessor {
@@ -121,21 +132,29 @@ export class InstanceProcessProcessor {
       let con = null;
 
       try {
-        con = await createConnection({
-          type: 'postgres',
-          host: this.config.hostDatabase(),
-          port: this.config.portDatabase(),
-          username: this.config.userDatabase(),
-          password: this.config.passDatabase(),
-          database: this.config.nameDatabase(),
-          migrationsTableName: 'migrations_registers',
-          migrations: [__dirname + '/../../migrations/tenancy/*{.ts,.js}'],
-          cli: { migrationsDir: __dirname + '/../../migrations/tenancy' },
-          entities: [__dirname + '/../../api/**/*.entity{.ts,.js}'],
-          synchronize: false,
-          name: `tenant_${data.schema}`,
-          schema: data.schema,
-        });
+        this.logger.debug(`tenant_${data.schema}`);
+        const connectionName = `tenant_${data.schema}`;
+        const connectionManager = await getConnectionManager();
+        if (connectionManager.has(connectionName)) {
+          const connection = await connectionManager.get(connectionName);
+          con = connection.isConnected ? connection : connection.connect();
+        } else {
+          con = await createConnection({
+            type: 'postgres',
+            host: this.config.hostDatabase(),
+            port: this.config.portDatabase(),
+            username: this.config.userDatabase(),
+            password: this.config.passDatabase(),
+            database: this.config.nameDatabase(),
+            migrationsTableName: 'migrations_registers',
+            migrations: [__dirname + '/../../migrations/tenancy/*{.ts,.js}'],
+            cli: { migrationsDir: __dirname + '/../../migrations/tenancy' },
+            entities: [__dirname + '/../../api/**/*.entity{.ts,.js}'],
+            synchronize: false,
+            name: `tenant_${data.schema}`,
+            schema: data.schema,
+          });
+        }
       } catch (e) {
         this.logger.debug(`Error Create Connect... tenant_${data.schema}`);
         throw new Error(e);
@@ -160,19 +179,67 @@ export class InstanceProcessProcessor {
 
       try {
         this.logger.debug('Created Seeders...');
-        const userAdmin: Partial<Users> = {
-          name: 'Admin',
-          email: 'admin@admin.com',
-          password: 'Aa12345',
-          active: true,
-        };
-        const user: Partial<Users> = {
-          name: data.name,
-          email: data.administrator,
-          password: data.password,
-          active: true,
-        };
-        await con.getRepository(Users).save([userAdmin, user]);
+        const planModules = await this.connection
+          .getRepository(PlanModules)
+          .find({
+            where: { plan: data.plan_id },
+          });
+        if (planModules.length) {
+          const tenancyModules: Partial<TenancyModules>[] = [];
+          planModules.forEach((item) => {
+            const tenancyModule: Partial<TenancyModules> = {
+              module: item.module_id,
+              tenancy: data.id,
+              active: true,
+            };
+            tenancyModules.push(tenancyModule);
+          });
+          await con.getRepository(TenancyModules).save(tenancyModules);
+          const rol: Partial<Roles> = {
+            name: 'admin',
+            display_name: 'Administrator',
+            description: 'System Administrator',
+            translate: 'ES',
+            active: true,
+          };
+          const savedRole = await con.getRepository(Roles).save(rol);
+          if (savedRole) {
+            const moduleIds = tenancyModules.map((f) => f.module);
+            const permissions: Permissions[] = await this.connection
+              .getRepository(Permissions)
+              .find({
+                where: { module: In(moduleIds) },
+              });
+            if (permissions.length) {
+              const rolesPermissions: Partial<RolesPermissions>[] = [];
+              permissions.forEach((item) => {
+                const rolPermission: Partial<RolesPermissions> = {
+                  rol: savedRole.id,
+                  permission: item.id,
+                  active: true,
+                };
+                rolesPermissions.push(rolPermission);
+              });
+              await con.getRepository(RolesPermissions).save(rolesPermissions);
+              const user: Partial<Users> = {
+                name: data.name,
+                email: data.administrator,
+                password: data.password,
+                active: true,
+              };
+              const savedUser = await con.getRepository(Users).save(user);
+              if (savedUser) {
+                const usersRoles: Partial<UsersRoles> = {
+                  user: savedUser.id,
+                  rol: savedRole.id,
+                  default: true,
+                  active: true,
+                };
+                await con.getRepository(UsersRoles).save(usersRoles);
+              }
+            }
+          }
+        }
         const tenancyDomain: Partial<TenancyDomains> = {
           description: `${data.alias}.${domain}`,
           tenancy: data.id,

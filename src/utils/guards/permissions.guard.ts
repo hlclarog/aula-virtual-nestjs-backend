@@ -31,7 +31,7 @@ export class PermissionsGuard implements CanActivate {
     this.infoUser.roles.map((item) => {
       permissions = permissions.concat(
         item.rol.roles_permissions.map(
-          (roles_permissions) => roles_permissions.permission.name,
+          (roles_permissions: any) => roles_permissions.permission.name,
         ),
       );
     });
