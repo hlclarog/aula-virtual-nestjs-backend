@@ -87,7 +87,7 @@ export class RolesService extends BaseService<
         relations: ['module'],
         where: { id: In(permissionsListIds), name: Like('view-%') },
       });
-      const modulesList = modules.map((m) => m.module);
+      const modulesList: any = modules.map((m) => m.module);
       const menu = this.filtchilds(modulesList, permisos, '', []);
       dataMenu.push({
         id: rolElement.rol.id,
