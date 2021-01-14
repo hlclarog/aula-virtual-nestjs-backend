@@ -5,8 +5,10 @@ import { DATABASE_TENANCY_PROVIDER } from '../../../database/database.dto';
 import { Connection } from 'typeorm';
 import { PERMISSIONS_PROVIDER } from './permissions.dto';
 import { Permissions } from './permissions.entity';
+import { TenancyModulesModule } from '../../tenancy_modules/tenancy_modules.module';
 
 @Module({
+  imports: [TenancyModulesModule],
   controllers: [PermissionsController],
   providers: [
     {

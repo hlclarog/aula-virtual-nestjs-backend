@@ -11,7 +11,7 @@ export class PermissionsController extends BaseController<
   CreatePermissionsDto,
   UpdatePermissionsDto
 > {
-  constructor(permissionsService: PermissionsService) {
+  constructor(private permissionsService: PermissionsService) {
     super(permissionsService);
   }
 
@@ -23,6 +23,12 @@ export class PermissionsController extends BaseController<
   @Get()
   async fetchAll() {
     return await this.findAll();
+  }
+
+  @Get('/tenancy/all')
+  async findForTenancy() {
+    const result = await this.permissionsService.findForTenancy();
+    return { data: result };
   }
 
   @Get(':id')
