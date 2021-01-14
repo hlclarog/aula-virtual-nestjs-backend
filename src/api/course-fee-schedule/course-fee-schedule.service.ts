@@ -17,4 +17,10 @@ export class CourseFeeScheduleService extends BaseService<
 > {
   @Inject(COURSE_FEE_SCHEDULE_PROVIDER)
   repository: BaseRepo<CourseFeeSchedules>;
+
+  findByCourse(id: number): Promise<CourseFeeSchedules[]> {
+    return this.repository.find({
+      where: [{ course: id }],
+    });
+  }
 }

@@ -45,4 +45,9 @@ export class CourseFeeScheduleController extends BaseController<
   async delete(@Param('id') id: string) {
     return this.remove(id);
   }
+
+  @Get('bycourse:id')
+  async getByCourse(@Param('id') id: number) {
+    return this.courseFeeScheduleService.findByCourse(id);
+  }
 }
