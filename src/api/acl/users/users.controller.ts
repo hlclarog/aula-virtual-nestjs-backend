@@ -30,6 +30,12 @@ export class UsersController extends BaseController<
     return await this.findOne(id);
   }
 
+  @Get('rol/:code')
+  async findForRol(@Param('code') code: string) {
+    const result = await this.usersService.findForRol(code);
+    return { data: result };
+  }
+
   @Put(':id')
   async edit(@Param('id') id: string, @Body() updateDto: UpdateUsersDto) {
     return await this.update(id, updateDto);

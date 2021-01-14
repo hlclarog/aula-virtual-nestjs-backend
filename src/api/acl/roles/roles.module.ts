@@ -8,7 +8,7 @@ import { Roles } from './roles.entity';
 import { RolesPermissionsModule } from '../roles_permissions/roles_permissions.module';
 import { ModulesModule } from '../modules/modules.module';
 import { PermissionsModule } from '../permissions/permissions.module';
-import { TenancyModulesModule } from 'src/api/tenancy_modules/tenancy_modules.module';
+import { TenancyModulesModule } from './../../tenancy_modules/tenancy_modules.module';
 
 @Module({
   imports: [

@@ -7,6 +7,7 @@ import {
 import { BaseService } from '../../../base/base.service';
 import { BaseRepo } from '../../../base/base.repository';
 import { UsersRoles } from './users_roles.entity';
+import { Like } from 'typeorm';
 
 @Injectable()
 export class UsersRolesService extends BaseService<
@@ -25,6 +26,15 @@ export class UsersRolesService extends BaseService<
       where: { user: idUser },
       relations: ['rol', 'rol.permissions'],
     });
+  }
+
+  async findForRolCode(rolName: string): Promise<UsersRoles[]> {
+    return this.repository
+      .createQueryBuilder('users_roles')
+      .leftJoinAndSelect('users_roles.rol', 'rol')
+      .leftJoinAndSelect('users_roles.user', 'user')
+      .where('rol.name LIKE(:rolName)', { rolName: `${rolName}%` })
+      .getMany();
   }
 
   async findRolDefault(idUser: number): Promise<UsersRoles> {
