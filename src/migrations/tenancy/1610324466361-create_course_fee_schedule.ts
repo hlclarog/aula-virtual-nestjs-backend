@@ -8,7 +8,7 @@ import {
 export class createCourseFeeSchedule1610324466361
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    queryRunner.createTable(
+    await queryRunner.createTable(
       new Table({
         name: 'course_fee_schedules',
         columns: [
@@ -43,14 +43,16 @@ export class createCourseFeeSchedule1610324466361
             type: 'decimal',
             isNullable: false,
             default: 0.0,
-            precision: 2,
+            precision: 18,
+            scale: 2,
           },
           {
             name: 'certificate_val',
             type: 'decimal',
             isNullable: false,
             default: 0.0,
-            precision: 2,
+            precision: 18,
+            scale: 2,
           },
           {
             name: 'active',
@@ -89,6 +91,6 @@ export class createCourseFeeSchedule1610324466361
     ]);
   }
   public async down(queryRunner: QueryRunner): Promise<void> {
-    queryRunner.dropTable('course_fee_schedules');
+    await queryRunner.dropTable('course_fee_schedules');
   }
 }

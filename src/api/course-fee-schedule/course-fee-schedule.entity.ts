@@ -6,9 +6,11 @@ import { Base } from '../../base/base.entity';
 export class CourseFeeSchedules extends Base {
   @Column({ type: 'int' }) currency_id: number;
   @Column({ type: 'int' }) course_id: number;
-  @Column({ type: 'date' }) begin: number;
-  @Column({ type: 'date' }) end: number;
-  @Column({ type: 'date' }) course_val: number;
-  @Column({ type: 'date' }) certificate_val: number;
 
+  @Column({ type: 'date' }) begin: string;
+  @Column({ type: 'date', nullable: true }) end: string;
+
+  @Column({ type: 'decimal', nullable: true, default: 0.0 }) course_val: number;
+  @Column({ type: 'decimal', nullable: true, default: 0.0 })
+  certificate_val: number;
 }
