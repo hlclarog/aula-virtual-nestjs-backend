@@ -1,6 +1,11 @@
-import { Column, Entity } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+} from 'typeorm';
 import { CURRENCY_ENTITY } from './currency.dto';
 import { Base } from '../../base/base.entity';
+import { CourseFeeSchedules } from '../course-fee-schedule/course-fee-schedule.entity';
 
 @Entity({ name: CURRENCY_ENTITY })
 export class Currencies extends Base {
@@ -12,4 +17,10 @@ export class Currencies extends Base {
   symbol: string;
   @Column({ type: 'int' })
   decimals: number;
+
+  @OneToMany(
+    () => CourseFeeSchedules,
+    (courseFeeSchedules) => courseFeeSchedules.currency,
+  )
+  course_fee_schedules: CourseFeeSchedules[];
 }
