@@ -10,39 +10,32 @@ export class Course extends Base {
   @Column({ type: 'varchar' }) description: string;
   @Column({ type: 'varchar' }) short_name: string;
   @Column({ type: 'boolean' }) free: string;
-  @Column({ type: 'boolean' }) certificable: string;
+  @Column({ type: 'boolean' }) certifiable: string;
 
-  /**
-   * Relation with Users
-   */
   @ManyToOne(() => Users, (user) => user.course, {
     eager: true,
   })
   @JoinColumn({ name: 'user_id' })
   user: Users;
+
   @RelationId((course: Course) => course.user)
-  @Column({ type: 'int' })
   user_id: number;
-  /**
-   * Relation with Organization
-   */
+
   @ManyToOne(() => Organizations, (organization) => organization.course, {
     eager: true,
   })
   @JoinColumn({ name: 'organization_id' })
   organization: Organizations;
+
   @RelationId((course: Course) => course.organization)
-  @Column({ type: 'int' })
   organization_id: number;
-  /**
-   * Relation with Course Status
-   */
-  @ManyToOne(() => CourseStatus, (coursestatus) => coursestatus.course, {
+
+  @ManyToOne(() => CourseStatus, (coursesStatus) => coursesStatus.course, {
     eager: true,
   })
   @JoinColumn({ name: 'course_status_id' })
   course_status: CourseStatus;
+
   @RelationId((course: Course) => course.course_status)
-  @Column({ type: 'int' })
   course_status_id: number;
 }

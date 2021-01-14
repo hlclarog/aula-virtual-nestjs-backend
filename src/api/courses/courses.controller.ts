@@ -13,6 +13,7 @@ export class CoursesController extends BaseController<
   constructor(private readonly coursesService: CoursesService) {
     super(coursesService);
   }
+
   @Post()
   async post(@Body() createDto: CreateCourseDto) {
     return await this.create(createDto);

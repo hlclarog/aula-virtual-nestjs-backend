@@ -54,7 +54,7 @@ export class Courses1610318990560 implements MigrationInterface {
             default: true,
           },
           {
-            name: 'certificable',
+            name: 'certifiable',
             type: 'bool',
             default: false,
           },
