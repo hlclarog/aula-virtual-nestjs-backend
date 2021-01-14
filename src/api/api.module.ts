@@ -22,15 +22,15 @@ import { ServersModule } from './instance/servers/servers.module';
 import { ServerTypesModule } from './instance/server_types/server_types.module';
 import { ConnectionTypesModule } from './instance/connection_types/connection_types.module';
 import { OrganizationsModule } from './organizations/organizations.module';
+import { PlansModule } from './plans/plans.module';
+import { PlanModulesModule } from './plan_modules/plan_modules.module';
+import { TenancyModulesModule } from './tenancy_modules/tenancy_modules.module';
 import { CompetenceTypesModule } from './competence-types/competence-types.module';
 import { CompetencesModule } from './competences/competences.module';
 import { CourseStatusModule } from './course-status/course-status.module';
 import { CurrenciesModule } from './currencies/currencies.module';
 import { CoursesModule } from './courses/courses.module';
 import { CourseFeeScheduleModule } from './course-fee-schedule/course-fee-schedule.module';
-
-
-
 
 @Module({
   imports: [
@@ -57,6 +57,9 @@ import { CourseFeeScheduleModule } from './course-fee-schedule/course-fee-schedu
     ServerTypesModule,
     ConnectionTypesModule,
     OrganizationsModule,
+    PlansModule,
+    PlanModulesModule,
+    TenancyModulesModule,
     CompetenceTypesModule,
     CompetencesModule,
     CourseStatusModule,

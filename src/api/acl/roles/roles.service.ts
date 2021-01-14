@@ -15,9 +15,11 @@ import {
   InfoUserProvider,
 } from './../../../utils/providers/info-user.module';
 import { Modules } from '../modules/modules.entity';
-import { MODULES_PROVIDER } from '../modules/modules.dto';
 import { PERMISSIONS_PROVIDER } from '../permissions/permissions.dto';
 import { Permissions } from '../permissions/permissions.entity';
+import { TENANCY_MODULES_PROVIDER } from './../../tenancy_modules/tenancy_modules.dto';
+import { TenancyModules } from './../../tenancy_modules/tenancy_modules.entity';
+import { MODULES_PROVIDER } from '../modules/modules.dto';
 
 @Injectable()
 export class RolesService extends BaseService<
@@ -26,8 +28,10 @@ export class RolesService extends BaseService<
   UpdateRolesDto
 > {
   @Inject(ROLES_PROVIDER) repository: BaseRepo<Roles>;
-  @Inject(MODULES_PROVIDER) repositoryModules: BaseRepo<Modules>;
   @Inject(PERMISSIONS_PROVIDER) repositoryPermissions: BaseRepo<Permissions>;
+  @Inject(TENANCY_MODULES_PROVIDER)
+  repositoryTenanciesModules: BaseRepo<TenancyModules>;
+  @Inject(MODULES_PROVIDER) repositoryModules: BaseRepo<Modules>;
 
   constructor(
     private rolesPermissionsService: RolesPermissionsService,
@@ -73,6 +77,9 @@ export class RolesService extends BaseService<
       const permissionsListIds = rolElement.rol.roles_permissions.map(
         (rolPer) => rolPer.permission_id,
       );
+      const modulesTenancy = await (
+        await this.repositoryTenanciesModules.find()
+      ).map((item) => item.module_id);
       const modules = await this.repositoryModules.find({
         select: [
           'id',
@@ -84,7 +91,7 @@ export class RolesService extends BaseService<
           'show_in_menu',
         ],
         relations: ['permissions', 'children', 'children.children'],
-        where: { parent: null },
+        where: { parent: null, id: In(modulesTenancy) },
       });
       const permisos = await this.repositoryPermissions.find({
         select: ['id', 'name', 'display_name', 'description'],
