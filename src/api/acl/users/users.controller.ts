@@ -51,4 +51,12 @@ export class UsersController extends BaseController<
     const result = await this.usersService.profile();
     return result;
   }
+
+  @Post('search/byRol')
+  async searchByRol(@Body() body: any) {
+    const result = await this.usersService.searchByRol(body.idRol, body.name);
+    return {
+      data: result,
+    };
+  }
 }
