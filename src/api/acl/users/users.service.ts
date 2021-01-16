@@ -28,6 +28,12 @@ export class UsersService extends BaseService<
     super();
   }
 
+  async findForRol(rolCode): Promise<Users[]> {
+    return await (await this.usersRolesService.findForRolCode(rolCode)).map(
+      (r) => r.user,
+    );
+  }
+
   async findOne(id: number): Promise<Users> {
     return this.repository.findOneOrFail(id, {
       relations: ['users_roles', 'users_roles.rol'],
