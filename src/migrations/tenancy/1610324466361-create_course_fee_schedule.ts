@@ -21,17 +21,14 @@ export class createCourseFeeSchedule1610324466361
           {
             name: 'currency_id',
             type: 'int',
-            isNullable: true,
           },
           {
             name: 'course_id',
             type: 'int',
-            isNullable: false,
           },
           {
             name: 'begin',
             type: 'date',
-            isNullable: false,
           },
           {
             name: 'end',

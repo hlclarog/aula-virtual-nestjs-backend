@@ -1,6 +1,12 @@
 import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export const COURSE_PROVIDER = 'COURSE_REPOSITORY';
 export const COURSE_ENTITY = 'courses';
@@ -17,34 +23,34 @@ export class CreateCourseDto extends CreateBaseDto {
 export class UpdateCourseDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
-  @IsNotEmpty()
-  readonly name: string;
+  @IsOptional()
+  readonly name?: string;
   @ApiProperty({ required: false })
   @IsString()
-  @IsNotEmpty()
-  readonly description: string;
+  @IsOptional()
+  readonly description?: string;
   @ApiProperty({ required: false })
   @IsString()
-  @IsNotEmpty()
-  readonly short_name: string;
+  @IsOptional()
+  readonly short_name?: string;
   @ApiProperty({ required: false })
   @IsBoolean()
-  @IsNotEmpty()
-  readonly free: boolean;
+  @IsOptional()
+  readonly free?: boolean;
   @ApiProperty({ required: false })
   @IsBoolean()
-  @IsNotEmpty()
-  readonly certifiable: boolean;
+  @IsOptional()
+  readonly certifiable?: boolean;
   @ApiProperty({ required: false })
   @IsNumber()
-  @IsNotEmpty()
-  readonly organization: number;
+  @IsOptional()
+  readonly organization?: number;
   @ApiProperty({ required: false })
   @IsNumber()
-  @IsNotEmpty()
-  readonly user: number;
+  @IsOptional()
+  readonly user?: number;
   @ApiProperty({ required: false })
   @IsNumber()
-  @IsNotEmpty()
-  readonly course_status: number;
+  @IsOptional()
+  readonly course_status?: number;
 }
