@@ -48,8 +48,9 @@ export class CourseFeeScheduleController extends BaseController<
     return this.remove(id);
   }
 
-  @Get('bycourse:id')
+  @Get('byCourse/:id')
   async getByCourse(@Param('id') id: number) {
-    return this.courseFeeScheduleService.findByCourse(id);
+    const result = await this.courseFeeScheduleService.findByCourse(id);
+    return { data: result };
   }
 }
