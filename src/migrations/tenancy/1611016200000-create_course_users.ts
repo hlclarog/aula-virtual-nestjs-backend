@@ -2,7 +2,7 @@ import {
   MigrationInterface,
   QueryRunner,
   Table,
-  TableForeignKey,
+  TableForeignKey, TableUnique,
 } from 'typeorm';
 
 export class createCourseUsers1611016200000 implements MigrationInterface {
@@ -138,6 +138,14 @@ export class createCourseUsers1611016200000 implements MigrationInterface {
         referencedTableName: 'enrollment_types',
       }),
     ]);
+
+    await queryRunner.createUniqueConstraint(
+      'course_users',
+      new TableUnique({
+        name: 'UNIQUE_course_users_course_id_user_id',
+        columnNames: ['course_id', 'user_id'],
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
