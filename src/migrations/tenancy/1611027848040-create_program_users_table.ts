@@ -3,6 +3,7 @@ import {
   QueryRunner,
   Table,
   TableForeignKey,
+  TableUnique,
 } from 'typeorm';
 
 export class createProgramUsersTable1611027848040
@@ -140,6 +141,13 @@ export class createProgramUsersTable1611027848040
         referencedTableName: 'courses',
       }),
     ]);
+    await queryRunner.createUniqueConstraint(
+      'program_users',
+      new TableUnique({
+        name: 'UNIQUE_program_users_course_id_user_id',
+        columnNames: ['course_id', 'user_id'],
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
