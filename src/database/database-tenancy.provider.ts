@@ -20,7 +20,7 @@ export const databaseTenancyProvider = {
     config: ConfigService,
     connManager: Connection,
   ) => {
-    const host = getHostFromOrigin(req.headers['origin']);
+    const host = getHostFromOrigin(req.headers);
     const dataHost: TenancyDomains = await connManager
       .getRepository(TenancyDomains)
       .findOne({

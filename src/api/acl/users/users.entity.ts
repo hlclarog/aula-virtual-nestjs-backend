@@ -3,8 +3,8 @@ import { Base } from '../../../base/base.entity';
 import { UsersRoles } from '../users_roles/users_roles.entity';
 import { USERS_ENTITY } from './users.dto';
 import { Course } from '../../courses/course.entity';
-import { Programs } from '../../programs/program.entity';
 import { CourseUsers } from '../../course-users/course-users.entity';
+import { ProgramCourses } from './../../program_courses/program_courses.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -59,8 +59,9 @@ export class Users extends Base {
   @OneToMany(() => Course, (courses) => courses.user)
   course: Course[];
 
-  @OneToMany(() => Programs, (programs) => programs.user)
-  programs: Programs[];
   @OneToMany(() => CourseUsers, (courseUsers) => courseUsers.user)
   course_users: CourseUsers[];
+
+  @OneToMany(() => ProgramCourses, (programCourses) => programCourses.user)
+  program_courses: ProgramCourses[];
 }

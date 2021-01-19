@@ -78,13 +78,11 @@ export class createProgramFeeSchedulesTable1611027952756
         columnNames: ['currency_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'currencies',
-        onUpdate: 'CASCADE',
       }),
       new TableForeignKey({
         columnNames: ['program_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'programs',
-        onUpdate: 'CASCADE',
       }),
     ]);
   }

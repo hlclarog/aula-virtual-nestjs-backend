@@ -43,7 +43,7 @@ export class PublicGateway
 
   async handleConnection(client: Socket) {
     const request: Request = client.client.request;
-    const host = getHostFromOrigin(request.headers.origin);
+    const host = getHostFromOrigin(request.headers);
     await this.clientsService.create(client.id, host);
     await client.emit(EVENTS_SOCKET.SUBSCRIBE, client.client.id);
   }

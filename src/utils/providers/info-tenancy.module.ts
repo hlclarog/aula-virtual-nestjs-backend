@@ -31,7 +31,7 @@ export class InfoTenancyModule {
         tenancyDomainsService: TenancyDomainsService,
         cryptoService: CryptoService,
       ) => {
-        const host = getHostFromOrigin(req.headers.origin);
+        const host = getHostFromOrigin(req.headers);
         const domain = await tenancyDomainsService.findForDomain(host);
         const schema = domain
           ? domain.tenancy

@@ -1,4 +1,4 @@
-import { ORGANIZATIONS_ENTITY } from 'src/api/organizations/organizations.dto';
+import { ORGANIZATIONS_ENTITY } from './../../api/organizations/organizations.dto';
 import {
   MigrationInterface,
   QueryRunner,

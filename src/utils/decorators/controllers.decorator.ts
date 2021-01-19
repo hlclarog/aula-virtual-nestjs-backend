@@ -9,12 +9,24 @@ export function ControllerApi({ name }) {
     ApiBearerAuth(),
     ApiTags(name),
     Controller(`/api/${name}`),
+    ApiHeader({
+      name: NAME_HEADER_CLIENT,
+      description: 'Url client',
+      required: false,
+      example: 'localhost',
+    }),
   );
 }
 export function ControllerAuth({ name }) {
   return applyDecorators(
     ApiTags('auth'),
     Controller(`/auth${name ? `/${name}` : ''}`),
+    ApiHeader({
+      name: NAME_HEADER_CLIENT,
+      description: 'Url client',
+      required: false,
+      example: 'localhost',
+    }),
   );
 }
 export function ControllerMigrations({ name }) {

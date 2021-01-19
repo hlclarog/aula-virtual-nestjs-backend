@@ -2,6 +2,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { ORGANIZATIONS_ENTITY } from './organizations.dto';
 import { Course } from '../courses/course.entity';
+import { Programs } from '../programs/programs.entity';
 
 @Entity({ name: ORGANIZATIONS_ENTITY })
 export class Organizations extends Base {
@@ -28,4 +29,7 @@ export class Organizations extends Base {
 
   @OneToMany(() => Course, (course) => course.organization)
   course: Course[];
+
+  @OneToMany(() => Programs, (program) => program.organization)
+  programs: Programs[];
 }

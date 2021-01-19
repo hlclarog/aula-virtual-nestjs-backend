@@ -5,7 +5,7 @@ import { InstanceProcessModule } from '../../queues/instance_process/instance_pr
 import { PROGRAMS_PROVIDER } from './programs.dto';
 import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
-import { Programs } from './program.entity';
+import { Programs } from './programs.entity';
 
 @Module({
   imports: [InstanceProcessModule],

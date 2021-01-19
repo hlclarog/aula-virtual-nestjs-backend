@@ -34,6 +34,11 @@ import { CourseFeeScheduleModule } from './course-fee-schedule/course-fee-schedu
 import { ProgramsModule } from './programs/programs.module';
 import { EnrollmentStatusModule } from './enrollment-status/enrollment-status.module';
 import { CourseUsersModule } from './course-users/course-users.module';
+import { TransactionStatusModule } from './transaction_status/transaction_status.module';
+import { ProgramTypesModule } from './program_types/program_types.module';
+import { ProgramStatusModule } from './program_status/program_status.module';
+import { ProgramFeeSchedulesModule } from './program_fee_schedules/program_fee_schedules.module';
+import { ProgramCoursesModule } from './program_courses/program_courses.module';
 
 @Module({
   imports: [
@@ -72,6 +77,11 @@ import { CourseUsersModule } from './course-users/course-users.module';
     ProgramsModule,
     EnrollmentStatusModule,
     CourseUsersModule,
+    TransactionStatusModule,
+    ProgramTypesModule,
+    ProgramStatusModule,
+    ProgramFeeSchedulesModule,
+    ProgramCoursesModule,
   ],
   controllers: [],
   providers: [],

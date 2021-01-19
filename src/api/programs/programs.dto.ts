@@ -19,7 +19,7 @@ export class CreateProgramsDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly shortname: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly picture: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly video_url: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly duration: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly duration: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly email_to: string;
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly active: boolean;
 }
@@ -57,7 +57,7 @@ export class UpdateProgramsDto {
   @IsOptional()
   readonly video_url?: string;
   @ApiProperty({ required: false })
-  @IsString()
+  @IsNumber()
   @IsOptional()
   readonly duration?: number;
   @ApiProperty({ required: false })

@@ -47,7 +47,7 @@ export class InfoUserModule {
         configService: ConfigService,
       ) => {
         const token = req.headers.authorization;
-        const host = getHostFromOrigin(req.headers.origin);
+        const host = getHostFromOrigin(req.headers);
         const dataTenant: TenancyDomains = await connection
           .getRepository(TenancyDomains)
           .findOneOrFail({
