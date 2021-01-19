@@ -1,15 +1,6 @@
 import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsDate,
-  IsDateString,
-  IsDecimal,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
-
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 export const COURSE_FEE_SCHEDULE_PROVIDER = 'COURSE_FEE_SCHEDULE_REPOSITORY';
 export const COURSE_FEE_SCHEDULE_ENTITY = 'course_fee_schedules';
 
@@ -29,15 +20,15 @@ export class UpdateCourseFeeScheduleDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly currency: number;
+  readonly currency?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly course: number;
+  readonly course?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly begin: string;
+  readonly begin?: string;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -45,9 +36,9 @@ export class UpdateCourseFeeScheduleDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly course_val: number;
+  readonly course_val?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly certificate_val: number;
+  readonly certificate_val?: number;
 }
