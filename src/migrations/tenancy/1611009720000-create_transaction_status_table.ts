@@ -43,6 +43,6 @@ export class createTransactionStatusTable1611009720000
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('program_status');
+    await queryRunner.dropTable('transaction_status');
   }
 }
