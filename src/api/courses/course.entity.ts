@@ -1,10 +1,18 @@
 import { Base } from '../../base/base.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  RelationId,
+} from 'typeorm';
 import { Organizations } from '../organizations/organizations.entity';
 import { COURSE_ENTITY } from './courses.dto';
 import { Users } from '../acl/users/users.entity';
 import { CourseStatus } from '../course-status/course-status.entity';
 import { CourseFeeSchedules } from '../course-fee-schedule/course-fee-schedule.entity';
+import { CourseUsers } from '../course-users/course-users.entity';
 @Entity({ name: COURSE_ENTITY })
 export class Course extends Base {
   @Column({ type: 'varchar' }) name: string;
@@ -45,4 +53,7 @@ export class Course extends Base {
     (courseFeeSchedules) => courseFeeSchedules.course,
   )
   course_fee_schedules: CourseFeeSchedules[];
+
+  @OneToMany(() => CourseUsers, (courseUsers) => courseUsers.course)
+  course_users: CourseUsers[];
 }

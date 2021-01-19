@@ -32,6 +32,8 @@ import { CurrenciesModule } from './currencies/currencies.module';
 import { CoursesModule } from './courses/courses.module';
 import { CourseFeeScheduleModule } from './course-fee-schedule/course-fee-schedule.module';
 import { ProgramsModule } from './programs/programs.module';
+import { EnrollmentStatusModule } from './enrollment-status/enrollment-status.module';
+import { CourseUsersModule } from './course-users/course-users.module';
 
 @Module({
   imports: [
@@ -68,6 +70,8 @@ import { ProgramsModule } from './programs/programs.module';
     CoursesModule,
     CourseFeeScheduleModule,
     ProgramsModule,
+    EnrollmentStatusModule,
+    CourseUsersModule,
   ],
   controllers: [],
   providers: [],
