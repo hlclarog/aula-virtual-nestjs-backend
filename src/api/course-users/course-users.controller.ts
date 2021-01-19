@@ -10,7 +10,7 @@ import {
 import { BaseController } from '../../base/base.controller';
 import { CourseUsers } from './course-users.entity';
 import { CreateCourseDto, UpdateCourseDto } from '../courses/courses.dto';
-import { CoursesService } from '../courses/courses.service';
+import { CourseUsersService } from './course-users.service';
 
 @Controller('course-users')
 export class CourseUsersController extends BaseController<
@@ -18,8 +18,8 @@ export class CourseUsersController extends BaseController<
   CreateCourseDto,
   UpdateCourseDto
 > {
-  constructor(private readonly coursesService: CoursesService) {
-    super(coursesService);
+  constructor(private readonly courseUsersService: CourseUsersService) {
+    super(courseUsersService);
   }
 
   @Post()

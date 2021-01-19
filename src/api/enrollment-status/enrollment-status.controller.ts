@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { CoursesService } from '../courses/courses.service';
+import { EnrollmentStatusService } from './enrollment-status.service';
 import { BaseController } from '../../base/base.controller';
 import { EnrollmentStatus } from './enrollment-status.entity';
 import {
@@ -21,8 +21,10 @@ export class EnrollmentStatusController extends BaseController<
   CreateEnrollmentStatusDto,
   UpdateEnrollmentStatusDto
 > {
-  constructor(private readonly coursesService: CoursesService) {
-    super(coursesService);
+  constructor(
+    private readonly enrollmentStatusService: EnrollmentStatusService,
+  ) {
+    super(enrollmentStatusService);
   }
 
   @Post()
