@@ -42,8 +42,8 @@ export class CourseUsers extends Base {
   @RelationId((courseUsers: CourseUsers) => courseUsers.enrollment_type)
   enrollment_type_id: number;
 
-  @Column({ type: 'date', nullable: true }) begin: string;
-  @Column({ type: 'date', nullable: true }) end: string;
+  @Column({ type: 'date', nullable: true }) begin_date: string;
+  @Column({ type: 'date', nullable: true }) end_date: string;
   @Column({ type: 'varchar', nullable: true }) ref_transaction: string;
   @Column({ type: 'varchar', nullable: true }) certificate_file: string;
   @Column({ type: 'varchar', nullable: true })

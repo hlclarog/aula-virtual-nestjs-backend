@@ -43,11 +43,11 @@ export class createProgramUsersTable1611027848040
             type: 'int',
           },
           {
-            name: 'begin',
+            name: 'begin_date',
             type: 'date',
           },
           {
-            name: 'end',
+            name: 'end_date',
             type: 'date',
             isNullable: true,
           },

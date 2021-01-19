@@ -14,8 +14,9 @@ import {
   CreateEnrollmentTypesDto,
   UpdateEnrollmentTypesDto,
 } from './enrollment-types.dto';
+import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 
-@Controller('enrollment-types')
+@ControllerApi({ name: 'enrollment-types' })
 export class EnrollmentTypesController extends BaseController<
   EnrollmentTypes,
   CreateEnrollmentTypesDto,

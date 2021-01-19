@@ -11,8 +11,9 @@ import { BaseController } from '../../base/base.controller';
 import { CourseUsers } from './course-users.entity';
 import { CreateCourseDto, UpdateCourseDto } from '../courses/courses.dto';
 import { CourseUsersService } from './course-users.service';
+import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 
-@Controller('course-users')
+@ControllerApi({ name: 'course-users' })
 export class CourseUsersController extends BaseController<
   CourseUsers,
   CreateCourseDto,
