@@ -12,19 +12,20 @@ import { CourseUsers } from './course-users.entity';
 import { CreateCourseDto, UpdateCourseDto } from '../courses/courses.dto';
 import { CourseUsersService } from './course-users.service';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
+import { CreateCourseUsersDto, UpdateCourseUsersDto } from './course-users.dto';
 
 @ControllerApi({ name: 'course-users' })
 export class CourseUsersController extends BaseController<
   CourseUsers,
-  CreateCourseDto,
-  UpdateCourseDto
+  CreateCourseUsersDto,
+  UpdateCourseUsersDto
 > {
   constructor(private readonly courseUsersService: CourseUsersService) {
     super(courseUsersService);
   }
 
   @Post()
-  async post(@Body() createDto: CreateCourseDto) {
+  async post(@Body() createDto: CreateCourseUsersDto) {
     return await this.create(createDto);
   }
 
@@ -39,7 +40,7 @@ export class CourseUsersController extends BaseController<
   }
 
   @Put(':id')
-  async edit(@Param('id') id: string, @Body() updateDto: UpdateCourseDto) {
+  async edit(@Param('id') id: string, @Body() updateDto: UpdateCourseUsersDto) {
     return await this.update(id, updateDto);
   }
 
