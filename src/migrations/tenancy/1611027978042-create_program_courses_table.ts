@@ -5,45 +5,9 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class CreateProgramCourse1610939213650 implements MigrationInterface {
+export class createProgramCoursesTable1611027978042
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.createTable(
-      new Table({
-        name: 'transaction_status',
-        columns: [
-          {
-            name: 'id',
-            type: 'int',
-            isPrimary: true,
-            isGenerated: true,
-          },
-          {
-            name: 'description',
-            type: 'varchar',
-          },
-          {
-            name: 'active',
-            type: 'bool',
-            default: true,
-          },
-          {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
-            name: 'updated_at',
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
-            name: 'deleted_at',
-            type: 'timestamp',
-            isNullable: true,
-          },
-        ],
-      }),
-    );
     await queryRunner.createTable(
       new Table({
         name: 'program_courses',
@@ -63,6 +27,10 @@ export class CreateProgramCourse1610939213650 implements MigrationInterface {
             type: 'int',
           },
           {
+            name: 'transaction_status_id',
+            type: 'int',
+          },
+          {
             name: 'paid_reference',
             type: 'varchar',
           },
@@ -77,10 +45,6 @@ export class CreateProgramCourse1610939213650 implements MigrationInterface {
           {
             name: 'ref_transaction',
             type: 'varchar',
-          },
-          {
-            name: 'transaction_status_id',
-            type: 'int',
           },
           {
             name: 'paid_value',
@@ -149,5 +113,7 @@ export class CreateProgramCourse1610939213650 implements MigrationInterface {
     ]);
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable('program_courses');
+  }
 }

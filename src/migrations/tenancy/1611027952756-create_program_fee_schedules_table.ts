@@ -5,7 +5,7 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class CreateProgramsFeeSchedue1610936083563
+export class createProgramFeeSchedulesTable1611027952756
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
@@ -87,64 +87,9 @@ export class CreateProgramsFeeSchedue1610936083563
         onUpdate: 'CASCADE',
       }),
     ]);
-
-    await queryRunner.createTable(
-      new Table({
-        name: 'program_courses',
-        columns: [
-          {
-            name: 'id',
-            type: 'int',
-            isPrimary: true,
-            isGenerated: true,
-          },
-          {
-            name: 'program_id',
-            type: 'int',
-          },
-          {
-            name: 'course_id',
-            type: 'int',
-          },
-          {
-            name: 'active',
-            type: 'bool',
-            default: true,
-          },
-          {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
-            name: 'updated_at',
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
-            name: 'deleted_at',
-            type: 'timestamp',
-            isNullable: true,
-          },
-        ],
-      }),
-    );
-
-    await queryRunner.createForeignKeys('program_courses', [
-      new TableForeignKey({
-        columnNames: ['program_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'programs',
-        onUpdate: 'CASCADE',
-      }),
-      new TableForeignKey({
-        columnNames: ['course_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'courses',
-        onUpdate: 'CASCADE',
-      }),
-    ]);
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable('program_fee_schedules');
+  }
 }

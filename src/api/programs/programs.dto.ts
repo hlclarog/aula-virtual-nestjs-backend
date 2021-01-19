@@ -1,6 +1,12 @@
 import { CreateBaseDto } from '../../base/base.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export const PROGRAMS_PROVIDER = 'PROGRAMS_REPOSITORY';
 export const PROGRAMS_ENTITY = 'programs';
@@ -9,50 +15,57 @@ export class CreateProgramsDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_status: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly organization: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
-  @ApiProperty() @IsString() readonly description: string;
-  @ApiProperty() @IsString() readonly shortname: string;
-  @ApiProperty() @IsString() readonly picture: string;
-  @ApiProperty() @IsString() readonly video_url: string;
-  @ApiProperty() @IsString() readonly duration: number;
-  @ApiProperty() @IsString() readonly email_to: string;
-  @ApiProperty() @IsBoolean() readonly active: boolean;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly shortname: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly picture: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly video_url: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly duration: number;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly email_to: string;
+  @ApiProperty() @IsBoolean() @IsNotEmpty() readonly active: boolean;
 }
 export class UpdateProgramsDto {
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   readonly program_type?: number;
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   readonly program_status?: number;
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   readonly organization?: number;
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly name?: string;
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
+  @IsOptional()
   readonly description?: string;
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
+  @IsOptional()
   readonly shortname?: string;
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
+  @IsOptional()
   readonly picture?: string;
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
+  @IsOptional()
   readonly video_url?: string;
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
+  @IsOptional()
   readonly duration?: number;
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
+  @IsOptional()
   readonly email_to?: string;
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsBoolean()
+  @IsOptional()
   readonly active?: boolean;
 }

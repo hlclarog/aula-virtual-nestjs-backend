@@ -1,82 +1,13 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
-import { ORGANIZATIONS_ENTITY } from '../../api/organizations/organizations.dto';
+import { ORGANIZATIONS_ENTITY } from 'src/api/organizations/organizations.dto';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
-export class CreateProgramsTables1610930563084 implements MigrationInterface {
+export class createProgramsTable1611027830115 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.createTable(
-      new Table({
-        name: 'program_types',
-        columns: [
-          {
-            name: 'id',
-            type: 'int',
-            isPrimary: true,
-            isGenerated: true,
-          },
-          {
-            name: 'description',
-            type: 'varchar',
-          },
-          {
-            name: 'active',
-            type: 'bool',
-            default: true,
-          },
-          {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
-            name: 'updated_at',
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
-            name: 'deleted_at',
-            type: 'timestamp',
-            isNullable: true,
-          },
-        ],
-      }),
-    );
-    await queryRunner.createTable(
-      new Table({
-        name: 'program_status',
-        columns: [
-          {
-            name: 'id',
-            type: 'int',
-            isPrimary: true,
-            isGenerated: true,
-          },
-          {
-            name: 'description',
-            type: 'varchar',
-          },
-          {
-            name: 'active',
-            type: 'bool',
-            default: true,
-          },
-          {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
-            name: 'updated_at',
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
-            name: 'deleted_at',
-            type: 'timestamp',
-            isNullable: true,
-          },
-        ],
-      }),
-    );
     await queryRunner.createTable(
       new Table({
         name: 'programs',
@@ -152,13 +83,12 @@ export class CreateProgramsTables1610930563084 implements MigrationInterface {
     );
     await queryRunner.createForeignKeys('programs', [
       new TableForeignKey({
-        columnNames: ['program_type_id'],
+        columnNames: ['program_status_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: '',
-        onUpdate: 'CASCADE',
+        referencedTableName: 'program_status',
       }),
       new TableForeignKey({
-        columnNames: ['program_status_id'],
+        columnNames: ['program_type_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'program_types',
       }),
@@ -172,7 +102,5 @@ export class CreateProgramsTables1610930563084 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('programs');
-    await queryRunner.dropTable('program_status');
-    await queryRunner.dropTable('program_types');
   }
 }

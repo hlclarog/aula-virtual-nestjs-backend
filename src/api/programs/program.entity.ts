@@ -1,5 +1,5 @@
 import { Base } from '../../base/base.entity';
-import { Column, Entity, JoinColumn, ManyToOne, RelationId} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Users } from '../acl/users/users.entity';
 import { PROGRAMS_ENTITY } from './programs.dto';
 @Entity({ name: PROGRAMS_ENTITY })
