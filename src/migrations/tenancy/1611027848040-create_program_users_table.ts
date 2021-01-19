@@ -34,18 +34,17 @@ export class createProgramUsersTable1611027848040
           {
             name: 'enrollment_status_id',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'enrollment_type_id',
             type: 'int',
-          },
-          {
-            name: 'course_id',
-            type: 'int',
+            isNullable: true,
           },
           {
             name: 'begin_date',
             type: 'date',
+            isNullable: true,
           },
           {
             name: 'end_date',
@@ -55,6 +54,7 @@ export class createProgramUsersTable1611027848040
           {
             name: 'ref_transaction',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'paid_value',
@@ -71,6 +71,7 @@ export class createProgramUsersTable1611027848040
           {
             name: 'certificate_file',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'downloaded',
@@ -80,6 +81,7 @@ export class createProgramUsersTable1611027848040
           {
             name: 'certificate_code_validation',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'favorite',
@@ -135,17 +137,12 @@ export class createProgramUsersTable1611027848040
         referencedColumnNames: ['id'],
         referencedTableName: 'enrollment_types',
       }),
-      new TableForeignKey({
-        columnNames: ['course_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'courses',
-      }),
     ]);
     await queryRunner.createUniqueConstraint(
       'program_users',
       new TableUnique({
-        name: 'UNIQUE_program_users_course_id_user_id',
-        columnNames: ['course_id', 'user_id'],
+        name: 'UNIQUE_program_users_program_id_user_id',
+        columnNames: ['program_id', 'user_id'],
       }),
     );
   }

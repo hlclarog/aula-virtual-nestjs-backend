@@ -39,6 +39,7 @@ import { ProgramTypesModule } from './program_types/program_types.module';
 import { ProgramStatusModule } from './program_status/program_status.module';
 import { ProgramFeeSchedulesModule } from './program_fee_schedules/program_fee_schedules.module';
 import { ProgramCoursesModule } from './program_courses/program_courses.module';
+import { ProgramUsersModule } from './program_users/program_users.module';
 
 @Module({
   imports: [
@@ -82,6 +83,7 @@ import { ProgramCoursesModule } from './program_courses/program_courses.module';
     ProgramStatusModule,
     ProgramFeeSchedulesModule,
     ProgramCoursesModule,
+    ProgramUsersModule,
   ],
   controllers: [],
   providers: [],

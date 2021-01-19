@@ -2,7 +2,8 @@ import {
   MigrationInterface,
   QueryRunner,
   Table,
-  TableForeignKey, TableUnique,
+  TableForeignKey,
+  TableUnique,
 } from 'typeorm';
 
 export class createCourseUsers1611016200000 implements MigrationInterface {

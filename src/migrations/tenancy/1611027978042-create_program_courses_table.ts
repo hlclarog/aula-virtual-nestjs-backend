@@ -19,7 +19,7 @@ export class createProgramCoursesTable1611027978042
             isGenerated: true,
           },
           {
-            name: 'user_id',
+            name: 'course_id',
             type: 'int',
           },
           {
@@ -29,43 +29,6 @@ export class createProgramCoursesTable1611027978042
           {
             name: 'transaction_status_id',
             type: 'int',
-          },
-          {
-            name: 'paid_reference',
-            type: 'varchar',
-          },
-          {
-            name: 'begin_date',
-            type: 'date',
-          },
-          {
-            name: 'end_date',
-            type: 'date',
-          },
-          {
-            name: 'ref_transaction',
-            type: 'varchar',
-          },
-          {
-            name: 'paid_value',
-            type: 'decimal',
-            isNullable: false,
-            default: 0.0,
-            precision: 18,
-            scale: 2,
-          },
-          {
-            name: 'certificate_file',
-            type: 'varchar',
-          },
-          {
-            name: 'downloaded',
-            type: 'bool',
-            default: false,
-          },
-          {
-            name: 'certificate_code_validation',
-            type: 'varchar',
           },
           {
             name: 'active',
@@ -93,9 +56,9 @@ export class createProgramCoursesTable1611027978042
 
     await queryRunner.createForeignKeys('program_courses', [
       new TableForeignKey({
-        columnNames: ['user_id'],
+        columnNames: ['course_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'users',
+        referencedTableName: 'courses',
         onUpdate: 'CASCADE',
       }),
       new TableForeignKey({

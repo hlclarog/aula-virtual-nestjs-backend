@@ -13,6 +13,7 @@ import { Users } from '../acl/users/users.entity';
 import { CourseStatus } from '../course-status/course-status.entity';
 import { CourseFeeSchedules } from '../course-fee-schedule/course-fee-schedule.entity';
 import { CourseUsers } from '../course-users/course-users.entity';
+import { ProgramCourses } from '../program_courses/program_courses.entity';
 @Entity({ name: COURSE_ENTITY })
 export class Course extends Base {
   @Column({ type: 'varchar' }) name: string;
@@ -56,4 +57,7 @@ export class Course extends Base {
 
   @OneToMany(() => CourseUsers, (courseUsers) => courseUsers.course)
   course_users: CourseUsers[];
+
+  @OneToMany(() => ProgramCourses, (programCourses) => programCourses.course)
+  program_courses: ProgramCourses[];
 }
