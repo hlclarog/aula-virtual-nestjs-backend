@@ -12,7 +12,7 @@ export class CourseFeeSchedules extends Base {
     { eager: true },
   )
   @JoinColumn({ name: 'currency_id' })
-  currency: Currencies;
+  currency: Currencies | number;
 
   @RelationId(
     (courseFeeSchedules: CourseFeeSchedules) => courseFeeSchedules.currency,
@@ -23,7 +23,7 @@ export class CourseFeeSchedules extends Base {
     eager: true,
   })
   @JoinColumn({ name: 'course_id' })
-  course: Courses;
+  course: Courses | number;
 
   @RelationId(
     (courseFeeSchedules: CourseFeeSchedules) => courseFeeSchedules.course,
