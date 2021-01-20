@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseService } from '../../base/base.service';
 import {
-  COURSE_PROVIDER,
+  COURSES_PROVIDER,
   CreateCourseDto,
   UpdateCourseDto,
 } from './courses.dto';
@@ -14,5 +14,5 @@ export class CoursesService extends BaseService<
   CreateCourseDto,
   UpdateCourseDto
 > {
-  @Inject(COURSE_PROVIDER) repository: BaseRepo<Courses>;
+  @Inject(COURSES_PROVIDER) repository: BaseRepo<Courses>;
 }
