@@ -5,7 +5,7 @@ import { InstanceProcessModule } from '../../queues/instance_process/instance_pr
 import { COURSE_PROVIDER } from './courses.dto';
 import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
-import { Course } from './course.entity';
+import { Courses } from './courses.entity';
 
 @Module({
   imports: [InstanceProcessModule],
@@ -14,7 +14,7 @@ import { Course } from './course.entity';
     {
       provide: COURSE_PROVIDER,
       inject: [DATABASE_TENANCY_PROVIDER],
-      useFactory: (connection: Connection) => connection.getRepository(Course),
+      useFactory: (connection: Connection) => connection.getRepository(Courses),
     },
     CoursesService,
   ],

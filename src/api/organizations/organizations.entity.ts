@@ -1,8 +1,8 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { ORGANIZATIONS_ENTITY } from './organizations.dto';
-import { Course } from '../courses/course.entity';
 import { Programs } from '../programs/programs.entity';
+import { Courses } from '../courses/courses.entity';
 
 @Entity({ name: ORGANIZATIONS_ENTITY })
 export class Organizations extends Base {
@@ -27,8 +27,8 @@ export class Organizations extends Base {
   @Column({ type: 'varchar' })
   tertiary_color: string;
 
-  @OneToMany(() => Course, (course) => course.organization)
-  course: Course[];
+  @OneToMany(() => Courses, (courses) => courses.organization)
+  course: Courses[];
 
   @OneToMany(() => Programs, (program) => program.organization)
   programs: Programs[];

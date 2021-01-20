@@ -1,16 +1,16 @@
 import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { COURSE_USERS_ENTITY } from './course-users.dto';
 import { Base } from '../../base/base.entity';
-import { Course } from '../courses/course.entity';
 import { Users } from '../acl/users/users.entity';
 import { EnrollmentStatus } from '../enrollment-status/enrollment-status.entity';
 import { EnrollmentTypes } from '../enrollment-types/enrollment-types.entity';
+import { Courses } from '../courses/courses.entity';
 
 @Entity(COURSE_USERS_ENTITY)
 export class CourseUsers extends Base {
-  @ManyToOne(() => Course, (course) => course.course_users)
+  @ManyToOne(() => Courses, (courses) => courses.course_users)
   @JoinColumn({ name: 'course_id' })
-  course: Course;
+  course: Courses;
 
   @RelationId((courseUsers: CourseUsers) => courseUsers.course)
   course_id: number;

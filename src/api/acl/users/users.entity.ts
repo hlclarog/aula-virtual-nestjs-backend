@@ -2,9 +2,9 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { Base } from '../../../base/base.entity';
 import { UsersRoles } from '../users_roles/users_roles.entity';
 import { USERS_ENTITY } from './users.dto';
-import { Course } from '../../courses/course.entity';
 import { CourseUsers } from '../../course-users/course-users.entity';
 import { ProgramUsers } from 'src/api/program_users/program_users.entity';
+import { Courses } from '../../courses/courses.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -56,8 +56,8 @@ export class Users extends Base {
   @OneToMany(() => UsersRoles, (user_rol) => user_rol.user)
   users_roles: UsersRoles[];
 
-  @OneToMany(() => Course, (courses) => courses.user)
-  course: Course[];
+  @OneToMany(() => Courses, (courses) => courses.user)
+  course: Courses[];
 
   @OneToMany(() => CourseUsers, (courseUsers) => courseUsers.user)
   course_users: CourseUsers[];
