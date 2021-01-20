@@ -1,10 +1,15 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
-export class createEnrollmentStatus1611009600000 implements MigrationInterface {
+export class createCompetencesTable1610126953408 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'enrollment_status',
+        name: 'competences',
         columns: [
           {
             name: 'id',
@@ -15,6 +20,12 @@ export class createEnrollmentStatus1611009600000 implements MigrationInterface {
           {
             name: 'description',
             type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'competence_type_id',
+            type: 'int',
+            isNullable: false,
           },
           {
             name: 'active',
@@ -38,10 +49,20 @@ export class createEnrollmentStatus1611009600000 implements MigrationInterface {
           },
         ],
       }),
+      true,
+    );
+    await queryRunner.createForeignKey(
+      'competences',
+      new TableForeignKey({
+        columnNames: ['competence_type_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'competence_types',
+        onUpdate: 'CASCADE',
+      }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('enrollment_status');
+    await queryRunner.dropTable('competences');
   }
 }

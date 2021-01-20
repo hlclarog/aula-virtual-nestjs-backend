@@ -1,7 +1,7 @@
 import { ORGANIZATIONS_ENTITY } from './../../api/organizations/organizations.dto';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class createOrganizations1609908270572 implements MigrationInterface {
+export class createOrganizationsTable1609908270572 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({

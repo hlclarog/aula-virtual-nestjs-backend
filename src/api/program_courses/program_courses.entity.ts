@@ -1,17 +1,17 @@
-import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
+import { Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
-import { Course } from '../courses/course.entity';
 import { Programs } from '../programs/programs.entity';
 import { TransactionStatus } from '../transaction_status/transaction_status.entity';
 import { PROGRAM_COURSES_ENTITY } from './program_courses.dto';
+import { Courses } from '../courses/courses.entity';
 
 @Entity({ name: PROGRAM_COURSES_ENTITY })
 export class ProgramCourses extends Base {
-  @ManyToOne(() => Course, (courses) => courses.program_courses, {
+  @ManyToOne(() => Courses, (courses) => courses.program_courses, {
     eager: true,
   })
   @JoinColumn({ name: 'course_id' })
-  course: Course;
+  course: Courses;
   @RelationId((programCourses: ProgramCourses) => programCourses.course)
   course_id: number;
 

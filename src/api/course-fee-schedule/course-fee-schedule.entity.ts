@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { COURSE_FEE_SCHEDULE_ENTITY } from './course-fee-schedule.dto';
 import { Base } from '../../base/base.entity';
 import { Currencies } from '../currencies/currency.entity';
-import { Course } from '../courses/course.entity';
+import { Courses } from '../courses/courses.entity';
 
 @Entity({ name: COURSE_FEE_SCHEDULE_ENTITY })
 export class CourseFeeSchedules extends Base {
@@ -19,11 +19,11 @@ export class CourseFeeSchedules extends Base {
   )
   currency_id: number;
 
-  @ManyToOne(() => Course, (course) => course.course_fee_schedules, {
+  @ManyToOne(() => Courses, (courses) => courses.course_fee_schedules, {
     eager: true,
   })
   @JoinColumn({ name: 'course_id' })
-  course: Course | number;
+  course: Courses | number;
 
   @RelationId(
     (courseFeeSchedules: CourseFeeSchedules) => courseFeeSchedules.course,

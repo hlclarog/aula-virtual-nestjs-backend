@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class competenceTypes1610122762275 implements MigrationInterface {
+export class createEnrollmentStatusTable1611009600000 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'competence_types',
+        name: 'enrollment_status',
         columns: [
           {
             name: 'id',
@@ -15,7 +15,6 @@ export class competenceTypes1610122762275 implements MigrationInterface {
           {
             name: 'description',
             type: 'varchar',
-            isNullable: false,
           },
           {
             name: 'active',
@@ -39,11 +38,10 @@ export class competenceTypes1610122762275 implements MigrationInterface {
           },
         ],
       }),
-      true,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('compentence_types');
+    await queryRunner.dropTable('enrollment_status');
   }
 }

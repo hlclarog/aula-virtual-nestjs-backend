@@ -1,15 +1,10 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class createTenancyModules1610318216047 implements MigrationInterface {
+export class createCourseStatusTable1610317663994 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'tenancy_modules',
+        name: 'course_status',
         columns: [
           {
             name: 'id',
@@ -18,12 +13,9 @@ export class createTenancyModules1610318216047 implements MigrationInterface {
             isGenerated: true,
           },
           {
-            name: 'tenancy_id',
-            type: 'int',
-          },
-          {
-            name: 'module_id',
-            type: 'int',
+            name: 'description',
+            type: 'varchar',
+            isNullable: false,
           },
           {
             name: 'active',
@@ -49,27 +41,8 @@ export class createTenancyModules1610318216047 implements MigrationInterface {
       }),
       true,
     );
-
-    await queryRunner.createForeignKey(
-      'tenancy_modules',
-      new TableForeignKey({
-        columnNames: ['tenancy_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'public.tenancies',
-      }),
-    );
-
-    await queryRunner.createForeignKey(
-      'tenancy_modules',
-      new TableForeignKey({
-        columnNames: ['module_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'public.modules',
-      }),
-    );
   }
-
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('tenancy_modules');
+    await queryRunner.dropTable('course_status');
   }
 }

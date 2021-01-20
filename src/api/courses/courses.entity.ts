@@ -15,20 +15,20 @@ import { CourseFeeSchedules } from '../course-fee-schedule/course-fee-schedule.e
 import { CourseUsers } from '../course-users/course-users.entity';
 import { ProgramCourses } from '../program_courses/program_courses.entity';
 @Entity({ name: COURSE_ENTITY })
-export class Course extends Base {
+export class Courses extends Base {
   @Column({ type: 'varchar' }) name: string;
   @Column({ type: 'varchar' }) description: string;
   @Column({ type: 'varchar' }) short_name: string;
   @Column({ type: 'boolean' }) free: string;
   @Column({ type: 'boolean' }) certifiable: string;
 
-  @ManyToOne(() => Users, (user) => user.course, {
+  @ManyToOne(() => Users, (users) => users.course, {
     eager: true,
   })
   @JoinColumn({ name: 'user_id' })
   user: Users;
 
-  @RelationId((course: Course) => course.user)
+  @RelationId((courses: Courses) => courses.user)
   user_id: number;
 
   @ManyToOne(() => Organizations, (organization) => organization.course, {
@@ -37,7 +37,7 @@ export class Course extends Base {
   @JoinColumn({ name: 'organization_id' })
   organization: Organizations;
 
-  @RelationId((course: Course) => course.organization)
+  @RelationId((courses: Courses) => courses.organization)
   organization_id: number;
 
   @ManyToOne(() => CourseStatus, (coursesStatus) => coursesStatus.course, {
@@ -46,7 +46,7 @@ export class Course extends Base {
   @JoinColumn({ name: 'course_status_id' })
   course_status: CourseStatus;
 
-  @RelationId((course: Course) => course.course_status)
+  @RelationId((courses: Courses) => courses.course_status)
   course_status_id: number;
 
   @OneToMany(

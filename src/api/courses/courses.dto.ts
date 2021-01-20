@@ -8,7 +8,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export const COURSE_PROVIDER = 'COURSE_REPOSITORY';
+export const COURSES_PROVIDER = 'COURSES_REPOSITORY';
 export const COURSE_ENTITY = 'courses';
 export class CreateCourseDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
