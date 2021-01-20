@@ -5,11 +5,12 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class competences1610126953408 implements MigrationInterface {
+export class createTenancyModulesTable1610318216047
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'competences',
+        name: 'tenancy_modules',
         columns: [
           {
             name: 'id',
@@ -18,14 +19,12 @@ export class competences1610126953408 implements MigrationInterface {
             isGenerated: true,
           },
           {
-            name: 'description',
-            type: 'varchar',
-            isNullable: false,
+            name: 'tenancy_id',
+            type: 'int',
           },
           {
-            name: 'competence_type_id',
+            name: 'module_id',
             type: 'int',
-            isNullable: false,
           },
           {
             name: 'active',
@@ -51,18 +50,27 @@ export class competences1610126953408 implements MigrationInterface {
       }),
       true,
     );
+
     await queryRunner.createForeignKey(
-      'competences',
+      'tenancy_modules',
       new TableForeignKey({
-        columnNames: ['competence_type_id'],
+        columnNames: ['tenancy_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'competence_types',
-        onUpdate: 'CASCADE',
+        referencedTableName: 'public.tenancies',
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      'tenancy_modules',
+      new TableForeignKey({
+        columnNames: ['module_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'public.modules',
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('competences');
+    await queryRunner.dropTable('tenancy_modules');
   }
 }

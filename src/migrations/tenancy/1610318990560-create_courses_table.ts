@@ -8,7 +8,7 @@ import { ORGANIZATIONS_ENTITY } from '../../api/organizations/organizations.dto'
 import { USERS_ENTITY } from '../../api/acl/users/users.dto';
 import { COURSE_STATUS_ENTITY } from '../../api/course-status/course-status.dto';
 
-export class Courses1610318990560 implements MigrationInterface {
+export class createCoursesTable1610318990560 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
