@@ -43,6 +43,7 @@ import { ProgramUsersModule } from './program_users/program_users.module';
 import { InterestAreasModule } from './interest_areas/interest_areas.module';
 import { ProgramInterestAreasModule } from './program_interest_areas/program_interest_areas.module';
 import { CourseInterestAreasModule } from './course_interest_areas/course_interest_areas.module';
+import { CourseCompetencesModule } from './course_competences/course_competences.module';
 
 @Module({
   imports: [
@@ -90,6 +91,7 @@ import { CourseInterestAreasModule } from './course_interest_areas/course_intere
     ProgramInterestAreasModule,
     InterestAreasModule,
     CourseInterestAreasModule,
+    CourseCompetencesModule,
   ],
   controllers: [],
   providers: [],

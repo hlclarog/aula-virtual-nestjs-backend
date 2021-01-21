@@ -15,6 +15,7 @@ import { CourseFeeSchedules } from '../course-fee-schedule/course-fee-schedule.e
 import { CourseUsers } from '../course-users/course-users.entity';
 import { ProgramCourses } from '../program_courses/program_courses.entity';
 import { CourseInterestAreas } from '../course_interest_areas/course_interest_areas.entity';
+import { CourseCompetences } from '../course_competences/course_competences.entity';
 @Entity({ name: COURSE_ENTITY })
 export class Courses extends Base {
   @Column({ type: 'varchar' }) name: string;
@@ -67,4 +68,10 @@ export class Courses extends Base {
     (courseInterestAreas) => courseInterestAreas.course,
   )
   course_interest_areas: CourseInterestAreas[];
+
+  @OneToMany(
+    () => CourseCompetences,
+    (courseCompetences) => courseCompetences.course,
+  )
+  course_competences: CourseCompetences[];
 }
