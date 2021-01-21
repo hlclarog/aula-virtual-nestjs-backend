@@ -15,4 +15,10 @@ export class ProgramUsersService extends BaseService<
   UpdateProgramUsersDto
 > {
   @Inject(PROGRAM_USERS_PROVIDER) repository: BaseRepo<ProgramUsers>;
+
+  async findByProgram(id: number): Promise<ProgramUsers[]> {
+    return await this.repository.find({
+      where: { program: id },
+    });
+  }
 }

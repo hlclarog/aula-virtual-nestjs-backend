@@ -45,4 +45,10 @@ export class ProgramUsersController extends BaseController<
   async delete(@Param('id') id: string) {
     return await this.remove(id);
   }
+
+  @Get('program/:id')
+  async getByProgram(@Param('id') id: number) {
+    const result = await this.programUsersService.findByProgram(id);
+    return { data: result };
+  }
 }

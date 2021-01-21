@@ -15,4 +15,10 @@ export class ProgramCoursesService extends BaseService<
   UpdateProgramCoursesDto
 > {
   @Inject(PROGRAM_COURSES_PROVIDER) repository: BaseRepo<ProgramCourses>;
+
+  async findByProgram(id: number): Promise<ProgramCourses[]> {
+    return await this.repository.find({
+      where: { program: id },
+    });
+  }
 }

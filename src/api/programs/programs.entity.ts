@@ -15,6 +15,7 @@ import { Organizations } from '../organizations/organizations.entity';
 import { ProgramFeeSchedules } from '../program_fee_schedules/program_fee_schedules.entity';
 import { ProgramCourses } from '../program_courses/program_courses.entity';
 import { ProgramUsers } from '../program_users/program_users.entity';
+import { ProgramInterestAreas } from '../program_interest_areas/program_interest_areas.entity';
 @Entity({ name: PROGRAMS_ENTITY })
 export class Programs extends Base {
   @ManyToOne(() => ProgramTypes, (program_type) => program_type.programs, {
@@ -61,4 +62,10 @@ export class Programs extends Base {
 
   @OneToMany(() => ProgramUsers, (programUsers) => programUsers.program)
   program_users: ProgramUsers[];
+
+  @OneToMany(
+    () => ProgramInterestAreas,
+    (programInterestAreas) => programInterestAreas.program,
+  )
+  program_interest_areas: ProgramInterestAreas[];
 }

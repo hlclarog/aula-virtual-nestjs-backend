@@ -14,7 +14,7 @@ export class ProgramCoursesController extends BaseController<
   CreateProgramCoursesDto,
   UpdateProgramCoursesDto
 > {
-  constructor(program_coursesService: ProgramCoursesService) {
+  constructor(private program_coursesService: ProgramCoursesService) {
     super(program_coursesService);
   }
 
@@ -44,5 +44,11 @@ export class ProgramCoursesController extends BaseController<
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.remove(id);
+  }
+
+  @Get('program/:id')
+  async getByProgram(@Param('id') id: number) {
+    const result = await this.program_coursesService.findByProgram(id);
+    return { data: result };
   }
 }
