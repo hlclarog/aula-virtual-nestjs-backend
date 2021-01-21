@@ -1,15 +1,6 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { BaseController } from '../../base/base.controller';
 import { CourseUsers } from './course-users.entity';
-import { CreateCourseDto, UpdateCourseDto } from '../courses/courses.dto';
 import { CourseUsersService } from './course-users.service';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { CreateCourseUsersDto, UpdateCourseUsersDto } from './course-users.dto';
@@ -47,5 +38,11 @@ export class CourseUsersController extends BaseController<
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.remove(id);
+  }
+
+  @Get('course/:id')
+  async getByCourse(@Param('id') id: number) {
+    const result = await this.courseUsersService.findByCourse(id);
+    return { data: result };
   }
 }
