@@ -5,12 +5,12 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class createProgramComissionOrganizationsTable1611206616543
+export class createCourseCommissionOrganizationsTable1611206627236
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'program_comission_organizations',
+        name: 'course_commission_organizations',
         columns: [
           {
             name: 'id',
@@ -19,7 +19,7 @@ export class createProgramComissionOrganizationsTable1611206616543
             isGenerated: true,
           },
           {
-            name: 'program_id',
+            name: 'course_id',
             type: 'int',
           },
           {
@@ -28,11 +28,8 @@ export class createProgramComissionOrganizationsTable1611206616543
           },
           {
             name: 'percentage',
-            type: 'decimal',
-            isNullable: false,
-            default: 0.0,
-            precision: 18,
-            scale: 2,
+            type: 'int',
+            isNullable: true,
           },
           {
             name: 'active',
@@ -57,11 +54,11 @@ export class createProgramComissionOrganizationsTable1611206616543
         ],
       }),
     );
-    await queryRunner.createForeignKeys('program_comission_organizations', [
+    await queryRunner.createForeignKeys('course_commission_organizations', [
       new TableForeignKey({
-        columnNames: ['program_id'],
+        columnNames: ['course_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'programs',
+        referencedTableName: 'courses',
       }),
       new TableForeignKey({
         columnNames: ['organization_id'],
@@ -72,6 +69,6 @@ export class createProgramComissionOrganizationsTable1611206616543
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('program_comission_organizations');
+    await queryRunner.dropTable('course_commission_organizations');
   }
 }

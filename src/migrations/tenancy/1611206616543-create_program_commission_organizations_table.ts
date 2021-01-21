@@ -5,12 +5,12 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class createCourseComissionOrganizationsTable1611206627236
+export class createProgramCommissionOrganizationsTable1611206616543
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'course_comission_organizations',
+        name: 'program_commission_organizations',
         columns: [
           {
             name: 'id',
@@ -19,7 +19,7 @@ export class createCourseComissionOrganizationsTable1611206627236
             isGenerated: true,
           },
           {
-            name: 'course_id',
+            name: 'program_id',
             type: 'int',
           },
           {
@@ -28,11 +28,8 @@ export class createCourseComissionOrganizationsTable1611206627236
           },
           {
             name: 'percentage',
-            type: 'decimal',
-            isNullable: false,
-            default: 0.0,
-            precision: 18,
-            scale: 2,
+            type: 'int',
+            isNullable: true,
           },
           {
             name: 'active',
@@ -57,11 +54,11 @@ export class createCourseComissionOrganizationsTable1611206627236
         ],
       }),
     );
-    await queryRunner.createForeignKeys('course_comission_organizations', [
+    await queryRunner.createForeignKeys('program_commission_organizations', [
       new TableForeignKey({
-        columnNames: ['course_id'],
+        columnNames: ['program_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'courses',
+        referencedTableName: 'programs',
       }),
       new TableForeignKey({
         columnNames: ['organization_id'],
@@ -72,6 +69,6 @@ export class createCourseComissionOrganizationsTable1611206627236
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('course_comission_organizations');
+    await queryRunner.dropTable('program_commission_organizations');
   }
 }
