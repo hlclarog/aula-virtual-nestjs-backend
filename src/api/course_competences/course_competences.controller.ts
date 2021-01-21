@@ -14,7 +14,7 @@ export class CourseCompetencesController extends BaseController<
   CreateCourseCompetencesDto,
   UpdateCourseCompetencesDto
 > {
-  constructor(courseCompetencesService: CourseCompetencesService) {
+  constructor(private courseCompetencesService: CourseCompetencesService) {
     super(courseCompetencesService);
   }
 
@@ -44,5 +44,11 @@ export class CourseCompetencesController extends BaseController<
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.remove(id);
+  }
+
+  @Get('course/:id')
+  async getByCourse(@Param('id') id: number) {
+    const result = await this.courseCompetencesService.findByCourse(id);
+    return { data: result };
   }
 }

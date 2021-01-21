@@ -15,4 +15,11 @@ export class CourseCompetencesService extends BaseService<
   UpdateCourseCompetencesDto
 > {
   @Inject(COURSE_COMPETENCES_PROVIDER) repository: BaseRepo<CourseCompetences>;
+
+  async findByCourse(id: number): Promise<CourseCompetences[]> {
+    return await this.repository.find({
+      where: { course: id },
+      relations: ['competence', 'course'],
+    });
+  }
 }
