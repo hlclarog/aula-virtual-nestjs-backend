@@ -4,7 +4,7 @@ import { Modules } from '../acl/modules/modules.entity';
 import { Tenancies } from '../tenancies/tenancies.entity';
 import { TENANCY_MODULES_ENTITY } from './tenancy_modules.dto';
 
-@Entity(TENANCY_MODULES_ENTITY)
+@Entity({ name: TENANCY_MODULES_ENTITY, schema: 'public' })
 export class TenancyModules extends Base {
   @ManyToOne(() => Tenancies, (tenancies) => tenancies.tenancy_modules, {
     eager: true,
