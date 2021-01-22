@@ -44,6 +44,8 @@ import { InterestAreasModule } from './interest_areas/interest_areas.module';
 import { ProgramInterestAreasModule } from './program_interest_areas/program_interest_areas.module';
 import { CourseInterestAreasModule } from './course_interest_areas/course_interest_areas.module';
 import { CourseCompetencesModule } from './course_competences/course_competences.module';
+import { ProgramCommissionOrganizationsModule } from './program_comission_organizations/program_commission_organizations.module';
+import { CourseCommissionOrganizationsModule } from './course_comission_organizations/course_commission_organizations.module';
 
 @Module({
   imports: [
@@ -92,6 +94,8 @@ import { CourseCompetencesModule } from './course_competences/course_competences
     InterestAreasModule,
     CourseInterestAreasModule,
     CourseCompetencesModule,
+    ProgramCommissionOrganizationsModule,
+    CourseCommissionOrganizationsModule,
   ],
   controllers: [],
   providers: [],
