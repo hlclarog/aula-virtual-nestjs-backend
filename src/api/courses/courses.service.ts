@@ -49,4 +49,20 @@ export class CoursesService extends BaseService<
     }
     return await this.repository.update(id, data);
   }
+
+  async findByTeacher(id: number): Promise<Courses[]> {
+    return await this.repository.find({
+      where: { user: id },
+      relations: [
+        'user',
+        'organization',
+        'course_status',
+        'course_fee_schedules',
+        'course_users',
+        'program_courses',
+        'course_interest_areas',
+        'course_competences',
+      ],
+    });
+  }
 }

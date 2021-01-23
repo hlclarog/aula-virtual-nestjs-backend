@@ -1,5 +1,5 @@
 import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsArray,
   IsBoolean,
@@ -30,6 +30,27 @@ export class CreateCourseDto extends CreateBaseDto {
   @IsOptional()
   interest_areas?: number[];
 }
+
+export class CreateCourseByTeacherDto extends CreateBaseDto {
+  @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly short_name: string;
+  @ApiProperty() @IsBoolean() @IsNotEmpty() readonly free: boolean;
+  @ApiProperty() @IsBoolean() @IsNotEmpty() readonly certifiable: boolean;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly organization: number;
+  @ApiProperty() @IsNumber() @IsOptional() user?: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_status: number;
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
+  @IsArray()
+  @IsOptional()
+  interest_areas?: number[];
+}
+
 export class UpdateCourseDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
@@ -58,7 +79,7 @@ export class UpdateCourseDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly user?: number;
+  user?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
