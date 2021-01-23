@@ -3,7 +3,7 @@ import { Base } from '../../../base/base.entity';
 import { UsersRoles } from '../users_roles/users_roles.entity';
 import { USERS_ENTITY } from './users.dto';
 import { CourseUsers } from '../../course-users/course-users.entity';
-import { ProgramUsers } from 'src/api/program_users/program_users.entity';
+import { ProgramUsers } from './../../program_users/program_users.entity';
 import { Courses } from '../../courses/courses.entity';
 
 @Entity(USERS_ENTITY)

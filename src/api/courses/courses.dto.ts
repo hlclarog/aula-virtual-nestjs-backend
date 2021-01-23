@@ -1,6 +1,7 @@
 import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsArray,
   IsBoolean,
   IsNotEmpty,
   IsNumber,
@@ -19,6 +20,15 @@ export class CreateCourseDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly organization: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly user: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_status: number;
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
+  @IsArray()
+  @IsOptional()
+  interest_areas?: number[];
 }
 export class UpdateCourseDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
@@ -53,4 +63,13 @@ export class UpdateCourseDto extends UpdateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly course_status?: number;
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
+  @IsArray()
+  @IsOptional()
+  interest_areas?: number[];
 }

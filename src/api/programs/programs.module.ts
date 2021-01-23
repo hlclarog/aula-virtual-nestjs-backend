@@ -6,9 +6,10 @@ import { PROGRAMS_PROVIDER } from './programs.dto';
 import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { Programs } from './programs.entity';
+import { ProgramInterestAreasModule } from '../program_interest_areas/program_interest_areas.module';
 
 @Module({
-  imports: [InstanceProcessModule],
+  imports: [InstanceProcessModule, ProgramInterestAreasModule],
   controllers: [ProgramsController],
   providers: [
     {

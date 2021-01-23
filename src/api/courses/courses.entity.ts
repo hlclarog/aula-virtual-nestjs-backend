@@ -22,14 +22,14 @@ export class Courses extends Base {
   @Column({ type: 'varchar' }) name: string;
   @Column({ type: 'varchar' }) description: string;
   @Column({ type: 'varchar' }) short_name: string;
-  @Column({ type: 'boolean' }) free: string;
-  @Column({ type: 'boolean' }) certifiable: string;
+  @Column({ type: 'boolean' }) free: boolean;
+  @Column({ type: 'boolean' }) certifiable: boolean;
 
   @ManyToOne(() => Users, (users) => users.course, {
     eager: true,
   })
   @JoinColumn({ name: 'user_id' })
-  user: Users;
+  user: Users | number;
 
   @RelationId((courses: Courses) => courses.user)
   user_id: number;
@@ -38,7 +38,7 @@ export class Courses extends Base {
     eager: true,
   })
   @JoinColumn({ name: 'organization_id' })
-  organization: Organizations;
+  organization: Organizations | number;
 
   @RelationId((courses: Courses) => courses.organization)
   organization_id: number;
@@ -47,7 +47,7 @@ export class Courses extends Base {
     eager: true,
   })
   @JoinColumn({ name: 'course_status_id' })
-  course_status: CourseStatus;
+  course_status: CourseStatus | number;
 
   @RelationId((courses: Courses) => courses.course_status)
   course_status_id: number;

@@ -22,4 +22,49 @@ export class CourseInterestAreasService extends BaseService<
       where: { course: id },
     });
   }
+
+  async set(idCourse: number, areas: Array<number>): Promise<any> {
+    const areasList = areas.length > 0 ? areas.join() : [0].join();
+    // DELETE ITEMS NOT RECEIVED
+    await this.repository
+      .createQueryBuilder()
+      .delete()
+      .from(CourseInterestAreas)
+      .where(
+        `course_id = :idCourse and interest_area_id not in (${areasList})`,
+        {
+          idCourse,
+        },
+      )
+      .execute();
+    // SEARCH ITEMS ACTUALS FOR NO DUPLICATE
+    const founds = await this.repository
+      .createQueryBuilder('item')
+      .leftJoinAndSelect('item.interest_area', 'interest_area')
+      .where(
+        `item.course_id = :idCourse and item.interest_area_id in (${areasList})`,
+        {
+          idCourse,
+        },
+      )
+      .getMany();
+    // SAVE ITEMS NEWS
+    const values: any[] = areas.map((idArea) => {
+      return { course: idCourse, interest_area: idArea };
+    });
+    await this.repository
+      .createQueryBuilder()
+      .insert()
+      .into(CourseInterestAreas)
+      .values(
+        values.filter((v) =>
+          founds.map((f: any) => f.interest_area.id).indexOf(v.interest_area) >=
+          0
+            ? false
+            : true,
+        ),
+      )
+      .execute();
+    return { update: true };
+  }
 }

@@ -1,6 +1,7 @@
 import { CreateBaseDto } from '../../base/base.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsArray,
   IsBoolean,
   IsNotEmpty,
   IsNumber,
@@ -21,6 +22,15 @@ export class CreateProgramsDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly video_url: string;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly duration: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly email_to: string;
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
+  @IsArray()
+  @IsOptional()
+  interest_areas?: number[];
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly active: boolean;
 }
 export class UpdateProgramsDto {
@@ -64,6 +74,15 @@ export class UpdateProgramsDto {
   @IsString()
   @IsOptional()
   readonly email_to?: string;
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
+  @IsArray()
+  @IsOptional()
+  interest_areas?: number[];
   @ApiProperty({ required: false })
   @IsBoolean()
   @IsOptional()

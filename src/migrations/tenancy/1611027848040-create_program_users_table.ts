@@ -30,6 +30,7 @@ export class createProgramUsersTable1611027848040
           {
             name: 'transaction_status_id',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'enrollment_status_id',

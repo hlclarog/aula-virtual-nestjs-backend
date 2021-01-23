@@ -17,5 +17,6 @@ import { DATABASE_TENANCY_PROVIDER } from './../../database/database.dto';
     },
     ProgramInterestAreasService,
   ],
+  exports: [PROGRAM_INTEREST_AREAS_PROVIDER, ProgramInterestAreasService],
 })
 export class ProgramInterestAreasModule {}

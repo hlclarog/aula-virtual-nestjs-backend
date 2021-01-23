@@ -23,7 +23,7 @@ export class Programs extends Base {
     eager: true,
   })
   @JoinColumn({ name: 'program_type_id' })
-  program_type: Users;
+  program_type: Users | number;
   @RelationId((programs: Programs) => programs.program_type)
   program_type_id: number;
 
@@ -31,7 +31,7 @@ export class Programs extends Base {
     eager: true,
   })
   @JoinColumn({ name: 'program_status_id' })
-  program_status: Users;
+  program_status: ProgramStatus | number;
   @RelationId((programs: Programs) => programs.program_status)
   program_status_id: number;
 
@@ -39,7 +39,7 @@ export class Programs extends Base {
     eager: true,
   })
   @JoinColumn({ name: 'organization_id' })
-  organization: Organizations;
+  organization: Organizations | number;
   @RelationId((programs: Programs) => programs.organization)
   organization_id: number;
 

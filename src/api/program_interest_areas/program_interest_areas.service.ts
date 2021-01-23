@@ -22,4 +22,49 @@ export class ProgramInterestAreasService extends BaseService<
       where: { program: id },
     });
   }
+
+  async set(idProgram: number, areas: Array<number>): Promise<any> {
+    const areasList = areas.length > 0 ? areas.join() : [0].join();
+    // DELETE ITEMS NOT RECEIVED
+    await this.repository
+      .createQueryBuilder()
+      .delete()
+      .from(ProgramInterestAreas)
+      .where(
+        `program_id = :idProgram and interest_area_id not in (${areasList})`,
+        {
+          idProgram,
+        },
+      )
+      .execute();
+    // SEARCH ITEMS ACTUALS FOR NO DUPLICATE
+    const founds = await this.repository
+      .createQueryBuilder('item')
+      .leftJoinAndSelect('item.interest_area', 'interest_area')
+      .where(
+        `item.program_id = :idProgram and item.interest_area_id in (${areasList})`,
+        {
+          idProgram,
+        },
+      )
+      .getMany();
+    // SAVE ITEMS NEWS
+    const values: any[] = areas.map((idArea) => {
+      return { program: idProgram, interest_area: idArea };
+    });
+    await this.repository
+      .createQueryBuilder()
+      .insert()
+      .into(ProgramInterestAreas)
+      .values(
+        values.filter((v) =>
+          founds.map((f: any) => f.interest_area.id).indexOf(v.interest_area) >=
+          0
+            ? false
+            : true,
+        ),
+      )
+      .execute();
+    return { update: true };
+  }
 }
