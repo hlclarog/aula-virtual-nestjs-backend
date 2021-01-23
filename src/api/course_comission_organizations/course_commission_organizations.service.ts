@@ -7,7 +7,6 @@ import {
   UpdateCourseCommissionOrganizationsDto,
 } from './course_commission_organizations.dto';
 import { BaseRepo } from '../../base/base.repository';
-import { CourseFeeSchedules } from '../course-fee-schedule/course-fee-schedule.entity';
 
 @Injectable()
 export class CourseCommissionOrganizationsService extends BaseService<
@@ -21,6 +20,7 @@ export class CourseCommissionOrganizationsService extends BaseService<
   async findByCourse(id: number): Promise<CourseCommissionOrganizations[]> {
     return await this.repository.find({
       where: { course: id },
+      relations: ['course', 'organization'],
     });
   }
 }
