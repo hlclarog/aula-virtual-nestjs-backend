@@ -103,15 +103,20 @@ export class UsersService extends BaseService<
     };
   }
 
-  async searchByRol(idRol: number, name: string): Promise<any> {
+  async searchByRol(idRol: number, text: string): Promise<any> {
     return await this.repository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.users_roles', 'users_roles')
       .leftJoinAndSelect('users_roles.rol', 'rol')
       .where(
-        'LOWER(user.name) LIKE(LOWER(:userName)) AND users_roles.rol_id = :idRol',
+        'LOWER(user.name) LIKE(LOWER(:text)) OR' +
+          ' LOWER(user.email) LIKE(LOWER(:text)) OR' +
+          ' LOWER(user.phone) LIKE(LOWER(:text)) OR' +
+          ' LOWER(user.lastname) LIKE(LOWER(:text)) OR' +
+          ' LOWER(user.identification) LIKE(LOWER(:text)) AND' +
+          ' users_roles.rol_id = :idRol',
         {
-          userName: `%${name}%`,
+          text: `%${text}%`,
           idRol: `${idRol}`,
         },
       )

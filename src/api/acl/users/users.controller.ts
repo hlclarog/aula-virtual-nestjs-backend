@@ -1,6 +1,6 @@
 import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUsersDto, UpdateUsersDto } from './users.dto';
+import { CreateUsersDto, searchByRol, UpdateUsersDto } from './users.dto';
 import { BaseController } from '../../../base/base.controller';
 import { Users } from './users.entity';
 import { ControllerApi } from '../../../utils/decorators/controllers.decorator';
@@ -53,8 +53,8 @@ export class UsersController extends BaseController<
   }
 
   @Post('search/byRol')
-  async searchByRol(@Body() body: any) {
-    const result = await this.usersService.searchByRol(body.idRol, body.name);
+  async searchByRol(@Body() body: searchByRol) {
+    const result = await this.usersService.searchByRol(body.idRol, body.text);
     return {
       data: result,
     };

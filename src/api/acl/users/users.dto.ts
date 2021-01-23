@@ -120,3 +120,8 @@ export class UpdateUsersDto extends UpdateBaseDto {
   @IsOptional()
   readonly welcome_message?: boolean;
 }
+
+export class searchByRol {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly idRol: number;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly text: string;
+}
