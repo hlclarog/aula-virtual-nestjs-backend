@@ -1,16 +1,23 @@
-import { Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Get, Post, Body, Put, Param, Delete, Inject } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { BaseController } from '../../base/base.controller';
-import { CreateCourseDto, UpdateCourseDto } from './courses.dto';
+import { CreateCourseByTeacherDto, CreateCourseDto, UpdateCourseDto } from './courses.dto';
 import { Courses } from './courses.entity';
+import {
+  INFO_USER_PROVIDER,
+  InfoUserProvider,
+} from '../../utils/providers/info-user.module';
 @ControllerApi({ name: 'courses' })
 export class CoursesController extends BaseController<
   Courses,
   CreateCourseDto,
   UpdateCourseDto
 > {
-  constructor(private readonly coursesService: CoursesService) {
+  constructor(
+    private readonly coursesService: CoursesService,
+    @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
+  ) {
     super(coursesService);
   }
 
@@ -37,5 +44,27 @@ export class CoursesController extends BaseController<
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.remove(id);
+  }
+
+  @Get('teacher/list')
+  async getByTeacher() {
+    const result = await this.coursesService.findByTeacher(this.infoUser.id);
+    return { data: result };
+  }
+
+  @Post('teacher')
+  async postByTeacher(@Body() createDto: CreateCourseByTeacherDto) {
+    createDto.user = this.infoUser.id;
+    const data: any = createDto;
+    return await this.create(data);
+  }
+
+  @Put('teacher/:id')
+  async editByTeacher(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateCourseDto,
+  ) {
+    updateDto.user = this.infoUser.id;
+    return await this.update(id, updateDto);
   }
 }
