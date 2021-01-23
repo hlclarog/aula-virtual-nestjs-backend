@@ -19,7 +19,7 @@ export class createLessonDetailsTable1611376068507
             isGenerated: true,
           },
           {
-            name: 'lession_id',
+            name: 'lesson_id',
             type: 'int',
           },
           {
@@ -64,7 +64,7 @@ export class createLessonDetailsTable1611376068507
     );
     await queryRunner.createForeignKeys('lesson_details', [
       new TableForeignKey({
-        columnNames: ['lession_id'],
+        columnNames: ['lesson_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'lessons',
       }),

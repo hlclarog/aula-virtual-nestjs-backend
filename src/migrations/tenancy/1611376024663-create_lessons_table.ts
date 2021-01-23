@@ -38,7 +38,7 @@ export class createLessonsTable1611376024663 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'viceo_url',
+            name: 'video_url',
             type: 'varchar',
           },
           {

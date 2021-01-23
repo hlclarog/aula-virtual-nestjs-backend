@@ -46,6 +46,12 @@ import { CourseInterestAreasModule } from './course_interest_areas/course_intere
 import { CourseCompetencesModule } from './course_competences/course_competences.module';
 import { ProgramCommissionOrganizationsModule } from './program_comission_organizations/program_commission_organizations.module';
 import { CourseCommissionOrganizationsModule } from './course_comission_organizations/course_commission_organizations.module';
+import { CourseUnitsModule } from './course_units/course_units.module';
+import { LessonTypesModule } from './lesson_types/lesson_types.module';
+import { ActivityTypesModule } from './activity_types/activity_types.module';
+import { ContentTypesModule } from './content_types/content_types.module';
+import { LessonsModule } from './lessons/lessons.module';
+import { LessonDetailsModule } from './lesson_details/lesson_details.module';
 
 @Module({
   imports: [
@@ -96,6 +102,12 @@ import { CourseCommissionOrganizationsModule } from './course_comission_organiza
     CourseCompetencesModule,
     ProgramCommissionOrganizationsModule,
     CourseCommissionOrganizationsModule,
+    CourseUnitsModule,
+    LessonTypesModule,
+    ActivityTypesModule,
+    ContentTypesModule,
+    LessonsModule,
+    LessonDetailsModule,
   ],
   controllers: [],
   providers: [],
