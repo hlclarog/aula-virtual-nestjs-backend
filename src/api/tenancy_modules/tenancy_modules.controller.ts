@@ -1,6 +1,7 @@
 import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { TenancyModulesService } from './tenancy_modules.service';
 import {
+  CreateTenancyModulesCreateGroupDto,
   CreateTenancyModulesDto,
   UpdateTenancyModulesDto,
 } from './tenancy_modules.dto';
@@ -14,7 +15,7 @@ export class TenancyModulesController extends BaseController<
   CreateTenancyModulesDto,
   UpdateTenancyModulesDto
 > {
-  constructor(tenancy_modulesService: TenancyModulesService) {
+  constructor(private tenancy_modulesService: TenancyModulesService) {
     super(tenancy_modulesService);
   }
 
@@ -42,7 +43,12 @@ export class TenancyModulesController extends BaseController<
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string) {
-    return await this.remove(id);
+  async delete(@Param('id') id: number) {
+    return await this.tenancy_modulesService.remove(id);
+  }
+
+  @Post('createGroup')
+  async createGroup(@Body() createDto: CreateTenancyModulesCreateGroupDto) {
+    return await this.tenancy_modulesService.set(createDto);
   }
 }
