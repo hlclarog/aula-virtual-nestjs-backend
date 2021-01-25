@@ -10,14 +10,14 @@ import { Courses } from '../courses/courses.entity';
 export class CourseUsers extends Base {
   @ManyToOne(() => Courses, (courses) => courses.course_users)
   @JoinColumn({ name: 'course_id' })
-  course: Courses;
+  course: Courses | number;
 
   @RelationId((courseUsers: CourseUsers) => courseUsers.course)
   course_id: number;
 
   @ManyToOne(() => Users, (users) => users.course_users)
   @JoinColumn({ name: 'user_id' })
-  user: Users;
+  user: Users | number;
 
   @RelationId((courseUsers: CourseUsers) => courseUsers.user)
   user_id: number;
@@ -27,7 +27,7 @@ export class CourseUsers extends Base {
     (enrollmentStatus) => enrollmentStatus.course_users,
   )
   @JoinColumn({ name: 'enrollment_status_id' })
-  enrollment_status: EnrollmentStatus;
+  enrollment_status: EnrollmentStatus | number;
 
   @RelationId((courseUsers: CourseUsers) => courseUsers.enrollment_status)
   enrollment_status_id: number;
@@ -37,7 +37,7 @@ export class CourseUsers extends Base {
     (enrollmentTypes) => enrollmentTypes.course_users,
   )
   @JoinColumn({ name: 'enrollment_type_id' })
-  enrollment_type: EnrollmentTypes;
+  enrollment_type: EnrollmentTypes | number;
 
   @RelationId((courseUsers: CourseUsers) => courseUsers.enrollment_type)
   enrollment_type_id: number;

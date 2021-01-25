@@ -17,7 +17,7 @@ export class CourseUsersController extends BaseController<
 
   @Post()
   async post(@Body() createDto: CreateCourseUsersDto) {
-    return await this.create(createDto);
+    return await this.courseUsersService.set(createDto);
   }
 
   @Get()
