@@ -28,6 +28,7 @@ export class createProgramCoursesTable1611027978042
           },
           {
             name: 'transaction_status_id',
+            isNullable: true,
             type: 'int',
           },
           {
