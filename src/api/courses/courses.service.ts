@@ -65,4 +65,18 @@ export class CoursesService extends BaseService<
       ],
     });
   }
+
+  async searchByName(name: string): Promise<any> {
+    return await this.repository
+      .createQueryBuilder('course')
+      .where(
+        'LOWER(course.name) LIKE(LOWER(:name)) OR' +
+          ' LOWER(course.description) LIKE(LOWER(:name)) OR' +
+          ' LOWER(course.short_name) LIKE(LOWER(:name))',
+        {
+          name: `%${name}%`,
+        },
+      )
+      .getMany();
+  }
 }

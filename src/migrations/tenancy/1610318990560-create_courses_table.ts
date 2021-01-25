@@ -47,6 +47,7 @@ export class createCoursesTable1610318990560 implements MigrationInterface {
           {
             name: 'course_status_id',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'free',
