@@ -30,6 +30,7 @@ export class CourseUsersService extends BaseService<
         user: `${createDto.user}`,
         course: `${createDto.course}`,
       })
+      .withDeleted()
       .getCount();
     let result;
     if (founds) {
