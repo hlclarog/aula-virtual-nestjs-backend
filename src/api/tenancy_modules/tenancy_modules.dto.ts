@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsNumber, IsArray } from 'class-validator';
 import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 
 export const TENANCY_MODULES_PROVIDER = 'TENANCY_MODULES_REPOSITORY';
@@ -19,4 +19,25 @@ export class UpdateTenancyModulesDto extends UpdateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly module?: number;
+}
+
+export class CreateTenancyModulesCreateGroupDto extends CreateBaseDto {
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: true,
+  })
+  @IsArray()
+  @IsNotEmpty()
+  readonly tenancies: number[];
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: true,
+  })
+  @IsArray()
+  @IsNotEmpty()
+  readonly modules: number[];
 }
