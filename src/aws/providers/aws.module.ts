@@ -1,6 +1,7 @@
 import { DynamicModule, Global, Module } from '@nestjs/common';
 import { AWS_PROVIDER } from '../aws.dto';
 import * as AWS from 'aws-sdk';
+import { ConfigService } from 'src/config/config.service';
 
 @Global()
 @Module({})
@@ -8,9 +9,14 @@ export class AwsModule {
   static forRoot(): DynamicModule {
     const providerAws = {
       provide: AWS_PROVIDER,
-      inject: [],
-      useFactory: async (): Promise<AWS.Config> => {
-        const myConfig = new AWS.Config();
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService): Promise<AWS.Config> => {
+        const myConfig = new AWS.Config({
+          credentials: {
+            accessKeyId: config.getAwsAccesKey(),
+            secretAccessKey: config.getAwsSecretKey(),
+          },
+        });
         myConfig.update({ region: 'us-east-2' });
         return myConfig;
       },

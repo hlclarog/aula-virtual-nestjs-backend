@@ -42,7 +42,11 @@ export class TestController {
   @Post('setfiletoBucket')
   async setFile() {
     const file = '/Users/mathiwsmontropez/Desktop/testFile.txt';
-    const uploadParams: any = { Bucket: 'mangusdev', Key: '', Body: '' };
+    const uploadParams: AWS.S3.Types.PutObjectRequest = {
+      Bucket: 'mangusdev',
+      Key: '',
+      Body: '',
+    };
     const fileStream = fs.createReadStream(file);
     fileStream.on('error', function (err) {
       console.log('File Error', err);
