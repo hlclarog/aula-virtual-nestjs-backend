@@ -6,6 +6,8 @@ import { Queue } from 'bull';
 import { INSTANCE_PROCESS_QUEUE } from './../../queues/instance_process/instance_process.dto';
 import { S3_PROVIDER } from 'src/aws/aws.dto';
 import * as AWS from 'aws-sdk';
+import * as fs from 'fs';
+import { basename } from 'path';
 
 @UseGuards(PermissionsGuard)
 @ControllerApi({ name: 'test' })
@@ -31,7 +33,31 @@ export class TestController {
           console.log('Error', err);
           reject(err);
         } else {
-          resolve(data.Buckets);
+          resolve({ data: data.Buckets });
+        }
+      });
+    });
+  }
+
+  @Post('setfiletoBucket')
+  async setFile() {
+    const file = '/Users/mathiwsmontropez/Desktop/testFile.txt';
+    const uploadParams: any = { Bucket: 'mangusdev', Key: '', Body: '' };
+    const fileStream = fs.createReadStream(file);
+    fileStream.on('error', function (err) {
+      console.log('File Error', err);
+    });
+    uploadParams.Body = fileStream;
+    uploadParams.Key = basename(file);
+    return await new Promise((resolve, reject) => {
+      this.aws_s3.upload(uploadParams, function (err, data) {
+        if (err) {
+          console.log('Error', err);
+          reject(err);
+        }
+        if (data) {
+          console.log('Upload Success', data.Location);
+          resolve({ data: data.Location });
         }
       });
     });
