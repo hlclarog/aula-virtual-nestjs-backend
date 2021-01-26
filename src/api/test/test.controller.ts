@@ -39,6 +39,24 @@ export class TestController {
     });
   }
 
+  @Get('get_file')
+  public async getFile() {
+    return await new Promise((resolve, reject) => {
+      const myBucket = 'mangusdev';
+      const myKey = 'testFile.txt';
+      const signedUrlExpireSeconds = 60 * 5;
+
+      const url = this.aws_s3.getSignedUrl('getObject', {
+        Bucket: myBucket,
+        Key: myKey,
+        Expires: signedUrlExpireSeconds,
+      });
+
+      console.log(url);
+      resolve({ data: url });
+    });
+  }
+
   @Post('setfiletoBucket')
   async setFile() {
     const file = '/Users/mathiwsmontropez/Desktop/testFile.txt';

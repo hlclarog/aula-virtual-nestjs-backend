@@ -16,8 +16,10 @@ export class AwsModule {
             accessKeyId: config.getAwsAccesKey(),
             secretAccessKey: config.getAwsSecretKey(),
           },
+          apiVersion: '2006-03-01',
+          signatureVersion: 'v4',
+          region: 'us-east-2',
         });
-        myConfig.update({ region: 'us-east-2' });
         return myConfig;
       },
     };
