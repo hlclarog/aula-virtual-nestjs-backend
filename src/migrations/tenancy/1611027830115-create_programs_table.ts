@@ -59,6 +59,20 @@ export class createProgramsTable1611027830115 implements MigrationInterface {
             type: 'varchar',
           },
           {
+            name: 'certifiable',
+            type: 'bool',
+            default: true,
+          },
+          {
+            name: 'requirements',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'certifiable_number',
+            type: 'int',
+          },
+          {
             name: 'active',
             type: 'bool',
             default: true,

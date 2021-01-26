@@ -69,9 +69,13 @@ export class CoursesService extends BaseService<
   async searchByName(name: string): Promise<any> {
     return await this.repository
       .createQueryBuilder('course')
+      .leftJoinAndSelect('course.organization', 'organization')
+      .leftJoinAndSelect('course.course_status', 'course_status')
       .where(
         'LOWER(course.name) LIKE(LOWER(:name)) OR' +
           ' LOWER(course.description) LIKE(LOWER(:name)) OR' +
+          ' LOWER(organization.name) LIKE(LOWER(:name)) OR' +
+          ' LOWER(course_status.description) LIKE(LOWER(:name)) OR' +
           ' LOWER(course.short_name) LIKE(LOWER(:name))',
         {
           name: `%${name}%`,

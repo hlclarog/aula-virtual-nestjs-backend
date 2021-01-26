@@ -22,6 +22,12 @@ export class CreateProgramsDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly video_url: string;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly duration: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly email_to: string;
+  @ApiProperty() @IsBoolean() @IsNotEmpty() readonly certifiable: boolean;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly requirements?: string;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly certifiable_number: number;
   @ApiProperty({
     type: 'number',
     isArray: true,
@@ -83,6 +89,18 @@ export class UpdateProgramsDto {
   @IsArray()
   @IsOptional()
   interest_areas?: number[];
+  @ApiProperty({ required: false })
+  @IsBoolean()
+  @IsNotEmpty()
+  readonly certifiable?: boolean;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly requirements?: string;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsNotEmpty()
+  readonly certifiable_number?: number;
   @ApiProperty({ required: false })
   @IsBoolean()
   @IsOptional()
