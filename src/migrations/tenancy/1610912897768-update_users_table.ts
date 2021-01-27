@@ -54,6 +54,31 @@ export class updateUsersTable1610912897768 implements MigrationInterface {
         isNullable: true,
       }),
       new TableColumn({
+        name: 'profile_description',
+        type: 'varchar',
+        isNullable: true,
+      }),
+      new TableColumn({
+        name: 'facebook',
+        type: 'varchar',
+        isNullable: true,
+      }),
+      new TableColumn({
+        name: 'google',
+        type: 'varchar',
+        isNullable: true,
+      }),
+      new TableColumn({
+        name: 'twitter',
+        type: 'varchar',
+        isNullable: true,
+      }),
+      new TableColumn({
+        name: 'profession',
+        type: 'varchar',
+        isNullable: true,
+      }),
+      new TableColumn({
         name: 'zipcode',
         type: 'varchar',
         isNullable: true,
