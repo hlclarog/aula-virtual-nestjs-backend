@@ -78,7 +78,7 @@ export class UpdateUsersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly linkeid?: string;
+  readonly linkedin?: string;
 
   @ApiProperty({ required: false })
   @IsString()
