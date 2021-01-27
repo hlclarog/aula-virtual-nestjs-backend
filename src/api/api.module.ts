@@ -52,6 +52,7 @@ import { ActivityTypesModule } from './activity_types/activity_types.module';
 import { ContentTypesModule } from './content_types/content_types.module';
 import { LessonsModule } from './lessons/lessons.module';
 import { LessonDetailsModule } from './lesson_details/lesson_details.module';
+import { LessonActivitiesModule } from './lesson_activities/lesson_activities.module';
 
 @Module({
   imports: [
@@ -108,6 +109,7 @@ import { LessonDetailsModule } from './lesson_details/lesson_details.module';
     ContentTypesModule,
     LessonsModule,
     LessonDetailsModule,
+    LessonActivitiesModule,
   ],
   controllers: [],
   providers: [],
