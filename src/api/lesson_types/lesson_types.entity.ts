@@ -8,6 +8,6 @@ export class LessonTypes extends Base {
   @Column({ length: 500, type: 'varchar' })
   description: string;
 
-  @OneToMany(() => Lessons, (lesson) => lesson.course)
+  @OneToMany(() => Lessons, (lesson) => lesson.lesson_type)
   lessons: Lessons[];
 }

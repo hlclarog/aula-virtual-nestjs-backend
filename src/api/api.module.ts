@@ -53,10 +53,12 @@ import { ContentTypesModule } from './content_types/content_types.module';
 import { LessonsModule } from './lessons/lessons.module';
 import { LessonDetailsModule } from './lesson_details/lesson_details.module';
 import { LessonActivitiesModule } from './lesson_activities/lesson_activities.module';
+import { S3ProviderModule } from '../aws/providers/s3.provider';
 
 @Module({
   imports: [
     InfoUserModule.forRoot(),
+    S3ProviderModule.forRoot(),
     TestModule,
     LanguagesModule,
     IdentificationTypesModule,

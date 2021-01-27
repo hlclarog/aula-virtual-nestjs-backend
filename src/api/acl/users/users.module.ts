@@ -7,9 +7,10 @@ import { USERS_PROVIDER } from './users.dto';
 import { Users } from './users.entity';
 import { CryptoService } from '../../../utils/services/crypto.service';
 import { UsersRolesModule } from '../users_roles/users_roles.module';
+import { AwsModule } from './../../../aws/aws.module';
 
 @Module({
-  imports: [UsersRolesModule],
+  imports: [UsersRolesModule, AwsModule],
   controllers: [UsersController],
   providers: [
     {

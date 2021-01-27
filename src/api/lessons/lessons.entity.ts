@@ -8,7 +8,6 @@ import {
 } from 'typeorm';
 import { COURSE_UNITS_ENTITY } from './lessons.dto';
 import { Base } from '../../base/base.entity';
-import { Courses } from '../courses/courses.entity';
 import { LessonTypes } from '../lesson_types/lesson_types.entity';
 import { CourseUnits } from '../course_units/course_units.entity';
 import { LessonDetails } from '../lesson_details/lesson_details.entity';
@@ -16,12 +15,6 @@ import { LessonActivities } from '../lesson_activities/lesson_activities.entity'
 
 @Entity(COURSE_UNITS_ENTITY)
 export class Lessons extends Base {
-  @ManyToOne(() => Courses, (courses) => courses.lessons, { eager: true })
-  @JoinColumn({ name: 'course_id' })
-  course: Courses | number;
-  @RelationId((lessons: Lessons) => lessons.course)
-  course_id: number;
-
   @ManyToOne(() => LessonTypes, (lesson_type) => lesson_type.lessons, {
     eager: true,
   })

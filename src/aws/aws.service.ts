@@ -1,0 +1,61 @@
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
+import {
+  InfoTenancyDomain,
+  INFO_TENANCY_PROVIDER,
+} from './../utils/providers/info-tenancy.module';
+import * as AWS from 'aws-sdk';
+import { durationFilesUrl, S3_PROVIDER, SaveFileAws } from './aws.dto';
+import { Readable } from 'stream';
+import { extractDatab64 } from './../utils/base64';
+import { ConfigService } from './../config/config.service';
+
+@Injectable()
+export class AwsService {
+  constructor(
+    private configService: ConfigService,
+    @Inject(S3_PROVIDER) private readonly aws_s3: AWS.S3,
+    @Inject(INFO_TENANCY_PROVIDER) private tenancy: InfoTenancyDomain,
+  ) {}
+
+  async saveFile({
+    file,
+    name,
+    type,
+  }: SaveFileAws): Promise<AWS.S3.ManagedUpload.SendData> {
+    const dataFile = extractDatab64(file);
+    const bitmap = Buffer.from(dataFile.base, 'base64');
+    const stream = Readable.from(bitmap);
+    const uploadParams: AWS.S3.Types.PutObjectRequest = {
+      Bucket: this.configService.getAwsBucket(),
+      Key: `${this.tenancy.schema}/${type}/${name}.${dataFile.extension}`,
+      Body: stream,
+    };
+    return await new Promise((resolve) => {
+      this.aws_s3.upload(uploadParams, function (err, data) {
+        if (err) {
+          throw new InternalServerErrorException(err);
+        }
+        if (data) {
+          resolve(data);
+        }
+      });
+    });
+  }
+
+  async getFile(myKey): Promise<string> {
+    return await new Promise((resolve) => {
+      const myBucket = this.configService.getAwsBucket();
+      const signedUrlExpireSeconds = durationFilesUrl.img_user;
+      const url = this.aws_s3.getSignedUrl('getObject', {
+        Bucket: myBucket,
+        Key: myKey,
+        Expires: signedUrlExpireSeconds,
+      });
+      resolve(url);
+    });
+  }
+}

@@ -37,6 +37,9 @@ example:
 | QUEUE_HOST | string | Host de redis |
 | QUEUE_PORT | string | Puerto de redis |
 | URL_BACKEND | string | Url del backend |
+| AWS_ACCESS_KEY_ID | string | AWS access key |
+| AWS_SECRET_ACCESS_KEY | string | AWS secret key |
+| AWS_BUCKET | string | AWS bucket name |
 
 ### Migrations
 

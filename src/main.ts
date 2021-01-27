@@ -6,11 +6,14 @@ import { AppModule } from './app.module';
 import { ConfigService } from './config/config.service';
 import { HttpExceptionFilter } from './utils/filters/http-exception.filter';
 import { TransformInterceptor } from './utils/interceptors/transform.interceptor';
+import * as bodyParser from 'body-parser';
 //import { RedisIoAdapter } from './websocket/websocket.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
   app.enableCors();
 
   app.useStaticAssets(join(__dirname, '..', 'public'));

@@ -18,10 +18,6 @@ export class createLessonsTable1611376024663 implements MigrationInterface {
             isGenerated: true,
           },
           {
-            name: 'course_id',
-            type: 'int',
-          },
-          {
             name: 'lesson_type_id',
             type: 'int',
           },
@@ -91,11 +87,6 @@ export class createLessonsTable1611376024663 implements MigrationInterface {
       }),
     );
     await queryRunner.createForeignKeys('lessons', [
-      new TableForeignKey({
-        columnNames: ['course_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'courses',
-      }),
       new TableForeignKey({
         columnNames: ['lesson_type_id'],
         referencedColumnNames: ['id'],
