@@ -4,10 +4,11 @@ import { PermissionsGuard } from '../../utils/guards/permissions.guard';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { INSTANCE_PROCESS_QUEUE } from './../../queues/instance_process/instance_process.dto';
-import { S3_PROVIDER } from 'src/aws/aws.dto';
+import { S3_PROVIDER, typeFilesAwsNames } from './../../aws/aws.dto';
 import * as AWS from 'aws-sdk';
 import * as fs from 'fs';
 import { basename } from 'path';
+import { AwsService } from './../../aws/aws.service';
 
 @UseGuards(PermissionsGuard)
 @ControllerApi({ name: 'test' })
@@ -16,6 +17,7 @@ export class TestController {
     @InjectQueue(INSTANCE_PROCESS_QUEUE)
     private readonly instanceProcessQueue: Queue,
     @Inject(S3_PROVIDER) private readonly aws_s3: AWS.S3,
+    private awsService: AwsService,
   ) {}
 
   @Post('queue_tenancy')
@@ -30,7 +32,6 @@ export class TestController {
     return await new Promise((resolve, reject) => {
       this.aws_s3.listBuckets((err, data) => {
         if (err) {
-          console.log('Error', err);
           reject(err);
         } else {
           resolve({ data: data.Buckets });
@@ -41,7 +42,7 @@ export class TestController {
 
   @Get('get_file')
   public async getFile() {
-    return await new Promise((resolve, reject) => {
+    return await new Promise((resolve) => {
       const myBucket = 'mangusdev';
       const myKey = 'testFile.txt';
       const signedUrlExpireSeconds = 60 * 5;
@@ -51,8 +52,6 @@ export class TestController {
         Key: myKey,
         Expires: signedUrlExpireSeconds,
       });
-
-      console.log(url);
       resolve({ data: url });
     });
   }
@@ -66,22 +65,26 @@ export class TestController {
       Body: '',
     };
     const fileStream = fs.createReadStream(file);
-    fileStream.on('error', function (err) {
-      console.log('File Error', err);
-    });
     uploadParams.Body = fileStream;
     uploadParams.Key = basename(file);
     return await new Promise((resolve, reject) => {
       this.aws_s3.upload(uploadParams, function (err, data) {
         if (err) {
-          console.log('Error', err);
           reject(err);
         }
         if (data) {
-          console.log('Upload Success', data.Location);
           resolve({ data: data.Location });
         }
       });
     });
+  }
+
+  @Post('save_file')
+  async saveFile(@Body() body) {
+    const result = await this.awsService.saveFile({
+      ...body,
+      type: typeFilesAwsNames.users,
+    });
+    return result;
   }
 }

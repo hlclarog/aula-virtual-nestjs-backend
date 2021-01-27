@@ -11,6 +11,10 @@ import {
   INFO_USER_PROVIDER,
   InfoUserProvider,
 } from './../../../utils/providers/info-user.module';
+import { AwsService } from './../../../aws/aws.service';
+import { typeFilesAwsNames } from './../../../aws/aws.dto';
+import * as shortid from 'shortid';
+import { verifyIfBase64 } from './../../../utils/base64';
 
 @Injectable()
 export class UsersService extends BaseService<
@@ -24,6 +28,7 @@ export class UsersService extends BaseService<
     private cryptoService: CryptoService,
     private usersRolesService: UsersRolesService,
     @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
+    private awsService: AwsService,
   ) {
     super();
   }
@@ -35,9 +40,13 @@ export class UsersService extends BaseService<
   }
 
   async findOne(id: number): Promise<Users> {
-    return this.repository.findOneOrFail(id, {
+    const user = await this.repository.findOneOrFail(id, {
       relations: ['users_roles', 'users_roles.rol'],
     });
+    if (user.picture) {
+      user.picture = await this.awsService.getFile(user.picture);
+    }
+    return user;
   }
 
   async findRoles(id: number) {
@@ -64,6 +73,9 @@ export class UsersService extends BaseService<
     const data: any = Object.assign({}, updateDto);
     delete data.users_roles;
     delete data.rol_default;
+    if (updateDto.picture) {
+      data.picture = await this.setAvatar(updateDto.picture);
+    }
     if (updateDto.users_roles) {
       await this.usersRolesService.set(
         id,
@@ -72,6 +84,20 @@ export class UsersService extends BaseService<
       );
     }
     return await this.repository.update(id, data);
+  }
+
+  async setAvatar(file) {
+    const verify = verifyIfBase64(file);
+    if (verify) {
+      const result = await this.awsService.saveFile({
+        file,
+        name: shortid.generate(),
+        type: typeFilesAwsNames.users,
+      });
+      return result.Key;
+    } else {
+      return file.length > 50 ? null : file;
+    }
   }
 
   async findByEmail(email: string) {

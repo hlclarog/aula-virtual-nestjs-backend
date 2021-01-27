@@ -23,7 +23,7 @@ import { InfoChannelModule } from './utils/providers/info-channel.module';
 import { DatabaseManualModule } from './database/database-manual.module';
 import { InfoTenancyModule } from './utils/providers/info-tenancy.module';
 import { InfoTenancyService } from './utils/services/info-tenancy.service';
-import { AwsModule } from './aws/providers/aws.module';
+import { AwsProviderModule } from './aws/providers/aws.provider';
 
 const FOLDER_ENV = join(__dirname, '..', 'env');
 const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
@@ -42,7 +42,7 @@ const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
     JwtModule.register({}),
     QueuesModule,
     WebsocketModule,
-    AwsModule.forRoot(),
+    AwsProviderModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [

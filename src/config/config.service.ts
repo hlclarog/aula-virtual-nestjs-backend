@@ -64,6 +64,9 @@ export class ConfigService {
   getAwsSecretKey(): string {
     return this.envConfig.AWS_SECRET_ACCESS_KEY;
   }
+  getAwsBucket(): string {
+    return this.envConfig.AWS_BUCKET;
+  }
 
   private static validateInput(envConfig: EnvConfig): EnvConfig {
     const envVarsSchema: Joi.ObjectSchema = Joi.object({
@@ -84,6 +87,7 @@ export class ConfigService {
       URL_BACKEND: Joi.string().required(),
       AWS_ACCESS_KEY_ID: Joi.string().required(),
       AWS_SECRET_ACCESS_KEY: Joi.string().required(),
+      AWS_BUCKET: Joi.string().required(),
     });
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(
       envConfig,

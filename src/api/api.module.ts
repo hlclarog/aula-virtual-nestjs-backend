@@ -52,12 +52,12 @@ import { ActivityTypesModule } from './activity_types/activity_types.module';
 import { ContentTypesModule } from './content_types/content_types.module';
 import { LessonsModule } from './lessons/lessons.module';
 import { LessonDetailsModule } from './lesson_details/lesson_details.module';
-import { S3Module } from './../aws/providers/s3.module';
+import { S3ProviderModule } from '../aws/providers/s3.provider';
 
 @Module({
   imports: [
     InfoUserModule.forRoot(),
-    S3Module.forRoot(),
+    S3ProviderModule.forRoot(),
     TestModule,
     LanguagesModule,
     IdentificationTypesModule,

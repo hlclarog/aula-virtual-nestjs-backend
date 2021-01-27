@@ -1,11 +1,11 @@
 import { DynamicModule, Global, Module } from '@nestjs/common';
 import { AWS_PROVIDER, S3_PROVIDER } from '../aws.dto';
 import * as AWS from 'aws-sdk';
-import { AwsModule } from './aws.module';
+import { AwsProviderModule } from './aws.provider';
 
 @Global()
 @Module({})
-export class S3Module {
+export class S3ProviderModule {
   static forRoot(): DynamicModule {
     const providerS3 = {
       provide: S3_PROVIDER,
@@ -16,8 +16,8 @@ export class S3Module {
       },
     };
     return {
-      module: S3Module,
-      imports: [AwsModule],
+      module: S3ProviderModule,
+      imports: [AwsProviderModule],
       providers: [providerS3],
       exports: [providerS3],
     };
