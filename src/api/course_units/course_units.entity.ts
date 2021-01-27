@@ -23,6 +23,6 @@ export class CourseUnits extends Base {
   @Column({ type: 'varchar' }) color: string;
   @Column({ type: 'int' }) order: number;
 
-  @OneToMany(() => Lessons, (lesson) => lesson.course)
+  @OneToMany(() => Lessons, (lesson) => lesson.course_unit)
   lessons: Lessons[];
 }

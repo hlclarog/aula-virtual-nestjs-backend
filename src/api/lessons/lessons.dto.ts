@@ -12,7 +12,6 @@ export const COURSE_UNITS_PROVIDER = 'COURSE_UNITS_REPOSITORY';
 export const COURSE_UNITS_ENTITY = 'lessons';
 
 export class CreateLessonsDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson_type: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_unit: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
@@ -27,10 +26,6 @@ export class CreateLessonsDto extends CreateBaseDto {
 }
 
 export class UpdateLessonsDto extends UpdateBaseDto {
-  @ApiProperty({ required: false })
-  @IsNumber()
-  @IsOptional()
-  readonly course?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()

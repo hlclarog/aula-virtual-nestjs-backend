@@ -40,6 +40,14 @@ export class CoursesController extends BaseController<
     return await this.findOne(id);
   }
 
+  @Get('units_lessons/:id')
+  async getUnitsLessons(@Param('id') id: number) {
+    const result = await this.coursesService.getUnitsLessons(id);
+    return {
+      data: result,
+    };
+  }
+
   @Put(':id')
   async edit(@Param('id') id: string, @Body() updateDto: UpdateCourseDto) {
     return await this.update(id, updateDto);

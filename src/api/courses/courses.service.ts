@@ -9,6 +9,7 @@ import { BaseRepo } from '../../base/base.repository';
 import { Courses } from './courses.entity';
 import { UpdateResult } from 'typeorm';
 import { CourseInterestAreasService } from '../course_interest_areas/course_interest_areas.service';
+import { CourseUnits } from '../course_units/course_units.entity';
 
 @Injectable()
 export class CoursesService extends BaseService<
@@ -82,5 +83,17 @@ export class CoursesService extends BaseService<
         },
       )
       .getMany();
+  }
+
+  async getUnitsLessons(id: number): Promise<CourseUnits[]> {
+    const result = await this.repository
+      .createQueryBuilder('course')
+      .leftJoinAndSelect('course.course_units', 'course_units')
+      .leftJoinAndSelect('course_units.lessons', 'lessons')
+      .where('course.id = :id', { id })
+      .orderBy('lessons.order', 'ASC')
+      .getOneOrFail();
+
+    return result.course_units;
   }
 }
