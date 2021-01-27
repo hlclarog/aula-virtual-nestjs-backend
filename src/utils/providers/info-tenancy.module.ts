@@ -60,4 +60,4 @@ export class InfoTenancyModule {
   }
 }
 
-// @Inject(INFO_TENANCY_PROVIDER) private tenancy: TenancyDomains;
+// @Inject(INFO_TENANCY_PROVIDER) private tenancy: InfoTenancyDomain;
