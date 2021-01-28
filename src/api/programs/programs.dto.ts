@@ -91,7 +91,7 @@ export class UpdateProgramsDto {
   interest_areas?: number[];
   @ApiProperty({ required: false })
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   readonly certifiable?: boolean;
   @ApiProperty({ required: false })
   @IsString()
@@ -99,7 +99,7 @@ export class UpdateProgramsDto {
   readonly requirements?: string;
   @ApiProperty({ required: false })
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   readonly certifiable_number?: number;
   @ApiProperty({ required: false })
   @IsBoolean()

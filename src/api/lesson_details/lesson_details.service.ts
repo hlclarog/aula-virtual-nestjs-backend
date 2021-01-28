@@ -7,6 +7,9 @@ import {
 import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
 import { LessonDetails } from './lesson_details.entity';
+import { AwsService } from './../../aws/aws.service';
+import { typeFilesAwsNames } from './../../aws/aws.dto';
+import * as shortid from 'shortid';
 
 @Injectable()
 export class LessonDetailsService extends BaseService<
@@ -15,4 +18,57 @@ export class LessonDetailsService extends BaseService<
   UpdateLessonDetailsDto
 > {
   @Inject(LESSON_DETAILS_PROVIDER) repository: BaseRepo<LessonDetails>;
+
+  constructor(private awsService: AwsService) {
+    super();
+  }
+
+  async findOne(id: number): Promise<LessonDetails> {
+    const lesson_detail = await this.repository.findOneOrFail(id);
+    if (
+      lesson_detail.content &&
+      [2, 3, 7].indexOf(lesson_detail.content_type_id) >= 0
+    ) {
+      lesson_detail.content = await this.awsService.getFile(
+        lesson_detail.content,
+      );
+    }
+    return lesson_detail;
+  }
+
+  async create(createDto: CreateLessonDetailsDto) {
+    const data: any = Object.assign({}, createDto);
+    if (createDto.content) {
+      data.content = await this.setContent(
+        createDto.content,
+        createDto.content_type,
+      );
+    }
+    const dataNew = await this.repository.save(data);
+    return dataNew;
+  }
+
+  async update(id: number, updateDto: UpdateLessonDetailsDto) {
+    const data: any = Object.assign({}, updateDto);
+    if (updateDto.content) {
+      data.content = await this.setContent(
+        updateDto.content,
+        updateDto.content_type,
+      );
+    }
+    return await this.repository.update(id, data);
+  }
+
+  async setContent(file, type) {
+    if ([2, 3, 7].indexOf(type) >= 0) {
+      const result = await this.awsService.saveFile({
+        file,
+        name: shortid.generate(),
+        type: typeFilesAwsNames.lesson_details_files,
+      });
+      return result.Key;
+    } else {
+      return file;
+    }
+  }
 }

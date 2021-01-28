@@ -46,6 +46,7 @@ export const databaseTenancyProvider = {
         migrationsTableName: 'migrations_registers',
         migrations: [__dirname + '/../migrations/tenancy/*{.ts,.js}'],
         entities: [__dirname + '/../api/**/*.entity{.ts,.js}'],
+        // subscribers: [__dirname + '/../api/**/*.subscriber{.ts,.js}'],
         cli: { migrationsDir: __dirname + '/../migrations/tenancy' },
         synchronize: false,
         name: connectionName,

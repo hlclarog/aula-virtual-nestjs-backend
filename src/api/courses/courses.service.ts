@@ -10,6 +10,9 @@ import { Courses } from './courses.entity';
 import { UpdateResult } from 'typeorm';
 import { CourseInterestAreasService } from '../course_interest_areas/course_interest_areas.service';
 import { CourseUnits } from '../course_units/course_units.entity';
+import { AwsService } from './../../aws/aws.service';
+import { typeFilesAwsNames } from './../../aws/aws.dto';
+import * as shortid from 'shortid';
 
 @Injectable()
 export class CoursesService extends BaseService<
@@ -19,19 +22,29 @@ export class CoursesService extends BaseService<
 > {
   @Inject(COURSES_PROVIDER) repository: BaseRepo<Courses>;
 
-  constructor(private courseInterestAreasService: CourseInterestAreasService) {
+  constructor(
+    private courseInterestAreasService: CourseInterestAreasService,
+    private awsService: AwsService,
+  ) {
     super();
   }
 
   async findOne(id: number): Promise<Courses> {
-    return this.repository.findOneOrFail(id, {
+    const course = await this.repository.findOneOrFail(id, {
       relations: ['course_interest_areas'],
     });
+    if (course.picture) {
+      course.picture = await this.awsService.getFile(course.picture);
+    }
+    return course;
   }
 
   async create(createDto: CreateCourseDto) {
     const data: any = Object.assign({}, createDto);
     delete data.interest_areas;
+    if (createDto.picture) {
+      data.picture = await this.setPicture(createDto.picture);
+    }
     const dataNew = await this.repository.save(data);
     if (createDto.interest_areas) {
       await this.courseInterestAreasService.set(
@@ -45,10 +58,22 @@ export class CoursesService extends BaseService<
   async update(id: number, updateDto: UpdateCourseDto): Promise<UpdateResult> {
     const data: any = Object.assign({}, updateDto);
     delete data.interest_areas;
+    if (updateDto.picture) {
+      data.picture = await this.setPicture(updateDto.picture);
+    }
     if (updateDto.interest_areas) {
       await this.courseInterestAreasService.set(id, updateDto.interest_areas);
     }
     return await this.repository.update(id, data);
+  }
+
+  async setPicture(file) {
+    const result = await this.awsService.saveFile({
+      file,
+      name: shortid.generate(),
+      type: typeFilesAwsNames.courses_pictures,
+    });
+    return result.Key;
   }
 
   async findByTeacher(id: number): Promise<Courses[]> {

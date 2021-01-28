@@ -14,7 +14,6 @@ import {
 import { AwsService } from './../../../aws/aws.service';
 import { typeFilesAwsNames } from './../../../aws/aws.dto';
 import * as shortid from 'shortid';
-import { verifyIfBase64 } from './../../../utils/base64';
 
 @Injectable()
 export class UsersService extends BaseService<
@@ -87,17 +86,12 @@ export class UsersService extends BaseService<
   }
 
   async setAvatar(file) {
-    const verify = verifyIfBase64(file);
-    if (verify) {
-      const result = await this.awsService.saveFile({
-        file,
-        name: shortid.generate(),
-        type: typeFilesAwsNames.users,
-      });
-      return result.Key;
-    } else {
-      return file.length > 50 ? null : file;
-    }
+    const result = await this.awsService.saveFile({
+      file,
+      name: shortid.generate(),
+      type: typeFilesAwsNames.users,
+    });
+    return result.Key;
   }
 
   async findByEmail(email: string) {

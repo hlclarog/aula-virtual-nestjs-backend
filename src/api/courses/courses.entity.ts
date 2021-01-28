@@ -23,6 +23,7 @@ import { CourseUnits } from '../course_units/course_units.entity';
 export class Courses extends Base {
   @Column({ type: 'varchar' }) name: string;
   @Column({ type: 'varchar' }) description: string;
+  @Column({ type: 'varchar' }) picture: string;
   @Column({ type: 'varchar' }) short_name: string;
   @Column({ type: 'boolean' }) free: boolean;
   @Column({ type: 'boolean' }) certifiable: boolean;
@@ -86,4 +87,10 @@ export class Courses extends Base {
 
   @OneToMany(() => CourseUnits, (courseUnits) => courseUnits.course)
   course_units: CourseUnits[];
+
+  // @AfterLoad()
+  // async updateCounters() {
+  //   if (this.picture)
+  //     this.picture = await this.awsService.getFile(this.picture);
+  // }
 }
