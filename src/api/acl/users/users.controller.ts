@@ -1,9 +1,13 @@
-import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {Body, Delete, Get, Inject, Param, Post, Put} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUsersDto, searchByRol, UpdateUsersDto } from './users.dto';
 import { BaseController } from '../../../base/base.controller';
 import { Users } from './users.entity';
 import { ControllerApi } from '../../../utils/decorators/controllers.decorator';
+import {
+  INFO_USER_PROVIDER,
+  InfoUserProvider,
+} from '../../../utils/providers/info-user.module';
 
 @ControllerApi({ name: 'users' })
 export class UsersController extends BaseController<
@@ -11,7 +15,10 @@ export class UsersController extends BaseController<
   CreateUsersDto,
   UpdateUsersDto
 > {
-  constructor(private usersService: UsersService) {
+  constructor(
+    private usersService: UsersService,
+    @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
+  ) {
     super(usersService);
   }
 
@@ -58,5 +65,10 @@ export class UsersController extends BaseController<
     return {
       data: result,
     };
+  }
+
+  @Put('profile/update')
+  async editProfile(@Body() updateDto: UpdateUsersDto) {
+    return await this.update(this.infoUser.id.toString(), updateDto);
   }
 }

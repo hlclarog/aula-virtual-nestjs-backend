@@ -15,6 +15,7 @@ export class CreateCourseDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly short_name: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly picture: string;
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly free: boolean;
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly certifiable: boolean;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly organization: number;
@@ -78,6 +79,10 @@ export class UpdateCourseDto extends UpdateBaseDto {
   @IsString()
   @IsOptional()
   readonly description?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly picture?: string;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

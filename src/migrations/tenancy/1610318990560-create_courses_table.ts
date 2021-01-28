@@ -31,6 +31,11 @@ export class createCoursesTable1610318990560 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'picture',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'short_name',
             type: 'varchar',
             isNullable: true,

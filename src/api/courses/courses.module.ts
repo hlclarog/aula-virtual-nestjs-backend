@@ -7,9 +7,10 @@ import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { Courses } from './courses.entity';
 import { CourseInterestAreasModule } from '../course_interest_areas/course_interest_areas.module';
+import { AwsModule } from './../../aws/aws.module';
 
 @Module({
-  imports: [InstanceProcessModule, CourseInterestAreasModule],
+  imports: [InstanceProcessModule, CourseInterestAreasModule, AwsModule],
   controllers: [CoursesController],
   providers: [
     {
