@@ -16,7 +16,7 @@ export class MultipleOptionAnswers extends Base {
     (activity_multiple_options) =>
       activity_multiple_options.multiple_option_answers,
   )
-  @JoinColumn({ name: 'activity_multiple_option' })
+  @JoinColumn({ name: 'activity_multiple_option_id' })
   activity_multiple_option: ActivityMultipleOptions | number;
   @RelationId(
     (multiple_option_answers: MultipleOptionAnswers) =>
