@@ -67,7 +67,7 @@ export class UsersController extends BaseController<
     };
   }
 
-  @Put('profile')
+  @Put('profile/update')
   async editProfile(@Body() updateDto: UpdateUsersDto) {
     return await this.update(this.infoUser.id.toString(), updateDto);
   }
