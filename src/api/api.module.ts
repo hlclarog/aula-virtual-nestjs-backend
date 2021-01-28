@@ -53,6 +53,7 @@ import { ContentTypesModule } from './content_types/content_types.module';
 import { LessonsModule } from './lessons/lessons.module';
 import { LessonDetailsModule } from './lesson_details/lesson_details.module';
 import { S3ProviderModule } from '../aws/providers/s3.provider';
+import { LessonScormsModule } from './lesson_scorms/lesson_scorms.module';
 
 @Module({
   imports: [
@@ -110,6 +111,7 @@ import { S3ProviderModule } from '../aws/providers/s3.provider';
     ContentTypesModule,
     LessonsModule,
     LessonDetailsModule,
+    LessonScormsModule,
   ],
   controllers: [],
   providers: [],
