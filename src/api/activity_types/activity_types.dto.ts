@@ -7,6 +7,10 @@ export const ACTIVITY_TYPES_ENTITY = 'activity_types';
 
 export class CreateActivityTypesDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly image?: string;
 }
 
 export class UpdateActivityTypesDto extends UpdateBaseDto {

@@ -7,6 +7,8 @@ import { LessonActivities } from '../lesson_activities/lesson_activities.entity'
 export class ActivityTypes extends Base {
   @Column({ length: 500, type: 'varchar' })
   description: string;
+  @Column({ length: 500, type: 'varchar', nullable: true })
+  image: string;
 
   @OneToMany(
     () => LessonActivities,

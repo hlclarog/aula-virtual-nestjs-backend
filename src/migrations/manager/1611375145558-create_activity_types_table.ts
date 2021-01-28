@@ -18,6 +18,11 @@ export class createActivityTypesTable1611375145558
             type: 'varchar',
           },
           {
+            name: 'image',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'active',
             type: 'bool',
             default: true,
