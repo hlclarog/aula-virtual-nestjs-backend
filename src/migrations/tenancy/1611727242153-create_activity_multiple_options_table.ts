@@ -21,22 +21,27 @@ export class createActivityMultipleOptionsTable1611727242153
           {
             name: 'statement',
             type: 'text',
+            isNullable: true,
           },
           {
             name: 'observation',
             type: 'text',
+            isNullable: true,
           },
           {
             name: 'picture',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'video',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'audio',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'resource_type_id',
