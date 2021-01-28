@@ -24,6 +24,9 @@ export class Users extends Base {
   gender: string;
 
   @Column({ type: 'text' })
+  birthday: string;
+
+  @Column({ type: 'text' })
   linkedin: string;
 
   @Column({ type: 'text' })
