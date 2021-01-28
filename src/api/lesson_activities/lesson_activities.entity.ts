@@ -6,10 +6,10 @@ import { ActivityTypes } from '../activity_types/activity_types.entity';
 
 @Entity(LESSON_ACTIVITIES_ENTITY)
 export class LessonActivities extends Base {
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   description: string;
 
-  @Column('boolean', { default: true })
+  @Column('boolean', { default: true, nullable: true })
   visible: boolean;
 
   @Column('int')

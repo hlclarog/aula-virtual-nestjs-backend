@@ -21,6 +21,7 @@ export class createLessonActivitiesTable1611723767778
           {
             name: 'description',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'lesson_id',
@@ -39,6 +40,7 @@ export class createLessonActivitiesTable1611723767778
             name: 'visible',
             type: 'bool',
             default: true,
+            isNullable: true,
           },
           {
             name: 'active',

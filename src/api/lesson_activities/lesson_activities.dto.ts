@@ -12,7 +12,10 @@ export const LESSON_ACTIVITIES_PROVIDER = 'LESSON_ACTIVITIES_REPOSITORY';
 export const LESSON_ACTIVITIES_ENTITY = 'lesson_activities';
 
 export class CreateLessonActivitiesDto extends CreateBaseDto {
-  @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly description?: string;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly activity_type: number;
   @ApiProperty({ required: false })
