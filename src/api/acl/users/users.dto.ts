@@ -111,7 +111,7 @@ export class UpdateUsersDto extends UpdateBaseDto {
   readonly zipcode?: string;
 
   @ApiProperty({ required: false })
-  @IsString()
+  @IsNumber()
   @IsOptional()
   readonly identification_type_id?: number;
 
