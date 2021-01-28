@@ -1,7 +1,15 @@
-import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  RelationId,
+} from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { ACTIVITY_MULTIPLE_OPTIONS_ENTITY } from './activity_multiple_options.dto';
 import { ResourceTypes } from '../resource_types/resource_types.entity';
+import { MultipleOptionAnswers } from '../multiple_option_answers/multiple_option_answers.entity';
 
 @Entity(ACTIVITY_MULTIPLE_OPTIONS_ENTITY)
 export class ActivityMultipleOptions extends Base {
@@ -19,6 +27,8 @@ export class ActivityMultipleOptions extends Base {
 
   @Column({ type: 'varchar', nullable: true })
   audio: string;
+  @Column({ type: 'text', nullable: true })
+  resource_content: string;
 
   @ManyToOne(
     () => ResourceTypes,
@@ -31,4 +41,11 @@ export class ActivityMultipleOptions extends Base {
       activity_multiple_options.resource_type,
   )
   resource_type_id: number;
+
+  @OneToMany(
+    () => MultipleOptionAnswers,
+    (multiple_option_answers) =>
+      multiple_option_answers.activity_multiple_option,
+  )
+  multiple_option_answers: MultipleOptionAnswers[];
 }

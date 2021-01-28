@@ -24,12 +24,12 @@ export class createMultipleOptionAnswersTable1611727430560
           },
           {
             name: 'description',
-            type: 'varchar',
+            type: 'text',
           },
           {
             name: 'right',
             type: 'bool',
-            default: true,
+            default: false,
           },
           {
             name: 'active',

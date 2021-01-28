@@ -56,6 +56,7 @@ import { LessonActivitiesModule } from './lesson_activities/lesson_activities.mo
 import { S3ProviderModule } from '../aws/providers/s3.provider';
 import { ActivityMultipleOptionsModule } from './activity_multiple_options/activity_multiple_options.module';
 import { ResourceTypesModule } from './resource_types/resource_types.module';
+import { MultipleOptionAnswersModule } from './multiple_option_answers/multiple_option_answers.module';
 
 @Module({
   imports: [
@@ -116,6 +117,7 @@ import { ResourceTypesModule } from './resource_types/resource_types.module';
     LessonActivitiesModule,
     ResourceTypesModule,
     ActivityMultipleOptionsModule,
+    MultipleOptionAnswersModule,
   ],
   controllers: [],
   providers: [],

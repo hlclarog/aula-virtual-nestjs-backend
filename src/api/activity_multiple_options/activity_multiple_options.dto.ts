@@ -27,6 +27,10 @@ export class CreateActivityMultipleOptionsDto extends CreateBaseDto {
   @IsString()
   @IsOptional()
   readonly audio?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly resource_content?: string;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly resource_type: number;
 }
 

@@ -44,6 +44,11 @@ export class createActivityMultipleOptionsTable1611727242153
             isNullable: true,
           },
           {
+            name: 'resource_content',
+            type: 'text',
+            isNullable: true,
+          },
+          {
             name: 'resource_type_id',
             type: 'int',
             isNullable: true,
