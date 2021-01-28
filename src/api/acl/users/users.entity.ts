@@ -24,7 +24,25 @@ export class Users extends Base {
   gender: string;
 
   @Column({ type: 'text' })
-  linkeid: string;
+  birthday: string;
+
+  @Column({ type: 'text' })
+  linkedin: string;
+
+  @Column({ type: 'text' })
+  profile_description: string;
+
+  @Column({ type: 'text' })
+  facebook: string;
+
+  @Column({ type: 'text' })
+  google: string;
+
+  @Column({ type: 'text' })
+  twitter: string;
+
+  @Column({ type: 'text' })
+  profession: string;
 
   @Column({ type: 'text' })
   country: string;

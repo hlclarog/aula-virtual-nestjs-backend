@@ -78,7 +78,12 @@ export class UpdateUsersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly linkeid?: string;
+  readonly birthday?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly linkedin?: string;
 
   @ApiProperty({ required: false })
   @IsString()
@@ -119,6 +124,31 @@ export class UpdateUsersDto extends UpdateBaseDto {
   @IsString()
   @IsOptional()
   readonly welcome_message?: boolean;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly profile_description?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly facebook?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly google?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly twitter?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly profession?: string;
 }
 
 export class searchByRol {

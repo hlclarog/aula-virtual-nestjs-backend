@@ -29,7 +29,7 @@ export class updateUsersTable1610912897768 implements MigrationInterface {
         isNullable: true,
       }),
       new TableColumn({
-        name: 'linkeid',
+        name: 'linkedin',
         type: 'varchar',
         isNullable: true,
       }),
@@ -50,6 +50,31 @@ export class updateUsersTable1610912897768 implements MigrationInterface {
       }),
       new TableColumn({
         name: 'address',
+        type: 'varchar',
+        isNullable: true,
+      }),
+      new TableColumn({
+        name: 'profile_description',
+        type: 'varchar',
+        isNullable: true,
+      }),
+      new TableColumn({
+        name: 'facebook',
+        type: 'varchar',
+        isNullable: true,
+      }),
+      new TableColumn({
+        name: 'google',
+        type: 'varchar',
+        isNullable: true,
+      }),
+      new TableColumn({
+        name: 'twitter',
+        type: 'varchar',
+        isNullable: true,
+      }),
+      new TableColumn({
+        name: 'profession',
         type: 'varchar',
         isNullable: true,
       }),
@@ -77,6 +102,11 @@ export class updateUsersTable1610912897768 implements MigrationInterface {
         name: 'welcome_message',
         type: 'bool',
         default: true,
+      }),
+      new TableColumn({
+        name: 'birthday',
+        type: 'date',
+        isNullable: true,
       }),
     ]);
 
