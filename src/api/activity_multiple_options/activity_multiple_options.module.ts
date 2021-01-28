@@ -17,5 +17,6 @@ import { ActivityMultipleOptions } from './activity_multiple_options.entity';
     },
     ActivityMultipleOptionsService,
   ],
+  exports: [ACTIVITY_MULTIPLE_OPTIONS_PROVIDER, ActivityMultipleOptionsService],
 })
 export class ActivityMultipleOptionsModule {}

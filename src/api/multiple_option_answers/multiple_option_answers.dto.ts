@@ -17,7 +17,10 @@ export class CreateMultipleOptionAnswersDto extends CreateBaseDto {
   @IsNumber()
   @IsNotEmpty()
   readonly activity_multiple_option: number;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly description?: string;
   @ApiProperty({ required: false })
   @IsBoolean()
   @IsOptional()

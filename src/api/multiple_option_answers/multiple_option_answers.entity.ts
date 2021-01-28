@@ -5,7 +5,7 @@ import { ActivityMultipleOptions } from '../activity_multiple_options/activity_m
 
 @Entity(MULTIPLE_OPTION_ANSWERS_ENTITY)
 export class MultipleOptionAnswers extends Base {
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   description: string;
 
   @Column('boolean', { default: false })

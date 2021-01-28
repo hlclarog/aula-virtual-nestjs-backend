@@ -5,6 +5,8 @@ import { Connection } from 'typeorm';
 import { LessonActivities } from './lesson_activities.entity';
 import { LESSON_ACTIVITIES_PROVIDER } from './lesson_activities.dto';
 import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
+import { ActivityMultipleOptionsModule } from '../activity_multiple_options/activity_multiple_options.module';
+import { MultipleOptionAnswersModule } from '../multiple_option_answers/multiple_option_answers.module';
 
 @Module({
   controllers: [LessonActivitiesController],
@@ -17,5 +19,6 @@ import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
     },
     LessonActivitiesService,
   ],
+  imports: [ActivityMultipleOptionsModule, MultipleOptionAnswersModule],
 })
 export class LessonActivitiesModule {}

@@ -17,5 +17,6 @@ import { MultipleOptionAnswers } from './multiple_option_answers.entity';
     },
     MultipleOptionAnswersService,
   ],
+  exports: [MULTIPLE_OPTION_ANSWERS_PROVIDER, MultipleOptionAnswersService],
 })
 export class MultipleOptionAnswersModule {}

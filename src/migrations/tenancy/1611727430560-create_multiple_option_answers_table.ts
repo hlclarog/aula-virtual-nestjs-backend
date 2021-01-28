@@ -25,6 +25,7 @@ export class createMultipleOptionAnswersTable1611727430560
           {
             name: 'description',
             type: 'text',
+            isNullable: true,
           },
           {
             name: 'right',
