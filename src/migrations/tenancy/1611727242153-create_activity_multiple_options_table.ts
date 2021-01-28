@@ -75,7 +75,7 @@ export class createActivityMultipleOptionsTable1611727242153
       new TableForeignKey({
         columnNames: ['resource_type_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'resource_types',
+        referencedTableName: 'public.resource_types',
       }),
     ]);
   }
