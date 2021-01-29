@@ -21,6 +21,11 @@ export class createCoursesTable1610318990560 implements MigrationInterface {
             isGenerated: true,
           },
           {
+            name: 'code',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'name',
             type: 'varchar',
             isNullable: false,
