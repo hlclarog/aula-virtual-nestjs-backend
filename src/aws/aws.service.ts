@@ -13,7 +13,6 @@ import { extractDatab64, verifyIfBase64 } from './../utils/base64';
 import { ConfigService } from './../config/config.service';
 import * as unzipper from 'unzipper';
 import * as AWS from 'aws-sdk';
-import * as fs from 'fs';
 import * as etl from 'etl';
 
 @Injectable()
@@ -61,7 +60,7 @@ export class AwsService {
     name,
     type,
   }: SaveFileAws): Promise<Partial<AWS.S3.ManagedUpload.SendData>> {
-    return await new Promise(async (resolve) => {
+    return await new Promise(async (resolve, reject) => {
       const verify = verifyIfBase64(file);
       if (verify) {
         const dataFile = await extractDatab64(file);
@@ -69,31 +68,45 @@ export class AwsService {
           const dataFile = await extractDatab64(file);
           const bitmap = Buffer.from(dataFile.base, 'base64');
           const stream = Readable.from(bitmap);
-          stream.pipe(unzipper.Parse()).pipe(
-            etl.map(async (entry) => {
-              console.log(entry.path);
-              if (entry.path) {
-                const content = await entry.buffer();
-                const stream = Readable.from(content);
-                const uploadParams: AWS.S3.Types.PutObjectRequest = {
-                  Bucket: this.configService.getAwsBucket(),
-                  Key: `${this.tenancy.schema}/${type}/${name}/${entry.path}`,
-                  Body: stream,
-                };
-                this.aws_s3.upload(uploadParams, function (err, data) {
-                  if (err) {
-                    throw new InternalServerErrorException(err);
-                  }
-                  if (data) {
-                    console.log(data);
-                  }
+          stream
+            .pipe(unzipper.Parse())
+            .pipe(
+              etl.map(async (entry) => {
+                if (entry.path) {
+                  const content = await entry.buffer();
+                  const stream = Readable.from(content);
+                  const uploadParams: AWS.S3.Types.PutObjectRequest = {
+                    Bucket: this.configService.getAwsBucket(),
+                    Key: `${this.tenancy.schema}/${type}/scorm_${name}/${entry.path}`,
+                    Body: stream,
+                  };
+                  await new Promise((resolve) => {
+                    this.aws_s3.upload(uploadParams, function (err, data) {
+                      if (err) {
+                        throw new InternalServerErrorException(err);
+                      }
+                      if (data) {
+                        resolve(data);
+                      }
+                    });
+                  });
+                } else {
+                  entry.autodrain();
+                }
+              }),
+            )
+            .promise()
+            .then(
+              () => {
+                resolve({
+                  Key: `${this.tenancy.schema}/${type}/scorm_${name}`,
                 });
-              } else {
-                entry.autodrain();
-              }
-            }),
-          );
-          resolve({ Key: `${this.tenancy.schema}/${type}/${name}` });
+              },
+              (err) => {
+                throw new InternalServerErrorException(err);
+                reject({ Key: '' });
+              },
+            );
         } else {
           resolve({ Key: '' });
         }
