@@ -28,25 +28,29 @@ export class AwsService {
     type,
   }: SaveFileAws): Promise<Partial<AWS.S3.ManagedUpload.SendData>> {
     return await new Promise(async (resolve) => {
-      const verify = verifyIfBase64(file);
-      // if (verify) {
-      const dataFile = await extractDatab64(file);
-      const bitmap = Buffer.from(dataFile.base, 'base64');
-      const stream = Readable.from(bitmap);
-      const uploadParams: AWS.S3.Types.PutObjectRequest = {
-        Bucket: this.configService.getAwsBucket(),
-        Key: `${this.tenancy.schema}/${type}/${name}.${dataFile.extension}`,
-        Body: stream,
-      };
-      this.aws_s3.upload(uploadParams, function (err, data) {
-        if (err) {
-          throw new InternalServerErrorException(err);
-        }
-        if (data) {
-          resolve(data);
-        }
-      });
 
+      const info: Partial<AWS.S3.ManagedUpload.SendData> = {};
+      info.Key = file.length > 250 ? null : file;
+      resolve(info);
+
+      // const verify = verifyIfBase64(file);
+      // if (verify) {
+      //   const dataFile = await extractDatab64(file);
+      //   const bitmap = Buffer.from(dataFile.base, 'base64');
+      //   const stream = Readable.from(bitmap);
+      //   const uploadParams: AWS.S3.Types.PutObjectRequest = {
+      //     Bucket: this.configService.getAwsBucket(),
+      //     Key: `${this.tenancy.schema}/${type}/${name}.${dataFile.extension}`,
+      //     Body: stream,
+      //   };
+      //   this.aws_s3.upload(uploadParams, function (err, data) {
+      //     if (err) {
+      //       throw new InternalServerErrorException(err);
+      //     }
+      //     if (data) {
+      //       resolve(data);
+      //     }
+      //   });
       // } else {
       //   const info: Partial<AWS.S3.ManagedUpload.SendData> = {};
       //   info.Key = file.length > 250 ? null : file;
