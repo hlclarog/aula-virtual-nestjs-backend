@@ -33,11 +33,11 @@ export class AwsService {
         const dataFile = await extractDatab64(file);
         const bitmap = Buffer.from(dataFile.base, 'base64');
         const stream = Readable.from(bitmap);
-        // const uploadParams: AWS.S3.Types.PutObjectRequest = {
-        //   Bucket: this.configService.getAwsBucket(),
-        //   Key: `${this.tenancy.schema}/${type}/${name}.${dataFile.extension}`,
-        //   Body: stream,
-        // };
+        const uploadParams: AWS.S3.Types.PutObjectRequest = {
+          Bucket: this.configService.getAwsBucket(),
+          Key: `${this.tenancy.schema}/${type}/${name}.${dataFile.extension}`,
+          Body: stream,
+        };
         // this.aws_s3.upload(uploadParams, function (err, data) {
         //   if (err) {
         //     throw new InternalServerErrorException(err);
