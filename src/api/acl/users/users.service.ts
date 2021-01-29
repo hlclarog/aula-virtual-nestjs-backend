@@ -73,7 +73,7 @@ export class UsersService extends BaseService<
     delete data.users_roles;
     delete data.rol_default;
     if (updateDto.picture) {
-      // data.picture = await this.setAvatar(updateDto.picture);
+      data.picture = await this.setAvatar(updateDto.picture);
     }
     if (updateDto.users_roles) {
       await this.usersRolesService.set(

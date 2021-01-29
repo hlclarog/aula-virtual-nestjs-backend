@@ -38,14 +38,14 @@ export class AwsService {
           Key: `${this.tenancy.schema}/${type}/${name}.${dataFile.extension}`,
           Body: stream,
         };
-        this.aws_s3.upload(uploadParams, function (err, data) {
-          if (err) {
-            throw new InternalServerErrorException(err);
-          }
-          if (data) {
-            resolve(data);
-          }
-        });
+        // this.aws_s3.upload(uploadParams, function (err, data) {
+        //   if (err) {
+        //     throw new InternalServerErrorException(err);
+        //   }
+        //   if (data) {
+        //     resolve(data);
+        //   }
+        // });
       } else {
         const info: Partial<AWS.S3.ManagedUpload.SendData> = {};
         info.Key = file.length > 250 ? null : file;
