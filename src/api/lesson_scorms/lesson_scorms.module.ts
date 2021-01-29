@@ -6,9 +6,10 @@ import { Connection } from 'typeorm';
 import { LESSON_SCORMS_PROVIDER } from './lesson_scorms.dto';
 import { LessonScorms } from './lesson_scorms.entity';
 import { AwsModule } from './../../aws/aws.module';
+import { LessonScormResourcesModule } from '../lesson_scorm_resources/lesson_scorm_resources.module';
 
 @Module({
-  imports: [AwsModule],
+  imports: [AwsModule, LessonScormResourcesModule],
   controllers: [LessonScormsController],
   providers: [
     {

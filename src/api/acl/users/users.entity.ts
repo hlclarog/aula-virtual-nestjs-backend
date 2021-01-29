@@ -5,6 +5,7 @@ import { USERS_ENTITY } from './users.dto';
 import { CourseUsers } from '../../course-users/course-users.entity';
 import { ProgramUsers } from './../../program_users/program_users.entity';
 import { Courses } from '../../courses/courses.entity';
+import { LessonScormIntents } from './../../lesson_scorm_intents/lesson_scorm_intents.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -82,4 +83,10 @@ export class Users extends Base {
 
   @OneToMany(() => ProgramUsers, (programUsers) => programUsers.user)
   program_users: ProgramUsers[];
+
+  @OneToMany(
+    () => LessonScormIntents,
+    (lesson_scorm_intent) => lesson_scorm_intent.lesson,
+  )
+  lesson_scorm_intents: LessonScormIntents[];
 }

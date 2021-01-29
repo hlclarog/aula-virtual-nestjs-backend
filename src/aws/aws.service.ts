@@ -14,6 +14,8 @@ import { ConfigService } from './../config/config.service';
 import * as unzipper from 'unzipper';
 import * as AWS from 'aws-sdk';
 import * as etl from 'etl';
+import * as fs from 'fs';
+import * as parser from 'xml2json';
 
 @Injectable()
 export class AwsService {
@@ -55,12 +57,8 @@ export class AwsService {
     });
   }
 
-  async saveZipContent({
-    file,
-    name,
-    type,
-  }: SaveFileAws): Promise<Partial<AWS.S3.ManagedUpload.SendData>> {
-    return await new Promise(async (resolve, reject) => {
+  async saveZipScormContent({ file, name, type }: SaveFileAws): Promise<any> {
+    return await new Promise(async (resolve) => {
       const verify = verifyIfBase64(file);
       if (verify) {
         const dataFile = await extractDatab64(file);
@@ -68,6 +66,7 @@ export class AwsService {
           const dataFile = await extractDatab64(file);
           const bitmap = Buffer.from(dataFile.base, 'base64');
           const stream = Readable.from(bitmap);
+          let infoManifest = {};
           stream
             .pipe(unzipper.Parse())
             .pipe(
@@ -80,6 +79,13 @@ export class AwsService {
                     Key: `${this.tenancy.schema}/${type}/scorm_${name}/${entry.path}`,
                     Body: stream,
                   };
+                  console.log(entry.path);
+                  if (entry.spath == 'imsmanifest.xml') {
+                    const xml_string = fs.readFileSync(content, 'utf-8');
+                    const json = parser.toJson(xml_string);
+                    console.log(json);
+                    infoManifest = json;
+                  }
                   await new Promise((resolve) => {
                     this.aws_s3.upload(uploadParams, function (err, data) {
                       if (err) {
@@ -100,11 +106,11 @@ export class AwsService {
               () => {
                 resolve({
                   Key: `${this.tenancy.schema}/${type}/scorm_${name}`,
+                  info: infoManifest,
                 });
               },
               (err) => {
                 throw new InternalServerErrorException(err);
-                reject({ Key: '' });
               },
             );
         } else {

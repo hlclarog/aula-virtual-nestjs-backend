@@ -54,6 +54,9 @@ import { LessonsModule } from './lessons/lessons.module';
 import { LessonDetailsModule } from './lesson_details/lesson_details.module';
 import { S3ProviderModule } from '../aws/providers/s3.provider';
 import { LessonScormsModule } from './lesson_scorms/lesson_scorms.module';
+import { LessonScormResourcesModule } from './lesson_scorm_resources/lesson_scorm_resources.module';
+import { LessonScormIntentsModule } from './lesson_scorm_intents/lesson_scorm_intents.module';
+import { LessonScormDetailsModule } from './lesson_scorm_details/lesson_scorm_details.module';
 
 @Module({
   imports: [
@@ -112,6 +115,9 @@ import { LessonScormsModule } from './lesson_scorms/lesson_scorms.module';
     LessonsModule,
     LessonDetailsModule,
     LessonScormsModule,
+    LessonScormIntentsModule,
+    LessonScormResourcesModule,
+    LessonScormDetailsModule,
   ],
   controllers: [],
   providers: [],
