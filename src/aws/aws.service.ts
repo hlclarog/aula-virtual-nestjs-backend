@@ -28,7 +28,7 @@ export class AwsService {
     type,
   }: SaveFileAws): Promise<Partial<AWS.S3.ManagedUpload.SendData>> {
     return await new Promise(async (resolve) => {
-
+      const verify = verifyIfBase64(file);
       const info: Partial<AWS.S3.ManagedUpload.SendData> = {};
       info.Key = file.length > 250 ? null : file;
       resolve(info);
