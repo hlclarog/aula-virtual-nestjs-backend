@@ -72,7 +72,7 @@ export class AwsService {
             .pipe(
               etl.map(async (entry) => {
                 if (entry.path) {
-                  const content = await entry.buffer();
+                  const content: Buffer = await entry.buffer();
                   const stream = Readable.from(content);
                   const uploadParams: AWS.S3.Types.PutObjectRequest = {
                     Bucket: this.configService.getAwsBucket(),
@@ -80,11 +80,15 @@ export class AwsService {
                     Body: stream,
                   };
                   console.log(entry.path);
-                  if (entry.spath == 'imsmanifest.xml') {
-                    const xml_string = fs.readFileSync(content, 'utf-8');
-                    const json = parser.toJson(xml_string);
+                  if (entry.path == 'imsmanifest.xml') {
+                    const xml_string = content.toString('utf-8');
+                    const json = JSON.parse(parser.toJson(xml_string));
                     console.log(json);
-                    infoManifest = json;
+                    infoManifest = {
+                      identifier: json.manifest.identifier,
+                      title: json.manifest.organizations.default,
+                      index: json.manifest.resources.resource.href,
+                    };
                   }
                   await new Promise((resolve) => {
                     this.aws_s3.upload(uploadParams, function (err, data) {
@@ -134,6 +138,25 @@ export class AwsService {
         Expires: signedUrlExpireSeconds,
       });
       resolve(url);
+    });
+  }
+
+  async getScorm(myKey): Promise<string> {
+    return await new Promise((resolve, reject) => {
+      const myBucket = this.configService.getAwsBucket();
+      // const signedUrlExpireSeconds = durationFilesUrl.img_user;
+      this.aws_s3.getBucketWebsite(
+        {
+          Bucket: myBucket,
+        },
+        (err, data) => {
+          if (err) {
+            reject(err);
+          }
+          console.log(data);
+          resolve(JSON.stringify(data));
+        },
+      );
     });
   }
 }

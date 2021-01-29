@@ -29,9 +29,14 @@ export class LessonScormsService extends BaseService<
 
   async findOne(id: number): Promise<LessonScorms> {
     const lesson_scorm = await this.repository.findOneOrFail(id);
+    const lesson_scorm_resource = await this.repository_resources.findOneOrFail(
+      {
+        lesson_scorm: id,
+      },
+    );
     if (lesson_scorm.content) {
       lesson_scorm.content = await this.awsService.getFile(
-        lesson_scorm.content,
+        `${lesson_scorm.content}/${lesson_scorm_resource.index}`,
       );
     }
     return lesson_scorm;
@@ -50,14 +55,6 @@ export class LessonScormsService extends BaseService<
       index: result.info.index,
     });
     return dataNew;
-  }
-
-  async update(id: number, updateDto: UpdateLessonScormsDto) {
-    const data: any = Object.assign({}, updateDto);
-    if (updateDto.content) {
-      data.content = await this.setContent(updateDto.content);
-    }
-    return await this.repository.update(id, data);
   }
 
   async setContent(file) {
