@@ -33,7 +33,7 @@ export class LessonDetailsController extends BaseController<
     return await this.findOne(id);
   }
 
-  @Get(':id/detail')
+  @Get('bylesson/:id')
   async getByLession(id: number) {
     return await this.getByLession(id);
   }
