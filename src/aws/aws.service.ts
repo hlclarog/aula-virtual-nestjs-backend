@@ -14,8 +14,8 @@ import { ConfigService } from './../config/config.service';
 import * as unzipper from 'unzipper';
 import * as AWS from 'aws-sdk';
 import * as etl from 'etl';
-import * as fs from 'fs';
 import * as parser from 'xml2json';
+import * as filetype from 'file-type';
 
 @Injectable()
 export class AwsService {
@@ -35,11 +35,13 @@ export class AwsService {
       if (verify) {
         const dataFile = await extractDatab64(file);
         const bitmap = Buffer.from(dataFile.base, 'base64');
-        const stream = Readable.from(bitmap);
+        // const stream = Readable.from(bitmap);
         const uploadParams: AWS.S3.Types.PutObjectRequest = {
           Bucket: this.configService.getAwsBucket(),
           Key: `${this.tenancy.schema}/${type}/${name}.${dataFile.extension}`,
-          Body: stream,
+          Body: bitmap,
+          ContentEncoding: 'base64',
+          ContentType: dataFile.type,
         };
         this.aws_s3.upload(uploadParams, function (err, data) {
           if (err) {
@@ -49,7 +51,6 @@ export class AwsService {
             resolve(data);
           }
         });
-
       } else {
         const info: Partial<AWS.S3.ManagedUpload.SendData> = {};
         info.Key = file.length > 250 ? null : file;
@@ -74,11 +75,14 @@ export class AwsService {
               etl.map(async (entry) => {
                 if (entry.path) {
                   const content: Buffer = await entry.buffer();
-                  const stream = Readable.from(content);
+                  const typeContent = await filetype.fromBuffer(bitmap);
+                  // const stream = Readable.from(content);
                   const uploadParams: AWS.S3.Types.PutObjectRequest = {
                     Bucket: this.configService.getAwsBucket(),
                     Key: `${this.tenancy.schema}/${type}/scorm_${name}/${entry.path}`,
-                    Body: stream,
+                    Body: content,
+                    ContentEncoding: 'base64',
+                    ContentType: typeContent.ext,
                   };
                   console.log(entry.path);
                   if (entry.path == 'imsmanifest.xml') {
