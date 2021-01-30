@@ -10,8 +10,11 @@ export const MESSAGE_FORBIDDEN = 'EMAIL OR PASSWORD INCORRECT';
 export class SignUpDto extends PartialType(CreateUsersDto) {}
 
 export class LoginDto {
-  @ApiProperty() @IsString() @IsNotEmpty() readonly email: string;
-  @ApiProperty() @IsString() @IsNotEmpty() password: string;
+  @ApiProperty({ default: 'test@gmail.com' })
+  @IsString()
+  @IsNotEmpty()
+  readonly email: string;
+  @ApiProperty({ default: '321' }) @IsString() @IsNotEmpty() password: string;
 }
 
 export class RequestPasswordEmailDto {

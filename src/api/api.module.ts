@@ -52,11 +52,15 @@ import { ActivityTypesModule } from './activity_types/activity_types.module';
 import { ContentTypesModule } from './content_types/content_types.module';
 import { LessonsModule } from './lessons/lessons.module';
 import { LessonDetailsModule } from './lesson_details/lesson_details.module';
+import { LessonActivitiesModule } from './lesson_activities/lesson_activities.module';
 import { S3ProviderModule } from '../aws/providers/s3.provider';
 import { LessonScormsModule } from './lesson_scorms/lesson_scorms.module';
 import { LessonScormResourcesModule } from './lesson_scorm_resources/lesson_scorm_resources.module';
 import { LessonScormIntentsModule } from './lesson_scorm_intents/lesson_scorm_intents.module';
 import { LessonScormDetailsModule } from './lesson_scorm_details/lesson_scorm_details.module';
+import { ActivityMultipleOptionsModule } from './activity_multiple_options/activity_multiple_options.module';
+import { ResourceTypesModule } from './resource_types/resource_types.module';
+import { MultipleOptionAnswersModule } from './multiple_option_answers/multiple_option_answers.module';
 
 @Module({
   imports: [
@@ -118,6 +122,10 @@ import { LessonScormDetailsModule } from './lesson_scorm_details/lesson_scorm_de
     LessonScormIntentsModule,
     LessonScormResourcesModule,
     LessonScormDetailsModule,
+    LessonActivitiesModule,
+    ResourceTypesModule,
+    ActivityMultipleOptionsModule,
+    MultipleOptionAnswersModule,
   ],
   controllers: [],
   providers: [],
