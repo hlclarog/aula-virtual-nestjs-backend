@@ -53,12 +53,6 @@ export class UsersController extends BaseController<
     return await this.remove(id);
   }
 
-  @Get('profile/info')
-  async profile() {
-    const result = await this.usersService.profile();
-    return result;
-  }
-
   @Post('search/byRol')
   async searchByRol(@Body() body: searchByRol) {
     const result = await this.usersService.searchByRol(body.idRol, body.text);
@@ -67,8 +61,15 @@ export class UsersController extends BaseController<
     };
   }
 
-  @Put('profile/update')
+  @Get('profile/info')
+  async profile() {
+    const result = await this.usersService.profile();
+    return result;
+  }
+
+    @Put('/profile/info')
   async editProfile(@Body() updateDto: UpdateUsersDto) {
     return await this.update(this.infoUser.id.toString(), updateDto);
   }
+
 }

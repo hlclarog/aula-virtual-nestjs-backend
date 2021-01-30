@@ -12,6 +12,10 @@ import {
 export const COURSES_PROVIDER = 'COURSES_REPOSITORY';
 export const COURSE_ENTITY = 'courses';
 export class CreateCourseDto extends CreateBaseDto {
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly code?: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly short_name: string;
@@ -33,6 +37,10 @@ export class CreateCourseDto extends CreateBaseDto {
 }
 
 export class CreateCourseByTeacherDto extends CreateBaseDto {
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly code?: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty({ required: false })
   @IsString()

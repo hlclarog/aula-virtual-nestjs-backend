@@ -13,6 +13,7 @@ import { CourseUnits } from '../course_units/course_units.entity';
 import { AwsService } from './../../aws/aws.service';
 import { typeFilesAwsNames } from './../../aws/aws.dto';
 import * as shortid from 'shortid';
+import { generate } from './../../utils/random';
 
 @Injectable()
 export class CoursesService extends BaseService<
@@ -120,5 +121,10 @@ export class CoursesService extends BaseService<
       .getOneOrFail();
 
     return result.course_units;
+  }
+
+  generateCode() {
+    const code = generate(6);
+    return code;
   }
 }

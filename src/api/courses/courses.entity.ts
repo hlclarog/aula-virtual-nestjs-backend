@@ -21,6 +21,7 @@ import { CourseUnits } from '../course_units/course_units.entity';
 
 @Entity({ name: COURSE_ENTITY })
 export class Courses extends Base {
+  @Column({ type: 'varchar' }) code: string;
   @Column({ type: 'varchar' }) name: string;
   @Column({ type: 'varchar' }) description: string;
   @Column({ type: 'varchar' }) picture: string;

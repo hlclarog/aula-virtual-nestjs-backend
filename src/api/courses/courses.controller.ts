@@ -12,6 +12,7 @@ import {
   INFO_USER_PROVIDER,
   InfoUserProvider,
 } from '../../utils/providers/info-user.module';
+
 @ControllerApi({ name: 'courses' })
 export class CoursesController extends BaseController<
   Courses,
@@ -33,6 +34,14 @@ export class CoursesController extends BaseController<
   @Get()
   async fetchAll() {
     return await this.findAll();
+  }
+
+  @Get('generate/code')
+  async generateCode() {
+    const result = await this.coursesService.generateCode();
+    return {
+      data: result,
+    };
   }
 
   @Get(':id')

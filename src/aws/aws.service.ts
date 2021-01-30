@@ -49,6 +49,7 @@ export class AwsService {
             resolve(data);
           }
         });
+
       } else {
         const info: Partial<AWS.S3.ManagedUpload.SendData> = {};
         info.Key = file.length > 250 ? null : file;
