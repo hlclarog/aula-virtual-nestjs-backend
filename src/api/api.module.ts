@@ -52,7 +52,11 @@ import { ActivityTypesModule } from './activity_types/activity_types.module';
 import { ContentTypesModule } from './content_types/content_types.module';
 import { LessonsModule } from './lessons/lessons.module';
 import { LessonDetailsModule } from './lesson_details/lesson_details.module';
+import { LessonActivitiesModule } from './lesson_activities/lesson_activities.module';
 import { S3ProviderModule } from '../aws/providers/s3.provider';
+import { ActivityMultipleOptionsModule } from './activity_multiple_options/activity_multiple_options.module';
+import { ResourceTypesModule } from './resource_types/resource_types.module';
+import { MultipleOptionAnswersModule } from './multiple_option_answers/multiple_option_answers.module';
 
 @Module({
   imports: [
@@ -110,6 +114,10 @@ import { S3ProviderModule } from '../aws/providers/s3.provider';
     ContentTypesModule,
     LessonsModule,
     LessonDetailsModule,
+    LessonActivitiesModule,
+    ResourceTypesModule,
+    ActivityMultipleOptionsModule,
+    MultipleOptionAnswersModule,
   ],
   controllers: [],
   providers: [],

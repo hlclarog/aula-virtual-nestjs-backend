@@ -1,11 +1,16 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
-export class createActivityTypesTable1611375145558
+export class createMultipleOptionAnswersTable1611727430560
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'activity_types',
+        name: 'multiple_option_answers',
         columns: [
           {
             name: 'id',
@@ -14,13 +19,18 @@ export class createActivityTypesTable1611375145558
             isGenerated: true,
           },
           {
-            name: 'description',
-            type: 'varchar',
+            name: 'activity_multiple_option_id',
+            type: 'int',
           },
           {
-            name: 'image',
-            type: 'varchar',
+            name: 'description',
+            type: 'text',
             isNullable: true,
+          },
+          {
+            name: 'right',
+            type: 'bool',
+            default: false,
           },
           {
             name: 'active',
@@ -45,9 +55,16 @@ export class createActivityTypesTable1611375145558
         ],
       }),
     );
+    await queryRunner.createForeignKeys('multiple_option_answers', [
+      new TableForeignKey({
+        columnNames: ['activity_multiple_option_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'activity_multiple_options',
+      }),
+    ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('activity_types');
+    await queryRunner.dropTable('multiple_option_answers');
   }
 }

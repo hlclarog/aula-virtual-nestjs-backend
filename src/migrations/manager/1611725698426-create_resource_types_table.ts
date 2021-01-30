@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class createActivityTypesTable1611375145558
+export class createResourceTypesTable1611725698426
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'activity_types',
+        name: 'resource_types',
         columns: [
           {
             name: 'id',
@@ -16,11 +16,6 @@ export class createActivityTypesTable1611375145558
           {
             name: 'description',
             type: 'varchar',
-          },
-          {
-            name: 'image',
-            type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'active',
@@ -48,6 +43,6 @@ export class createActivityTypesTable1611375145558
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('activity_types');
+    await queryRunner.dropTable('resource_types');
   }
 }

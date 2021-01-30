@@ -2,18 +2,14 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 
-export const ACTIVITY_TYPES_PROVIDER = 'ACTIVITY_TYPES_REPOSITORY';
-export const ACTIVITY_TYPES_ENTITY = 'activity_types';
+export const RESOURCE_TYPES_PROVIDER = 'RESOURCE_TYPES_REPOSITORY';
+export const RESOURCE_TYPES_ENTITY = 'resource_types';
 
-export class CreateActivityTypesDto extends CreateBaseDto {
+export class CreateResourceTypesDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
-  @ApiProperty({ required: false })
-  @IsString()
-  @IsOptional()
-  readonly image?: string;
 }
 
-export class UpdateActivityTypesDto extends UpdateBaseDto {
+export class UpdateResourceTypesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

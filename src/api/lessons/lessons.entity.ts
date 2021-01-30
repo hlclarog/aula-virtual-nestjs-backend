@@ -11,6 +11,7 @@ import { Base } from '../../base/base.entity';
 import { LessonTypes } from '../lesson_types/lesson_types.entity';
 import { CourseUnits } from '../course_units/course_units.entity';
 import { LessonDetails } from '../lesson_details/lesson_details.entity';
+import { LessonActivities } from '../lesson_activities/lesson_activities.entity';
 
 @Entity(COURSE_UNITS_ENTITY)
 export class Lessons extends Base {
@@ -42,4 +43,9 @@ export class Lessons extends Base {
 
   @OneToMany(() => LessonDetails, (lesson_detail) => lesson_detail.lesson)
   lesson_details: LessonDetails[];
+  @OneToMany(
+    () => LessonActivities,
+    (lesson_activities) => lesson_activities.lesson,
+  )
+  lesson_activities: LessonActivities[];
 }
