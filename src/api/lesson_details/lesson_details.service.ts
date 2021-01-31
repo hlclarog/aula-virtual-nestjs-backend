@@ -40,12 +40,12 @@ export class LessonDetailsService extends BaseService<
     return lesson_detail;
   }
 
-  async getByLesson(id: number): Promise<LessonDetails[]> {
-    return await this.repository.find({
-      // relations: ['lesson'],
-      where: { lesson_id: id },
-    });
-  }
+  // async getByLesson(id: number): Promise<LessonDetails[]> {
+  //   return await this.repository.find({
+  //     // relations: ['lesson'],
+  //     where: { lesson_id: id },
+  //   });
+  // }
 
   async create(createDto: CreateLessonDetailsDto) {
     const data: any = Object.assign({}, createDto);
