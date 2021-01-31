@@ -54,6 +54,11 @@ export class LessonScormsService extends BaseService<
       identifier: result.info.identifier,
       index: result.info.index,
     });
+    if (dataNew.content) {
+      dataNew.content = await this.awsService.getFile(
+        `${result.Key}/${result.info.index}`,
+      );
+    }
     return dataNew;
   }
 
