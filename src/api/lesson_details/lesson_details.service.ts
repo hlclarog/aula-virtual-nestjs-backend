@@ -27,6 +27,10 @@ export class LessonDetailsService extends BaseService<
     return [2, 3, 7].indexOf(id) >= 0;
   }
 
+  validateContentType(id: number): boolean {
+    return [2, 3, 7].indexOf(id) >= 0;
+  }
+
   async getContentFile(content: string) {
     return await this.awsService.getFile(content);
   }
@@ -42,10 +46,23 @@ export class LessonDetailsService extends BaseService<
     return lesson_detail;
   }
 
-  async getByLesson(id: number): Promise<LessonDetails[]> {
-    return await this.repository.find({
-      where: [{ lesson_id: id }]
+  async getByLesson(id: number): Promise<any> {
+    // const data = await this.repository.find({
+    //   where: [{ lesson_id: id }],
+    // });
+
+    const data = await this.repository
+      .createQueryBuilder('lesson_details')
+      .where('lesson_id = :id', { id: id })
+      .getMany();
+
+    data.forEach(async (item) => {
+      if (item.content && this.validateContentType(item.content_type_id)) {
+        item.content = await this.awsService.getFile(item.content);
+      }
     });
+
+    return data;
   }
 
   async create(createDto: CreateLessonDetailsDto) {
