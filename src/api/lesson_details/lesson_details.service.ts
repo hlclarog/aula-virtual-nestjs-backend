@@ -27,25 +27,26 @@ export class LessonDetailsService extends BaseService<
     return [2, 3, 7].indexOf(id) >= 0;
   }
 
+  async getContentFile(content: string) {
+    return await this.awsService.getFile(content);
+  }
+
   async findOne(id: number): Promise<LessonDetails> {
     const lesson_detail = await this.repository.findOneOrFail(id);
     if (
       lesson_detail.content &&
       this.validateLessonType(lesson_detail.content_type_id)
     ) {
-      lesson_detail.content = await this.awsService.getFile(
-        lesson_detail.content,
-      );
+      lesson_detail.content = await this.getContentFile(lesson_detail.content);
     }
     return lesson_detail;
   }
 
-  // async getByLesson(id: number): Promise<LessonDetails[]> {
-  //   return await this.repository.find({
-  //     // relations: ['lesson'],
-  //     where: { lesson_id: id },
-  //   });
-  // }
+  async getByLesson(id: number): Promise<LessonDetails[]> {
+    return await this.repository.find({
+      where: [{ lesson_id: id }]
+    });
+  }
 
   async create(createDto: CreateLessonDetailsDto) {
     const data: any = Object.assign({}, createDto);
