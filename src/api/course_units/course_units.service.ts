@@ -30,19 +30,18 @@ export class CourseUnitsService extends BaseService<
     const listCourseUnits: CourseUnits[] = await this.repository
       .createQueryBuilder('course_units')
       .where(
-        'course_units.id != :unit_id AND course_units.course_id = :course_id AND course_units.order >= :new_order',
+        'course_units.id != :unit_id AND course_units.course_id = :course_id',
         {
           unit_id: data.unit_id,
           course_id: data.course_id,
-          new_order: data.new_order,
         },
       )
       .orderBy('course_units.order', 'ASC')
       .getMany();
 
-    let order = data.new_order;
+    let order = 0;
     for (const f of listCourseUnits) {
-      order += 1;
+      order += data.new_order == order + 1 ? 2 : 1;
       await this.repository
         .createQueryBuilder()
         .update()

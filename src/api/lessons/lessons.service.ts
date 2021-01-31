@@ -37,8 +37,7 @@ export class LessonsService extends BaseService<
     if (createDto.video_url) {
       data.video_url = await this.setVideo(createDto.video_url);
     }
-    const dataNew = await this.repository.save(data);
-    return dataNew;
+    return await this.repository.save(data);
   }
 
   async update(id: number, updateDto: UpdateLessonsDto): Promise<UpdateResult> {
@@ -65,32 +64,28 @@ export class LessonsService extends BaseService<
   }
 
   async changeOrder(data: {
-    id_lesson: number;
-    id_unit: number;
+    lesson_id: number;
+    unit_id: number;
     new_order: number;
   }): Promise<any> {
     const listLessons: Lessons[] = await this.repository
       .createQueryBuilder('lessons')
-      .where(
-        'lessons.id != :id_lesson AND lessons.course_unit_id = :id_unit AND lessons.order >= :new_order',
-        {
-          id_lesson: data.id_lesson,
-          id_unit: data.id_unit,
-          new_order: data.new_order,
-        },
-      )
+      .where('lessons.id != :lesson_id AND lessons.course_unit_id = :unit_id', {
+        lesson_id: data.lesson_id,
+        unit_id: data.unit_id,
+      })
       .orderBy('lessons.order', 'ASC')
       .getMany();
 
-    let order = data.new_order;
+    let order = 0;
     for (const f of listLessons) {
-      order += 1;
+      order += data.new_order == order + 1 ? 2 : 1;
       await this.repository
         .createQueryBuilder()
         .update()
         .set({ order: order })
-        .where('id = :id_lesson', {
-          id_lesson: f.id,
+        .where('id = :lesson_id', {
+          lesson_id: f.id,
         })
         .execute();
     }
@@ -98,9 +93,9 @@ export class LessonsService extends BaseService<
     return await this.repository
       .createQueryBuilder()
       .update()
-      .set({ course_unit: data.id_unit, order: data.new_order })
-      .where('id = :id_lesson', {
-        id_lesson: data.id_lesson,
+      .set({ course_unit: data.unit_id, order: data.new_order })
+      .where('id = :lesson_id', {
+        lesson_id: data.lesson_id,
       })
       .execute();
   }
