@@ -34,7 +34,6 @@ export class CourseUnitsService extends BaseService<
         {
           unit_id: data.unit_id,
           course_id: data.course_id,
-          new_order: data.new_order,
         },
       )
       .orderBy('course_units.order', 'ASC')

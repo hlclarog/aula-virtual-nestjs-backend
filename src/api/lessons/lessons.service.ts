@@ -37,8 +37,7 @@ export class LessonsService extends BaseService<
     if (createDto.video_url) {
       data.video_url = await this.setVideo(createDto.video_url);
     }
-    const dataNew = await this.repository.save(data);
-    return dataNew;
+    return await this.repository.save(data);
   }
 
   async update(id: number, updateDto: UpdateLessonsDto): Promise<UpdateResult> {
@@ -74,7 +73,6 @@ export class LessonsService extends BaseService<
       .where('lessons.id != :lesson_id AND lessons.course_unit_id = :unit_id', {
         lesson_id: data.lesson_id,
         unit_id: data.unit_id,
-        new_order: data.new_order,
       })
       .orderBy('lessons.order', 'ASC')
       .getMany();
