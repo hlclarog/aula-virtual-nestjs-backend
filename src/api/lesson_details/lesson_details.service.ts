@@ -23,17 +23,46 @@ export class LessonDetailsService extends BaseService<
     super();
   }
 
+  validateLessonType(id: number): boolean {
+    return [2, 3, 7].indexOf(id) >= 0;
+  }
+
+  validateContentType(id: number): boolean {
+    return [2, 3, 7].indexOf(id) >= 0;
+  }
+
+  async getContentFile(content: string) {
+    return await this.awsService.getFile(content);
+  }
+
   async findOne(id: number): Promise<LessonDetails> {
     const lesson_detail = await this.repository.findOneOrFail(id);
     if (
       lesson_detail.content &&
-      [2, 3, 7].indexOf(lesson_detail.content_type_id) >= 0
+      this.validateLessonType(lesson_detail.content_type_id)
     ) {
-      lesson_detail.content = await this.awsService.getFile(
-        lesson_detail.content,
-      );
+      lesson_detail.content = await this.getContentFile(lesson_detail.content);
     }
     return lesson_detail;
+  }
+
+  async getByLesson(id: number): Promise<any> {
+    // const data = await this.repository.find({
+    //   where: [{ lesson_id: id }],
+    // });
+
+    const data = await this.repository
+      .createQueryBuilder('lesson_details')
+      .where('lesson_id = :id', { id: id })
+      .getMany();
+
+    data.forEach(async (item) => {
+      if (item.content && this.validateContentType(item.content_type_id)) {
+        item.content = await this.awsService.getFile(item.content);
+      }
+    });
+
+    return data;
   }
 
   async create(createDto: CreateLessonDetailsDto) {

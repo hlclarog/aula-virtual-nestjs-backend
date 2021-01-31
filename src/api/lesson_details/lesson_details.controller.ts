@@ -14,7 +14,7 @@ export class LessonDetailsController extends BaseController<
   CreateLessonDetailsDto,
   UpdateLessonDetailsDto
 > {
-  constructor(lesson_detailsService: LessonDetailsService) {
+  constructor( protected lesson_detailsService: LessonDetailsService) {
     super(lesson_detailsService);
   }
 
@@ -31,6 +31,14 @@ export class LessonDetailsController extends BaseController<
   @Get(':id')
   async find(@Param('id') id: string) {
     return await this.findOne(id);
+  }
+
+  @Get('bylesson/:id')
+  async getByLession(@Param('id') id: number) {
+    const result = await this.lesson_detailsService.getByLesson(id);
+    return {
+      data: result,
+    };
   }
 
   @Put(':id')

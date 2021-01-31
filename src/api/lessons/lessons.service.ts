@@ -37,8 +37,7 @@ export class LessonsService extends BaseService<
     if (createDto.video_url) {
       data.video_url = await this.setVideo(createDto.video_url);
     }
-    const dataNew = await this.repository.save(data);
-    return dataNew;
+    return await this.repository.save(data);
   }
 
   async update(id: number, updateDto: UpdateLessonsDto): Promise<UpdateResult> {
@@ -62,5 +61,42 @@ export class LessonsService extends BaseService<
     return await this.repository.find({
       where: { course: id },
     });
+  }
+
+  async changeOrder(data: {
+    lesson_id: number;
+    unit_id: number;
+    new_order: number;
+  }): Promise<any> {
+    const listLessons: Lessons[] = await this.repository
+      .createQueryBuilder('lessons')
+      .where('lessons.id != :lesson_id AND lessons.course_unit_id = :unit_id', {
+        lesson_id: data.lesson_id,
+        unit_id: data.unit_id,
+      })
+      .orderBy('lessons.order', 'ASC')
+      .getMany();
+
+    let order = 0;
+    for (const f of listLessons) {
+      order += data.new_order == order + 1 ? 2 : 1;
+      await this.repository
+        .createQueryBuilder()
+        .update()
+        .set({ order: order })
+        .where('id = :lesson_id', {
+          lesson_id: f.id,
+        })
+        .execute();
+    }
+
+    return await this.repository
+      .createQueryBuilder()
+      .update()
+      .set({ course_unit: data.unit_id, order: data.new_order })
+      .where('id = :lesson_id', {
+        lesson_id: data.lesson_id,
+      })
+      .execute();
   }
 }

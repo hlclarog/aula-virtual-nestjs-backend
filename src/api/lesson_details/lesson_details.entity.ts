@@ -7,7 +7,7 @@ import { LESSON_DETAILS_ENTITY } from './lesson_details.dto';
 @Entity({ name: LESSON_DETAILS_ENTITY })
 export class LessonDetails extends Base {
   @ManyToOne(() => Lessons, (lessons) => lessons.lesson_details, {
-    eager: true,
+    eager: false,
   })
   @JoinColumn({ name: 'lesson_id' })
   lesson: Lessons | number;
@@ -17,7 +17,7 @@ export class LessonDetails extends Base {
   @ManyToOne(
     () => ContentTypes,
     (content_type) => content_type.lesson_details,
-    { eager: true },
+    { eager: false },
   )
   @JoinColumn({ name: 'content_type_id' })
   content_type: ContentTypes | number;
