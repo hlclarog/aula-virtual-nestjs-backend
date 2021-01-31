@@ -45,4 +45,10 @@ export class CourseUnitsController extends BaseController<
     const result = await this.courseUnitsService.findByCourse(id);
     return { data: result };
   }
+
+  @Post('change/order')
+  async changeOrder(@Body() body: any) {
+    const result = await this.courseUnitsService.changeOrder(body);
+    return { data: result };
+  }
 }
