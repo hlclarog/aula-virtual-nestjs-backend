@@ -63,4 +63,45 @@ export class LessonsService extends BaseService<
       where: { course: id },
     });
   }
+
+  async changeOrder(data: {
+    id_lesson: number;
+    id_unit: number;
+    new_order: number;
+  }): Promise<any> {
+    const listLessons: Lessons[] = await this.repository
+      .createQueryBuilder('lessons')
+      .where(
+        'lessons.id != :id_lesson AND lessons.course_unit_id = :id_unit AND lessons.order >= :new_order',
+        {
+          id_lesson: data.id_lesson,
+          id_unit: data.id_unit,
+          new_order: data.new_order,
+        },
+      )
+      .orderBy('lessons.order', 'ASC')
+      .getMany();
+
+    let order = data.new_order;
+    for (const f of listLessons) {
+      order += 1;
+      await this.repository
+        .createQueryBuilder()
+        .update()
+        .set({ order: order })
+        .where('id = :id_lesson', {
+          id_lesson: f.id,
+        })
+        .execute();
+    }
+
+    return await this.repository
+      .createQueryBuilder()
+      .update()
+      .set({ course_unit: data.id_unit, order: data.new_order })
+      .where('id = :id_lesson', {
+        id_lesson: data.id_lesson,
+      })
+      .execute();
+  }
 }

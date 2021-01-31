@@ -45,4 +45,10 @@ export class LessonsController extends BaseController<
     const result = await this.lessonsService.findByCourse(id);
     return { data: result };
   }
+
+  @Post('change/order')
+  async changeOrder(@Body() body: any) {
+    const result = await this.lessonsService.changeOrder(body);
+    return { data: result };
+  }
 }
