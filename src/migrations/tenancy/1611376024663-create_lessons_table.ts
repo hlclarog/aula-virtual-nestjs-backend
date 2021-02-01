@@ -32,23 +32,28 @@ export class createLessonsTable1611376024663 implements MigrationInterface {
           {
             name: 'description',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'video_url',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'content',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'min_progress',
             type: 'int',
             default: 100,
+            isNullable: true,
           },
           {
             name: 'order',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'duration',
@@ -62,6 +67,7 @@ export class createLessonsTable1611376024663 implements MigrationInterface {
             name: 'visible',
             type: 'boolean',
             default: true,
+            isNullable: true,
           },
           {
             name: 'active',

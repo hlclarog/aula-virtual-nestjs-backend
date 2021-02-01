@@ -34,14 +34,14 @@ export class Lessons extends Base {
   course_unit_id: number;
 
   @Column({ type: 'varchar' }) name: string;
-  @Column({ type: 'varchar' }) description: string;
-  @Column({ type: 'varchar' }) video_url: string;
-  @Column({ type: 'varchar' }) content: string;
-  @Column({ type: 'int', default: 100 }) min_progress: number;
-  @Column({ type: 'int' }) order: number;
+  @Column({ type: 'varchar', nullable: true }) description: string;
+  @Column({ type: 'varchar', nullable: true }) video_url: string;
+  @Column({ type: 'varchar', nullable: true }) content: string;
+  @Column({ type: 'int', default: 100, nullable: true }) min_progress: number;
+  @Column({ type: 'int', nullable: true }) order: number;
   @Column({ type: 'int' }) duration: number;
   @Column({ type: 'int' }) suggested_weeks: number;
-  @Column({ type: 'boolean', default: true }) visible: boolean;
+  @Column({ type: 'boolean', default: true, nullable: true }) visible: boolean;
 
   @OneToMany(() => LessonDetails, (lesson_detail) => lesson_detail.lesson)
   lesson_details: LessonDetails[];
