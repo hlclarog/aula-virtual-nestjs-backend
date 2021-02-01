@@ -10,10 +10,10 @@ import { Courses } from './courses.entity';
 import { UpdateResult } from 'typeorm';
 import { CourseInterestAreasService } from '../course_interest_areas/course_interest_areas.service';
 import { CourseUnits } from '../course_units/course_units.entity';
-import { AwsService } from './../../aws/aws.service';
-import { typeFilesAwsNames } from './../../aws/aws.dto';
+import { AwsService } from '../../aws/aws.service';
+import { typeFilesAwsNames } from '../../aws/aws.dto';
 import * as shortid from 'shortid';
-import { generate } from './../../utils/random';
+import { generate } from '../../utils/random';
 
 @Injectable()
 export class CoursesService extends BaseService<
@@ -118,6 +118,7 @@ export class CoursesService extends BaseService<
       .leftJoinAndSelect('course_units.lessons', 'lessons')
       .where('course.id = :id', { id })
       .orderBy('lessons.order', 'ASC')
+      .orderBy('course_units.order', 'ASC')
       .getOneOrFail();
 
     return result.course_units;

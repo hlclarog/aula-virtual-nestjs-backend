@@ -7,8 +7,8 @@ import {
 } from './lessons.dto';
 import { Lessons } from './lessons.entity';
 import { BaseRepo } from '../../base/base.repository';
-import { AwsService } from './../../aws/aws.service';
-import { typeFilesAwsNames } from './../../aws/aws.dto';
+import { AwsService } from '../../aws/aws.service';
+import { typeFilesAwsNames } from '../../aws/aws.dto';
 import * as shortid from 'shortid';
 import { UpdateResult } from 'typeorm';
 
@@ -37,6 +37,13 @@ export class LessonsService extends BaseService<
     if (createDto.video_url) {
       data.video_url = await this.setVideo(createDto.video_url);
     }
+    const listLessons = await this.repository
+      .createQueryBuilder()
+      .where('course_unit_id = :unit_id', {
+        unit_id: createDto.course_unit,
+      })
+      .getCount();
+    data.order = listLessons + 1;
     return await this.repository.save(data);
   }
 
