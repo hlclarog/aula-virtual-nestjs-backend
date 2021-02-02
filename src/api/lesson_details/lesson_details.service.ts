@@ -3,6 +3,7 @@ import {
   CreateLessonDetailsDto,
   UpdateLessonDetailsDto,
   LESSON_DETAILS_PROVIDER,
+  UpdateOrderLessonDetailsDto,
 } from './lesson_details.dto';
 import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
@@ -47,13 +48,10 @@ export class LessonDetailsService extends BaseService<
   }
 
   async getByLesson(id: number): Promise<any> {
-    // const data = await this.repository.find({
-    //   where: [{ lesson_id: id }],
-    // });
-
     const data = await this.repository
       .createQueryBuilder('lesson_details')
       .where('lesson_id = :id', { id: id })
+      .orderBy('lesson_details.order', 'ASC')
       .getMany();
 
     data.forEach(async (item) => {
@@ -86,6 +84,14 @@ export class LessonDetailsService extends BaseService<
       );
     }
     return await this.repository.update(id, data);
+  }
+
+  async reorder(updateDto: UpdateOrderLessonDetailsDto) {
+    for (let i = 0; i < updateDto.details.length; i++) {
+      const element = updateDto.details[i];
+      await this.repository.update(element, { order: i + 1 });
+    }
+    return { reorder: true };
   }
 
   async setContent(file, type) {

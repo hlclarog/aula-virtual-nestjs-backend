@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsArray,
   IsBoolean,
   IsNotEmpty,
   IsNumber,
@@ -40,4 +41,16 @@ export class UpdateLessonDetailsDto extends UpdateBaseDto {
   @IsBoolean()
   @IsOptional()
   readonly visible?: boolean;
+}
+
+export class UpdateOrderLessonDetailsDto extends UpdateBaseDto {
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
+  @IsArray()
+  @IsOptional()
+  details?: number[];
 }

@@ -3,6 +3,7 @@ import { LessonDetailsService } from './lesson_details.service';
 import {
   CreateLessonDetailsDto,
   UpdateLessonDetailsDto,
+  UpdateOrderLessonDetailsDto,
 } from './lesson_details.dto';
 import { BaseController } from '../../base/base.controller';
 import { LessonDetails } from './lesson_details.entity';
@@ -14,13 +15,21 @@ export class LessonDetailsController extends BaseController<
   CreateLessonDetailsDto,
   UpdateLessonDetailsDto
 > {
-  constructor( protected lesson_detailsService: LessonDetailsService) {
+  constructor(protected lesson_detailsService: LessonDetailsService) {
     super(lesson_detailsService);
   }
 
   @Post()
   async post(@Body() createDto: CreateLessonDetailsDto) {
     return await this.create(createDto);
+  }
+
+  @Post('reorder')
+  async reorder(@Body() orderDto: UpdateOrderLessonDetailsDto) {
+    const result = await this.lesson_detailsService.reorder(orderDto);
+    return {
+      data: result,
+    };
   }
 
   @Get()
