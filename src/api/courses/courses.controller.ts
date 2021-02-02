@@ -3,6 +3,7 @@ import { CoursesService } from './courses.service';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { BaseController } from '../../base/base.controller';
 import {
+  COURSES_PERMISSIONS,
   CreateCourseByTeacherDto,
   CreateCourseDto,
   UpdateCourseDto,
@@ -12,6 +13,7 @@ import {
   INFO_USER_PROVIDER,
   InfoUserProvider,
 } from '../../utils/providers/info-user.module';
+import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
 
 @ControllerApi({ name: 'courses' })
 export class CoursesController extends BaseController<
@@ -21,6 +23,7 @@ export class CoursesController extends BaseController<
 > {
   constructor(
     private readonly coursesService: CoursesService,
+    private authorizationsUserService: AuthorizationsUserService,
     @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
   ) {
     super(coursesService);
@@ -59,6 +62,11 @@ export class CoursesController extends BaseController<
 
   @Put(':id')
   async edit(@Param('id') id: string, @Body() updateDto: UpdateCourseDto) {
+    const user = (await this.coursesService.findOne(Number(id))).user_id;
+    await this.authorizationsUserService.accesAction(
+      [COURSES_PERMISSIONS.MANAGER],
+      user,
+    );
     return await this.update(id, updateDto);
   }
 
