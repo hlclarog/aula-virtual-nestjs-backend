@@ -11,6 +11,15 @@ import {
 
 export const COURSES_PROVIDER = 'COURSES_REPOSITORY';
 export const COURSE_ENTITY = 'courses';
+
+export enum COURSES_PERMISSIONS {
+  CREATE = 'create-courses',
+  UPDATE = 'update-courses',
+  DELETE = 'delete-courses',
+  LIST = 'list-courses',
+  MANAGER = 'management-courses',
+}
+
 export class CreateCourseDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsString()

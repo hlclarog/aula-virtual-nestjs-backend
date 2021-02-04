@@ -67,6 +67,8 @@ import { ActivityRelateElementsModule } from './activity_relate_elements/activit
 import { RelateElementAnswersModule } from './relate_element_answers/relate_element_answers.module';
 import { ActivityCompleteTextsModule } from './activity_complete_texts/activity_complete_texts.module';
 import { ActivityIdentifyWordsModule } from './activity_identify_words/activity_identify_words.module';
+import { ActivityTryUsersModule } from './activity_try_users/activity_try_users.module';
+import { ActivityTriesModule } from './activity_tries/activity_tries.module';
 
 @Module({
   imports: [
@@ -138,6 +140,8 @@ import { ActivityIdentifyWordsModule } from './activity_identify_words/activity_
     RelateElementAnswersModule,
     ActivityCompleteTextsModule,
     ActivityIdentifyWordsModule,
+    ActivityTryUsersModule,
+    ActivityTriesModule,
   ],
   controllers: [],
   providers: [],

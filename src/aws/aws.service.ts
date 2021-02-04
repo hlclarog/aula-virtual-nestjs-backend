@@ -8,14 +8,12 @@ import {
   INFO_TENANCY_PROVIDER,
 } from './../utils/providers/info-tenancy.module';
 import { durationFilesUrl, S3_PROVIDER, SaveFileAws } from './aws.dto';
-import { Readable } from 'stream';
 import { extractDatab64, verifyIfBase64 } from './../utils/base64';
 import { ConfigService } from './../config/config.service';
-import * as unzipper from 'unzipper';
 import * as AWS from 'aws-sdk';
-import * as etl from 'etl';
 import * as parser from 'xml2json';
-import * as filetype from 'file-type';
+import * as adminzip from 'adm-zip';
+import { extname } from 'path';
 
 @Injectable()
 export class AwsService {
@@ -60,68 +58,58 @@ export class AwsService {
   }
 
   async saveZipScormContent({ file, name, type }: SaveFileAws): Promise<any> {
-    return await new Promise(async (resolve) => {
+    return await new Promise(async (resolve, reject) => {
       const verify = verifyIfBase64(file);
       if (verify) {
         const dataFile = await extractDatab64(file);
         if (dataFile.extension == 'zip') {
-          const dataFile = await extractDatab64(file);
-          const bitmap = Buffer.from(dataFile.base, 'base64');
-          const stream = Readable.from(bitmap);
-          let infoManifest = {};
-          stream
-            .pipe(unzipper.Parse())
-            .pipe(
-              etl.map(async (entry) => {
-                if (entry.path) {
-                  const content: Buffer = await entry.buffer();
-                  const typeContent = await filetype.fromBuffer(bitmap);
-                  // const stream = Readable.from(content);
-                  const uploadParams: AWS.S3.Types.PutObjectRequest = {
-                    Bucket: this.configService.getAwsBucket(),
-                    Key: `${this.tenancy.schema}/${type}/scorm_${name}/${entry.path}`,
-                    Body: content,
-                    ContentEncoding: 'base64',
-                    ContentType: typeContent.ext,
+          try {
+            const dataFile = await extractDatab64(file);
+            const bitmap = Buffer.from(dataFile.base, 'base64');
+            let infoManifest = {};
+            const zip = new adminzip(bitmap);
+            const zipEntries = zip.getEntries();
+            for (let i = 0; i < zipEntries.length; i++) {
+              const zipEntry = zipEntries[i];
+              if (!zipEntry.isDirectory) {
+                const typeContent = extname(zipEntry.entryName);
+                console.log(zipEntry.entryName, typeContent);
+                if (zipEntry.entryName == 'imsmanifest.xml') {
+                  const xml_string = zipEntry.getData().toString('utf-8');
+                  const json = JSON.parse(parser.toJson(xml_string));
+                  console.log(json);
+                  infoManifest = {
+                    identifier: json.manifest.identifier,
+                    title: json.manifest.organizations.default,
+                    index: json.manifest.resources.resource.href,
                   };
-                  console.log(entry.path);
-                  if (entry.path == 'imsmanifest.xml') {
-                    const xml_string = content.toString('utf-8');
-                    const json = JSON.parse(parser.toJson(xml_string));
-                    console.log(json);
-                    infoManifest = {
-                      identifier: json.manifest.identifier,
-                      title: json.manifest.organizations.default,
-                      index: json.manifest.resources.resource.href,
-                    };
-                  }
-                  await new Promise((resolve) => {
-                    this.aws_s3.upload(uploadParams, function (err, data) {
-                      if (err) {
-                        throw new InternalServerErrorException(err);
-                      }
-                      if (data) {
-                        resolve(data);
-                      }
-                    });
-                  });
-                } else {
-                  entry.autodrain();
                 }
-              }),
-            )
-            .promise()
-            .then(
-              () => {
-                resolve({
-                  Key: `${this.tenancy.schema}/${type}/scorm_${name}`,
-                  info: infoManifest,
+                const uploadParams: AWS.S3.Types.PutObjectRequest = {
+                  Bucket: this.configService.getAwsBucket(),
+                  Key: `${this.tenancy.schema}/${type}/scorm_${name}/${zipEntry.entryName}`,
+                  Body: zipEntry.getData(),
+                  ContentEncoding: 'base64',
+                  ContentType: typeContent,
+                };
+                await new Promise((resolve) => {
+                  this.aws_s3.upload(uploadParams, function (err, data) {
+                    if (err) {
+                      throw new InternalServerErrorException(err);
+                    }
+                    if (data) {
+                      resolve(data);
+                    }
+                  });
                 });
-              },
-              (err) => {
-                throw new InternalServerErrorException(err);
-              },
-            );
+              }
+            }
+            resolve({
+              Key: `${this.tenancy.schema}/${type}/scorm_${name}`,
+              info: infoManifest,
+            });
+          } catch (error) {
+            throw new InternalServerErrorException(error);
+          }
         } else {
           resolve({ Key: '' });
         }

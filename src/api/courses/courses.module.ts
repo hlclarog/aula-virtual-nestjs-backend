@@ -8,6 +8,7 @@ import { Connection } from 'typeorm';
 import { Courses } from './courses.entity';
 import { CourseInterestAreasModule } from '../course_interest_areas/course_interest_areas.module';
 import { AwsModule } from './../../aws/aws.module';
+import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
 
 @Module({
   imports: [InstanceProcessModule, CourseInterestAreasModule, AwsModule],
@@ -19,6 +20,7 @@ import { AwsModule } from './../../aws/aws.module';
       useFactory: (connection: Connection) => connection.getRepository(Courses),
     },
     CoursesService,
+    AuthorizationsUserService,
   ],
 })
 export class CoursesModule {}
