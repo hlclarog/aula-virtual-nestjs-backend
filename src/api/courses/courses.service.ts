@@ -59,7 +59,7 @@ export class CoursesService extends BaseService<
   async update(id: number, updateDto: UpdateCourseDto): Promise<UpdateResult> {
     const data: any = Object.assign({}, updateDto);
     delete data.interest_areas;
-    if (updateDto.picture.length > 0) {
+    if (updateDto.picture == '') {
       data.picture = await this.setPicture(updateDto.picture);
     }
     if (updateDto.interest_areas) {
