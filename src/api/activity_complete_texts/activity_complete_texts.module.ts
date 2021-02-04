@@ -1,0 +1,21 @@
+import { Module } from '@nestjs/common';
+import { ActivityCompleteTextsService } from './activity_complete_texts.service';
+import { ActivityCompleteTextsController } from './activity_complete_texts.controller';
+import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
+import { Connection } from 'typeorm';
+import { ACTIVITY_COMPLETE_TEXTS_PROVIDER } from './activity_complete_texts.dto';
+import { ActivityCompleteTexts } from './activity_complete_texts.entity';
+
+@Module({
+  controllers: [ActivityCompleteTextsController],
+  providers: [
+    {
+      provide: ACTIVITY_COMPLETE_TEXTS_PROVIDER,
+      inject: [DATABASE_TENANCY_PROVIDER],
+      useFactory: (connection: Connection) =>
+        connection.getRepository(ActivityCompleteTexts),
+    },
+    ActivityCompleteTextsService,
+  ],
+})
+export class ActivityCompleteTextsModule {}

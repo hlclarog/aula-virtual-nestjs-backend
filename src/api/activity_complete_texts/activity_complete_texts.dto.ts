@@ -2,11 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 
-export const ACTIVITY_MULTIPLE_OPTIONS_PROVIDER =
-  'ACTIVITY_MULTIPLE_OPTIONS_REPOSITORY';
-export const ACTIVITY_MULTIPLE_OPTIONS_ENTITY = 'activity_multiple_options';
+export const ACTIVITY_COMPLETE_TEXTS_PROVIDER =
+  'ACTIVITY_COMPLETE_TEXTS_REPOSITORY';
+export const ACTIVITY_COMPLETE_TEXTS_ENTITY = 'activity_complete_texts';
 
-export class CreateActivityMultipleOptionsDto extends CreateBaseDto {
+export class CreateActivityCompleteTextsDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -15,6 +15,10 @@ export class CreateActivityMultipleOptionsDto extends CreateBaseDto {
   @IsString()
   @IsOptional()
   readonly observation?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly text?: string;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -37,7 +41,7 @@ export class CreateActivityMultipleOptionsDto extends CreateBaseDto {
   readonly resource_type?: number;
 }
 
-export class UpdateActivityMultipleOptionsDto extends UpdateBaseDto {
+export class UpdateActivityCompleteTextsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -46,6 +50,10 @@ export class UpdateActivityMultipleOptionsDto extends UpdateBaseDto {
   @IsString()
   @IsOptional()
   readonly observation?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly text?: string;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

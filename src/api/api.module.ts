@@ -61,6 +61,12 @@ import { LessonScormDetailsModule } from './lesson_scorm_details/lesson_scorm_de
 import { ActivityMultipleOptionsModule } from './activity_multiple_options/activity_multiple_options.module';
 import { ResourceTypesModule } from './resource_types/resource_types.module';
 import { MultipleOptionAnswersModule } from './multiple_option_answers/multiple_option_answers.module';
+import { ActivitySortItemsModule } from './activity_sort_items/activity_sort_items.module';
+import { SortItemAnswersModule } from './sort_item_answers/sort_item_answers.module';
+import { ActivityRelateElementsModule } from './activity_relate_elements/activity_relate_elements.module';
+import { RelateElementAnswersModule } from './relate_element_answers/relate_element_answers.module';
+import { ActivityCompleteTextsModule } from './activity_complete_texts/activity_complete_texts.module';
+import { ActivityIdentifyWordsModule } from './activity_identify_words/activity_identify_words.module';
 
 @Module({
   imports: [
@@ -126,6 +132,12 @@ import { MultipleOptionAnswersModule } from './multiple_option_answers/multiple_
     ResourceTypesModule,
     ActivityMultipleOptionsModule,
     MultipleOptionAnswersModule,
+    ActivitySortItemsModule,
+    SortItemAnswersModule,
+    ActivityRelateElementsModule,
+    RelateElementAnswersModule,
+    ActivityCompleteTextsModule,
+    ActivityIdentifyWordsModule,
   ],
   controllers: [],
   providers: [],
