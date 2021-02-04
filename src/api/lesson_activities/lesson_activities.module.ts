@@ -7,6 +7,10 @@ import { LESSON_ACTIVITIES_PROVIDER } from './lesson_activities.dto';
 import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { ActivityMultipleOptionsModule } from '../activity_multiple_options/activity_multiple_options.module';
 import { MultipleOptionAnswersModule } from '../multiple_option_answers/multiple_option_answers.module';
+import { ActivitySortItemsModule } from '../activity_sort_items/activity_sort_items.module';
+import { ActivityCompleteTextsModule } from '../activity_complete_texts/activity_complete_texts.module';
+import { ActivityIdentifyWordsModule } from '../activity_identify_words/activity_identify_words.module';
+import { ActivityRelateElementsModule } from '../activity_relate_elements/activity_relate_elements.module';
 
 @Module({
   controllers: [LessonActivitiesController],
@@ -19,6 +23,14 @@ import { MultipleOptionAnswersModule } from '../multiple_option_answers/multiple
     },
     LessonActivitiesService,
   ],
-  imports: [ActivityMultipleOptionsModule, MultipleOptionAnswersModule],
+  imports: [
+    ActivityMultipleOptionsModule,
+    MultipleOptionAnswersModule,
+    ActivityMultipleOptionsModule,
+    ActivitySortItemsModule,
+    ActivityRelateElementsModule,
+    ActivityCompleteTextsModule,
+    ActivityIdentifyWordsModule,
+  ],
 })
 export class LessonActivitiesModule {}
