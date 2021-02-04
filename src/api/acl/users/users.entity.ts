@@ -6,6 +6,7 @@ import { CourseUsers } from '../../course-users/course-users.entity';
 import { ProgramUsers } from './../../program_users/program_users.entity';
 import { Courses } from '../../courses/courses.entity';
 import { LessonScormIntents } from './../../lesson_scorm_intents/lesson_scorm_intents.entity';
+import { ActivityTryUsers } from 'src/api/activity_try_users/activity_try_users.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -89,4 +90,10 @@ export class Users extends Base {
     (lesson_scorm_intent) => lesson_scorm_intent.lesson,
   )
   lesson_scorm_intents: LessonScormIntents[];
+
+  @OneToMany(
+    () => ActivityTryUsers,
+    (activity_try_user) => activity_try_user.user,
+  )
+  activity_try_users: ActivityTryUsers[];
 }

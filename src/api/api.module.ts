@@ -61,6 +61,8 @@ import { LessonScormDetailsModule } from './lesson_scorm_details/lesson_scorm_de
 import { ActivityMultipleOptionsModule } from './activity_multiple_options/activity_multiple_options.module';
 import { ResourceTypesModule } from './resource_types/resource_types.module';
 import { MultipleOptionAnswersModule } from './multiple_option_answers/multiple_option_answers.module';
+import { ActivityTryUsersModule } from './activity_try_users/activity_try_users.module';
+import { ActivityTriesModule } from './activity_tries/activity_tries.module';
 
 @Module({
   imports: [
@@ -126,6 +128,8 @@ import { MultipleOptionAnswersModule } from './multiple_option_answers/multiple_
     ResourceTypesModule,
     ActivityMultipleOptionsModule,
     MultipleOptionAnswersModule,
+    ActivityTryUsersModule,
+    ActivityTriesModule,
   ],
   controllers: [],
   providers: [],
