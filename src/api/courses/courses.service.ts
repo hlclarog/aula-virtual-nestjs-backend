@@ -79,7 +79,7 @@ export class CoursesService extends BaseService<
 
   async findByTeacher(id: number): Promise<Courses[]> {
     const courses = await this.repository.find({
-      where: { user: id },
+      where: { user_id: id },
       relations: [
         'user',
         'organization',
