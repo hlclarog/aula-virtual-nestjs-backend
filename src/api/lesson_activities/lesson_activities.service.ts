@@ -9,14 +9,20 @@ import { BaseRepo } from '../../base/base.repository';
 import { LessonActivities } from './lesson_activities.entity';
 import { ACTIVITY_MULTIPLE_OPTIONS_PROVIDER } from '../activity_multiple_options/activity_multiple_options.dto';
 import { ActivityMultipleOptions } from '../activity_multiple_options/activity_multiple_options.entity';
-import { MultipleOptionAnswers } from '../multiple_option_answers/multiple_option_answers.entity';
-import { MULTIPLE_OPTION_ANSWERS_PROVIDER } from '../multiple_option_answers/multiple_option_answers.dto';
+import { ACTIVITY_SORT_ITEMS_PROVIDER } from '../activity_sort_items/activity_sort_items.dto';
+import { ActivitySortItems } from '../activity_sort_items/activity_sort_items.entity';
+import { ACTIVITY_RELATE_ELEMENTS_PROVIDER } from '../activity_relate_elements/activity_relate_elements.dto';
+import { ActivityRelateElements } from '../activity_relate_elements/activity_relate_elements.entity';
+import { ACTIVITY_COMPLETE_TEXTS_PROVIDER } from '../activity_complete_texts/activity_complete_texts.dto';
+import { ActivityCompleteTexts } from '../activity_complete_texts/activity_complete_texts.entity';
+import { ActivityIdentifyWords } from '../activity_identify_words/activity_identify_words.entity';
+import { ACTIVITY_IDENTIFY_WORDS_PROVIDER } from '../activity_identify_words/activity_identify_words.dto';
 
 export enum EnumActivityType {
   MultipleOptions = 1,
-  RelateElements = 2,
-  IdentifyWord = 3,
-  SortItems = 4,
+  SortItems = 2,
+  RelateElements = 3,
+  IdentifyWord = 4,
   CompleteText = 5,
 }
 @Injectable()
@@ -28,47 +34,171 @@ export class LessonActivitiesService extends BaseService<
   @Inject(LESSON_ACTIVITIES_PROVIDER) repository: BaseRepo<LessonActivities>;
   @Inject(ACTIVITY_MULTIPLE_OPTIONS_PROVIDER)
   activityMultipleOptions: BaseRepo<ActivityMultipleOptions>;
-  @Inject(MULTIPLE_OPTION_ANSWERS_PROVIDER)
-  multipleOptionAnswers: BaseRepo<MultipleOptionAnswers>;
+  @Inject(ACTIVITY_SORT_ITEMS_PROVIDER)
+  activitySortItems: BaseRepo<ActivitySortItems>;
+  @Inject(ACTIVITY_RELATE_ELEMENTS_PROVIDER)
+  activityRelateElements: BaseRepo<ActivityRelateElements>;
+  @Inject(ACTIVITY_COMPLETE_TEXTS_PROVIDER)
+  activityCompleteTexts: BaseRepo<ActivityCompleteTexts>;
+  @Inject(ACTIVITY_IDENTIFY_WORDS_PROVIDER)
+  activityIdentifyWords: BaseRepo<ActivityIdentifyWords>;
 
   async create(createDto: CreateLessonActivitiesDto) {
     const resultLessonActivity = await this.repository.save(createDto);
 
     switch (resultLessonActivity.activity_type) {
       case EnumActivityType.MultipleOptions:
-        const createMultiplesOptions = await this.activityMultipleOptions
-          .createQueryBuilder()
-          .insert()
-          .into(ActivityMultipleOptions)
-          .values({ active: true })
-          .execute();
-        if (createMultiplesOptions.identifiers[0].id) {
-          await this.multipleOptionAnswers
-            .createQueryBuilder()
-            .insert()
-            .into(MultipleOptionAnswers)
-            .values({
-              active: true,
-              activity_multiple_option:
-                createMultiplesOptions.identifiers[0].id,
-            })
-            .execute();
-          await this.repository
-            .createQueryBuilder()
-            .update()
-            .set({ detail_id: createMultiplesOptions.identifiers[0].id })
-            .where('id = :id', { id: resultLessonActivity.id })
-            .execute();
-
-          resultLessonActivity[
-            'activity_multiple_options'
-          ] = await this.activityMultipleOptions.find({
-            relations: ['multiple_option_answers', 'resource_type'],
-            where: { id: createMultiplesOptions.identifiers[0].id },
-          });
-          return resultLessonActivity;
-        }
+        await this.multipleOptions(resultLessonActivity);
         break;
+      case EnumActivityType.SortItems:
+        await this.sortItems(resultLessonActivity);
+        break;
+      case EnumActivityType.RelateElements:
+        await this.relateElements(resultLessonActivity);
+        break;
+      case EnumActivityType.IdentifyWord:
+        await this.identifyWord(resultLessonActivity);
+        break;
+      case EnumActivityType.CompleteText:
+        await this.completeText(resultLessonActivity);
+        break;
+    }
+
+    return resultLessonActivity;
+  }
+
+  async multipleOptions(
+    resultLessonActivity: CreateLessonActivitiesDto & LessonActivities,
+  ) {
+    const createMultiplesOptions = await this.activityMultipleOptions
+      .createQueryBuilder()
+      .insert()
+      .into(ActivityMultipleOptions)
+      .values({ active: true })
+      .execute();
+    if (createMultiplesOptions.identifiers[0].id) {
+      await this.repository
+        .createQueryBuilder()
+        .update()
+        .set({ detail_id: createMultiplesOptions.identifiers[0].id })
+        .where('id = :id', { id: resultLessonActivity.id })
+        .execute();
+
+      resultLessonActivity[
+        'activity_multiple_options'
+      ] = await this.activityMultipleOptions.find({
+        relations: ['multiple_option_answers', 'resource_type'],
+        where: { id: createMultiplesOptions.identifiers[0].id },
+      });
+      return resultLessonActivity;
+    }
+  }
+
+  async sortItems(
+    resultLessonActivity: CreateLessonActivitiesDto & LessonActivities,
+  ) {
+    const createSortItems = await this.activitySortItems
+      .createQueryBuilder()
+      .insert()
+      .into(ActivitySortItems)
+      .values({ active: true })
+      .execute();
+    if (createSortItems.identifiers[0].id) {
+      await this.repository
+        .createQueryBuilder()
+        .update()
+        .set({ detail_id: createSortItems.identifiers[0].id })
+        .where('id = :id', { id: resultLessonActivity.id })
+        .execute();
+
+      resultLessonActivity[
+        'activity_sort_items'
+      ] = await this.activitySortItems.find({
+        relations: ['sort_item_answers', 'resource_type'],
+        where: { id: createSortItems.identifiers[0].id },
+      });
+      return resultLessonActivity;
+    }
+  }
+
+  async relateElements(
+    resultLessonActivity: CreateLessonActivitiesDto & LessonActivities,
+  ) {
+    const createRelateElements = await this.activityRelateElements
+      .createQueryBuilder()
+      .insert()
+      .into(ActivityRelateElements)
+      .values({ active: true })
+      .execute();
+    if (createRelateElements.identifiers[0].id) {
+      await this.repository
+        .createQueryBuilder()
+        .update()
+        .set({ detail_id: createRelateElements.identifiers[0].id })
+        .where('id = :id', { id: resultLessonActivity.id })
+        .execute();
+
+      resultLessonActivity[
+        'activity_relate_elements'
+      ] = await this.activityRelateElements.find({
+        relations: ['relate_element_answers', 'resource_type'],
+        where: { id: createRelateElements.identifiers[0].id },
+      });
+      return resultLessonActivity;
+    }
+  }
+
+  async identifyWord(
+    resultLessonActivity: CreateLessonActivitiesDto & LessonActivities,
+  ) {
+    const createIdentifyWords = await this.activityIdentifyWords
+      .createQueryBuilder()
+      .insert()
+      .into(ActivityIdentifyWords)
+      .values({ active: true })
+      .execute();
+    if (createIdentifyWords.identifiers[0].id) {
+      await this.repository
+        .createQueryBuilder()
+        .update()
+        .set({ detail_id: createIdentifyWords.identifiers[0].id })
+        .where('id = :id', { id: resultLessonActivity.id })
+        .execute();
+
+      resultLessonActivity[
+        'activity_identify_words'
+      ] = await this.activityRelateElements.find({
+        relations: ['resource_type'],
+        where: { id: createIdentifyWords.identifiers[0].id },
+      });
+      return resultLessonActivity;
+    }
+  }
+
+  async completeText(
+    resultLessonActivity: CreateLessonActivitiesDto & LessonActivities,
+  ) {
+    const createCompleteTexts = await this.activityCompleteTexts
+      .createQueryBuilder()
+      .insert()
+      .into(ActivityCompleteTexts)
+      .values({ active: true })
+      .execute();
+    if (createCompleteTexts.identifiers[0].id) {
+      await this.repository
+        .createQueryBuilder()
+        .update()
+        .set({ detail_id: createCompleteTexts.identifiers[0].id })
+        .where('id = :id', { id: resultLessonActivity.id })
+        .execute();
+
+      resultLessonActivity[
+        'activity_complete_texts'
+      ] = await this.activityRelateElements.find({
+        relations: ['resource_type'],
+        where: { id: createCompleteTexts.identifiers[0].id },
+      });
+      return resultLessonActivity;
     }
   }
 }

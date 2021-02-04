@@ -17,5 +17,6 @@ import { ActivityIdentifyWords } from './activity_identify_words.entity';
     },
     ActivityIdentifyWordsService,
   ],
+  exports: [ACTIVITY_IDENTIFY_WORDS_PROVIDER, ActivityIdentifyWordsService],
 })
 export class ActivityIdentifyWordsModule {}

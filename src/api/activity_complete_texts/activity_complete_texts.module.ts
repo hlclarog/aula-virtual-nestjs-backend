@@ -17,5 +17,6 @@ import { ActivityCompleteTexts } from './activity_complete_texts.entity';
     },
     ActivityCompleteTextsService,
   ],
+  exports: [ACTIVITY_COMPLETE_TEXTS_PROVIDER, ActivityCompleteTextsService],
 })
 export class ActivityCompleteTextsModule {}
