@@ -66,6 +66,8 @@ export class CoursesService extends BaseService<
     delete data.interest_areas;
     if (updateDto.picture !== '') {
       data.picture = await this.setPicture(updateDto.picture);
+    } else {
+      delete data.picture;
     }
     if (updateDto.interest_areas) {
       await this.courseInterestAreasService.set(id, updateDto.interest_areas);
