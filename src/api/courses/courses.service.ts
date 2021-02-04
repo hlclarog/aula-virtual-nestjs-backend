@@ -78,7 +78,7 @@ export class CoursesService extends BaseService<
   }
 
   async findByTeacher(id: number): Promise<Courses[]> {
-    return await this.repository.find({
+    const courses = await this.repository.find({
       where: { user: id },
       relations: [
         'user',
@@ -91,6 +91,13 @@ export class CoursesService extends BaseService<
         'course_competences',
       ],
     });
+    for (let i = 0; i < courses.length; i++) {
+      const course = courses[i];
+      if (course.picture) {
+        course.picture = await this.awsService.getFile(course.picture);
+      }
+    }
+    return courses;
   }
 
   async searchByName(name: string): Promise<any> {
