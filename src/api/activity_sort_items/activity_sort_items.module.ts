@@ -5,7 +5,10 @@ import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { ACTIVITY_SORT_ITEMS_PROVIDER } from './activity_sort_items.dto';
 import { ActivitySortItems } from './activity_sort_items.entity';
+import { SortItemAnswersModule } from '../sort_item_answers/sort_item_answers.module';
+
 @Module({
+  imports: [SortItemAnswersModule],
   controllers: [ActivitySortItemsController],
   providers: [
     {

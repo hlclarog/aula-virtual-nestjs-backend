@@ -132,7 +132,7 @@ export class CoursesService extends BaseService<
       .leftJoinAndSelect('course_units.lessons', 'lessons')
       .where('course.id = :id', { id })
       .orderBy('lessons.order', 'ASC')
-      .orderBy('course_units.order', 'ASC')
+      .addOrderBy('course_units.order', 'ASC')
       .getOneOrFail();
 
     return result.course_units;

@@ -16,4 +16,15 @@ export class SortItemAnswersService extends BaseService<
 > {
   @Inject(SORT_ITEM_ANSWERS_PROVIDER)
   repository: BaseRepo<SortItemAnswers>;
+
+  async findAllByQuestion(question_id: number): Promise<SortItemAnswers[]> {
+    return await this.repository.find({
+      where: {
+        activity_sort_item: question_id,
+      },
+      order: {
+        order: 'ASC',
+      },
+    });
+  }
 }

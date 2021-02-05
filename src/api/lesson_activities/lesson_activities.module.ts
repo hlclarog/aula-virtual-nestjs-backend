@@ -23,6 +23,7 @@ import { ActivityRelateElementsModule } from '../activity_relate_elements/activi
     },
     LessonActivitiesService,
   ],
+  exports: [LESSON_ACTIVITIES_PROVIDER, LessonActivitiesService],
   imports: [
     ActivityMultipleOptionsModule,
     MultipleOptionAnswersModule,

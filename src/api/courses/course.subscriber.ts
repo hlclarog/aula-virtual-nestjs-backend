@@ -21,7 +21,6 @@ export class CoursesSubscriber implements EntitySubscriberInterface<Courses> {
     return Courses;
   }
   afterLoad(entity: Courses) {
-    console.log(entity);
     // if (entity) entity.picture = await this.awsService.getFile(entity.picture);
   }
 }

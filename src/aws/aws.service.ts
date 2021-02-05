@@ -73,11 +73,9 @@ export class AwsService {
               const zipEntry = zipEntries[i];
               if (!zipEntry.isDirectory) {
                 const typeContent = extname(zipEntry.entryName);
-                console.log(zipEntry.entryName, typeContent);
                 if (zipEntry.entryName == 'imsmanifest.xml') {
                   const xml_string = zipEntry.getData().toString('utf-8');
                   const json = JSON.parse(parser.toJson(xml_string));
-                  console.log(json);
                   infoManifest = {
                     identifier: json.manifest.identifier,
                     title: json.manifest.organizations.default,
@@ -146,7 +144,6 @@ export class AwsService {
           if (err) {
             reject(err);
           }
-          console.log(data);
           resolve(JSON.stringify(data));
         },
       );

@@ -17,14 +17,14 @@ export class CreateMultipleOptionAnswersDto extends CreateBaseDto {
   @IsNumber()
   @IsNotEmpty()
   readonly activity_multiple_option: number;
-  @ApiProperty({ required: false })
+  @ApiProperty()
   @IsString()
-  @IsOptional()
-  readonly description?: string;
-  @ApiProperty({ required: false })
+  @IsNotEmpty()
+  readonly description: string;
+  @ApiProperty()
   @IsBoolean()
-  @IsOptional()
-  readonly active?: boolean;
+  @IsNotEmpty()
+  readonly right: boolean;
 }
 
 export class UpdateMultipleOptionAnswersDto extends UpdateBaseDto {
@@ -32,9 +32,12 @@ export class UpdateMultipleOptionAnswersDto extends UpdateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly activity_multiple_option?: number;
-  @ApiProperty({ required: false }) @IsString() @IsOptional() readonly?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly description?: string;
   @ApiProperty({ required: false })
   @IsBoolean()
   @IsOptional()
-  readonly active?: boolean;
+  readonly right?: boolean;
 }

@@ -16,4 +16,12 @@ export class MultipleOptionAnswersService extends BaseService<
 > {
   @Inject(MULTIPLE_OPTION_ANSWERS_PROVIDER)
   repository: BaseRepo<MultipleOptionAnswers>;
+
+  async findAllByQuestion(
+    question_id: number,
+  ): Promise<MultipleOptionAnswers[]> {
+    return await this.repository.find({
+      activity_multiple_option: question_id,
+    });
+  }
 }

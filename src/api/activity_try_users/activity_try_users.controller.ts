@@ -25,20 +25,28 @@ export class ActivityTryUsersController extends BaseController<
     super(activity_try_usersService);
   }
 
-  @Post()
-  async post(@Body() createDto: CreateActivityTryUsersDto) {
-    createDto.user = this.infoUser.id;
-    return await this.create(createDto);
-  }
-
   @Get()
   async fetchAll() {
     return await this.findAll();
   }
 
+  @Get('lesson_activity/list/:id')
+  async findAllByLesson(@Param('id') id: number) {
+    const result = await this.activity_try_usersService.findAllByLessonActivity(
+      id,
+    );
+    return { data: result };
+  }
+
   @Get(':id')
   async find(@Param('id') id: string) {
     return await this.findOne(id);
+  }
+
+  @Post()
+  async post(@Body() createDto: CreateActivityTryUsersDto) {
+    createDto.user = this.infoUser.id;
+    return await this.create(createDto);
   }
 
   @Put('end/:id')
