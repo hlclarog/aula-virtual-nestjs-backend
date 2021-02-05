@@ -14,7 +14,7 @@ export class LessonActivitiesController extends BaseController<
   CreateLessonActivitiesDto,
   UpdateLessonActivitiesDto
 > {
-  constructor(lesson_activitiesService: LessonActivitiesService) {
+  constructor(public lesson_activitiesService: LessonActivitiesService) {
     super(lesson_activitiesService);
   }
 
@@ -44,5 +44,10 @@ export class LessonActivitiesController extends BaseController<
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.remove(id);
+  }
+
+  @Get('lesson/list/:id')
+  async findAllByLesson(@Param('id') id: number) {
+    return await this.lesson_activitiesService.findAllByLesson(id);
   }
 }
