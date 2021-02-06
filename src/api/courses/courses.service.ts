@@ -74,6 +74,9 @@ export class CoursesService extends BaseService<
       delete item.course_users;
       item.student =
         course.course_users?.length > 0 ? course.course_users[0] : null;
+      if (item.picture) {
+        item.picture = await this.awsService.getFile(item.picture);
+      }
       return item;
     } else {
       list = await result.getMany();
@@ -83,6 +86,12 @@ export class CoursesService extends BaseService<
         item.student = c.course_users?.length > 0 ? c.course_users[0] : null;
         return item;
       });
+      for (let i = 0; i < list.length; i++) {
+        const course = list[i];
+        if (course.picture) {
+          course.picture = await this.awsService.getFile(course.picture);
+        }
+      }
       return list;
     }
   }
