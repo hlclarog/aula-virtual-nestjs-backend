@@ -16,6 +16,7 @@ export class CreateLessonDetailsDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly content_type: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly content: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly order: number;
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly visible: boolean;
 }
@@ -33,6 +34,10 @@ export class UpdateLessonDetailsDto extends UpdateBaseDto {
   @IsString()
   @IsOptional()
   readonly content?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly description?: string;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()

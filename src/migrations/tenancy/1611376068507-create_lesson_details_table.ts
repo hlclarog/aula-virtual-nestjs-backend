@@ -31,6 +31,11 @@ export class createLessonDetailsTable1611376068507
             type: 'varchar',
           },
           {
+            name: 'description',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'order',
             type: 'int',
           },
