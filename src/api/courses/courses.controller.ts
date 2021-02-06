@@ -6,6 +6,7 @@ import {
   COURSES_PERMISSIONS,
   CreateCourseByTeacherDto,
   CreateCourseDto,
+  SubscribeCourseStudentDto,
   UpdateCourseDto,
 } from './courses.dto';
 import { Courses } from './courses.entity';
@@ -14,6 +15,7 @@ import {
   InfoUserProvider,
 } from '../../utils/providers/info-user.module';
 import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
+import { CourseUsersService } from '../course-users/course-users.service';
 
 @ControllerApi({ name: 'courses' })
 export class CoursesController extends BaseController<
@@ -23,6 +25,7 @@ export class CoursesController extends BaseController<
 > {
   constructor(
     private readonly coursesService: CoursesService,
+    private readonly courseUsersService: CourseUsersService,
     private authorizationsUserService: AuthorizationsUserService,
     @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
   ) {
@@ -39,9 +42,32 @@ export class CoursesController extends BaseController<
     return await this.findAll();
   }
 
-  @Get('generate/code')
-  async generateCode() {
-    const result = await this.coursesService.generateCode();
+  @Get('catalog/list')
+  async fetchAllCatalog() {
+    const result = await this.coursesService.findAllCatalog(this.infoUser.id);
+    return {
+      data: result,
+    };
+  }
+
+  @Get('student/list')
+  async fetchAllMyCourses() {
+    const result = await this.coursesService.findAllCatalog(
+      this.infoUser.id,
+      null,
+      true,
+    );
+    return {
+      data: result,
+    };
+  }
+
+  @Get('details/:id')
+  async findDetailsCourse(@Param('id') id: number) {
+    const result = await this.coursesService.findAllCatalog(
+      this.infoUser.id,
+      id,
+    );
     return {
       data: result,
     };
@@ -50,6 +76,22 @@ export class CoursesController extends BaseController<
   @Get(':id')
   async find(@Param('id') id: string) {
     return await this.findOne(id);
+  }
+
+  @Get('generate/code')
+  async generateCode() {
+    const result = await this.coursesService.generateCode();
+    return {
+      data: result,
+    };
+  }
+
+  @Post('search/byName')
+  async searchByRol(@Body() body: any) {
+    const result = await this.coursesService.searchByName(body.name);
+    return {
+      data: result,
+    };
   }
 
   @Get('units_lessons/:id')
@@ -70,17 +112,21 @@ export class CoursesController extends BaseController<
     return await this.update(id, updateDto);
   }
 
-  @Delete(':id')
-  async delete(@Param('id') id: string) {
-    return await this.remove(id);
-  }
-
-  @Post('search/byName')
-  async searchByRol(@Body() body: any) {
-    const result = await this.coursesService.searchByName(body.name);
+  @Post('subscribe_student')
+  async subscribeStudent(@Body() subscribeDto: SubscribeCourseStudentDto) {
+    const result = await this.courseUsersService.create({
+      course: subscribeDto.course,
+      user: this.infoUser.id,
+      begin_date: subscribeDto.begin_date,
+    });
     return {
       data: result,
     };
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return await this.remove(id);
   }
 
   @Get('teacher/list')
