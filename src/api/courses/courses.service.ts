@@ -30,6 +30,63 @@ export class CoursesService extends BaseService<
     super();
   }
 
+  async findAllCatalog(
+    user_id: number,
+    course_id?: number,
+    only_user?: boolean,
+  ): Promise<Courses[] | Courses> {
+    let list = [];
+    let result = await this.repository
+      .createQueryBuilder('course')
+      .leftJoinAndSelect(
+        'course.course_users',
+        'course_user',
+        'course_user.user_id = :user_id AND course_user.course_id = course.id',
+        {
+          user_id,
+        },
+      )
+      .select([
+        'course',
+        'course_user.id',
+        'course_user.begin_date',
+        'course_user.end_date',
+      ])
+      .orderBy('course.id', 'ASC');
+    if (only_user) {
+      result = await result.where('course_user.user_id = :user_id', {
+        user_id,
+      });
+    } else {
+      result = await result.where(
+        '(course_user.user_id = :user_id OR course_user.user_id IS NULL)',
+        {
+          user_id,
+        },
+      );
+    }
+    if (course_id) {
+      result = await result.andWhere('course.id = :course_id', {
+        course_id,
+      });
+      const course = await result.getOne();
+      const item: any = Object.assign({}, course);
+      delete item.course_users;
+      item.student =
+        course.course_users?.length > 0 ? course.course_users[0] : null;
+      return item;
+    } else {
+      list = await result.getMany();
+      list = list.map((c: any) => {
+        const item: any = Object.assign({}, c);
+        delete item.course_users;
+        item.student = c.course_users?.length > 0 ? c.course_users[0] : null;
+        return item;
+      });
+      return list;
+    }
+  }
+
   async findOne(id: number): Promise<Courses> {
     const course = await this.repository.findOneOrFail(id, {
       relations: ['course_interest_areas'],

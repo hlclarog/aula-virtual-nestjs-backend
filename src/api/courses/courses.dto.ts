@@ -134,3 +134,8 @@ export class UpdateCourseDto extends UpdateBaseDto {
   @IsOptional()
   interest_areas?: number[];
 }
+
+export class SubscribeCourseStudentDto {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course: number;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly begin_date: string;
+}

@@ -11,7 +11,7 @@ import { ActivityTryUsers } from '../activity_try_users/activity_try_users.entit
 import {
   INFO_USER_PROVIDER,
   InfoUserProvider,
-} from 'src/utils/providers/info-user.module';
+} from './../../utils/providers/info-user.module';
 import { ActivityTryUsersService } from '../activity_try_users/activity_try_users.service';
 import { LessonActivitiesService } from '../lesson_activities/lesson_activities.service';
 import { ActivityMultipleOptionsService } from '../activity_multiple_options/activity_multiple_options.service';

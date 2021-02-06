@@ -9,9 +9,15 @@ import { Courses } from './courses.entity';
 import { CourseInterestAreasModule } from '../course_interest_areas/course_interest_areas.module';
 import { AwsModule } from './../../aws/aws.module';
 import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
+import { CourseUsersModule } from '../course-users/course-users.module';
 
 @Module({
-  imports: [InstanceProcessModule, CourseInterestAreasModule, AwsModule],
+  imports: [
+    InstanceProcessModule,
+    CourseUsersModule,
+    CourseInterestAreasModule,
+    AwsModule,
+  ],
   controllers: [CoursesController],
   providers: [
     {
