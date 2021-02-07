@@ -7,31 +7,16 @@ import {
 import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
 import { LessonActivities } from './lesson_activities.entity';
-import {
-  ACTIVITY_MULTIPLE_OPTIONS_ENTITY,
-  ACTIVITY_MULTIPLE_OPTIONS_PROVIDER,
-} from '../activity_multiple_options/activity_multiple_options.dto';
+import { ACTIVITY_MULTIPLE_OPTIONS_PROVIDER } from '../activity_multiple_options/activity_multiple_options.dto';
 import { ActivityMultipleOptions } from '../activity_multiple_options/activity_multiple_options.entity';
-import {
-  ACTIVITY_SORT_ITEMS_ENTITY,
-  ACTIVITY_SORT_ITEMS_PROVIDER,
-} from '../activity_sort_items/activity_sort_items.dto';
+import { ACTIVITY_SORT_ITEMS_PROVIDER } from '../activity_sort_items/activity_sort_items.dto';
 import { ActivitySortItems } from '../activity_sort_items/activity_sort_items.entity';
-import {
-  ACTIVITY_RELATE_ELEMENTS_ENTITY,
-  ACTIVITY_RELATE_ELEMENTS_PROVIDER,
-} from '../activity_relate_elements/activity_relate_elements.dto';
+import { ACTIVITY_RELATE_ELEMENTS_PROVIDER } from '../activity_relate_elements/activity_relate_elements.dto';
 import { ActivityRelateElements } from '../activity_relate_elements/activity_relate_elements.entity';
-import {
-  ACTIVITY_COMPLETE_TEXTS_ENTITY,
-  ACTIVITY_COMPLETE_TEXTS_PROVIDER,
-} from '../activity_complete_texts/activity_complete_texts.dto';
+import { ACTIVITY_COMPLETE_TEXTS_PROVIDER } from '../activity_complete_texts/activity_complete_texts.dto';
 import { ActivityCompleteTexts } from '../activity_complete_texts/activity_complete_texts.entity';
 import { ActivityIdentifyWords } from '../activity_identify_words/activity_identify_words.entity';
-import {
-  ACTIVITY_IDENTIFY_WORDS_ENTITY,
-  ACTIVITY_IDENTIFY_WORDS_PROVIDER,
-} from '../activity_identify_words/activity_identify_words.dto';
+import { ACTIVITY_IDENTIFY_WORDS_PROVIDER } from '../activity_identify_words/activity_identify_words.dto';
 
 export enum EnumActivityType {
   MultipleOptions = 1,
@@ -100,8 +85,8 @@ export class LessonActivitiesService extends BaseService<
         .execute();
 
       resultLessonActivity[
-        'activity_multiple_options'
-      ] = await this.activityMultipleOptions.find({
+        'lesson_activity_detail'
+      ] = await this.activityMultipleOptions.findOne({
         relations: ['multiple_option_answers', 'resource_type'],
         where: { id: createMultiplesOptions.identifiers[0].id },
       });
@@ -127,8 +112,8 @@ export class LessonActivitiesService extends BaseService<
         .execute();
 
       resultLessonActivity[
-        'activity_sort_items'
-      ] = await this.activitySortItems.find({
+        'lesson_activity_detail'
+      ] = await this.activitySortItems.findOne({
         relations: ['sort_item_answers', 'resource_type'],
         where: { id: createSortItems.identifiers[0].id },
       });
@@ -154,8 +139,8 @@ export class LessonActivitiesService extends BaseService<
         .execute();
 
       resultLessonActivity[
-        'activity_relate_elements'
-      ] = await this.activityRelateElements.find({
+        'lesson_activity_detail'
+      ] = await this.activityRelateElements.findOne({
         relations: ['relate_element_answers', 'resource_type'],
         where: { id: createRelateElements.identifiers[0].id },
       });
@@ -181,8 +166,8 @@ export class LessonActivitiesService extends BaseService<
         .execute();
 
       resultLessonActivity[
-        'activity_identify_words'
-      ] = await this.activityRelateElements.find({
+        'lesson_activity_detail'
+      ] = await this.activityIdentifyWords.findOne({
         relations: ['resource_type'],
         where: { id: createIdentifyWords.identifiers[0].id },
       });
@@ -208,8 +193,8 @@ export class LessonActivitiesService extends BaseService<
         .execute();
 
       resultLessonActivity[
-        'activity_complete_texts'
-      ] = await this.activityRelateElements.find({
+        'lesson_activity_detail'
+      ] = await this.activityCompleteTexts.findOne({
         relations: ['resource_type'],
         where: { id: createCompleteTexts.identifiers[0].id },
       });
@@ -227,37 +212,37 @@ export class LessonActivitiesService extends BaseService<
       switch (f.activity_type_id) {
         case EnumActivityType.MultipleOptions:
           f[
-            ACTIVITY_MULTIPLE_OPTIONS_ENTITY
-          ] = await this.activityMultipleOptions.find({
+            'lesson_activity_detail'
+          ] = await this.activityMultipleOptions.findOne({
             where: { id: f.detail_id },
             relations: ['multiple_option_answers'],
           });
           break;
         case EnumActivityType.SortItems:
-          f[ACTIVITY_SORT_ITEMS_ENTITY] = await this.activitySortItems.find({
+          f['lesson_activity_detail'] = await this.activitySortItems.findOne({
             where: { id: f.detail_id },
             relations: ['sort_item_answers'],
           });
           break;
         case EnumActivityType.RelateElements:
           f[
-            ACTIVITY_RELATE_ELEMENTS_ENTITY
-          ] = await this.activityRelateElements.find({
+            'lesson_activity_detail'
+          ] = await this.activityRelateElements.findOne({
             where: { id: f.detail_id },
             relations: ['relate_element_answers'],
           });
           break;
         case EnumActivityType.IdentifyWord:
           f[
-            ACTIVITY_IDENTIFY_WORDS_ENTITY
-          ] = await this.activityIdentifyWords.find({
+            'lesson_activity_detail'
+          ] = await this.activityIdentifyWords.findOne({
             id: f.detail_id,
           });
           break;
         case EnumActivityType.CompleteText:
           f[
-            ACTIVITY_COMPLETE_TEXTS_ENTITY
-          ] = await this.activityCompleteTexts.find({
+            'lesson_activity_detail'
+          ] = await this.activityCompleteTexts.findOne({
             id: f.detail_id,
           });
           break;

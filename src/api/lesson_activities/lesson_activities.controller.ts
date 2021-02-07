@@ -48,6 +48,7 @@ export class LessonActivitiesController extends BaseController<
 
   @Get('lesson/list/:id')
   async findAllByLesson(@Param('id') id: number) {
-    return await this.lesson_activitiesService.findAllByLesson(id);
+    const result = await this.lesson_activitiesService.findAllByLesson(id);
+    return { data: result };
   }
 }
