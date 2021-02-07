@@ -132,6 +132,24 @@ export class AwsService {
     });
   }
 
+  async getMetadata(myKey): Promise<any> {
+    return await new Promise(async (resolve) => {
+      const myBucket = this.configService.getAwsBucket();
+      await this.aws_s3.headObject(
+        {
+          Bucket: myBucket,
+          Key: myKey,
+        },
+        (err, result) => {
+          if (err) {
+            console.log(err);
+          }
+          resolve(result);
+        },
+      );
+    });
+  }
+
   async getScorm(myKey): Promise<string> {
     return await new Promise((resolve, reject) => {
       const myBucket = this.configService.getAwsBucket();

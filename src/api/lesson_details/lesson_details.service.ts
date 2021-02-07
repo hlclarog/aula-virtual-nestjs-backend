@@ -42,7 +42,9 @@ export class LessonDetailsService extends BaseService<
       lesson_detail.content &&
       this.validateLessonType(lesson_detail.content_type_id)
     ) {
-      lesson_detail.content = await this.getContentFile(lesson_detail.content);
+      const content = lesson_detail.content;
+      lesson_detail.content = await this.getContentFile(content);
+      lesson_detail['metadata'] = await this.awsService.getMetadata(content);
     }
     return lesson_detail;
   }
@@ -54,11 +56,14 @@ export class LessonDetailsService extends BaseService<
       .orderBy('lesson_details.order', 'ASC')
       .getMany();
 
-    data.forEach(async (item) => {
+    for (let i = 0; i < data.length; i++) {
+      const item = data[i];
       if (item.content && this.validateContentType(item.content_type_id)) {
-        item.content = await this.awsService.getFile(item.content);
+        const content = item.content;
+        item.content = await this.awsService.getFile(content);
+        item['metadata'] = await this.awsService.getMetadata(content);
       }
-    });
+    }
 
     return data;
   }

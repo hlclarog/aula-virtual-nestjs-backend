@@ -25,6 +25,7 @@ export class LessonDetails extends Base {
   content_type_id: number;
 
   @Column({ type: 'varchar' }) content: string;
+  @Column({ type: 'varchar' }) description: string;
   @Column({ type: 'int' }) order: number;
   @Column({ type: 'boolean', default: true }) visible: boolean;
 }
