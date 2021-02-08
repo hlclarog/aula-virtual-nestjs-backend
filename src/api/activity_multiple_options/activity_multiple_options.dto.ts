@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
+import { MultipleOptionAnswers } from '../multiple_option_answers/multiple_option_answers.entity';
 
 export const ACTIVITY_MULTIPLE_OPTIONS_PROVIDER =
   'ACTIVITY_MULTIPLE_OPTIONS_REPOSITORY';
@@ -66,4 +67,8 @@ export class UpdateActivityMultipleOptionsDto extends UpdateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly resource_type?: number;
+  @ApiProperty({ required: false, isArray: true })
+  @IsArray()
+  @IsOptional()
+  lesson_activity_detail_answers?: MultipleOptionAnswers[];
 }

@@ -8,6 +8,9 @@ import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
 import { ActivityMultipleOptions } from './activity_multiple_options.entity';
 import { MultipleOptionAnswersService } from '../multiple_option_answers/multiple_option_answers.service';
+import { UpdateResult } from 'typeorm';
+import { MultipleOptionAnswers } from '../multiple_option_answers/multiple_option_answers.entity';
+import { MULTIPLE_OPTION_ANSWERS_PROVIDER } from '../multiple_option_answers/multiple_option_answers.dto';
 
 @Injectable()
 export class ActivityMultipleOptionsService extends BaseService<
@@ -17,11 +20,49 @@ export class ActivityMultipleOptionsService extends BaseService<
 > {
   @Inject(ACTIVITY_MULTIPLE_OPTIONS_PROVIDER)
   repository: BaseRepo<ActivityMultipleOptions>;
+  @Inject(MULTIPLE_OPTION_ANSWERS_PROVIDER)
+  multiple_option_answers: BaseRepo<MultipleOptionAnswers>;
 
   constructor(
     private multipleOptionAnswersService: MultipleOptionAnswersService,
   ) {
     super();
+  }
+
+  async update(
+    id: number,
+    updateDto: UpdateActivityMultipleOptionsDto,
+  ): Promise<UpdateResult> {
+    const lesson_activity_detail_answers =
+      updateDto.lesson_activity_detail_answers;
+    delete updateDto.lesson_activity_detail_answers;
+    const updateResult = await this.repository.update(id, updateDto);
+
+    const dataUpdate = lesson_activity_detail_answers.filter(
+      (f) => f.id !== undefined,
+    );
+    const ids = dataUpdate.map((f) => f.id);
+    await this.multiple_option_answers
+      .createQueryBuilder()
+      .delete()
+      .where(
+        `activity_multiple_option = :id AND id not in (${
+          ids.length > 0 ? ids.join() : [0].join()
+        })`,
+        {
+          id,
+        },
+      )
+      .execute();
+
+    for (const value of dataUpdate) {
+      await this.multiple_option_answers.update(value.id, value);
+    }
+
+    await this.multiple_option_answers.save(
+      lesson_activity_detail_answers.filter((f) => f.id === undefined),
+    );
+    return updateResult;
   }
 
   async isRight(detail_id: number, answer: number): Promise<boolean> {

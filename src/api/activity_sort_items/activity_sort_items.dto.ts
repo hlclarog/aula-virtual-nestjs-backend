@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
+import { SortItemAnswers } from '../sort_item_answers/sort_item_answers.entity';
 
 export const ACTIVITY_SORT_ITEMS_PROVIDER = 'ACTIVITY_SORT_ITEMS_REPOSITORY';
 export const ACTIVITY_SORT_ITEMS_ENTITY = 'activity_sort_items';
@@ -65,4 +66,8 @@ export class UpdateActivitySortItemsDto extends UpdateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly resource_type?: number;
+  @ApiProperty({ required: false, isArray: true })
+  @IsArray()
+  @IsOptional()
+  lesson_activity_detail_answers?: SortItemAnswers[];
 }

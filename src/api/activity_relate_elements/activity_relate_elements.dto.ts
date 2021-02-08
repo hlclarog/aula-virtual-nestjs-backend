@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
+import { RelateElementAnswers } from '../relate_element_answers/relate_element_answers.entity';
 
 export const ACTIVITY_RELATE_ELEMENTS_PROVIDER =
   'ACTIVITY_RELATE_ELEMENTS_REPOSITORY';
@@ -66,4 +67,8 @@ export class UpdateActivityRelateElementsDto extends UpdateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly resource_type?: number;
+  @ApiProperty({ required: false, isArray: true })
+  @IsArray()
+  @IsOptional()
+  lesson_activity_detail_answers?: RelateElementAnswers[];
 }

@@ -8,6 +8,9 @@ import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
 import { ActivitySortItems } from './activity_sort_items.entity';
 import { SortItemAnswersService } from '../sort_item_answers/sort_item_answers.service';
+import { UpdateResult } from 'typeorm';
+import { SORT_ITEM_ANSWERS_PROVIDER } from '../sort_item_answers/sort_item_answers.dto';
+import { SortItemAnswers } from '../sort_item_answers/sort_item_answers.entity';
 
 @Injectable()
 export class ActivitySortItemsService extends BaseService<
@@ -16,9 +19,47 @@ export class ActivitySortItemsService extends BaseService<
   UpdateActivitySortItemsDto
 > {
   @Inject(ACTIVITY_SORT_ITEMS_PROVIDER) repository: BaseRepo<ActivitySortItems>;
+  @Inject(SORT_ITEM_ANSWERS_PROVIDER)
+  sort_item_answers: BaseRepo<SortItemAnswers>;
 
   constructor(private sortItemAnswersService: SortItemAnswersService) {
     super();
+  }
+
+  async update(
+    id: number,
+    updateDto: UpdateActivitySortItemsDto,
+  ): Promise<UpdateResult> {
+    const lesson_activity_detail_answers =
+      updateDto.lesson_activity_detail_answers;
+    delete updateDto.lesson_activity_detail_answers;
+    const updateResult = await this.repository.update(id, updateDto);
+
+    const dataUpdate = lesson_activity_detail_answers.filter(
+      (f) => f.id !== undefined,
+    );
+    const ids = dataUpdate.map((f) => f.id);
+    await this.sort_item_answers
+      .createQueryBuilder()
+      .delete()
+      .where(
+        `activity_sort_item = :id AND id not in (${
+          ids.length > 0 ? ids.join() : [0].join()
+        })`,
+        {
+          id,
+        },
+      )
+      .execute();
+
+    for (const value of dataUpdate) {
+      await this.sort_item_answers.update(value.id, value);
+    }
+
+    await this.sort_item_answers.save(
+      lesson_activity_detail_answers.filter((f) => f.id === undefined),
+    );
+    return updateResult;
   }
 
   async isRight(detail_id: number, answer: number[]): Promise<boolean> {

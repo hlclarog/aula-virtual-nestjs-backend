@@ -5,7 +5,9 @@ import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { ACTIVITY_RELATE_ELEMENTS_PROVIDER } from './activity_relate_elements.dto';
 import { ActivityRelateElements } from './activity_relate_elements.entity';
+import { RelateElementAnswersModule } from '../relate_element_answers/relate_element_answers.module';
 @Module({
+  imports: [RelateElementAnswersModule],
   controllers: [ActivityRelateElementsController],
   providers: [
     {
