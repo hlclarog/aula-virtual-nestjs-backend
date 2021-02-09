@@ -6,7 +6,7 @@ export async function base64MimeType(encoded) {
   }
   const bitmap = Buffer.from(encoded, 'base64');
   const type = await filetype.fromBuffer(bitmap);
-  return type.ext;
+  return type;
 }
 
 export function verifyIfBase64(encoded) {
@@ -20,10 +20,10 @@ export function verifyIfBase64(encoded) {
 
 export async function extractDatab64(file) {
   const base64Data = file.split(';base64,')[1];
-  const fileType: string = await this.base64MimeType(base64Data);
+  const fileType = await this.base64MimeType(base64Data);
   return {
     base: base64Data,
-    type: fileType,
-    extension: fileType ? fileType : null,
+    type: fileType.mime,
+    extension: fileType ? fileType.ext : null,
   };
 }

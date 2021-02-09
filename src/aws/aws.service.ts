@@ -64,7 +64,6 @@ export class AwsService {
         const dataFile = await extractDatab64(file);
         if (dataFile.extension == 'zip') {
           try {
-            const dataFile = await extractDatab64(file);
             const bitmap = Buffer.from(dataFile.base, 'base64');
             let infoManifest = {};
             const zip = new adminzip(bitmap);
