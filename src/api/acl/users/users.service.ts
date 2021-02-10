@@ -120,6 +120,7 @@ export class UsersService extends BaseService<
     return {
       ...data,
       rol_default: rolDefault.rol,
+      rol_default_id: rolDefault.rol.id,
     };
   }
 

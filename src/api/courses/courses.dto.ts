@@ -91,6 +91,10 @@ export class UpdateCourseDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
+  readonly code?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
   readonly name?: string;
   @ApiProperty({ required: false })
   @IsString()

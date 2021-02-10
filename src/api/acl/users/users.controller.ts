@@ -1,4 +1,4 @@
-import {Body, Delete, Get, Inject, Param, Post, Put} from '@nestjs/common';
+import { Body, Delete, Get, Inject, Param, Post, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUsersDto, searchByRol, UpdateUsersDto } from './users.dto';
 import { BaseController } from '../../../base/base.controller';
@@ -67,9 +67,8 @@ export class UsersController extends BaseController<
     return result;
   }
 
-    @Put('/profile/info')
+  @Put('/profile/info')
   async editProfile(@Body() updateDto: UpdateUsersDto) {
     return await this.update(this.infoUser.id.toString(), updateDto);
   }
-
 }
