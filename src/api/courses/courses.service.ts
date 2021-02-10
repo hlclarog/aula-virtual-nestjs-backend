@@ -122,15 +122,10 @@ export class CoursesService extends BaseService<
     return dataNew;
   }
 
-  /**
-   * Actualizando Curso
-   * @param id
-   * @param updateDto
-   */
   async update(id: number, updateDto: UpdateCourseDto): Promise<UpdateResult> {
     const data: any = Object.assign({}, updateDto);
     delete data.interest_areas;
-    if (updateDto.picture !== '') {
+    if (updateDto.picture) {
       data.picture = await this.setPicture(updateDto.picture);
     } else {
       delete data.picture;
