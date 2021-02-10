@@ -9,6 +9,9 @@ import { ActivityTryUsersModule } from '../activity_try_users/activity_try_users
 import { LessonActivitiesModule } from '../lesson_activities/lesson_activities.module';
 import { ActivityMultipleOptionsModule } from '../activity_multiple_options/activity_multiple_options.module';
 import { ActivitySortItemsModule } from '../activity_sort_items/activity_sort_items.module';
+import { ActivityRelateElementsModule } from '../activity_relate_elements/activity_relate_elements.module';
+import { ActivityCompleteTextsModule } from '../activity_complete_texts/activity_complete_texts.module';
+import { ActivityIdentifyWordsModule } from '../activity_identify_words/activity_identify_words.module';
 
 @Module({
   imports: [
@@ -16,6 +19,9 @@ import { ActivitySortItemsModule } from '../activity_sort_items/activity_sort_it
     LessonActivitiesModule,
     ActivityMultipleOptionsModule,
     ActivitySortItemsModule,
+    ActivityRelateElementsModule,
+    ActivityCompleteTextsModule,
+    ActivityIdentifyWordsModule,
   ],
   controllers: [ActivityTriesController],
   providers: [

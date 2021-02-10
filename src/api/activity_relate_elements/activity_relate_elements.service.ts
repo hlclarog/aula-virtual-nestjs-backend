@@ -10,6 +10,7 @@ import { ActivityRelateElements } from './activity_relate_elements.entity';
 import { UpdateResult } from 'typeorm';
 import { RELATE_ELEMENT_ANSWERS_PROVIDER } from '../relate_element_answers/relate_element_answers.dto';
 import { RelateElementAnswers } from '../relate_element_answers/relate_element_answers.entity';
+import { RelateElementAnswersService } from '../relate_element_answers/relate_element_answers.service';
 
 @Injectable()
 export class ActivityRelateElementsService extends BaseService<
@@ -21,6 +22,12 @@ export class ActivityRelateElementsService extends BaseService<
   repository: BaseRepo<ActivityRelateElements>;
   @Inject(RELATE_ELEMENT_ANSWERS_PROVIDER)
   relate_element_answers: BaseRepo<RelateElementAnswers>;
+
+  constructor(
+    private relateElementAnswersService: RelateElementAnswersService,
+  ) {
+    super();
+  }
 
   async update(
     id: number,
@@ -56,5 +63,32 @@ export class ActivityRelateElementsService extends BaseService<
       lesson_activity_detail_answers.filter((f) => f.id === undefined),
     );
     return updateResult;
+  }
+
+  async isRight(detail_id: number, answer): Promise<boolean> {
+    let matches = 0;
+    let right = false;
+    const listAnswers = await this.relateElementAnswersService.findAllByQuestion(
+      detail_id,
+    );
+    const userAnswers = Object.keys(answer);
+    const systemAnswers = {};
+    listAnswers.map((ans) => {
+      systemAnswers[ans.id] = ans.term;
+    });
+    if (userAnswers.length == listAnswers.length) {
+      for (let i = 0; i < userAnswers.length; i++) {
+        const key = userAnswers[i];
+        const value = answer[key];
+        const correct = systemAnswers[key];
+        if (value === correct) {
+          matches++;
+        }
+      }
+    }
+    if (matches == listAnswers.length) {
+      right = true;
+    }
+    return right;
   }
 }

@@ -16,6 +16,9 @@ import { ActivityTryUsersService } from '../activity_try_users/activity_try_user
 import { LessonActivitiesService } from '../lesson_activities/lesson_activities.service';
 import { ActivityMultipleOptionsService } from '../activity_multiple_options/activity_multiple_options.service';
 import { ActivitySortItemsService } from '../activity_sort_items/activity_sort_items.service';
+import { ActivityRelateElementsService } from '../activity_relate_elements/activity_relate_elements.service';
+import { ActivityCompleteTextsService } from '../activity_complete_texts/activity_complete_texts.service';
+import { ActivityIdentifyWordsService } from '../activity_identify_words/activity_identify_words.service';
 
 @Injectable()
 export class ActivityTriesService extends BaseService<
@@ -34,6 +37,9 @@ export class ActivityTriesService extends BaseService<
     private lessonActivitiesService: LessonActivitiesService,
     private activityMultipleOptionsService: ActivityMultipleOptionsService,
     private activitySortItemsService: ActivitySortItemsService,
+    private activityRelateElementsService: ActivityRelateElementsService,
+    private activityCompleteTextsService: ActivityCompleteTextsService,
+    private activityIdentifyWordsService: ActivityIdentifyWordsService,
   ) {
     super();
   }
@@ -77,6 +83,27 @@ export class ActivityTriesService extends BaseService<
         passed = await this.activitySortItemsService.isRight(
           lesson_activity.detail_id,
           answer_order,
+        );
+        break;
+      case 3:
+        const answer_relate = JSON.parse(createDto.answer);
+        passed = await this.activityRelateElementsService.isRight(
+          lesson_activity.detail_id,
+          answer_relate,
+        );
+        break;
+      case 4:
+        const answer_identify = JSON.parse(createDto.answer)[0];
+        passed = await this.activityIdentifyWordsService.isRight(
+          lesson_activity.detail_id,
+          answer_identify,
+        );
+        break;
+      case 5:
+        const answer_complete = JSON.parse(createDto.answer);
+        passed = await this.activityCompleteTextsService.isRight(
+          lesson_activity.detail_id,
+          answer_complete,
         );
         break;
     }

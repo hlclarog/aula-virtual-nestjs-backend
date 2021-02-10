@@ -16,4 +16,9 @@ export class ActivityIdentifyWordsService extends BaseService<
 > {
   @Inject(ACTIVITY_IDENTIFY_WORDS_PROVIDER)
   repository: BaseRepo<ActivityIdentifyWords>;
+
+  async isRight(detail_id: number, answer: string): Promise<boolean> {
+    const question = await this.findOne(detail_id);
+    return question.word === answer;
+  }
 }

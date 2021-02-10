@@ -16,4 +16,14 @@ export class RelateElementAnswersService extends BaseService<
 > {
   @Inject(RELATE_ELEMENT_ANSWERS_PROVIDER)
   repository: BaseRepo<RelateElementAnswers>;
+
+  async findAllByQuestion(
+    question_id: number,
+  ): Promise<RelateElementAnswers[]> {
+    return await this.repository.find({
+      where: {
+        activity_relate_element: question_id,
+      },
+    });
+  }
 }
