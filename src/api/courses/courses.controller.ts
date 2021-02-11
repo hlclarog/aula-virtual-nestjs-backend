@@ -16,6 +16,7 @@ import {
 } from '../../utils/providers/info-user.module';
 import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
 import { CourseUsersService } from '../course-users/course-users.service';
+import { InterestAreasService } from '../interest_areas/interest_areas.service';
 
 @ControllerApi({ name: 'courses' })
 export class CoursesController extends BaseController<
@@ -26,6 +27,7 @@ export class CoursesController extends BaseController<
   constructor(
     private readonly coursesService: CoursesService,
     private readonly courseUsersService: CourseUsersService,
+    private readonly interestAreasService: InterestAreasService,
     private authorizationsUserService: AuthorizationsUserService,
     @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
   ) {
@@ -42,24 +44,44 @@ export class CoursesController extends BaseController<
     return await this.findAll();
   }
 
-  @Get('catalog/list')
-  async fetchAllCatalog() {
-    const result = await this.coursesService.findAllCatalog(this.infoUser.id);
+  @Get('catalog/:type')
+  async fetchAllCatalog(@Param('type') type: string) {
+    let result: any = [];
+    switch (type) {
+      case 'list':
+        result = await this.coursesService.findAllCatalog(this.infoUser.id);
+        break;
+      case 'group':
+        result = await this.interestAreasService.findGroup(
+          this.infoUser.id,
+          'all',
+        );
+        break;
+    }
     return {
       data: result,
     };
   }
 
-  @Get('student/list')
-  async fetchAllMyCourses() {
-    const result = await this.coursesService.findAllCatalog(
-      this.infoUser.id,
-      null,
-      true,
-    );
-    return {
-      data: result,
-    };
+  @Get('student/:type')
+  async fetchAllMyCourses(@Param('type') type: string) {
+    let result: any = [];
+    switch (type) {
+      case 'list':
+        result = await this.coursesService.findAllCatalog(
+          this.infoUser.id,
+          null,
+          true,
+        );
+        break;
+      case 'group':
+        result = await this.interestAreasService.findGroup(
+          this.infoUser.id,
+          'student',
+        );
+        break;
+    }
+    return { data: result };
   }
 
   @Get('details/:id')
@@ -129,9 +151,20 @@ export class CoursesController extends BaseController<
     return await this.remove(id);
   }
 
-  @Get('teacher/list')
-  async getByTeacher() {
-    const result = await this.coursesService.findByTeacher(this.infoUser.id);
+  @Get('teacher/:type')
+  async getByTeacher(@Param('type') type: string) {
+    let result = [];
+    switch (type) {
+      case 'list':
+        result = await this.coursesService.findByTeacher(this.infoUser.id);
+        break;
+      case 'group':
+        result = await this.interestAreasService.findGroup(
+          this.infoUser.id,
+          'teacher',
+        );
+        break;
+    }
     return { data: result };
   }
 

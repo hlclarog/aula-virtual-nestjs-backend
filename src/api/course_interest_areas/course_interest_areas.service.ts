@@ -23,6 +23,21 @@ export class CourseInterestAreasService extends BaseService<
     });
   }
 
+  async findGroup(id_user: number, type_user: string): Promise<any[]> {
+    switch (type_user) {
+      case 'teacher':
+        return await this.repository
+          .createQueryBuilder('course_interest_areas')
+          .leftJoinAndSelect('course_interest_areas.courses', 'course')
+          .where('course.user_id = :id_user', { id_user })
+          .getMany();
+        break;
+      default:
+        return [];
+        break;
+    }
+  }
+
   async set(idCourse: number, areas: Array<number>): Promise<any> {
     const areasList = areas.length > 0 ? areas.join() : [0].join();
     // DELETE ITEMS NOT RECEIVED
