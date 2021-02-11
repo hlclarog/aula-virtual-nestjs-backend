@@ -10,12 +10,14 @@ import { CourseInterestAreasModule } from '../course_interest_areas/course_inter
 import { AwsModule } from './../../aws/aws.module';
 import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
 import { CourseUsersModule } from '../course-users/course-users.module';
+import { InterestAreasModule } from '../interest_areas/interest_areas.module';
 
 @Module({
   imports: [
     InstanceProcessModule,
     CourseUsersModule,
     CourseInterestAreasModule,
+    InterestAreasModule,
     AwsModule,
   ],
   controllers: [CoursesController],

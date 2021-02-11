@@ -17,5 +17,6 @@ import { InterestAreas } from './interest_areas.entity';
     },
     InterestAreasService,
   ],
+  exports: [INTEREST_AREAS_PROVIDER, InterestAreasService],
 })
 export class InterestAreasModule {}
