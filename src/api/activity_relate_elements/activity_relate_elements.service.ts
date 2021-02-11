@@ -11,6 +11,9 @@ import { UpdateResult } from 'typeorm';
 import { RELATE_ELEMENT_ANSWERS_PROVIDER } from '../relate_element_answers/relate_element_answers.dto';
 import { RelateElementAnswers } from '../relate_element_answers/relate_element_answers.entity';
 import { RelateElementAnswersService } from '../relate_element_answers/relate_element_answers.service';
+import * as shortid from 'shortid';
+import { typeFilesAwsNames } from '../../aws/aws.dto';
+import { AwsService } from '../../aws/aws.service';
 
 @Injectable()
 export class ActivityRelateElementsService extends BaseService<
@@ -25,6 +28,7 @@ export class ActivityRelateElementsService extends BaseService<
 
   constructor(
     private relateElementAnswersService: RelateElementAnswersService,
+    private awsService: AwsService,
   ) {
     super();
   }
@@ -36,6 +40,11 @@ export class ActivityRelateElementsService extends BaseService<
     const lesson_activity_detail_answers =
       updateDto.lesson_activity_detail_answers;
     delete updateDto.lesson_activity_detail_answers;
+    if (updateDto.resource_content) {
+      updateDto.resource_content = await this.setResourceContent(
+        updateDto.resource_content,
+      );
+    }
     const updateResult = await this.repository.update(id, updateDto);
 
     const dataUpdate = lesson_activity_detail_answers.filter(
@@ -63,6 +72,15 @@ export class ActivityRelateElementsService extends BaseService<
       lesson_activity_detail_answers.filter((f) => f.id === undefined),
     );
     return updateResult;
+  }
+
+  async setResourceContent(file) {
+    const result = await this.awsService.saveFile({
+      file,
+      name: shortid.generate(),
+      type: typeFilesAwsNames.activity_relate_element,
+    });
+    return result.Key;
   }
 
   async isRight(detail_id: number, answer): Promise<boolean> {

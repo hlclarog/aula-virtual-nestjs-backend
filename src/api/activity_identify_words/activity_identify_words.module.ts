@@ -5,9 +5,11 @@ import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { ACTIVITY_IDENTIFY_WORDS_PROVIDER } from './activity_identify_words.dto';
 import { ActivityIdentifyWords } from './activity_identify_words.entity';
+import { AwsModule } from '../../aws/aws.module';
 
 @Module({
   controllers: [ActivityIdentifyWordsController],
+  imports: [AwsModule],
   providers: [
     {
       provide: ACTIVITY_IDENTIFY_WORDS_PROVIDER,

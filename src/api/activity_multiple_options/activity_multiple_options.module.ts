@@ -6,9 +6,10 @@ import { Connection } from 'typeorm';
 import { ACTIVITY_MULTIPLE_OPTIONS_PROVIDER } from './activity_multiple_options.dto';
 import { ActivityMultipleOptions } from './activity_multiple_options.entity';
 import { MultipleOptionAnswersModule } from '../multiple_option_answers/multiple_option_answers.module';
+import { AwsModule } from '../../aws/aws.module';
 
 @Module({
-  imports: [MultipleOptionAnswersModule],
+  imports: [MultipleOptionAnswersModule, AwsModule],
   controllers: [ActivityMultipleOptionsController],
   providers: [
     {

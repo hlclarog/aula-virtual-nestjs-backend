@@ -9,6 +9,11 @@ export enum typeFilesAwsNames {
   program_videos = 'programs/videos',
   program_pictures = 'programs/pictures',
   lesson_scorms = 'scorms',
+  activity_multiple_option = 'activities/multiple_option',
+  activity_relate_element = 'activities/relate_element',
+  activity_sort_item = 'activities/sort_item',
+  activity_identify_word = 'activities/identify_word',
+  activity_complete_text = 'activities/complete_text',
 }
 
 export type typeFileAwsTypes =
@@ -18,6 +23,11 @@ export type typeFileAwsTypes =
   | typeFilesAwsNames.lesson_details_files
   | typeFilesAwsNames.program_pictures
   | typeFilesAwsNames.program_videos
+  | typeFilesAwsNames.activity_multiple_option
+  | typeFilesAwsNames.activity_relate_element
+  | typeFilesAwsNames.activity_sort_item
+  | typeFilesAwsNames.activity_identify_word
+  | typeFilesAwsNames.activity_complete_text
   | typeFilesAwsNames.lesson_scorms;
 
 export interface SaveFileAws {

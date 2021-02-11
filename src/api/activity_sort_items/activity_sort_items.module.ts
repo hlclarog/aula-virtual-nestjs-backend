@@ -6,9 +6,10 @@ import { Connection } from 'typeorm';
 import { ACTIVITY_SORT_ITEMS_PROVIDER } from './activity_sort_items.dto';
 import { ActivitySortItems } from './activity_sort_items.entity';
 import { SortItemAnswersModule } from '../sort_item_answers/sort_item_answers.module';
+import { AwsModule } from '../../aws/aws.module';
 
 @Module({
-  imports: [SortItemAnswersModule],
+  imports: [SortItemAnswersModule, AwsModule],
   controllers: [ActivitySortItemsController],
   providers: [
     {

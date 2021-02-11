@@ -11,6 +11,9 @@ import { SortItemAnswersService } from '../sort_item_answers/sort_item_answers.s
 import { UpdateResult } from 'typeorm';
 import { SORT_ITEM_ANSWERS_PROVIDER } from '../sort_item_answers/sort_item_answers.dto';
 import { SortItemAnswers } from '../sort_item_answers/sort_item_answers.entity';
+import * as shortid from 'shortid';
+import { typeFilesAwsNames } from '../../aws/aws.dto';
+import { AwsService } from '../../aws/aws.service';
 
 @Injectable()
 export class ActivitySortItemsService extends BaseService<
@@ -22,7 +25,10 @@ export class ActivitySortItemsService extends BaseService<
   @Inject(SORT_ITEM_ANSWERS_PROVIDER)
   sort_item_answers: BaseRepo<SortItemAnswers>;
 
-  constructor(private sortItemAnswersService: SortItemAnswersService) {
+  constructor(
+    private sortItemAnswersService: SortItemAnswersService,
+    private awsService: AwsService,
+  ) {
     super();
   }
 
@@ -33,6 +39,11 @@ export class ActivitySortItemsService extends BaseService<
     const lesson_activity_detail_answers =
       updateDto.lesson_activity_detail_answers;
     delete updateDto.lesson_activity_detail_answers;
+    if (updateDto.resource_content) {
+      updateDto.resource_content = await this.setResourceContent(
+        updateDto.resource_content,
+      );
+    }
     const updateResult = await this.repository.update(id, updateDto);
 
     const dataUpdate = lesson_activity_detail_answers.filter(
@@ -60,6 +71,15 @@ export class ActivitySortItemsService extends BaseService<
       lesson_activity_detail_answers.filter((f) => f.id === undefined),
     );
     return updateResult;
+  }
+
+  async setResourceContent(file) {
+    const result = await this.awsService.saveFile({
+      file,
+      name: shortid.generate(),
+      type: typeFilesAwsNames.activity_sort_item,
+    });
+    return result.Key;
   }
 
   async isRight(detail_id: number, answer: number[]): Promise<boolean> {

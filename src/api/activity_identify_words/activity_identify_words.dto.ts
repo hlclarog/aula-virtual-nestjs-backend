@@ -69,7 +69,7 @@ export class UpdateActivityIdentifyWordsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly resource_content?: string;
+  resource_content?: string;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()

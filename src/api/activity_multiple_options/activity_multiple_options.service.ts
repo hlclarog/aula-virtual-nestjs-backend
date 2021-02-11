@@ -11,6 +11,9 @@ import { MultipleOptionAnswersService } from '../multiple_option_answers/multipl
 import { UpdateResult } from 'typeorm';
 import { MultipleOptionAnswers } from '../multiple_option_answers/multiple_option_answers.entity';
 import { MULTIPLE_OPTION_ANSWERS_PROVIDER } from '../multiple_option_answers/multiple_option_answers.dto';
+import * as shortid from 'shortid';
+import { typeFilesAwsNames } from '../../aws/aws.dto';
+import { AwsService } from '../../aws/aws.service';
 
 @Injectable()
 export class ActivityMultipleOptionsService extends BaseService<
@@ -25,6 +28,7 @@ export class ActivityMultipleOptionsService extends BaseService<
 
   constructor(
     private multipleOptionAnswersService: MultipleOptionAnswersService,
+    private awsService: AwsService,
   ) {
     super();
   }
@@ -36,6 +40,11 @@ export class ActivityMultipleOptionsService extends BaseService<
     const lesson_activity_detail_answers =
       updateDto.lesson_activity_detail_answers;
     delete updateDto.lesson_activity_detail_answers;
+    if (updateDto.resource_content) {
+      updateDto.resource_content = await this.setResourceContent(
+        updateDto.resource_content,
+      );
+    }
     const updateResult = await this.repository.update(id, updateDto);
 
     const dataUpdate = lesson_activity_detail_answers.filter(
@@ -63,6 +72,15 @@ export class ActivityMultipleOptionsService extends BaseService<
       lesson_activity_detail_answers.filter((f) => f.id === undefined),
     );
     return updateResult;
+  }
+
+  async setResourceContent(file) {
+    const result = await this.awsService.saveFile({
+      file,
+      name: shortid.generate(),
+      type: typeFilesAwsNames.activity_multiple_option,
+    });
+    return result.Key;
   }
 
   async isRight(detail_id: number, answer: number): Promise<boolean> {
