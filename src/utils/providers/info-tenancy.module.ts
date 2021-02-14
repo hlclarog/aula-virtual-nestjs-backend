@@ -11,6 +11,7 @@ import { ConfigModule } from './../../config/config.module';
 
 export const INFO_TENANCY_PROVIDER = 'INFO_TENANCY_PROVIDER';
 export interface InfoTenancyDomain {
+  id: number;
   domain: TenancyDomains;
   schema: string;
   host: string;
@@ -44,6 +45,7 @@ export class InfoTenancyModule {
           configService.hashTokenSecret(),
         );
         return {
+          id: domain.tenancy_id,
           domain,
           host,
           schema,

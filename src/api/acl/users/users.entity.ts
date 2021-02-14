@@ -1,4 +1,11 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  RelationId,
+} from 'typeorm';
 import { Base } from '../../../base/base.entity';
 import { UsersRoles } from '../users_roles/users_roles.entity';
 import { USERS_ENTITY } from './users.dto';
@@ -7,9 +14,16 @@ import { ProgramUsers } from './../../program_users/program_users.entity';
 import { Courses } from '../../courses/courses.entity';
 import { LessonScormIntents } from './../../lesson_scorm_intents/lesson_scorm_intents.entity';
 import { ActivityTryUsers } from './../../activity_try_users/activity_try_users.entity';
+import { Themes } from 'src/api/themes/themes.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
+  @ManyToOne(() => Themes, (theme) => theme.users)
+  @JoinColumn({ name: 'theme_id' })
+  theme: Themes;
+  @RelationId((user: Users) => user.theme)
+  theme_id: number;
+
   @Column({ type: 'varchar' })
   name: string;
 
