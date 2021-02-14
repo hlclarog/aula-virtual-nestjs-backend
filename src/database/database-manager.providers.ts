@@ -17,7 +17,10 @@ export const databaseManagerProviders = [
         migrationsTableName: 'migrations_registers',
         migrations: [__dirname + '/../migrations/manager/*{.ts,.js}'],
         cli: { migrationsDir: __dirname + '/../migrations/manager' },
-        entities: [__dirname + '/../api/**/*.entity{.ts,.js}'],
+        entities: [
+          __dirname + '/../api/**/*.entity{.ts,.js}',
+          __dirname + '/../../node_modules/@switchit/**/*.entity.js',
+        ],
         synchronize: false,
       }),
   },

@@ -7,6 +7,8 @@ import { ConfigService } from './config/config.service';
 import { HttpExceptionFilter } from './utils/filters/http-exception.filter';
 import { TransformInterceptor } from './utils/interceptors/transform.interceptor';
 import * as bodyParser from 'body-parser';
+import { ValidationPipe } from '@nestjs/common';
+import { useContainer } from 'class-validator';
 //import { RedisIoAdapter } from './websocket/websocket.adapter';
 
 async function bootstrap() {
@@ -19,6 +21,13 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
 
   //app.useWebSocketAdapter(new RedisIoAdapter(app));
 

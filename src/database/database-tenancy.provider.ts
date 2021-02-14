@@ -45,7 +45,10 @@ export const databaseTenancyProvider = {
         database: config.nameDatabase(),
         migrationsTableName: 'migrations_registers',
         migrations: [__dirname + '/../migrations/tenancy/*{.ts,.js}'],
-        entities: [__dirname + '/../api/**/*.entity{.ts,.js}'],
+        entities: [
+          __dirname + '/../api/**/*.entity{.ts,.js}',
+          __dirname + '/../../node_modules/@switchit/**/*.entity.js',
+        ],
         // subscribers: [__dirname + '/../api/**/*.subscriber{.ts,.js}'],
         cli: { migrationsDir: __dirname + '/../migrations/tenancy' },
         synchronize: false,
