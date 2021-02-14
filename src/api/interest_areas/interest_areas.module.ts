@@ -5,8 +5,10 @@ import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { INTEREST_AREAS_PROVIDER } from './interest_areas.dto';
 import { InterestAreas } from './interest_areas.entity';
+import { AwsModule } from './../../aws/aws.module';
 
 @Module({
+  imports: [AwsModule],
   controllers: [InterestAreasController],
   providers: [
     {
