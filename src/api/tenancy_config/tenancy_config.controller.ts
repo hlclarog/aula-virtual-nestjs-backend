@@ -5,7 +5,7 @@ import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import {
   INFO_TENANCY_PROVIDER,
   InfoTenancyDomain,
-} from 'src/utils/providers/info-tenancy.module';
+} from './../../utils/providers/info-tenancy.module';
 
 @ControllerApi({ name: 'tenancy_config' })
 export class TenancyConfigController {

@@ -15,7 +15,7 @@ export class TenancyConfigService {
       where: {
         tenancy: id,
       },
-      relations: ['theme', 'tenancy'],
+      relations: ['theme', 'tenancy', 'rol_default'],
     });
   }
 

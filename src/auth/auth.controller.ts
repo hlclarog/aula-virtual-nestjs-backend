@@ -3,6 +3,7 @@ import { ControllerAuth } from './../utils/decorators/controllers.decorator';
 import {
   ChangePasswordEmailDto,
   LoginDto,
+  RegisterDto,
   RequestPasswordEmailDto,
 } from './auth.dto';
 import { AuthService } from './auth.service';
@@ -14,6 +15,12 @@ export class AuthController {
   @Post('login')
   async login(@Body() data: LoginDto) {
     const result = await this.authService.login(data);
+    return result;
+  }
+
+  @Post('register')
+  async register(@Body() data: RegisterDto) {
+    const result = await this.authService.register(data);
     return result;
   }
 

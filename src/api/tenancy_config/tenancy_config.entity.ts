@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
+import { Roles } from '../acl/roles/roles.entity';
 import { Tenancies } from '../tenancies/tenancies.entity';
 import { Themes } from '../themes/themes.entity';
 import { TENANCY_CONFIG_ENTITY } from './tenancy_config.dto';
@@ -18,6 +19,15 @@ export class TenancyConfig extends Base {
   @RelationId((tenancy_config: TenancyConfig) => tenancy_config.theme)
   theme_id: number;
 
+  @ManyToOne(() => Roles, (rol) => rol.tenancy_config)
+  @JoinColumn({ name: 'rol_default_id' })
+  rol_default: Roles | number;
+  @RelationId((tenancy_config: TenancyConfig) => tenancy_config.rol_default)
+  rol_default_id: number;
+
   @Column({ type: 'varchar' })
   title: string;
+
+  @Column('boolean', { default: true })
+  allow_registration: boolean;
 }

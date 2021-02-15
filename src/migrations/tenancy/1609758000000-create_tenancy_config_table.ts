@@ -25,11 +25,22 @@ export class createTenancyConfigTable1609758000000
           {
             name: 'theme_id',
             type: 'int',
+            isNullable: true,
+          },
+          {
+            name: 'rol_default_id',
+            type: 'int',
+            isNullable: true,
           },
           {
             name: 'title',
             type: 'varchar',
             isNullable: true,
+          },
+          {
+            name: 'allow_registration',
+            type: 'bool',
+            default: true,
           },
           {
             name: 'active',

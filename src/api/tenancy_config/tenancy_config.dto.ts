@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 import { CreateBaseDto } from '../../base/base.dto';
 
 export const TENANCY_CONFIG_PROVIDER = 'TENANCY_CONFIG_REPOSITORY';
@@ -9,5 +9,13 @@ export class SetTenancyConfigDto extends CreateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly theme?: number;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly title: string;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly rol_default?: number;
+  @ApiProperty() @IsString() @IsOptional() readonly title?: string;
+  @ApiProperty()
+  @IsBoolean()
+  @IsOptional()
+  readonly allow_registration?: boolean;
 }
