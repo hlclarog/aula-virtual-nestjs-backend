@@ -21,7 +21,8 @@ export class Users extends Base {
   @ManyToOne(() => Themes, (theme) => theme.users)
   @JoinColumn({ name: 'theme_id' })
   theme: Themes;
-  @RelationId((user: Users) => user.theme)
+
+  @Column({ type: 'integer' })
   theme_id: number;
 
   @Column({ type: 'varchar' })
@@ -87,7 +88,7 @@ export class Users extends Base {
   @Column({ type: 'text' })
   password: string;
 
-  @OneToMany(() => UsersRoles, (user_rol) => user_rol.user)
+  @OneToMany(() => UsersRoles, (user_rol) => user_rol.user_id)
   users_roles: UsersRoles[];
 
   @OneToMany(() => Courses, (courses) => courses.user)

@@ -158,7 +158,7 @@ export class UpdateUsersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly theme?: number;
+  readonly theme_id?: number;
 }
 
 export class searchByRol {
