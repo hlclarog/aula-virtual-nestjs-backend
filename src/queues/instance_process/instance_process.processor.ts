@@ -20,6 +20,7 @@ import { Roles } from '../../api/acl/roles/roles.entity';
 import { Permissions } from '../../api/acl/permissions/permissions.entity';
 import { RolesPermissions } from '../../api/acl/roles_permissions/roles_permissions.entity';
 import { UsersRoles } from '../../api/acl/users_roles/users_roles.entity';
+import { TenancyConfig } from 'src/api/tenancy_config/tenancy_config.entity';
 
 @Processor(INSTANCE_PROCESS_QUEUE)
 export class InstanceProcessProcessor {
@@ -245,6 +246,12 @@ export class InstanceProcessProcessor {
           tenancy: data.id,
         };
         await this.connection.getRepository(TenancyDomains).save(tenancyDomain);
+        const tenancyConfig: Partial<TenancyConfig> = {
+          tenancy: data.id,
+          title: data.name,
+          allow_registration: true,
+        };
+        await this.connection.getRepository(TenancyConfig).save(tenancyConfig);
         await this.instanceProcessLogService.setStatusSeeders({
           tenant: data.schema,
           status_seeders: true,

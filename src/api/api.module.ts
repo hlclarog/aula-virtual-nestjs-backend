@@ -69,6 +69,8 @@ import { ActivityCompleteTextsModule } from './activity_complete_texts/activity_
 import { ActivityIdentifyWordsModule } from './activity_identify_words/activity_identify_words.module';
 import { ActivityTryUsersModule } from './activity_try_users/activity_try_users.module';
 import { ActivityTriesModule } from './activity_tries/activity_tries.module';
+import { TenancyConfigModule } from './tenancy_config/tenancy_config.module';
+import { ThemesModule } from './themes/themes.module';
 
 @Module({
   imports: [
@@ -142,6 +144,8 @@ import { ActivityTriesModule } from './activity_tries/activity_tries.module';
     ActivityIdentifyWordsModule,
     ActivityTryUsersModule,
     ActivityTriesModule,
+    TenancyConfigModule,
+    ThemesModule,
   ],
   controllers: [],
   providers: [],

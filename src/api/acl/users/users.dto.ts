@@ -27,6 +27,11 @@ export class CreateUsersDto extends CreateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly rol_default?: number;
+
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly theme?: number;
 }
 
 export class UpdateUsersDto extends UpdateBaseDto {
@@ -149,6 +154,11 @@ export class UpdateUsersDto extends UpdateBaseDto {
   @IsString()
   @IsOptional()
   readonly profession?: string;
+
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly theme?: number;
 }
 
 export class searchByRol {

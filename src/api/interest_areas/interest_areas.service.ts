@@ -7,6 +7,7 @@ import {
 import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
 import { InterestAreas } from './interest_areas.entity';
+import { AwsService } from './../../aws/aws.service';
 
 @Injectable()
 export class InterestAreasService extends BaseService<
@@ -14,12 +15,16 @@ export class InterestAreasService extends BaseService<
   CreateInterestAreasDto,
   UpdateInterestAreasDto
 > {
+  constructor(private awsService: AwsService) {
+    super();
+  }
   @Inject(INTEREST_AREAS_PROVIDER) repository: BaseRepo<InterestAreas>;
 
   async findGroup(user_id: number, type_user: string): Promise<any[]> {
+    let list: InterestAreas[] = [];
     switch (type_user) {
       case 'all':
-        return await this.repository
+        list = await this.repository
           .createQueryBuilder('interest_areas')
           .leftJoinAndSelect(
             'interest_areas.course_interest_areas',
@@ -32,7 +37,7 @@ export class InterestAreasService extends BaseService<
           .leftJoinAndSelect('course.course_competences', 'course_competences')
           .getMany();
       case 'student':
-        return await this.repository
+        list = await this.repository
           .createQueryBuilder('interest_areas')
           .leftJoinAndSelect(
             'interest_areas.course_interest_areas',
@@ -53,7 +58,7 @@ export class InterestAreasService extends BaseService<
           .leftJoinAndSelect('course.course_competences', 'course_competences')
           .getMany();
       case 'teacher':
-        return await this.repository
+        list = await this.repository
           .createQueryBuilder('interest_areas')
           .leftJoinAndSelect(
             'interest_areas.course_interest_areas',
@@ -66,8 +71,18 @@ export class InterestAreasService extends BaseService<
           .leftJoinAndSelect('course.course_competences', 'course_competences')
           .where('course.user_id = :user_id', { user_id })
           .getMany();
-      default:
-        return [];
     }
+    for (let i = 0; i < list.length; i++) {
+      const interest_area = list[i];
+      for (let j = 0; j < interest_area.course_interest_areas.length; j++) {
+        const course_area = interest_area.course_interest_areas[j];
+        if (course_area.course.picture) {
+          course_area.course.picture = await this.awsService.getFile(
+            course_area.course.picture,
+          );
+        }
+      }
+    }
+    return list;
   }
 }

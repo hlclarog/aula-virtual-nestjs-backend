@@ -17,6 +17,12 @@ export class LoginDto {
   @ApiProperty({ default: '321' }) @IsString() @IsNotEmpty() password: string;
 }
 
+export class RegisterDto {
+  @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly email: string;
+  @ApiProperty() @IsString() @IsNotEmpty() password: string;
+}
+
 export class RequestPasswordEmailDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly email: string;
 }

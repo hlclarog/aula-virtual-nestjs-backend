@@ -10,6 +10,7 @@ import { Base } from '../../base/base.entity';
 import { Clients } from '../clients/clients.entity';
 import { Servers } from '../instance/servers/servers.entity';
 import { Plans } from '../plans/plans.entity';
+import { TenancyConfig } from '../tenancy_config/tenancy_config.entity';
 import { TenancyDomains } from '../tenancy_domains/tenancy_domains.entity';
 import { TenancyEmails } from '../tenancy_emails/tenancy_emails.entity';
 import { TenancyLanguages } from '../tenancy_languages/tenancy_languages.entity';
@@ -19,6 +20,9 @@ import { TENANCIES_ENTITY } from './tenancies.dto';
 
 @Entity({ name: TENANCIES_ENTITY, schema: 'public' })
 export class Tenancies extends Base {
+  @OneToMany(() => TenancyConfig, (config) => config.tenancy)
+  config: TenancyConfig[];
+
   @Column({ type: 'varchar' })
   name: string;
 

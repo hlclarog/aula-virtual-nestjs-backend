@@ -1,3 +1,4 @@
+import { TenancyConfig } from 'src/api/tenancy_config/tenancy_config.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Base } from '../../../base/base.entity';
 import { RolesPermissions } from '../roles_permissions/roles_permissions.entity';
@@ -23,4 +24,10 @@ export class Roles extends Base {
 
   @OneToMany(() => UsersRoles, (user_rol) => user_rol.user)
   users_roles: UsersRoles[];
+
+  @OneToMany(
+    () => TenancyConfig,
+    (tenancy_config) => tenancy_config.rol_default,
+  )
+  tenancy_config: TenancyConfig[];
 }

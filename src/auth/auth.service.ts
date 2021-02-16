@@ -1,4 +1,9 @@
-import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import {
   InfoTenancyDomain,
   INFO_TENANCY_PROVIDER,
@@ -13,15 +18,19 @@ import {
   RequestPasswordEmailDto,
   DEFAULT_TIME_TOKEN_REQUEST_PASS_EMAIL,
   ChangePasswordEmailDto,
+  RegisterDto,
 } from './auth.dto';
+import { CreateUsersDto } from './../api/acl/users/users.dto';
+import { TenancyConfigService } from 'src/api/tenancy_config/tenancy_config.service';
 
 @Injectable()
 export class AuthService {
-  @Inject(INFO_TENANCY_PROVIDER) dataDomain: InfoTenancyDomain;
+  @Inject(INFO_TENANCY_PROVIDER) tenancy: InfoTenancyDomain;
   constructor(
     private tokenService: TokenService,
     private usersService: UsersService,
     private configService: ConfigService,
+    private tenancyConfigService: TenancyConfigService,
   ) {}
   async login(data: LoginDto) {
     const user = await this.usersService.verifyUser(data);
@@ -32,11 +41,7 @@ export class AuthService {
         name: user.name,
       };
       const token = await this.tokenService
-        .createTokenKey(
-          payload,
-          DEFAULT_TIME_TOKEN_AUTH,
-          this.dataDomain.secret,
-        )
+        .createTokenKey(payload, DEFAULT_TIME_TOKEN_AUTH, this.tenancy.secret)
         .then((res) => res);
       return { payload, token };
     } else {
@@ -45,10 +50,36 @@ export class AuthService {
       });
     }
   }
+  async register(data: RegisterDto) {
+    const config = await this.tenancyConfigService.findOne(this.tenancy.id);
+    const user: CreateUsersDto = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      users_roles: config.rol_default_id ? [config.rol_default_id] : [],
+      rol_default: config.rol_default_id,
+      theme: config.theme_id,
+    };
+    if (config.allow_registration) {
+      const newUser = await this.usersService.create(user);
+      return {
+        registered: true,
+        data: newUser,
+      };
+    } else {
+      throw new InternalServerErrorException({
+        message:
+          'ESTA ENTIDAD NO SE ENCUENTRA HABILITADA PARA REGISTRO DE USUARIOS',
+      });
+    }
+    return {
+      registered: false,
+    };
+  }
 
   async verify(tokenaccept) {
     return await this.tokenService
-      .verifyTokenKey(tokenaccept, this.dataDomain.secret)
+      .verifyTokenKey(tokenaccept, this.tenancy.secret)
       .then((result) => {
         return result;
       })

@@ -40,7 +40,7 @@ export class UsersService extends BaseService<
 
   async findOne(id: number): Promise<Users> {
     const user = await this.repository.findOneOrFail(id, {
-      relations: ['users_roles', 'users_roles.rol'],
+      relations: ['users_roles', 'users_roles.rol', 'theme'],
     });
     if (user.picture) {
       user.picture = await this.awsService.getFile(user.picture);

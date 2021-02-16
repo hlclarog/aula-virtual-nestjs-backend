@@ -29,6 +29,12 @@ export class TenancyModulesController extends BaseController<
     return await this.findAll();
   }
 
+  @Get('tenancy/:id')
+  async fetchByTenancy(@Param('id') id: number) {
+    const modules = await this.tenancy_modulesService.findByTenancy(id);
+    return { data: modules };
+  }
+
   @Get(':id')
   async find(@Param('id') id: string) {
     return await this.findOne(id);

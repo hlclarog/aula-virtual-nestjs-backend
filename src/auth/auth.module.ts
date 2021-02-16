@@ -5,9 +5,15 @@ import { UsersModule } from './../api/acl/users/users.module';
 import { TokenService } from './../utils/services/token.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { TenancyConfigModule } from './../api/tenancy_config/tenancy_config.module';
 
 @Module({
-  imports: [UsersModule, JwtModule.register({}), InfoUserModule.forRoot()],
+  imports: [
+    UsersModule,
+    TenancyConfigModule,
+    JwtModule.register({}),
+    InfoUserModule.forRoot(),
+  ],
   controllers: [AuthController],
   providers: [TokenService, AuthService],
 })

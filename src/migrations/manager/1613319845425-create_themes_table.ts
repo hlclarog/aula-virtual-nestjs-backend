@@ -1,15 +1,10 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class createUsersTable1609778033325 implements MigrationInterface {
+export class createThemesTable1613319845425 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'users',
+        name: 'themes',
         columns: [
           {
             name: 'id',
@@ -18,21 +13,23 @@ export class createUsersTable1609778033325 implements MigrationInterface {
             isGenerated: true,
           },
           {
-            name: 'theme_id',
+            name: 'code',
+            type: 'varchar',
+          },
+          {
+            name: 'description',
             type: 'varchar',
             isNullable: true,
           },
           {
-            name: 'name',
+            name: 'observation',
             type: 'varchar',
+            isNullable: true,
           },
           {
-            name: 'email',
+            name: 'picture',
             type: 'varchar',
-          },
-          {
-            name: 'password',
-            type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'active',
@@ -58,18 +55,9 @@ export class createUsersTable1609778033325 implements MigrationInterface {
       }),
       true,
     );
-
-    await queryRunner.createForeignKey(
-      'users',
-      new TableForeignKey({
-        columnNames: ['theme_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'public.themes',
-      }),
-    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('users');
+    await queryRunner.dropTable('themes');
   }
 }
