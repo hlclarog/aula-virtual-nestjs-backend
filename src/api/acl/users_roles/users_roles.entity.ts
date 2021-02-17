@@ -10,6 +10,7 @@ export class UsersRoles extends Base {
   @JoinColumn({ name: 'user_id' })
   user: Users;
 
+  @RelationId((users_roles: UsersRoles) => users_roles.user)
   @Column({ type: 'integer' })
   user_id: number;
 
@@ -17,6 +18,7 @@ export class UsersRoles extends Base {
   @JoinColumn({ name: 'rol_id' })
   rol: Roles;
 
+  @RelationId((users_roles: UsersRoles) => users_roles.rol)
   @Column({ type: 'integer' })
   rol_id: number;
 

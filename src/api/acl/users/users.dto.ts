@@ -31,7 +31,7 @@ export class CreateUsersDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly theme?: number;
+  readonly theme_id?: number;
 }
 
 export class UpdateUsersDto extends UpdateBaseDto {

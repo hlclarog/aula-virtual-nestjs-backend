@@ -7,12 +7,12 @@ export const COMPETENCES_ENTITY = 'competences';
 
 export class CreateCompentenceDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
-  @ApiProperty({ required: true }) @IsNumber() readonly competence_type: number;
+  @ApiProperty({ required: true }) @IsNumber() readonly competence_type_id: number;
 }
 export class UpdateCompetenceDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
   readonly description?: string;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly competence_type: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly competence_type_id: number;
 }
