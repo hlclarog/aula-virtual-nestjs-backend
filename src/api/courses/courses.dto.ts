@@ -36,7 +36,7 @@ export class CreateCourseDto extends CreateBaseDto {
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly certifiable: boolean;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly organization_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_status: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_status_id: number;
   @ApiProperty({
     type: 'number',
     isArray: true,

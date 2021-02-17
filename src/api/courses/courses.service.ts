@@ -29,6 +29,11 @@ export class CoursesService extends BaseService<
   ) {
     super();
   }
+  async find() {
+    return await this.repository.find({
+      relations: ['user'],
+    });
+  }
 
   async findAllCatalog(
     user_id: number,
@@ -95,6 +100,7 @@ export class CoursesService extends BaseService<
       return list;
     }
   }
+
 
   async findOne(id: number): Promise<Courses> {
     const course = await this.repository.findOneOrFail(id, {

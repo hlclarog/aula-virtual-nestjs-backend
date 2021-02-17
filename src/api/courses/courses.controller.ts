@@ -41,7 +41,10 @@ export class CoursesController extends BaseController<
 
   @Get()
   async fetchAll() {
-    return await this.findAll();
+    const result = await this.coursesService.find();
+    return {
+      data: result,
+    }
   }
 
   @Get('catalog/:type')

@@ -30,7 +30,7 @@ export class Courses extends Base {
   @Column({ type: 'boolean' }) certifiable: boolean;
 
   @ManyToOne(() => Users, (users) => users.course, {
-    eager: true,
+    eager: false,
   })
   @JoinColumn({ name: 'user_id' })
   user: Users;
