@@ -22,6 +22,7 @@ export class Users extends Base {
   @JoinColumn({ name: 'theme_id' })
   theme: Themes;
   @RelationId((user: Users) => user.theme)
+  @Column()
   theme_id: number;
 
   @Column({ type: 'varchar' })

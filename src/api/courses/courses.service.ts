@@ -30,9 +30,29 @@ export class CoursesService extends BaseService<
     super();
   }
   async find() {
-    return await this.repository.find({
-      relations: ['user'],
-    });
+
+    return await this.repository
+      .createQueryBuilder('course')
+      .select([
+        'course.id',
+        'course.name',
+        'course.short_name',
+        'course.description',
+        'course.organization_id',
+        'course.course_status_id',
+        'course.user_id',
+        'course.active',
+        'users.id',
+        'users.name',
+        'course_status.id',
+        'course_status.description',
+        'organizations.id',
+        'organizations.description',
+      ])
+      .leftJoin('course.user', 'users')
+      .leftJoin('course.organization', 'organizations')
+      .leftJoin('course.course_status', 'course_status')
+      .getMany();
   }
 
   async findAllCatalog(
@@ -100,7 +120,6 @@ export class CoursesService extends BaseService<
       return list;
     }
   }
-
 
   async findOne(id: number): Promise<Courses> {
     const course = await this.repository.findOneOrFail(id, {
