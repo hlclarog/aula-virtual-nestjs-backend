@@ -180,7 +180,7 @@ export class CoursesController extends BaseController<
     @Param('id') id: string,
     @Body() updateDto: UpdateCourseDto,
   ) {
-    updateDto.user = this.infoUser.id;
+    updateDto.user_id = this.infoUser.id;
     return await this.update(id, updateDto);
   }
 }

@@ -34,8 +34,8 @@ export class CreateCourseDto extends CreateBaseDto {
   readonly picture?: string;
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly free: boolean;
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly certifiable: boolean;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly organization: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly user: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly organization_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_status: number;
   @ApiProperty({
     type: 'number',
@@ -73,12 +73,12 @@ export class CreateCourseByTeacherDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly organization?: number;
+  readonly organization_id?: number;
   @ApiProperty({ required: false }) @IsNumber() @IsOptional() user?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly course_status?: number;
+  readonly course_status_id?: number;
   @ApiProperty({
     type: 'number',
     isArray: true,
@@ -122,15 +122,15 @@ export class UpdateCourseDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly organization?: number;
+  readonly organization_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  user?: number;
+  user_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly course_status?: number;
+  readonly course_status_id?: number;
   @ApiProperty({
     type: 'number',
     isArray: true,

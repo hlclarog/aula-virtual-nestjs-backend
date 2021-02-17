@@ -33,27 +33,27 @@ export class Courses extends Base {
     eager: true,
   })
   @JoinColumn({ name: 'user_id' })
-  user: Users | number;
-
+  user: Users;
   @RelationId((courses: Courses) => courses.user)
+  @Column()
   user_id: number;
 
   @ManyToOne(() => Organizations, (organization) => organization.course, {
-    eager: true,
+    eager: false,
   })
   @JoinColumn({ name: 'organization_id' })
-  organization: Organizations | number;
-
+  organization: Organizations;
   @RelationId((courses: Courses) => courses.organization)
+  @Column()
   organization_id: number;
 
   @ManyToOne(() => CourseStatus, (coursesStatus) => coursesStatus.course, {
-    eager: true,
+    eager: false,
   })
   @JoinColumn({ name: 'course_status_id' })
-  course_status: CourseStatus | number;
-
+  course_status: CourseStatus;
   @RelationId((courses: Courses) => courses.course_status)
+  @Column()
   course_status_id: number;
 
   @OneToMany(
