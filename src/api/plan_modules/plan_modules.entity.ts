@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Modules } from '../acl/modules/modules.entity';
 import { Plans } from '../plans/plans.entity';
@@ -11,6 +11,7 @@ export class PlanModules extends Base {
   plan: Plans;
 
   @RelationId((plan_modules: PlanModules) => plan_modules.plan)
+  @Column({ type: 'integer' })
   plan_id: number;
 
   @ManyToOne(() => Modules, (module) => module.plan_modules)

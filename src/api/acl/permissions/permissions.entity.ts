@@ -27,6 +27,7 @@ export class Permissions extends Base {
   module: Modules;
 
   @RelationId((permission: Permissions) => permission.module)
+  @Column({ type: 'integer' })
   module_id: number;
 
   @OneToMany(

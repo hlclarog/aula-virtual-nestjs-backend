@@ -22,7 +22,7 @@ export class Roles extends Base {
   @OneToMany(() => RolesPermissions, (rol_permission) => rol_permission.rol)
   roles_permissions: RolesPermissions[];
 
-  @OneToMany(() => UsersRoles, (user_rol) => user_rol.rol_id)
+  @OneToMany(() => UsersRoles, (user_rol) => user_rol.rol)
   users_roles: UsersRoles[];
 
   @OneToMany(

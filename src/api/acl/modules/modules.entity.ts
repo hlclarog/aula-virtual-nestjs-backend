@@ -58,5 +58,6 @@ export class Modules extends Base {
   parent: Modules;
 
   @RelationId((module: Modules) => module.parent)
+  @Column({ type: 'integer' })
   parent_id: number;
 }

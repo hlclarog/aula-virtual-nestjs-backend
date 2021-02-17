@@ -183,7 +183,7 @@ export class InstanceProcessProcessor {
         const planModules = await this.connection
           .getRepository(PlanModules)
           .find({
-            where: { plan: data.plan_id },
+            where: { plan_id: data.plan_id },
           });
         if (planModules.length) {
           const tenancyModules: Partial<TenancyModules>[] = [];
@@ -209,7 +209,7 @@ export class InstanceProcessProcessor {
             const permissions: Permissions[] = await this.connection
               .getRepository(Permissions)
               .find({
-                where: { module: In(moduleIds) },
+                where: { module_id: In(moduleIds) },
               });
             if (permissions.length) {
               const rolesPermissions: Partial<RolesPermissions>[] = [];

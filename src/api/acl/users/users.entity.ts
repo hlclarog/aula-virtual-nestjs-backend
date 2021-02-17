@@ -89,7 +89,7 @@ export class Users extends Base {
   @Column({ type: 'text' })
   password: string;
 
-  @OneToMany(() => UsersRoles, (user_rol) => user_rol.user_id)
+  @OneToMany(() => UsersRoles, (user_rol) => user_rol.user)
   users_roles: UsersRoles[];
 
   @OneToMany(() => Courses, (courses) => courses.user)

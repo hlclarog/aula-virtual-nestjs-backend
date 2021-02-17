@@ -23,7 +23,7 @@ export class UsersRolesService extends BaseService<
 
   async findForUser(idUser: number): Promise<UsersRoles[]> {
     return this.repository.find({
-      where: { user: idUser },
+      where: { user_id: idUser },
       relations: ['rol', 'rol.permissions'],
     });
   }
@@ -39,7 +39,7 @@ export class UsersRolesService extends BaseService<
 
   async findRolDefault(idUser: number): Promise<UsersRoles> {
     return this.repository.findOne({
-      where: { user: idUser, default: true },
+      where: { user_id: idUser, default: true },
       relations: ['rol'],
     });
   }
