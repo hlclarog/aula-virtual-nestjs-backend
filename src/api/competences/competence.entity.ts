@@ -23,6 +23,7 @@ export class Competence extends Base {
   competence_type: CompetenceType;
 
   @RelationId((competence: Competence) => competence.competence_type)
+  @Column()
   competence_type_id: number;
 
   @OneToMany(
