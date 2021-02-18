@@ -21,16 +21,18 @@ export class Lessons extends Base {
     eager: true,
   })
   @JoinColumn({ name: 'lesson_type_id' })
-  lesson_type: LessonTypes | number;
+  lesson_type: LessonTypes;
   @RelationId((lessons: Lessons) => lessons.lesson_type)
+  @Column('integer')
   lesson_type_id: number;
 
   @ManyToOne(() => CourseUnits, (course_unit) => course_unit.lessons, {
     eager: true,
   })
   @JoinColumn({ name: 'course_unit_id' })
-  course_unit: CourseUnits | number;
+  course_unit: CourseUnits;
   @RelationId((courses: Lessons) => courses.course_unit)
+  @Column('integer')
   course_unit_id: number;
 
   @Column({ type: 'varchar' }) name: string;

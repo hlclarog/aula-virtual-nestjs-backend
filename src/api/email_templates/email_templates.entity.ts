@@ -21,7 +21,7 @@ export class EmailTemplates extends Base {
 
   @ManyToOne(() => Languages, (language) => language.templates, { eager: true })
   @JoinColumn({ name: 'language_id' })
-  language: Languages | number;
+  language: Languages;
 
   @RelationId((email_templates: EmailTemplates) => email_templates.language)
   @Column({ type: 'integer' })

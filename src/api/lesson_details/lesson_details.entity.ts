@@ -10,8 +10,9 @@ export class LessonDetails extends Base {
     eager: false,
   })
   @JoinColumn({ name: 'lesson_id' })
-  lesson: Lessons | number;
+  lesson: Lessons;
   @RelationId((lessonDetails: LessonDetails) => lessonDetails.lesson)
+  @Column('integer')
   lesson_id: number;
 
   @ManyToOne(
@@ -20,8 +21,9 @@ export class LessonDetails extends Base {
     { eager: false },
   )
   @JoinColumn({ name: 'content_type_id' })
-  content_type: ContentTypes | number;
+  content_type: ContentTypes;
   @RelationId((lessonDetails: LessonDetails) => lessonDetails.content_type)
+  @Column('integer')
   content_type_id: number;
 
   @Column({ type: 'varchar' }) content: string;

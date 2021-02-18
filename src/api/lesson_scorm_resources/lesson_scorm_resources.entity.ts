@@ -13,11 +13,12 @@ export class LessonScormResources extends Base {
     },
   )
   @JoinColumn({ name: 'lesson_scorm_id' })
-  lesson_scorm: LessonScorms | number;
+  lesson_scorm: LessonScorms;
   @RelationId(
     (lessonScormResources: LessonScormResources) =>
       lessonScormResources.lesson_scorm,
   )
+  @Column('integer')
   lesson_scorm_id: number;
 
   @Column({ type: 'varchar' }) index: string;

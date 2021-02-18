@@ -46,7 +46,7 @@ export class LessonActivitiesService extends BaseService<
   async create(createDto: CreateLessonActivitiesDto) {
     const resultLessonActivity = await this.repository.save(createDto);
 
-    switch (resultLessonActivity.activity_type) {
+    switch (resultLessonActivity.activity_type_id) {
       case EnumActivityType.MultipleOptions:
         await this.multipleOptions(resultLessonActivity);
         break;

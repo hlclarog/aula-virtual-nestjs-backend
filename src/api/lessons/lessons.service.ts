@@ -40,7 +40,7 @@ export class LessonsService extends BaseService<
     const listLessons = await this.repository
       .createQueryBuilder()
       .where('course_unit_id = :unit_id', {
-        unit_id: createDto.course_unit,
+        unit_id: createDto.course_unit_id,
       })
       .getCount();
     data.order = listLessons + 1;
@@ -66,7 +66,7 @@ export class LessonsService extends BaseService<
 
   async findByCourse(id: number): Promise<Lessons[]> {
     return await this.repository.find({
-      where: { course: id },
+      where: { course_id: id },
     });
   }
 
@@ -100,7 +100,7 @@ export class LessonsService extends BaseService<
     return await this.repository
       .createQueryBuilder()
       .update()
-      .set({ course_unit: data.unit_id, order: data.new_order })
+      .set({ course_unit_id: data.unit_id, order: data.new_order })
       .where('id = :lesson_id', {
         lesson_id: data.lesson_id,
       })

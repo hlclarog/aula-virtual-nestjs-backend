@@ -17,8 +17,9 @@ export class LessonScorms extends Base {
     eager: true,
   })
   @JoinColumn({ name: 'lesson_id' })
-  lesson: Lessons | number;
+  lesson: Lessons;
   @RelationId((lessonScorms: LessonScorms) => lessonScorms.lesson)
+  @Column('integer')
   lesson_id: number;
 
   @Column({ type: 'varchar' }) content: string;

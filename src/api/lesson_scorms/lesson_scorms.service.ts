@@ -31,7 +31,7 @@ export class LessonScormsService extends BaseService<
     const lesson_scorm = await this.repository.findOneOrFail(id);
     const lesson_scorm_resource = await this.repository_resources.findOneOrFail(
       {
-        lesson_scorm: id,
+        lesson_scorm_id: id,
       },
     );
     if (lesson_scorm.content) {
@@ -50,7 +50,7 @@ export class LessonScormsService extends BaseService<
     data.title = result.info.title;
     const dataNew = await this.repository.save(data);
     await this.repository_resources.save({
-      lesson_scorm: dataNew.id,
+      lesson_scorm_id: dataNew.id,
       identifier: result.info.identifier,
       index: result.info.index,
     });

@@ -73,7 +73,7 @@ export class LessonDetailsService extends BaseService<
     if (createDto.content) {
       data.content = await this.setContent(
         createDto.content,
-        createDto.content_type,
+        createDto.content_type_id,
       );
     }
     const dataNew = await this.repository.save(data);
@@ -85,7 +85,7 @@ export class LessonDetailsService extends BaseService<
     if (updateDto.content) {
       data.content = await this.setContent(
         updateDto.content,
-        updateDto.content_type,
+        updateDto.content_type_id,
       );
     }
     return await this.repository.update(id, data);
