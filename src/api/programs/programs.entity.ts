@@ -23,27 +23,27 @@ export class Programs extends Base {
     eager: true,
   })
   @JoinColumn({ name: 'program_type_id' })
-  program_type: Users | number;
+  program_type: Users;
   @RelationId((programs: Programs) => programs.program_type)
-  @Column()
+  @Column({ type: 'int' })
   program_type_id: number;
 
   @ManyToOne(() => ProgramStatus, (program_status) => program_status.programs, {
     eager: false,
   })
   @JoinColumn({ name: 'program_status_id' })
-  program_status: ProgramStatus | number;
+  program_status: ProgramStatus;
   @RelationId((programs: Programs) => programs.program_status)
-  @Column()
+  @Column({ type: 'int' })
   program_status_id: number;
 
   @ManyToOne(() => Organizations, (organization) => organization.programs, {
     eager: false,
   })
   @JoinColumn({ name: 'organization_id' })
-  organization: Organizations | number;
+  organization: Organizations;
   @RelationId((programs: Programs) => programs.organization)
-  @Column()
+  @Column({ type: 'int' })
   organization_id: number;
 
   @Column({ type: 'varchar' }) name: string;

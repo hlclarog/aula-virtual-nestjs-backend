@@ -11,20 +11,20 @@ import {
 export const PROGRAM_USERS_PROVIDER = 'PROGRAM_USERS_REPOSITORY';
 export const PROGRAM_USERS_ENTITY = 'program_users';
 export class CreateProgramUsersDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly user: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly transaction_status?: number;
+  readonly transaction_status_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly enrollment_status?: number;
+  readonly enrollment_status_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly enrollment_type?: number;
+  readonly enrollment_type_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -67,23 +67,23 @@ export class UpdateProgramUsersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly program?: number;
+  readonly program_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly user?: number;
+  readonly user_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly transaction_status?: number;
+  readonly transaction_status_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly enrollment_status?: number;
+  readonly enrollment_status_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly enrollment_type?: number;
+  readonly enrollment_type_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

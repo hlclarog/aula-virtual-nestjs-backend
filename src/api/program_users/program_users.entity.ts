@@ -15,12 +15,14 @@ export class ProgramUsers extends Base {
   @JoinColumn({ name: 'program_id' })
   program: Programs;
   @RelationId((programUsers: ProgramUsers) => programUsers.program)
+  @Column({ type: 'integer' })
   program_id: number;
 
   @ManyToOne(() => Users, (users) => users.program_users, { eager: true })
   @JoinColumn({ name: 'user_id' })
   user: Users;
   @RelationId((programUsers: ProgramUsers) => programUsers.user)
+  @Column({ type: 'integer' })
   user_id: number;
 
   @ManyToOne(
@@ -31,6 +33,7 @@ export class ProgramUsers extends Base {
   @JoinColumn({ name: 'enrollment_status_id' })
   enrollment_status: EnrollmentStatus;
   @RelationId((programUsers: ProgramUsers) => programUsers.enrollment_status)
+  @Column({ type: 'integer' })
   enrollment_status_id: number;
 
   @ManyToOne(
@@ -41,6 +44,7 @@ export class ProgramUsers extends Base {
   @JoinColumn({ name: 'enrollment_type_id' })
   enrollment_type: EnrollmentTypes;
   @RelationId((programUsers: ProgramUsers) => programUsers.enrollment_type)
+  @Column({ type: 'integer' })
   enrollment_type_id: number;
 
   @ManyToOne(
@@ -51,6 +55,7 @@ export class ProgramUsers extends Base {
   @JoinColumn({ name: 'transaction_status_id' })
   transaction_status: TransactionStatus;
   @RelationId((programUsers: ProgramUsers) => programUsers.transaction_status)
+  @Column({ type: 'integer' })
   transaction_status_id: number;
 
   @Column({ type: 'date', nullable: true }) begin_date: string;

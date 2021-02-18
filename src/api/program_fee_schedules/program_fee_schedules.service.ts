@@ -20,8 +20,8 @@ export class ProgramFeeSchedulesService extends BaseService<
 
   async create(createDto: CreateProgramFeeSchedulesDto) {
     await this.validateFeeSchedule(
-      createDto.program,
-      createDto.currency,
+      createDto.program_id,
+      createDto.currency_id,
       createDto.begin,
       createDto.end,
       0,
@@ -34,8 +34,8 @@ export class ProgramFeeSchedulesService extends BaseService<
     updateDto: UpdateProgramFeeSchedulesDto,
   ): Promise<UpdateResult> {
     await this.validateFeeSchedule(
-      updateDto.program,
-      updateDto.currency,
+      updateDto.program_id,
+      updateDto.currency_id,
       updateDto.begin,
       updateDto.end,
       id,
@@ -64,7 +64,7 @@ export class ProgramFeeSchedulesService extends BaseService<
 
   async findByProgram(id: number): Promise<ProgramFeeSchedules[]> {
     return await this.repository.find({
-      where: { program: id },
+      where: { program_id: id },
     });
   }
 }

@@ -12,20 +12,22 @@ export class ProgramFeeSchedules extends Base {
     { eager: true },
   )
   @JoinColumn({ name: 'currency_id' })
-  currency: Currencies | number;
+  currency: Currencies;
   @RelationId(
     (programFeeSchedules: ProgramFeeSchedules) => programFeeSchedules.currency,
   )
+  @Column({ type: 'integer' })
   currency_id: number;
 
   @ManyToOne(() => Programs, (program) => program.program_fee_schedules, {
     eager: true,
   })
   @JoinColumn({ name: 'program_id' })
-  program: Programs | number;
+  program: Programs;
   @RelationId(
     (programFeeSchedules: ProgramFeeSchedules) => programFeeSchedules.program,
   )
+  @Column({ type: 'integer' })
   program_id: number;
 
   @Column({ type: 'date' }) begin: string;

@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Programs } from '../programs/programs.entity';
 import { TransactionStatus } from '../transaction_status/transaction_status.entity';
@@ -13,6 +13,7 @@ export class ProgramCourses extends Base {
   @JoinColumn({ name: 'course_id' })
   course: Courses;
   @RelationId((programCourses: ProgramCourses) => programCourses.course)
+  @Column({ type: 'integer' })
   course_id: number;
 
   @ManyToOne(() => Programs, (programs) => programs.program_courses, {
@@ -21,6 +22,7 @@ export class ProgramCourses extends Base {
   @JoinColumn({ name: 'program_id' })
   program: Programs;
   @RelationId((programCourses: ProgramCourses) => programCourses.program)
+  @Column({ type: 'integer' })
   program_id: number;
 
   @ManyToOne(
@@ -33,5 +35,6 @@ export class ProgramCourses extends Base {
   @RelationId(
     (programCourses: ProgramCourses) => programCourses.transaction_status,
   )
+  @Column({ type: 'integer' })
   transaction_status_id: number;
 }

@@ -18,7 +18,7 @@ export class ProgramCoursesService extends BaseService<
 
   async findByProgram(id: number): Promise<ProgramCourses[]> {
     return await this.repository.find({
-      where: { program: id },
+      where: { program_id: id },
     });
   }
 }
