@@ -21,7 +21,10 @@ export class ProgramsController extends BaseController<
 
   @Get()
   async fetchAll() {
-    return await this.findAll();
+    const result = await this.programsService.find();
+    return {
+      data: result,
+    };
   }
 
   @Get(':id')

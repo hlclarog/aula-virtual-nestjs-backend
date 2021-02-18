@@ -28,6 +28,38 @@ export class ProgramsService extends BaseService<
     super();
   }
 
+  async find() {
+    return await this.repository
+      .createQueryBuilder('program')
+      .select([
+        'program.id',
+        'program_type_id',
+        'program_status_id',
+        'organization_id',
+        'program.name',
+        'program.description',
+        'program.shortname',
+        'program.picture',
+        'program.video_url',
+        'program.duration',
+        'program.email_to',
+        'program.active',
+        'program.certifiable',
+        'program.requirements',
+        'program.certifiable_number',
+        'program_types.id',
+        'program_types.description',
+        'program_status.id',
+        'program_status.description',
+        'organizations.id',
+        'organizations.name',
+      ])
+      .leftJoin('program.program_type', 'program_types')
+      .leftJoin('program.program_status', 'program_status')
+      .leftJoin('program.organization', 'organizations')
+      .getMany();
+  }
+
   async findAll(): Promise<Programs[]> {
     return await this.repository.find({
       relations: ['program_type', 'program_status', 'organization'],

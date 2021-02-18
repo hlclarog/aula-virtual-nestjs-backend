@@ -12,9 +12,9 @@ import {
 export const PROGRAMS_PROVIDER = 'PROGRAMS_REPOSITORY';
 export const PROGRAMS_ENTITY = 'programs';
 export class CreateProgramsDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_type: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_status: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly organization: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_type_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_status_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly organization_id: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly shortname: string;
@@ -43,15 +43,15 @@ export class UpdateProgramsDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly program_type?: number;
+  readonly program_type_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly program_status?: number;
+  readonly program_status_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly organization?: number;
+  readonly organization_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
