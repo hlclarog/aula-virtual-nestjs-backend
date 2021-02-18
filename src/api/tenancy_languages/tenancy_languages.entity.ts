@@ -18,6 +18,7 @@ export class TenancyLanguages extends Base {
   @RelationId(
     (tenancy_languages: TenancyLanguages) => tenancy_languages.tenancy,
   )
+  @Column({ type: 'integer' })
   tenancy_id: number;
 
   @ManyToOne(() => Languages, (languages) => languages.tenancy_languages, {
@@ -29,5 +30,6 @@ export class TenancyLanguages extends Base {
   @RelationId(
     (tenancy_languages: TenancyLanguages) => tenancy_languages.language,
   )
+  @Column({ type: 'integer' })
   language_id: number;
 }

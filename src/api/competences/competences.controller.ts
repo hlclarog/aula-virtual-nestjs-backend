@@ -30,10 +30,7 @@ export class CompetencesController extends BaseController<
   }
 
   @Put(':id')
-  async edit(
-    @Param('id') id: string,
-    @Body() updateDto: UpdateCompetenceDto,
-  ) {
+  async edit(@Param('id') id: string, @Body() updateDto: UpdateCompetenceDto) {
     return await this.update(id, updateDto);
   }
 

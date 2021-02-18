@@ -19,7 +19,7 @@ export class CourseInterestAreasService extends BaseService<
 
   async findByCourse(id: number): Promise<CourseInterestAreas[]> {
     return await this.repository.find({
-      where: { course: id },
+      where: { course_id: id },
     });
   }
 

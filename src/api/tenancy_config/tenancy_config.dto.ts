@@ -8,11 +8,11 @@ export class SetTenancyConfigDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly theme?: number;
+  readonly theme_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly rol_default?: number;
+  readonly rol_default_id?: number;
   @ApiProperty() @IsString() @IsOptional() readonly title?: string;
   @ApiProperty()
   @IsBoolean()

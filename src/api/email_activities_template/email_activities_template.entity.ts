@@ -18,6 +18,7 @@ export class EmailActivitiesTemplate extends Base {
     (email_activities_template: EmailActivitiesTemplate) =>
       email_activities_template.email_template,
   )
+  @Column({ type: 'integer' })
   email_template_id: number;
 
   @ManyToOne(
@@ -32,6 +33,7 @@ export class EmailActivitiesTemplate extends Base {
     (email_activities_template: EmailActivitiesTemplate) =>
       email_activities_template.email_activity,
   )
+  @Column({ type: 'integer' })
   email_activity_id: number;
 
   @Column({ type: 'varchar', nullable: true })

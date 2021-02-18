@@ -18,7 +18,7 @@ export class CourseUsersService extends BaseService<
 
   async findByCourse(id: number): Promise<CourseUsers[]> {
     return await this.repository.find({
-      where: { course: id },
+      where: { course_id: id },
       relations: ['user', 'enrollment_status', 'enrollment_type', 'course'],
     });
   }
@@ -27,8 +27,8 @@ export class CourseUsersService extends BaseService<
     const founds = await this.repository
       .createQueryBuilder()
       .where('user_id = :user AND course_id = :course', {
-        user: `${createDto.user}`,
-        course: `${createDto.course}`,
+        user: `${createDto.user_id}`,
+        course: `${createDto.course_id}`,
       })
       .withDeleted()
       .getCount();
@@ -41,8 +41,8 @@ export class CourseUsersService extends BaseService<
         .where(
           'user_id = :user AND course_id = :course AND deleted_at is not null',
           {
-            user: createDto.user,
-            course: createDto.course,
+            user: createDto.user_id,
+            course: createDto.course_id,
           },
         )
         .execute();

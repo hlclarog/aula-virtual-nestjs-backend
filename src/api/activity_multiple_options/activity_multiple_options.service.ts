@@ -55,7 +55,7 @@ export class ActivityMultipleOptionsService extends BaseService<
       .createQueryBuilder()
       .delete()
       .where(
-        `activity_multiple_option = :id AND id not in (${
+        `activity_multiple_option_id = :id AND id not in (${
           ids.length > 0 ? ids.join() : [0].join()
         })`,
         {

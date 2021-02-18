@@ -24,6 +24,7 @@ export class EmailTemplates extends Base {
   language: Languages | number;
 
   @RelationId((email_templates: EmailTemplates) => email_templates.language)
+  @Column({ type: 'integer' })
   language_id: number;
 
   @OneToMany(

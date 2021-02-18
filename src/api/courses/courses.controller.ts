@@ -44,7 +44,7 @@ export class CoursesController extends BaseController<
     const result = await this.coursesService.find();
     return {
       data: result,
-    }
+    };
   }
 
   @Get('catalog/:type')
@@ -140,8 +140,8 @@ export class CoursesController extends BaseController<
   @Post('subscribe_student')
   async subscribeStudent(@Body() subscribeDto: SubscribeCourseStudentDto) {
     const result = await this.courseUsersService.create({
-      course: subscribeDto.course,
-      user: this.infoUser.id,
+      course_id: subscribeDto.course_id,
+      user_id: this.infoUser.id,
       begin_date: subscribeDto.begin_date,
     });
     return {

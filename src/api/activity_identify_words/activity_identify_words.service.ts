@@ -8,7 +8,6 @@ import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
 import { ActivityIdentifyWords } from './activity_identify_words.entity';
 import { AwsService } from '../../aws/aws.service';
-import { UpdateActivityCompleteTextsDto } from '../activity_complete_texts/activity_complete_texts.dto';
 import { UpdateResult } from 'typeorm';
 import * as shortid from 'shortid';
 import { typeFilesAwsNames } from '../../aws/aws.dto';

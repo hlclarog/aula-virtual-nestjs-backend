@@ -7,8 +7,8 @@ export const EMAIL_ACTIVITIES_TEMPLATE_PROVIDER =
 export const EMAIL_ACTIVITIES_TEMPLATE_ENTITY = 'email_activities_template';
 
 export class CreateEmailActivitiesTemplateDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly email_template: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly email_activity: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly email_template_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly email_activity_id: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -27,11 +27,11 @@ export class UpdateEmailActivitiesTemplateDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly email_template?: number;
+  readonly email_template_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly email_activity?: number;
+  readonly email_activity_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

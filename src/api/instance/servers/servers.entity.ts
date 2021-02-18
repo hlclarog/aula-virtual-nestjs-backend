@@ -37,6 +37,7 @@ export class Servers extends Base {
   server_type: ServerTypes;
 
   @RelationId((server: Servers) => server.server_type)
+  @Column({ type: 'integer' })
   server_type_id: number;
 
   @ManyToOne(() => ConnectionTypes, (server) => server.servers, { eager: true })
@@ -44,6 +45,7 @@ export class Servers extends Base {
   connection_type: ConnectionTypes;
 
   @RelationId((server: Servers) => server.connection_type)
+  @Column({ type: 'integer' })
   connection_type_id: number;
 
   @OneToMany(() => Tenancies, (tenancies) => tenancies.back_server)

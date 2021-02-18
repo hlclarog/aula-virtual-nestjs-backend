@@ -35,7 +35,7 @@ export class Courses extends Base {
   @JoinColumn({ name: 'user_id' })
   user: Users;
   @RelationId((courses: Courses) => courses.user)
-  @Column()
+  @Column({ type: 'integer' })
   user_id: number;
 
   @ManyToOne(() => Organizations, (organization) => organization.course, {
@@ -44,7 +44,7 @@ export class Courses extends Base {
   @JoinColumn({ name: 'organization_id' })
   organization: Organizations;
   @RelationId((courses: Courses) => courses.organization)
-  @Column()
+  @Column({ type: 'integer' })
   organization_id: number;
 
   @ManyToOne(() => CourseStatus, (coursesStatus) => coursesStatus.course, {
@@ -53,7 +53,7 @@ export class Courses extends Base {
   @JoinColumn({ name: 'course_status_id' })
   course_status: CourseStatus;
   @RelationId((courses: Courses) => courses.course_status)
-  @Column()
+  @Column({ type: 'integer' })
   course_status_id: number;
 
   @OneToMany(

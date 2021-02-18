@@ -16,10 +16,11 @@ export class RelateElementAnswers extends Base {
       activity_relate_elements.relate_element_answers,
   )
   @JoinColumn({ name: 'activity_relate_element_id' })
-  activity_relate_element: ActivityRelateElements | number;
+  activity_relate_element: ActivityRelateElements;
   @RelationId(
     (relate_element_answers: RelateElementAnswers) =>
       relate_element_answers.activity_relate_element,
   )
+  @Column({ type: 'integer' })
   activity_relate_element_id: number;
 }

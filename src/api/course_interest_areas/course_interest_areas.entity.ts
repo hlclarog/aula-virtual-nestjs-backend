@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { COURSE_INTEREST_AREAS_ENTITY } from './course_interest_areas.dto';
 import { Base } from '../../base/base.entity';
 import { InterestAreas } from '../interest_areas/interest_areas.entity';
@@ -14,6 +14,7 @@ export class CourseInterestAreas extends Base {
   @RelationId(
     (courseInterestAreas: CourseInterestAreas) => courseInterestAreas.course,
   )
+  @Column({ type: 'integer' })
   course_id: number;
 
   @ManyToOne(
@@ -27,5 +28,6 @@ export class CourseInterestAreas extends Base {
     (courseInterestAreas: CourseInterestAreas) =>
       courseInterestAreas.interest_area,
   )
+  @Column({ type: 'integer' })
   interest_area_id: number;
 }

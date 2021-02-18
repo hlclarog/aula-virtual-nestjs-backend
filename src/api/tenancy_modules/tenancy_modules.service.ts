@@ -19,7 +19,7 @@ export class TenancyModulesService extends BaseService<
   @Inject(TENANCY_MODULES_PROVIDER) repository: BaseRepo<TenancyModules>;
 
   async findByTenancy(id: number): Promise<TenancyModules[]> {
-    return await this.repository.find({ where: { tenancy: id } });
+    return await this.repository.find({ where: { tenancy_id: id } });
   }
 
   async set(createDto: CreateTenancyModulesCreateGroupDto): Promise<any> {
@@ -40,7 +40,7 @@ export class TenancyModulesService extends BaseService<
           (f) => f.module_id == idModule && f.tenancy_id == idTenancy,
         ).length;
         if (!count) {
-          values.push({ tenancy: idTenancy, module: idModule });
+          values.push({ tenancy_id: idTenancy, module_id: idModule });
         }
       });
     });

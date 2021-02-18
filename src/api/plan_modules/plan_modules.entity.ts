@@ -19,5 +19,6 @@ export class PlanModules extends Base {
   module: Modules;
 
   @RelationId((plan_modules: PlanModules) => plan_modules.module)
+  @Column({ type: 'integer' })
   module_id: number;
 }

@@ -19,7 +19,7 @@ export class CourseCommissionOrganizationsService extends BaseService<
 
   async findByCourse(id: number): Promise<CourseCommissionOrganizations[]> {
     return await this.repository.find({
-      where: { course: id },
+      where: { course_id: id },
       relations: ['course', 'organization'],
     });
   }

@@ -13,6 +13,7 @@ export class CourseUsers extends Base {
   course: Courses | number;
 
   @RelationId((courseUsers: CourseUsers) => courseUsers.course)
+  @Column({ type: 'integer' })
   course_id: number;
 
   @ManyToOne(() => Users, (users) => users.course_users)
@@ -20,6 +21,7 @@ export class CourseUsers extends Base {
   user: Users | number;
 
   @RelationId((courseUsers: CourseUsers) => courseUsers.user)
+  @Column({ type: 'integer' })
   user_id: number;
 
   @ManyToOne(
@@ -30,6 +32,7 @@ export class CourseUsers extends Base {
   enrollment_status: EnrollmentStatus | number;
 
   @RelationId((courseUsers: CourseUsers) => courseUsers.enrollment_status)
+  @Column({ type: 'integer' })
   enrollment_status_id: number;
 
   @ManyToOne(
@@ -40,6 +43,7 @@ export class CourseUsers extends Base {
   enrollment_type: EnrollmentTypes | number;
 
   @RelationId((courseUsers: CourseUsers) => courseUsers.enrollment_type)
+  @Column({ type: 'integer' })
   enrollment_type_id: number;
 
   @Column({ type: 'date', nullable: true }) begin_date: string;

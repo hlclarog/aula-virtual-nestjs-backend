@@ -6,8 +6,8 @@ export const ACTIVITY_TRY_USERS_PROVIDER = 'ACTIVITY_TRY_USERS_REPOSITORY';
 export const ACTIVITY_TRY_USERS_ENTITY = 'activity_try_users';
 
 export class CreateActivityTryUsersDto extends CreateBaseDto {
-  user?: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson_activity: number;
+  user_id?: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson_activity_id: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly begin: string;
   @ApiProperty({ required: false })
   @IsString()

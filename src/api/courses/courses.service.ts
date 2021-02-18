@@ -30,7 +30,6 @@ export class CoursesService extends BaseService<
     super();
   }
   async find() {
-
     return await this.repository
       .createQueryBuilder('course')
       .select([
@@ -172,7 +171,7 @@ export class CoursesService extends BaseService<
 
   async findByTeacher(id: number): Promise<Courses[]> {
     const courses = await this.repository.find({
-      where: { user: id },
+      where: { user_id: id },
       relations: [
         'user',
         'organization',

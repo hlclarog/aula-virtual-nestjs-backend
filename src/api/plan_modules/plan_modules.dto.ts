@@ -6,17 +6,17 @@ export const PLAN_MODULES_PROVIDER = 'PLAN_MODULES_REPOSITORY';
 export const PLAN_MODULES_ENTITY = 'plan_modules';
 
 export class CreatePlanModulesDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() plan: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() module: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() plan_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() module_id: number;
 }
 
 export class UpdatePlanModulesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly plan?: number;
+  readonly plan_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly module?: number;
+  readonly module_id?: number;
 }

@@ -64,11 +64,11 @@ export class ActivityTriesService extends BaseService<
   async create(createDto: CreateIntentUserDto): Promise<any> {
     let passed = false;
     let activity_try_user = await this.repositoryTryUsers.findOne({
-      lesson_activity: createDto.lesson_activity,
-      user: this.infoUser.id,
+      lesson_activity_id: createDto.lesson_activity_id,
+      user_id: this.infoUser.id,
     });
     const lesson_activity = await this.lessonActivitiesService.findOne(
-      createDto.lesson_activity,
+      createDto.lesson_activity_id,
     );
     switch (lesson_activity.activity_type_id) {
       case 1:
@@ -109,8 +109,8 @@ export class ActivityTriesService extends BaseService<
     }
     if (!activity_try_user) {
       activity_try_user = await this.activityTryUsersService.create({
-        lesson_activity: createDto.lesson_activity,
-        user: this.infoUser.id,
+        lesson_activity_id: createDto.lesson_activity_id,
+        user_id: this.infoUser.id,
         begin: createDto.date,
         end: passed ? createDto.date : null,
         active: true,
@@ -125,14 +125,14 @@ export class ActivityTriesService extends BaseService<
         passed,
         answer: createDto.answer,
         date: createDto.date,
-        activity_try_user: activity_try_user.id,
+        activity_try_user_id: activity_try_user.id,
         active: true,
       };
       return await this.repository.save(register);
     } else {
       return this.repository.findOne({
         passed: true,
-        activity_try_user: activity_try_user.id,
+        activity_try_user_id: activity_try_user.id,
       });
     }
   }

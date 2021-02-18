@@ -9,7 +9,7 @@ export class CreateSortItemAnswersDto extends CreateBaseDto {
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  readonly activity_sort_item: number;
+  readonly activity_sort_item_id: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -24,7 +24,7 @@ export class UpdateSortItemAnswersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly activity_sort_item?: number;
+  readonly activity_sort_item_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

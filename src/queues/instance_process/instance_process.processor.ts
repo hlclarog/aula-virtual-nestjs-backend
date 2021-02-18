@@ -189,8 +189,8 @@ export class InstanceProcessProcessor {
           const tenancyModules: Partial<TenancyModules>[] = [];
           planModules.forEach((item) => {
             const tenancyModule: Partial<TenancyModules> = {
-              module: item.module_id,
-              tenancy: data.id,
+              module_id: item.module_id,
+              tenancy_id: data.id,
               active: true,
             };
             tenancyModules.push(tenancyModule);
@@ -205,7 +205,7 @@ export class InstanceProcessProcessor {
           };
           const savedRole = await con.getRepository(Roles).save(rol);
           if (savedRole) {
-            const moduleIds = tenancyModules.map((f) => f.module);
+            const moduleIds = tenancyModules.map((f) => f.module_id);
             const permissions: Permissions[] = await this.connection
               .getRepository(Permissions)
               .find({
@@ -215,8 +215,8 @@ export class InstanceProcessProcessor {
               const rolesPermissions: Partial<RolesPermissions>[] = [];
               permissions.forEach((item) => {
                 const rolPermission: Partial<RolesPermissions> = {
-                  rol: savedRole.id,
-                  permission: item.id,
+                  rol_id: savedRole.id,
+                  permission_id: item.id,
                   active: true,
                 };
                 rolesPermissions.push(rolPermission);
@@ -231,8 +231,8 @@ export class InstanceProcessProcessor {
               const savedUser = await con.getRepository(Users).save(user);
               if (savedUser) {
                 const usersRoles: Partial<UsersRoles> = {
-                  user: savedUser.id,
-                  rol: savedRole.id,
+                  user_id: savedUser.id,
+                  rol_id: savedRole.id,
                   default: true,
                   active: true,
                 };
@@ -243,11 +243,11 @@ export class InstanceProcessProcessor {
         }
         const tenancyDomain: Partial<TenancyDomains> = {
           description: `${data.alias}.${domain}`,
-          tenancy: data.id,
+          tenancy_id: data.id,
         };
         await this.connection.getRepository(TenancyDomains).save(tenancyDomain);
         const tenancyConfig: Partial<TenancyConfig> = {
-          tenancy: data.id,
+          tenancy_id: data.id,
           title: data.name,
           allow_registration: true,
         };
@@ -268,7 +268,7 @@ export class InstanceProcessProcessor {
 
       await this.connection
         .getRepository(Tenancies)
-        .update(data.id, { tenancy_status: 2 });
+        .update(data.id, { tenancy_status_id: 2 });
     } catch (e) {
       this.logger.error(`Failed to Create Tenancy ${data.alias}`);
       await this.instanceProcessLogService.setStatusRegister({
@@ -277,7 +277,7 @@ export class InstanceProcessProcessor {
       });
       await this.connection
         .getRepository(Tenancies)
-        .update(data.id, { tenancy_status: 3 });
+        .update(data.id, { tenancy_status_id: 3 });
     }
   }
 }

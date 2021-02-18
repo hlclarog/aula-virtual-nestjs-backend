@@ -13,5 +13,6 @@ export class TenancyDomains extends Base {
   tenancy: Tenancies;
 
   @RelationId((tenancy_domains: TenancyDomains) => tenancy_domains.tenancy)
+  @Column({ type: 'integer' })
   tenancy_id: number;
 }

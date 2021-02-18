@@ -8,8 +8,8 @@ export const COURSE_COMMISSION_ORGANIZATIONS_ENTITY =
   'course_commission_organizations';
 
 export class CreateCourseCommissionOrganizationsDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly organization: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly organization_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly percentage: number;
 }
 
@@ -17,11 +17,11 @@ export class UpdateCourseCommissionOrganizationsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly course?: number;
+  readonly course_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly organization?: number;
+  readonly organization_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()

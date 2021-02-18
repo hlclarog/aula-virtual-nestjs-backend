@@ -18,7 +18,7 @@ export class RolesPermissions extends Base {
     eager: true,
   })
   @JoinColumn({ name: 'permission_id' })
-  permission: Permissions | number;
+  permission: Permissions;
 
   @RelationId((role_permission: RolesPermissions) => role_permission.permission)
   @Column({ type: 'integer' })

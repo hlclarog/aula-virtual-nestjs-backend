@@ -17,6 +17,7 @@ export class CourseFeeSchedules extends Base {
   @RelationId(
     (courseFeeSchedules: CourseFeeSchedules) => courseFeeSchedules.currency,
   )
+  @Column({ type: 'integer' })
   currency_id: number;
 
   @ManyToOne(() => Courses, (courses) => courses.course_fee_schedules, {
@@ -28,6 +29,7 @@ export class CourseFeeSchedules extends Base {
   @RelationId(
     (courseFeeSchedules: CourseFeeSchedules) => courseFeeSchedules.course,
   )
+  @Column({ type: 'integer' })
   course_id: number;
 
   @Column({ type: 'date' }) begin: string;

@@ -8,11 +8,11 @@ export enum TENANCY_STATUS_ENUM {
   StartProcessing = 1,
 }
 export class CreateTenanciesDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly client: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly client_id: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  tenancy_status?: number;
+  tenancy_status_id?: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly alias: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly database_name: string;
@@ -20,9 +20,9 @@ export class CreateTenanciesDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly administrator: string;
   @ApiProperty() @IsString() @IsNotEmpty() password: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly schema: string;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly front_server: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly back_server: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly plan: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly front_server_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly back_server_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly plan_id: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -33,11 +33,11 @@ export class UpdateTenanciesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly client?: number;
+  readonly client_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly tenancy_status?: number;
+  readonly tenancy_status_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -69,15 +69,15 @@ export class UpdateTenanciesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly front_server?: number;
+  readonly front_server_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly back_server?: number;
+  readonly back_server_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly plan?: number;
+  readonly plan_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

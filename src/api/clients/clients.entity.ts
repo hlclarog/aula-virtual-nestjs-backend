@@ -46,6 +46,7 @@ export class Clients extends Base {
   identification_type: IdentificationTypes;
 
   @RelationId((client: Clients) => client.identification_type)
+  @Column({ type: 'integer' })
   identification_type_id: number;
 
   @OneToMany(() => Tenancies, (tenancies) => tenancies.tenancy_status)

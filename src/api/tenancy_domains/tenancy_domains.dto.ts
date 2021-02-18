@@ -6,7 +6,7 @@ export const TENANCY_DOMAINS_PROVIDER = 'TENANCY_DOMAINS_REPOSITORY';
 export const TENANCY_DOMAINS_ENTITY = 'tenancy_domains';
 
 export class CreateTenancyDomainsDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly tenancy: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly tenancy_id: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
 }
 
@@ -14,7 +14,7 @@ export class UpdateTenancyDomainsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly tenancy?: number;
+  readonly tenancy_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
