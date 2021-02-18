@@ -30,7 +30,6 @@ export class CoursesService extends BaseService<
     super();
   }
   async find() {
-
     return await this.repository
       .createQueryBuilder('course')
       .select([
@@ -123,7 +122,12 @@ export class CoursesService extends BaseService<
 
   async findOne(id: number): Promise<Courses> {
     const course = await this.repository.findOneOrFail(id, {
-      relations: ['course_interest_areas'],
+      relations: [
+        'course_interest_areas',
+        'user',
+        'course_competences',
+        'course_competences.competence',
+      ],
     });
     if (course.picture) {
       course.picture = await this.awsService.getFile(course.picture);

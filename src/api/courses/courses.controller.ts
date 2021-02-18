@@ -44,7 +44,7 @@ export class CoursesController extends BaseController<
     const result = await this.coursesService.find();
     return {
       data: result,
-    }
+    };
   }
 
   @Get('catalog/:type')
