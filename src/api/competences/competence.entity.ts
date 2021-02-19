@@ -17,7 +17,6 @@ export class Competence extends Base {
   @ManyToOne(
     () => CompetenceType,
     (competence_type) => competence_type.competence,
-    { eager: true },
   )
   @JoinColumn({ name: 'competence_type_id' })
   competence_type: CompetenceType;

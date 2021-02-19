@@ -9,7 +9,6 @@ export class EmailActivitiesTemplate extends Base {
   @ManyToOne(
     () => EmailTemplates,
     (email_template) => email_template.email_activities_template,
-    { eager: true },
   )
   @JoinColumn({ name: 'email_template_id' })
   email_template: EmailTemplates;
@@ -24,7 +23,6 @@ export class EmailActivitiesTemplate extends Base {
   @ManyToOne(
     () => EmailActivities,
     (email_activity) => email_activity.email_activities_template,
-    { eager: true },
   )
   @JoinColumn({ name: 'email_activity_id' })
   email_activity: EmailActivities;

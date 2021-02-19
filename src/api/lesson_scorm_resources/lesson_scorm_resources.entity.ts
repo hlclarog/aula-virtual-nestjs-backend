@@ -8,9 +8,6 @@ export class LessonScormResources extends Base {
   @ManyToOne(
     () => LessonScorms,
     (lesson_scorm) => lesson_scorm.lesson_scorm_resources,
-    {
-      eager: true,
-    },
   )
   @JoinColumn({ name: 'lesson_scorm_id' })
   lesson_scorm: LessonScorms;

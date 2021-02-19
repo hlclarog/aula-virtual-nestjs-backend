@@ -6,9 +6,7 @@ import { TENANCY_MODULES_ENTITY } from './tenancy_modules.dto';
 
 @Entity({ name: TENANCY_MODULES_ENTITY, schema: 'public' })
 export class TenancyModules extends Base {
-  @ManyToOne(() => Tenancies, (tenancies) => tenancies.tenancy_modules, {
-    eager: true,
-  })
+  @ManyToOne(() => Tenancies, (tenancies) => tenancies.tenancy_modules)
   @JoinColumn({ name: 'tenancy_id' })
   tenancy: Tenancies;
 
@@ -16,9 +14,7 @@ export class TenancyModules extends Base {
   @Column({ type: 'integer' })
   tenancy_id: number;
 
-  @ManyToOne(() => Modules, (modules) => modules.tenancy_modules, {
-    eager: true,
-  })
+  @ManyToOne(() => Modules, (modules) => modules.tenancy_modules)
   @JoinColumn({ name: 'module_id' })
   module: Modules;
 

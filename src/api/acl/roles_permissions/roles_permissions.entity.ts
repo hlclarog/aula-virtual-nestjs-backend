@@ -14,9 +14,7 @@ export class RolesPermissions extends Base {
   @Column({ type: 'integer' })
   rol_id: number;
 
-  @ManyToOne(() => Permissions, (permission) => permission.roles_permissions, {
-    eager: true,
-  })
+  @ManyToOne(() => Permissions, (permission) => permission.roles_permissions)
   @JoinColumn({ name: 'permission_id' })
   permission: Permissions;
 

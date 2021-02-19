@@ -29,27 +29,21 @@ export class Courses extends Base {
   @Column({ type: 'boolean' }) free: boolean;
   @Column({ type: 'boolean' }) certifiable: boolean;
 
-  @ManyToOne(() => Users, (users) => users.course, {
-    eager: false,
-  })
+  @ManyToOne(() => Users, (users) => users.course)
   @JoinColumn({ name: 'user_id' })
   user: Users;
   @RelationId((courses: Courses) => courses.user)
   @Column({ type: 'integer' })
   user_id: number;
 
-  @ManyToOne(() => Organizations, (organization) => organization.course, {
-    eager: false,
-  })
+  @ManyToOne(() => Organizations, (organization) => organization.course)
   @JoinColumn({ name: 'organization_id' })
   organization: Organizations;
   @RelationId((courses: Courses) => courses.organization)
   @Column({ type: 'integer' })
   organization_id: number;
 
-  @ManyToOne(() => CourseStatus, (coursesStatus) => coursesStatus.course, {
-    eager: false,
-  })
+  @ManyToOne(() => CourseStatus, (coursesStatus) => coursesStatus.course)
   @JoinColumn({ name: 'course_status_id' })
   course_status: CourseStatus;
   @RelationId((courses: Courses) => courses.course_status)

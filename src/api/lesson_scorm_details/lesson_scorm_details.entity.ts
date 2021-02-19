@@ -8,9 +8,6 @@ export class LessonScormDetails extends Base {
   @ManyToOne(
     () => LessonScormIntents,
     (lesson_scorm_intent) => lesson_scorm_intent.lesson_scorm_details,
-    {
-      eager: true,
-    },
   )
   @JoinColumn({ name: 'lesson_scorm_intent_id' })
   lesson_scorm_intent: LessonScormIntents;

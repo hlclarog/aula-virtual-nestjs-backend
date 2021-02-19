@@ -9,9 +9,7 @@ export class TenancyLanguages extends Base {
   @Column({ length: 500, type: 'varchar' })
   description: string;
 
-  @ManyToOne(() => Tenancies, (tenancies) => tenancies.tenancy_languages, {
-    eager: true,
-  })
+  @ManyToOne(() => Tenancies, (tenancies) => tenancies.tenancy_languages)
   @JoinColumn({ name: 'tenancy_id' })
   tenancy: Tenancies;
 
@@ -21,9 +19,7 @@ export class TenancyLanguages extends Base {
   @Column({ type: 'integer' })
   tenancy_id: number;
 
-  @ManyToOne(() => Languages, (languages) => languages.tenancy_languages, {
-    eager: true,
-  })
+  @ManyToOne(() => Languages, (languages) => languages.tenancy_languages)
   @JoinColumn({ name: 'language_id' })
   language: Languages;
 

@@ -13,9 +13,7 @@ import { LESSON_SCORMS_ENTITY } from './lesson_scorms.dto';
 
 @Entity({ name: LESSON_SCORMS_ENTITY })
 export class LessonScorms extends Base {
-  @ManyToOne(() => Lessons, (lessons) => lessons.lesson_scorms, {
-    eager: true,
-  })
+  @ManyToOne(() => Lessons, (lessons) => lessons.lesson_scorms)
   @JoinColumn({ name: 'lesson_id' })
   lesson: Lessons;
   @RelationId((lessonScorms: LessonScorms) => lessonScorms.lesson)

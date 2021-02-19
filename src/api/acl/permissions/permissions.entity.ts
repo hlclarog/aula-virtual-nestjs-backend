@@ -22,7 +22,7 @@ export class Permissions extends Base {
   @Column({ type: 'text' })
   description: string;
 
-  @ManyToOne(() => Modules, (modules) => modules.permissions, { eager: true })
+  @ManyToOne(() => Modules, (modules) => modules.permissions)
   @JoinColumn({ name: 'module_id' })
   module: Modules;
 

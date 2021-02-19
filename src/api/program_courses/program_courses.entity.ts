@@ -7,18 +7,14 @@ import { Courses } from '../courses/courses.entity';
 
 @Entity({ name: PROGRAM_COURSES_ENTITY })
 export class ProgramCourses extends Base {
-  @ManyToOne(() => Courses, (courses) => courses.program_courses, {
-    eager: true,
-  })
+  @ManyToOne(() => Courses, (courses) => courses.program_courses)
   @JoinColumn({ name: 'course_id' })
   course: Courses;
   @RelationId((programCourses: ProgramCourses) => programCourses.course)
   @Column({ type: 'integer' })
   course_id: number;
 
-  @ManyToOne(() => Programs, (programs) => programs.program_courses, {
-    eager: true,
-  })
+  @ManyToOne(() => Programs, (programs) => programs.program_courses)
   @JoinColumn({ name: 'program_id' })
   program: Programs;
   @RelationId((programCourses: ProgramCourses) => programCourses.program)
@@ -28,7 +24,6 @@ export class ProgramCourses extends Base {
   @ManyToOne(
     () => TransactionStatus,
     (transaction_status) => transaction_status.program_courses,
-    { eager: true },
   )
   @JoinColumn({ name: 'transaction_status_id' })
   transaction_status: TransactionStatus;

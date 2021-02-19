@@ -6,9 +6,7 @@ import { Courses } from '../courses/courses.entity';
 
 @Entity(COURSE_INTEREST_AREAS_ENTITY)
 export class CourseInterestAreas extends Base {
-  @ManyToOne(() => Courses, (course) => course.course_interest_areas, {
-    eager: true,
-  })
+  @ManyToOne(() => Courses, (course) => course.course_interest_areas)
   @JoinColumn({ name: 'course_id' })
   course: Courses;
   @RelationId(
@@ -20,7 +18,6 @@ export class CourseInterestAreas extends Base {
   @ManyToOne(
     () => InterestAreas,
     (interest_areas) => interest_areas.course_interest_areas,
-    { eager: true },
   )
   @JoinColumn({ name: 'interest_area_id' })
   interest_area: InterestAreas;

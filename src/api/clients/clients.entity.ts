@@ -40,7 +40,6 @@ export class Clients extends Base {
   @ManyToOne(
     () => IdentificationTypes,
     (identification_type) => identification_type.clients,
-    { eager: true },
   )
   @JoinColumn({ name: 'identification_type_id' })
   identification_type: IdentificationTypes;

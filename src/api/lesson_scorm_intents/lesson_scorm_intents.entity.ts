@@ -14,9 +14,7 @@ import { LESSON_SCORM_INTENTS_ENTITY } from './lesson_scorm_intents.dto';
 
 @Entity({ name: LESSON_SCORM_INTENTS_ENTITY })
 export class LessonScormIntents extends Base {
-  @ManyToOne(() => Lessons, (lessons) => lessons.lesson_scorm_intents, {
-    eager: true,
-  })
+  @ManyToOne(() => Lessons, (lessons) => lessons.lesson_scorm_intents)
   @JoinColumn({ name: 'lesson_id' })
   lesson: Lessons;
   @RelationId(
@@ -25,9 +23,7 @@ export class LessonScormIntents extends Base {
   @Column('integer')
   lesson_id: number;
 
-  @ManyToOne(() => Users, (user) => user.lesson_scorm_intents, {
-    eager: true,
-  })
+  @ManyToOne(() => Users, (user) => user.lesson_scorm_intents)
   @JoinColumn({ name: 'user_id' })
   user: Users;
   @RelationId((userScormIntents: LessonScormIntents) => userScormIntents.user)

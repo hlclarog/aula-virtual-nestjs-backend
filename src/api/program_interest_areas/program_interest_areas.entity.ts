@@ -6,9 +6,7 @@ import { InterestAreas } from '../interest_areas/interest_areas.entity';
 
 @Entity(PROGRAM_INTEREST_AREAS_ENTITY)
 export class ProgramInterestAreas extends Base {
-  @ManyToOne(() => Programs, (program) => program.program_interest_areas, {
-    eager: true,
-  })
+  @ManyToOne(() => Programs, (program) => program.program_interest_areas)
   @JoinColumn({ name: 'program_id' })
   program: Programs;
   @RelationId(
@@ -21,7 +19,6 @@ export class ProgramInterestAreas extends Base {
   @ManyToOne(
     () => InterestAreas,
     (interest_areas) => interest_areas.program_interest_areas,
-    { eager: true },
   )
   @JoinColumn({ name: 'interest_area_id' })
   interest_area: InterestAreas;

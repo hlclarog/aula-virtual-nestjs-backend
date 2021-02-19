@@ -62,7 +62,7 @@ export class Tenancies extends Base {
   @OneToMany(() => TenancyModules, (tenancy_module) => tenancy_module.tenancy)
   tenancy_modules: TenancyModules[];
 
-  @ManyToOne(() => Clients, (client) => client.tenancies, { eager: true })
+  @ManyToOne(() => Clients, (client) => client.tenancies)
   @JoinColumn({ name: 'client_id' })
   client: Clients;
 
@@ -70,11 +70,7 @@ export class Tenancies extends Base {
   @Column({ type: 'integer' })
   client_id: number;
 
-  @ManyToOne(
-    () => TenancyStatus,
-    (tenancy_status) => tenancy_status.tenancies,
-    { eager: true },
-  )
+  @ManyToOne(() => TenancyStatus, (tenancy_status) => tenancy_status.tenancies)
   @JoinColumn({ name: 'tenancy_status_id' })
   tenancy_status: TenancyStatus;
 
@@ -82,7 +78,7 @@ export class Tenancies extends Base {
   @Column({ type: 'integer' })
   tenancy_status_id: number;
 
-  @ManyToOne(() => Servers, (server) => server.tenancies_front, { eager: true })
+  @ManyToOne(() => Servers, (server) => server.tenancies_front)
   @JoinColumn({ name: 'front_server_id' })
   front_server: Servers;
 
@@ -90,7 +86,7 @@ export class Tenancies extends Base {
   @Column({ type: 'integer' })
   front_server_id: number;
 
-  @ManyToOne(() => Servers, (server) => server.tenancies_back, { eager: true })
+  @ManyToOne(() => Servers, (server) => server.tenancies_back)
   @JoinColumn({ name: 'back_server_id' })
   back_server: Servers;
 
@@ -98,7 +94,7 @@ export class Tenancies extends Base {
   @Column({ type: 'integer' })
   back_server_id: number;
 
-  @ManyToOne(() => Plans, (plan) => plan.tenancies, { eager: true })
+  @ManyToOne(() => Plans, (plan) => plan.tenancies)
   @JoinColumn({ name: 'plan_id' })
   plan: Plans;
 

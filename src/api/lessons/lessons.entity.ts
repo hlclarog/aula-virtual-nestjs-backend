@@ -17,18 +17,14 @@ import { LessonActivities } from '../lesson_activities/lesson_activities.entity'
 
 @Entity(COURSE_UNITS_ENTITY)
 export class Lessons extends Base {
-  @ManyToOne(() => LessonTypes, (lesson_type) => lesson_type.lessons, {
-    eager: true,
-  })
+  @ManyToOne(() => LessonTypes, (lesson_type) => lesson_type.lessons)
   @JoinColumn({ name: 'lesson_type_id' })
   lesson_type: LessonTypes;
   @RelationId((lessons: Lessons) => lessons.lesson_type)
   @Column('integer')
   lesson_type_id: number;
 
-  @ManyToOne(() => CourseUnits, (course_unit) => course_unit.lessons, {
-    eager: true,
-  })
+  @ManyToOne(() => CourseUnits, (course_unit) => course_unit.lessons)
   @JoinColumn({ name: 'course_unit_id' })
   course_unit: CourseUnits;
   @RelationId((courses: Lessons) => courses.course_unit)

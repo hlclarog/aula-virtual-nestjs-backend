@@ -8,7 +8,7 @@ export class TenancyDomains extends Base {
   @Column({ length: 500, type: 'varchar' })
   description: string;
 
-  @ManyToOne(() => Tenancies, (tenancies) => tenancies.domains, { eager: true })
+  @ManyToOne(() => Tenancies, (tenancies) => tenancies.domains)
   @JoinColumn({ name: 'tenancy_id' })
   tenancy: Tenancies;
 

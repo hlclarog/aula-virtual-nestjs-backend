@@ -26,7 +26,7 @@ export class TenancyEmails extends Base {
   @Column({ type: 'varchar' })
   authentication_required: string;
 
-  @ManyToOne(() => Tenancies, (tenancies) => tenancies.emails, { eager: true })
+  @ManyToOne(() => Tenancies, (tenancies) => tenancies.emails)
   @JoinColumn({ name: 'tenancy_id' })
   tenancy: Tenancies;
 
