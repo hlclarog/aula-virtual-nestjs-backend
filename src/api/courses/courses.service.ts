@@ -228,6 +228,22 @@ export class CoursesService extends BaseService<
     return result.course_units;
   }
 
+  async getDurations(list: string[]): Promise<any[]> {
+    const result =
+      list.length > 0
+        ? await this.repository
+            .createQueryBuilder('course')
+            .select('course.id')
+            .addSelect('SUM(lessons.duration)', 'duration')
+            .groupBy('course.id')
+            .leftJoin('course.course_units', 'course_units')
+            .leftJoin('course_units.lessons', 'lessons')
+            .where(`course.id in (${list.join(',')})`)
+            .getRawMany()
+        : [];
+    return result;
+  }
+
   generateCode() {
     const code = generate(6);
     return code;

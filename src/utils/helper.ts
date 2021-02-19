@@ -23,3 +23,16 @@ export function getHostFromOrigin(header: IncomingHttpHeaders) {
     return null;
   }
 }
+
+export function timeConvert(n) {
+  const num = n;
+  const hours = num / 60;
+  const rhours = Math.floor(hours);
+  const minutes = (hours - rhours) * 60;
+  const rminutes = Math.round(minutes);
+  let time = `${rhours} hora${rhours > 1 || rhours == 0 ? 's' : ''}`;
+  if (rminutes > 0) {
+    time = `${time} y ${rminutes} minuto${rminutes >= 1 ? 's' : ''}`;
+  }
+  return time;
+}
