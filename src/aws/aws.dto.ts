@@ -15,6 +15,7 @@ export enum typeFilesAwsNames {
   activity_identify_word = 'activities/identify_word',
   activity_complete_text = 'activities/complete_text',
   themes_pictures = 'themes_pictures',
+  lesson_comments_files = 'lesson_comments_files',
 }
 
 export type typeFileAwsTypes =
@@ -30,7 +31,8 @@ export type typeFileAwsTypes =
   | typeFilesAwsNames.activity_identify_word
   | typeFilesAwsNames.activity_complete_text
   | typeFilesAwsNames.lesson_scorms
-  | typeFilesAwsNames.themes_pictures;
+  | typeFilesAwsNames.themes_pictures
+  | typeFilesAwsNames.lesson_comments_files;
 
 export interface SaveFileAws {
   file: string;

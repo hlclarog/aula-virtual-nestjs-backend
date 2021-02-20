@@ -16,6 +16,8 @@ import { LessonScormIntents } from './../../lesson_scorm_intents/lesson_scorm_in
 import { ActivityTryUsers } from './../../activity_try_users/activity_try_users.entity';
 import { Themes } from './../../themes/themes.entity';
 import { LessonTryUsers } from './../../lesson_try_users/lesson_try_users.entity';
+import { LessonComments } from './../../lesson_comments/lesson_comments.entity';
+import { LessonCommentReactions } from 'src/api/lesson_comment_reactions/lesson_comment_reactions.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -116,4 +118,13 @@ export class Users extends Base {
 
   @OneToMany(() => LessonTryUsers, (lesson_try_user) => lesson_try_user.user)
   lesson_try_users: LessonTryUsers[];
+
+  @OneToMany(() => LessonComments, (lesson_comment) => lesson_comment.user)
+  lesson_comments: LessonComments[];
+
+  @OneToMany(
+    () => LessonCommentReactions,
+    (lesson_comment_reactions) => lesson_comment_reactions.user,
+  )
+  lesson_comment_reactions: LessonCommentReactions[];
 }
