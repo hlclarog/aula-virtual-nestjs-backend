@@ -87,6 +87,15 @@ export class CoursesController extends BaseController<
     return { data: result };
   }
 
+  @Get('student/detail/:id')
+  async fetchCourseToStudent(@Param('id') id: number) {
+    const result = await this.coursesService.findOneToStudent(
+      id,
+      this.infoUser.id,
+    );
+    return { data: result };
+  }
+
   @Get('details/:id')
   async findDetailsCourse(@Param('id') id: number) {
     const result = await this.coursesService.findAllCatalog(

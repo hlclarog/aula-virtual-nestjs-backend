@@ -193,13 +193,15 @@ export class InterestAreasService extends BaseService<
               [],
               course_area.course.course_users,
             );
+            delete course_area.course.course_users;
+            course_area.student = user?.length > 0 ? user[0].user : null;
+          }
+          if (course_area.course.course_fee_schedules) {
             const prices: any = Object.assign(
               [],
               course_area.course.course_fee_schedules,
             );
-            delete course_area.course.course_users;
             delete course_area.course.course_fee_schedules;
-            course_area.student = user?.length > 0 ? user[0].user : null;
             course_area.course_val =
               prices?.length > 0 ? Number(prices[0].course_val) : null;
             course_area.certificate_val =
