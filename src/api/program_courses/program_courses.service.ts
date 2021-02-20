@@ -16,6 +16,26 @@ export class ProgramCoursesService extends BaseService<
 > {
   @Inject(PROGRAM_COURSES_PROVIDER) repository: BaseRepo<ProgramCourses>;
 
+  async findOne(id: number): Promise<ProgramCourses> {
+    return this.repository
+      .createQueryBuilder('program_courses')
+      .select([
+        'program_courses.id',
+        'program_courses.program_id',
+        'program_courses.course_id',
+        'program_courses.transaction_status_id',
+        'program_courses.active',
+        'program_courses.active',
+        'course.id',
+        'course.name',
+        'course.description',
+        'course.active',
+      ])
+      .leftJoin('program_courses.course', 'course')
+      .where('program_courses.id = :id', { id })
+      .getOneOrFail();
+  }
+
   async findByProgram(id: number): Promise<ProgramCourses[]> {
     return await this.repository.find({
       where: { program_id: id },
