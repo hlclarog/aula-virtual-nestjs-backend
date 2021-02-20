@@ -160,6 +160,7 @@ export class CoursesService extends BaseService<
         'organization.id',
         'organization.name',
         'organization.description',
+        'course_competence.id',
         'competence.id',
         'competence.description',
         'fee',
