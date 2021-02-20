@@ -71,6 +71,7 @@ import { ActivityTryUsersModule } from './activity_try_users/activity_try_users.
 import { ActivityTriesModule } from './activity_tries/activity_tries.module';
 import { TenancyConfigModule } from './tenancy_config/tenancy_config.module';
 import { ThemesModule } from './themes/themes.module';
+import { LessonTryUsersModule } from './lesson_try_users/lesson_try_users.module';
 
 @Module({
   imports: [
@@ -146,6 +147,7 @@ import { ThemesModule } from './themes/themes.module';
     ActivityTriesModule,
     TenancyConfigModule,
     ThemesModule,
+    LessonTryUsersModule,
   ],
   controllers: [],
   providers: [],

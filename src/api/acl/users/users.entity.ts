@@ -14,7 +14,8 @@ import { ProgramUsers } from './../../program_users/program_users.entity';
 import { Courses } from '../../courses/courses.entity';
 import { LessonScormIntents } from './../../lesson_scorm_intents/lesson_scorm_intents.entity';
 import { ActivityTryUsers } from './../../activity_try_users/activity_try_users.entity';
-import { Themes } from 'src/api/themes/themes.entity';
+import { Themes } from './../../themes/themes.entity';
+import { LessonTryUsers } from './../../lesson_try_users/lesson_try_users.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -112,4 +113,7 @@ export class Users extends Base {
     (activity_try_user) => activity_try_user.user,
   )
   activity_try_users: ActivityTryUsers[];
+
+  @OneToMany(() => LessonTryUsers, (lesson_try_user) => lesson_try_user.user)
+  lesson_try_users: LessonTryUsers[];
 }

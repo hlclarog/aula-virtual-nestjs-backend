@@ -20,7 +20,7 @@ import { Roles } from '../../api/acl/roles/roles.entity';
 import { Permissions } from '../../api/acl/permissions/permissions.entity';
 import { RolesPermissions } from '../../api/acl/roles_permissions/roles_permissions.entity';
 import { UsersRoles } from '../../api/acl/users_roles/users_roles.entity';
-import { TenancyConfig } from 'src/api/tenancy_config/tenancy_config.entity';
+import { TenancyConfig } from './../../api/tenancy_config/tenancy_config.entity';
 
 @Processor(INSTANCE_PROCESS_QUEUE)
 export class InstanceProcessProcessor {

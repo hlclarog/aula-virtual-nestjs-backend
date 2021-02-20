@@ -1,4 +1,4 @@
-import { TenancyConfig } from 'src/api/tenancy_config/tenancy_config.entity';
+import { TenancyConfig } from './../../tenancy_config/tenancy_config.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Base } from '../../../base/base.entity';
 import { RolesPermissions } from '../roles_permissions/roles_permissions.entity';

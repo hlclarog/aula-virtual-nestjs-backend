@@ -21,7 +21,7 @@ import {
   RegisterDto,
 } from './auth.dto';
 import { CreateUsersDto } from './../api/acl/users/users.dto';
-import { TenancyConfigService } from 'src/api/tenancy_config/tenancy_config.service';
+import { TenancyConfigService } from './../api/tenancy_config/tenancy_config.service';
 
 @Injectable()
 export class AuthService {
