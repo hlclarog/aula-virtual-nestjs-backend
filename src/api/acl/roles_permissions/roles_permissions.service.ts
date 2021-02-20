@@ -45,7 +45,7 @@ export class RolesPermissionsService extends BaseService<
       .getMany();
     // SAVE ITEMS NEWS
     const values: any[] = permissions.map((p) => {
-      return { rol: idRol, permission: p };
+      return { rol_id: idRol, permission_id: p };
     });
     await this.repository
       .createQueryBuilder()
@@ -53,7 +53,7 @@ export class RolesPermissionsService extends BaseService<
       .into(RolesPermissions)
       .values(
         values.filter((v) =>
-          founds.map((f: any) => f.permission.id).indexOf(v.permission) >= 0
+          founds.map((f: any) => f.permission.id).indexOf(v.permission_id) >= 0
             ? false
             : true,
         ),

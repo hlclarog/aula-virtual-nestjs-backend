@@ -41,7 +41,7 @@ export class PlanModulesService extends BaseService<
         .getMany();
       // SAVE ITEMS NEWS
       const values: any[] = modules.map((p) => {
-        return { rol: idPlan, module: p };
+        return { rol_id: idPlan, module_id: p };
       });
       await this.repository
         .createQueryBuilder()
@@ -49,7 +49,7 @@ export class PlanModulesService extends BaseService<
         .into(PlanModules)
         .values(
           values.filter((v) =>
-            founds.map((f: any) => f.module.id).indexOf(v.module) >= 0
+            founds.map((f: any) => f.module.id).indexOf(v.module_id) >= 0
               ? false
               : true,
           ),

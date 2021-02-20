@@ -104,10 +104,10 @@ export class UsersRolesService extends BaseService<
       // REMOVE MARKER DEFAULT OTHERS ROLES FOR USER
       const updateItems: any[] = roles
         .map((p) => {
-          return { user: idUser, rol: p, default: p == rol_default };
+          return { user_id: idUser, rol_id: p, default: p == rol_default };
         })
         .filter((f) => !f.default)
-        .map((k) => k.rol);
+        .map((k) => k.rol_id);
       await this.repository
         .createQueryBuilder()
         .update(UsersRoles)

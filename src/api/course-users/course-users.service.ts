@@ -41,8 +41,8 @@ export class CourseUsersService extends BaseService<
         .where(
           'user_id = :user AND course_id = :course AND deleted_at is not null',
           {
-            user: createDto.user_id,
-            course: createDto.course_id,
+            user_id: createDto.user_id,
+            course_id: createDto.course_id,
           },
         )
         .execute();
