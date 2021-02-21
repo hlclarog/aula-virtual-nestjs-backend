@@ -66,7 +66,7 @@ export class CoursesService extends BaseService<
       .leftJoinAndSelect(
         'course.course_users',
         'course_user',
-        'course_user.user_id = :user_id AND course_user.course_id = course.id',
+        'course_user.user_id = :user_id AND course_user.course_id = course.id AND course_user.deleted_at is null',
         {
           user_id,
         },
@@ -174,7 +174,7 @@ export class CoursesService extends BaseService<
       .leftJoin(
         'course.course_users',
         'course_user',
-        'course_user.user_id = :user_id AND course_user.course_id = course.id',
+        'course_user.user_id = :user_id AND course_user.course_id = course.id AND course_user.deleted_at is null',
         {
           user_id,
         },
