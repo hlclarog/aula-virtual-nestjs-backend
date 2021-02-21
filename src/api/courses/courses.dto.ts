@@ -143,6 +143,13 @@ export class UpdateCourseDto extends UpdateBaseDto {
 }
 
 export class SubscribeCourseStudentDto {
+  user_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly begin_date: string;
+}
+
+export class UnSubscribeCourseStudentDto {
+  user_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly end_date: string;
 }

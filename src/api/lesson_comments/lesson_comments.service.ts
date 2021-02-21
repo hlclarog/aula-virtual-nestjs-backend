@@ -82,7 +82,11 @@ export class LessonCommentsService extends BaseService<
         'lesson_comments.content_type',
         'lesson_comments.content',
         'lesson_comments.date',
+        'user.id',
+        'user.name',
+        'user.picture',
       ])
+      .leftJoin('lesson_comments.user', 'user')
       .where('lesson_id = :id', { id: id })
       .getMany();
     for (let i = 0; i < data.length; i++) {
@@ -90,6 +94,9 @@ export class LessonCommentsService extends BaseService<
       if (item.content_type == LESSON_CONTENT_TYPES.IMAGE && item.content) {
         const content = item.content;
         item.content = await this.awsService.getFile(content);
+      }
+      if (item.user.picture) {
+        item.user.picture = await this.awsService.getFile(item.user.picture);
       }
     }
     return data;

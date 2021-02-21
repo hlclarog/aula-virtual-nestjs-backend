@@ -7,6 +7,10 @@ import {
   CreateCourseUsersDto,
   UpdateCourseUsersDto,
 } from './course-users.dto';
+import {
+  SubscribeCourseStudentDto,
+  UnSubscribeCourseStudentDto,
+} from '../courses/courses.dto';
 
 @Injectable()
 export class CourseUsersService extends BaseService<
@@ -55,6 +59,37 @@ export class CourseUsersService extends BaseService<
         .execute();
     }
 
+    return { data: result };
+  }
+
+  async subscribe(createDto: SubscribeCourseStudentDto) {
+    const match = await this.repository.findOne({
+      where: { course_id: createDto.course_id, user_id: createDto.user_id },
+      withDeleted: true,
+    });
+    console.log(match);
+    if (!match) {
+      return await this.repository.save(createDto);
+    } else {
+      return await this.repository.update(match.id, {
+        deleted_at: null,
+        end_date: null,
+      });
+    }
+  }
+
+  async unSubscribe(data: UnSubscribeCourseStudentDto) {
+    await this.repository.update(
+      {
+        course_id: data.course_id,
+        user_id: data.user_id,
+      },
+      { end_date: data.end_date },
+    );
+    const result = await this.repository.softDelete({
+      user_id: data.user_id,
+      course_id: data.course_id,
+    });
     return { data: result };
   }
 }
