@@ -23,7 +23,7 @@ export class CreateLessonCommentsDto extends CreateBaseDto {
   readonly content?: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly date: string;
   @ApiProperty({ required: false })
-  @IsString()
+  @IsNumber()
   @IsOptional()
   readonly comment_answer_id?: number;
 }
