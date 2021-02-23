@@ -66,7 +66,6 @@ export class UsersRolesService extends BaseService<
     // SEARCH ITEMS ACTUALS FOR NO DUPLICATE
     const founds = await this.repository
       .createQueryBuilder('item')
-      .leftJoinAndSelect('item.rol', 'rol')
       .where(
         `item.user_id = :idUser and item.rol_id in (${
           roles.length > 0 ? roles.join() : [0].join()
@@ -78,7 +77,7 @@ export class UsersRolesService extends BaseService<
       .getMany();
     // SAVE ITEMS NEWS
     const newItems: any[] = roles.map((p) => {
-      return { user: idUser, rol: p, default: p == rol_default };
+      return { user_id: idUser, rol_id: p, default: p == rol_default };
     });
     await this.repository
       .createQueryBuilder()
@@ -86,7 +85,9 @@ export class UsersRolesService extends BaseService<
       .into(UsersRoles)
       .values(
         newItems.filter((v) =>
-          founds.map((f: any) => f.rol.id).indexOf(v.rol) >= 0 ? false : true,
+          founds.map((f: any) => f.rol_id).indexOf(v.rol_id) >= 0
+            ? false
+            : true,
         ),
       )
       .execute();
