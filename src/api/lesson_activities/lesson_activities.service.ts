@@ -204,7 +204,7 @@ export class LessonActivitiesService extends BaseService<
 
   async findAllByLesson(lesson_id: number): Promise<LessonActivities[]> {
     const resultLessonActivities = await this.repository.find({
-      where: { lesson: lesson_id },
+      where: { lesson_id: lesson_id },
       relations: ['activity_type'],
     });
 
