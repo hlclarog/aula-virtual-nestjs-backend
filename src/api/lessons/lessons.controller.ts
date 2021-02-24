@@ -39,7 +39,11 @@ export class LessonsController extends BaseController<
 
   @Get('student/:id')
   async student(@Param('id') id: number) {
-    return await this.lessonsService.findLessonForStudent(id, this.infoUser.id);
+    const result = await this.lessonsService.findLessonForStudent(
+      id,
+      this.infoUser.id,
+    );
+    return { data: result };
   }
 
   @Put(':id')
