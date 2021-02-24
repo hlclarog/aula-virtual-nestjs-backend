@@ -11,6 +11,8 @@ export class CreateLessonTryUsersDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly begin: string;
 }
 export class EndLessonTryUsersDto {
+  user_id?: number;
   percent?: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson_id: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly end: string;
 }

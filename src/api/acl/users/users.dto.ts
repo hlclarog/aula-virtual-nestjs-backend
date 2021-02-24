@@ -13,6 +13,10 @@ export const USERS_ENTITY = 'users';
 
 export class CreateUsersDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly lastname?: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly email: string;
   @ApiProperty() @IsString() @IsNotEmpty() password: string;
   @ApiProperty({

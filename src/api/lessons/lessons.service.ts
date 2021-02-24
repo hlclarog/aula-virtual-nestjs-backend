@@ -11,6 +11,7 @@ import { AwsService } from '../../aws/aws.service';
 import { typeFilesAwsNames } from '../../aws/aws.dto';
 import * as shortid from 'shortid';
 import { UpdateResult } from 'typeorm';
+import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
 
 @Injectable()
 export class LessonsService extends BaseService<
@@ -20,7 +21,10 @@ export class LessonsService extends BaseService<
 > {
   @Inject(COURSE_UNITS_PROVIDER) repository: BaseRepo<Lessons>;
 
-  constructor(private awsService: AwsService) {
+  constructor(
+    private awsService: AwsService,
+    private lessonTryUsersService: LessonTryUsersService,
+  ) {
     super();
   }
 
@@ -29,6 +33,23 @@ export class LessonsService extends BaseService<
     if (lesson.video_url) {
       lesson.video_url = await this.awsService.getFile(lesson.video_url);
     }
+    return lesson;
+  }
+
+  async findLessonForStudent(
+    lesson_id: number,
+    user_id: number,
+  ): Promise<Lessons> {
+    const lesson: any = await this.repository.findOneOrFail(lesson_id);
+    if (lesson.video_url) {
+      lesson.video_url = await this.awsService.getFile(lesson.video_url);
+    }
+    const intent = await this.lessonTryUsersService.getActualTry(
+      user_id,
+      lesson_id,
+    );
+    console.log(user_id, lesson_id, intent);
+    lesson.intent = intent;
     return lesson;
   }
 

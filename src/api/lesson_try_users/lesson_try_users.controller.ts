@@ -43,15 +43,19 @@ export class LessonTryUsersController extends BaseController<
     return await this.findOne(id);
   }
 
-  @Post()
+  @Post('start')
   async post(@Body() createDto: CreateLessonTryUsersDto) {
     createDto.user_id = this.infoUser.id;
-    return await this.create(createDto);
+    return await this.lesson_try_usersService.start(createDto);
   }
 
-  @Put('end/:id')
-  async end(@Param('id') id: string, @Body() updateDto: EndLessonTryUsersDto) {
-    return await this.update(id, { ...updateDto, percent: 100 });
+  @Post('end')
+  async end(@Body() updateDto: EndLessonTryUsersDto) {
+    updateDto.user_id = this.infoUser.id;
+    return await this.lesson_try_usersService.end({
+      ...updateDto,
+      percent: 100,
+    });
   }
 
   @Delete(':id')

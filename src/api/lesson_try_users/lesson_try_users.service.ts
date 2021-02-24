@@ -1,4 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import {
   CreateLessonTryUsersDto,
   ACTIVITY_TRY_USERS_PROVIDER,
@@ -83,5 +87,38 @@ export class LessonTryUsersService extends BaseService<
       })
       .orderBy('lesson_try_users.id', 'ASC')
       .getMany();
+  }
+
+  async getActualTry(user_id: number, lesson_id: number) {
+    return await this.repository.findOne({
+      where: {
+        user_id,
+        lesson_id,
+      },
+    });
+  }
+
+  async start(createDto: CreateLessonTryUsersDto) {
+    const actual = await this.getActualTry(
+      createDto.user_id,
+      createDto.lesson_id,
+    );
+    if (actual) {
+      return actual;
+    } else {
+      return await this.repository.save(createDto);
+    }
+  }
+
+  async end(updateDto: EndLessonTryUsersDto) {
+    const actual = await this.getActualTry(
+      updateDto.user_id,
+      updateDto.lesson_id,
+    );
+    if (actual) {
+      return await this.repository.update(actual.id, updateDto);
+    } else {
+      throw new InternalServerErrorException('LESSON NOT INITIALIZED');
+    }
   }
 }
