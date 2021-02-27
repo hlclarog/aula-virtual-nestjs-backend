@@ -11,6 +11,7 @@ import { LessonDetails } from './lesson_details.entity';
 import { AwsService } from './../../aws/aws.service';
 import { typeFilesAwsNames } from './../../aws/aws.dto';
 import * as shortid from 'shortid';
+import { CONTENT_TYPES_S3 } from '../content_types/content_types.dto';
 
 @Injectable()
 export class LessonDetailsService extends BaseService<
@@ -24,12 +25,8 @@ export class LessonDetailsService extends BaseService<
     super();
   }
 
-  validateLessonType(id: number): boolean {
-    return [2, 3, 7].indexOf(id) >= 0;
-  }
-
   validateContentType(id: number): boolean {
-    return [2, 3, 7].indexOf(id) >= 0;
+    return CONTENT_TYPES_S3.indexOf(id) >= 0;
   }
 
   async getContentFile(content: string) {
@@ -40,7 +37,7 @@ export class LessonDetailsService extends BaseService<
     const lesson_detail = await this.repository.findOneOrFail(id);
     if (
       lesson_detail.content &&
-      this.validateLessonType(lesson_detail.content_type_id)
+      this.validateContentType(lesson_detail.content_type_id)
     ) {
       const content = lesson_detail.content;
       lesson_detail.content = await this.getContentFile(content);
@@ -100,7 +97,7 @@ export class LessonDetailsService extends BaseService<
   }
 
   async setContent(file, type) {
-    if ([2, 3, 7].indexOf(type) >= 0) {
+    if (this.validateContentType(type)) {
       const result = await this.awsService.saveFile({
         file,
         name: shortid.generate(),

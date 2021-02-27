@@ -72,7 +72,7 @@ export class ActivityTriesService extends BaseService<
     );
     switch (lesson_activity.activity_type_id) {
       case 1:
-        const answer_multiple = Number(JSON.parse(createDto.answer)[0]);
+        const answer_multiple = JSON.parse(createDto.answer);
         passed = await this.activityMultipleOptionsService.isRight(
           lesson_activity.detail_id,
           answer_multiple,

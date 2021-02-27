@@ -17,7 +17,7 @@ import { ActivityTryUsers } from './../../activity_try_users/activity_try_users.
 import { Themes } from './../../themes/themes.entity';
 import { LessonTryUsers } from './../../lesson_try_users/lesson_try_users.entity';
 import { LessonComments } from './../../lesson_comments/lesson_comments.entity';
-import { LessonCommentReactions } from 'src/api/lesson_comment_reactions/lesson_comment_reactions.entity';
+import { LessonCommentReactions } from './../../lesson_comment_reactions/lesson_comment_reactions.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {

@@ -7,7 +7,7 @@ import { LessonsService } from './lessons.service';
 import {
   InfoUserProvider,
   INFO_USER_PROVIDER,
-} from 'src/utils/providers/info-user.module';
+} from './../../utils/providers/info-user.module';
 
 @ControllerApi({ name: 'lessons' })
 export class LessonsController extends BaseController<

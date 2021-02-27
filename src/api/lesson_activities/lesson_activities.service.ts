@@ -17,6 +17,8 @@ import { ACTIVITY_COMPLETE_TEXTS_PROVIDER } from '../activity_complete_texts/act
 import { ActivityCompleteTexts } from '../activity_complete_texts/activity_complete_texts.entity';
 import { ActivityIdentifyWords } from '../activity_identify_words/activity_identify_words.entity';
 import { ACTIVITY_IDENTIFY_WORDS_PROVIDER } from '../activity_identify_words/activity_identify_words.dto';
+import { CONTENT_TYPES_S3 } from '../content_types/content_types.dto';
+import { AwsService } from './../../aws/aws.service';
 
 export enum EnumActivityType {
   MultipleOptions = 1,
@@ -42,6 +44,10 @@ export class LessonActivitiesService extends BaseService<
   activityCompleteTexts: BaseRepo<ActivityCompleteTexts>;
   @Inject(ACTIVITY_IDENTIFY_WORDS_PROVIDER)
   activityIdentifyWords: BaseRepo<ActivityIdentifyWords>;
+
+  constructor(private awsService: AwsService) {
+    super();
+  }
 
   async create(createDto: CreateLessonActivitiesDto) {
     const resultLessonActivity = await this.repository.save(createDto);
@@ -211,12 +217,13 @@ export class LessonActivitiesService extends BaseService<
     for (const f of resultLessonActivities) {
       switch (f.activity_type_id) {
         case EnumActivityType.MultipleOptions:
-          f[
-            'lesson_activity_detail'
-          ] = await this.activityMultipleOptions.findOne({
+          const list = await this.activityMultipleOptions.findOne({
             where: { id: f.detail_id },
             relations: ['multiple_option_answers'],
           });
+          list['multiple'] =
+            list.multiple_option_answers.filter((a) => a.right).length > 1;
+          f['lesson_activity_detail'] = list;
           break;
         case EnumActivityType.SortItems:
           f['lesson_activity_detail'] = await this.activitySortItems.findOne({
@@ -246,6 +253,19 @@ export class LessonActivitiesService extends BaseService<
             id: f.detail_id,
           });
           break;
+      }
+
+      if (
+        f['lesson_activity_detail'].resource_content &&
+        CONTENT_TYPES_S3.indexOf(
+          f['lesson_activity_detail'].resource_type_id,
+        ) >= 0
+      ) {
+        f[
+          'lesson_activity_detail'
+        ].resource_content = await this.awsService.getFile(
+          f['lesson_activity_detail'].resource_content,
+        );
       }
     }
 
