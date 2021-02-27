@@ -1,4 +1,4 @@
-import { Body, Delete, Get, Inject, Param, Post } from '@nestjs/common';
+import { Body, Delete, Get, Inject, Param, Post, Put } from '@nestjs/common';
 import { LessonCommentReactionsService } from './lesson_comment_reactions.service';
 import {
   AddCommentReactionDto,
@@ -36,11 +36,12 @@ export class LessonCommentReactionsController extends BaseController<
   @Post()
   async add(@Body() addDto: AddCommentReactionDto) {
     addDto.user_id = this.infoUser.id;
-    return await this.create(addDto);
+    return await this.lesson_comment_reactionsService.save(addDto);
   }
 
-  @Delete(':id')
-  async delete(@Param('id') id: string) {
-    return await this.remove(id);
+  @Put('delete')
+  async delete(@Body() deleteDto: DeleteCommentReactionDto) {
+    deleteDto.user_id = this.infoUser.id;
+    return await this.lesson_comment_reactionsService.delete(deleteDto);
   }
 }

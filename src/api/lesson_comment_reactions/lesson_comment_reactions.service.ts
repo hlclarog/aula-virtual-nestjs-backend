@@ -33,4 +33,32 @@ export class LessonCommentReactionsService extends BaseService<
       .getMany();
     return data;
   }
+
+  async save(createDto: AddCommentReactionDto) {
+    const result = await this.repository.findOne({
+      where: {
+        lesson_comment_id: createDto.lesson_comment_id,
+        reaction_type: createDto.reaction_type,
+        user_id: createDto.user_id,
+      },
+    });
+    if (!result) {
+      await this.repository.save(createDto);
+    }
+    return { liked: true };
+  }
+
+  async delete(deleteDto: DeleteCommentReactionDto) {
+    const result = await this.repository.findOne({
+      where: {
+        lesson_comment_id: deleteDto.lesson_comment_id,
+        reaction_type: deleteDto.reaction_type,
+        user_id: deleteDto.user_id,
+      },
+    });
+    if (result) {
+      await this.repository.delete(result.id);
+    }
+    return { removed: result ? true : false };
+  }
 }
