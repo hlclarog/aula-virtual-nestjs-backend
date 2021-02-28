@@ -5,8 +5,8 @@ export const PROGRAM_FEE_SCHEDULE_PROVIDER = 'PROGRAM_FEE_SCHEDULE_REPOSITORY';
 export const PROGRAM_FEE_SCHEDULE_ENTITY = 'program_fee_schedules';
 
 export class CreateProgramFeeSchedulesDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly currency: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly currency_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly begin: string;
   @ApiProperty({ required: false })
   @IsString()
@@ -20,11 +20,11 @@ export class UpdateProgramFeeSchedulesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly currency?: number;
+  readonly currency_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly program?: number;
+  readonly program_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

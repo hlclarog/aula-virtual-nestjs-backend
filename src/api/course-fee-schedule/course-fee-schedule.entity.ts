@@ -6,28 +6,24 @@ import { Courses } from '../courses/courses.entity';
 
 @Entity({ name: COURSE_FEE_SCHEDULE_ENTITY })
 export class CourseFeeSchedules extends Base {
-  @ManyToOne(
-    () => Currencies,
-    (currencies) => currencies.course_fee_schedules,
-    { eager: true },
-  )
+  @ManyToOne(() => Currencies, (currencies) => currencies.course_fee_schedules)
   @JoinColumn({ name: 'currency_id' })
-  currency: Currencies | number;
+  currency: Currencies;
 
   @RelationId(
     (courseFeeSchedules: CourseFeeSchedules) => courseFeeSchedules.currency,
   )
+  @Column({ type: 'integer' })
   currency_id: number;
 
-  @ManyToOne(() => Courses, (courses) => courses.course_fee_schedules, {
-    eager: true,
-  })
+  @ManyToOne(() => Courses, (courses) => courses.course_fee_schedules)
   @JoinColumn({ name: 'course_id' })
-  course: Courses | number;
+  course: Courses;
 
   @RelationId(
     (courseFeeSchedules: CourseFeeSchedules) => courseFeeSchedules.course,
   )
+  @Column({ type: 'integer' })
   course_id: number;
 
   @Column({ type: 'date' }) begin: string;

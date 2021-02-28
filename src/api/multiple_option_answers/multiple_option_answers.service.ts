@@ -21,7 +21,7 @@ export class MultipleOptionAnswersService extends BaseService<
     question_id: number,
   ): Promise<MultipleOptionAnswers[]> {
     return await this.repository.find({
-      activity_multiple_option: question_id,
+      activity_multiple_option_id: question_id,
     });
   }
 }

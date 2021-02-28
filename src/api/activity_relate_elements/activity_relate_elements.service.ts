@@ -55,7 +55,7 @@ export class ActivityRelateElementsService extends BaseService<
       .createQueryBuilder()
       .delete()
       .where(
-        `activity_relate_element = :id AND id not in (${
+        `activity_relate_element_id = :id AND id not in (${
           ids.length > 0 ? ids.join() : [0].join()
         })`,
         {

@@ -7,7 +7,7 @@ export const LESSON_SCORM_RESOURCES_PROVIDER =
 export const LESSON_SCORM_RESOURCES_ENTITY = 'lesson_scorm_resources';
 
 export class CreateLessonScormResourcesDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson_scorm: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson_scorm_id: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly index: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly identifier: string;
 }
@@ -16,7 +16,7 @@ export class UpdateLessonScormResourcesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly lesson_scorm?: number;
+  readonly lesson_scorm_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

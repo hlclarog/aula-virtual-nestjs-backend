@@ -10,16 +10,18 @@ import { Courses } from '../courses/courses.entity';
 export class CourseUsers extends Base {
   @ManyToOne(() => Courses, (courses) => courses.course_users)
   @JoinColumn({ name: 'course_id' })
-  course: Courses | number;
+  course: Courses;
 
   @RelationId((courseUsers: CourseUsers) => courseUsers.course)
+  @Column({ type: 'integer' })
   course_id: number;
 
   @ManyToOne(() => Users, (users) => users.course_users)
   @JoinColumn({ name: 'user_id' })
-  user: Users | number;
+  user: Users;
 
   @RelationId((courseUsers: CourseUsers) => courseUsers.user)
+  @Column({ type: 'integer' })
   user_id: number;
 
   @ManyToOne(
@@ -27,9 +29,10 @@ export class CourseUsers extends Base {
     (enrollmentStatus) => enrollmentStatus.course_users,
   )
   @JoinColumn({ name: 'enrollment_status_id' })
-  enrollment_status: EnrollmentStatus | number;
+  enrollment_status: EnrollmentStatus;
 
   @RelationId((courseUsers: CourseUsers) => courseUsers.enrollment_status)
+  @Column({ type: 'integer' })
   enrollment_status_id: number;
 
   @ManyToOne(
@@ -37,9 +40,10 @@ export class CourseUsers extends Base {
     (enrollmentTypes) => enrollmentTypes.course_users,
   )
   @JoinColumn({ name: 'enrollment_type_id' })
-  enrollment_type: EnrollmentTypes | number;
+  enrollment_type: EnrollmentTypes;
 
   @RelationId((courseUsers: CourseUsers) => courseUsers.enrollment_type)
+  @Column({ type: 'integer' })
   enrollment_type_id: number;
 
   @Column({ type: 'date', nullable: true }) begin_date: string;

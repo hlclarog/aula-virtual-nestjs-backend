@@ -30,10 +30,11 @@ export class ActivityIdentifyWords extends Base {
     (resource_types) => resource_types.activity_identify_words,
   )
   @JoinColumn({ name: 'resource_type_id' })
-  resource_type: ResourceTypes | number;
+  resource_type: ResourceTypes;
   @RelationId(
     (activity_identify_words: ActivityIdentifyWords) =>
       activity_identify_words.resource_type,
   )
+  @Column({ type: 'integer' })
   resource_type_id: number;
 }

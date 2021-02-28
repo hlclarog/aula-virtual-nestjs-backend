@@ -16,9 +16,10 @@ export class ActivityTries extends Base {
     (activivy_try_user) => activivy_try_user.activity_tries,
   )
   @JoinColumn({ name: 'activity_try_user_id' })
-  activity_try_user: ActivityTryUsers | number;
+  activity_try_user: ActivityTryUsers;
   @RelationId(
     (activity_tries: ActivityTries) => activity_tries.activity_try_user,
   )
+  @Column({ type: 'integer' })
   activity_try_user_id: number;
 }

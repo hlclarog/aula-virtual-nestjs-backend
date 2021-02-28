@@ -5,20 +5,16 @@ import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 export const COURSE_USERS_PROVIDER = 'COURSE_USERS_REPOSITORY';
 export const COURSE_USERS_ENTITY = 'course_users';
 export class CreateCourseUsersDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly user: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly transaction_status?: number;
+  readonly enrollment_status_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly enrollment_status?: number;
-  @ApiProperty({ required: false })
-  @IsNumber()
-  @IsOptional()
-  readonly enrollment_type?: number;
+  readonly enrollment_type_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -61,23 +57,19 @@ export class UpdateCourseUsersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly course?: number;
+  readonly course_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly user?: number;
+  readonly user_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly transaction_status?: number;
+  readonly enrollment_status_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly enrollment_status?: number;
-  @ApiProperty({ required: false })
-  @IsNumber()
-  @IsOptional()
-  readonly enrollment_type?: number;
+  readonly enrollment_type_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

@@ -11,6 +11,7 @@ import { AwsService } from '../../aws/aws.service';
 import { typeFilesAwsNames } from '../../aws/aws.dto';
 import * as shortid from 'shortid';
 import { UpdateResult } from 'typeorm';
+import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
 
 @Injectable()
 export class LessonsService extends BaseService<
@@ -20,7 +21,10 @@ export class LessonsService extends BaseService<
 > {
   @Inject(COURSE_UNITS_PROVIDER) repository: BaseRepo<Lessons>;
 
-  constructor(private awsService: AwsService) {
+  constructor(
+    private awsService: AwsService,
+    private lessonTryUsersService: LessonTryUsersService,
+  ) {
     super();
   }
 
@@ -32,6 +36,23 @@ export class LessonsService extends BaseService<
     return lesson;
   }
 
+  async findLessonForStudent(
+    lesson_id: number,
+    user_id: number,
+  ): Promise<Lessons> {
+    const lesson: any = await this.repository.findOneOrFail(lesson_id);
+    if (lesson.video_url) {
+      lesson.video_url = await this.awsService.getFile(lesson.video_url);
+    }
+    const intent = await this.lessonTryUsersService.getActualTry(
+      user_id,
+      lesson_id,
+    );
+    console.log(user_id, lesson_id, intent);
+    lesson.intent = intent;
+    return lesson;
+  }
+
   async create(createDto: CreateLessonsDto) {
     const data: any = Object.assign({}, createDto);
     if (createDto.video_url) {
@@ -40,7 +61,7 @@ export class LessonsService extends BaseService<
     const listLessons = await this.repository
       .createQueryBuilder()
       .where('course_unit_id = :unit_id', {
-        unit_id: createDto.course_unit,
+        unit_id: createDto.course_unit_id,
       })
       .getCount();
     data.order = listLessons + 1;
@@ -66,7 +87,7 @@ export class LessonsService extends BaseService<
 
   async findByCourse(id: number): Promise<Lessons[]> {
     return await this.repository.find({
-      where: { course: id },
+      where: { course_id: id },
     });
   }
 
@@ -100,7 +121,7 @@ export class LessonsService extends BaseService<
     return await this.repository
       .createQueryBuilder()
       .update()
-      .set({ course_unit: data.unit_id, order: data.new_order })
+      .set({ course_unit_id: data.unit_id, order: data.new_order })
       .where('id = :lesson_id', {
         lesson_id: data.lesson_id,
       })

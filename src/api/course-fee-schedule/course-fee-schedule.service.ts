@@ -20,8 +20,8 @@ export class CourseFeeScheduleService extends BaseService<
 
   async create(createDto: CreateCourseFeeScheduleDto) {
     await this.validateFeeSchedule(
-      createDto.course,
-      createDto.currency,
+      createDto.course_id,
+      createDto.currency_id,
       createDto.begin,
       createDto.end,
       0,
@@ -34,8 +34,8 @@ export class CourseFeeScheduleService extends BaseService<
     updateDto: UpdateCourseFeeScheduleDto,
   ): Promise<UpdateResult> {
     await this.validateFeeSchedule(
-      updateDto.course,
-      updateDto.currency,
+      updateDto.course_id,
+      updateDto.currency_id,
       updateDto.begin,
       updateDto.end,
       id,
@@ -64,7 +64,7 @@ export class CourseFeeScheduleService extends BaseService<
 
   async findByCourse(id: number): Promise<CourseFeeSchedules[]> {
     return await this.repository.find({
-      where: { course: id },
+      where: { course_id: id },
     });
   }
 }

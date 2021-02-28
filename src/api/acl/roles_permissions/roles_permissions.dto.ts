@@ -6,7 +6,7 @@ export const ROLES_PERMISSIONS_PROVIDER = 'ROLES_PERMISSIONS_REPOSITORY';
 export const ROLES_PERMISSIONS_ENTITY = 'roles_permissions';
 
 export class CreateRolesPermissionsDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() rol: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() rol_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() permission: number;
 }
 
@@ -14,7 +14,7 @@ export class UpdateRolesPermissionsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly rol?: number;
+  readonly rol_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()

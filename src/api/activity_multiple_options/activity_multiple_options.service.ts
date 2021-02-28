@@ -55,7 +55,7 @@ export class ActivityMultipleOptionsService extends BaseService<
       .createQueryBuilder()
       .delete()
       .where(
-        `activity_multiple_option = :id AND id not in (${
+        `activity_multiple_option_id = :id AND id not in (${
           ids.length > 0 ? ids.join() : [0].join()
         })`,
         {
@@ -83,17 +83,17 @@ export class ActivityMultipleOptionsService extends BaseService<
     return result.Key;
   }
 
-  async isRight(detail_id: number, answer: number): Promise<boolean> {
-    let right = false;
+  async isRight(detail_id: number, answers: number[]): Promise<boolean> {
+    let matchs = 0;
     const listAnswers = await this.multipleOptionAnswersService.findAllByQuestion(
       detail_id,
     );
     for (let i = 0; i < listAnswers.length; i++) {
       const element = listAnswers[i];
-      if (element.id == answer && element.right) {
-        right = true;
+      if (element.right && answers.indexOf(element.id) >= 0) {
+        matchs++;
       }
     }
-    return right;
+    return matchs === listAnswers.filter((a) => a.right).length;
   }
 }

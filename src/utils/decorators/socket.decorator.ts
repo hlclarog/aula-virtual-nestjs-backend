@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { WebSocketGateway } from '@nestjs/websockets';
-import { ConfigServiceI } from './../../config/confi.class';
+import { ConfigServiceI } from './../../config/config.class';
 
 export function ControlleSocket(namespace) {
   const cll = ConfigServiceI();

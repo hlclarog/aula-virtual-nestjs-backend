@@ -15,7 +15,7 @@ export class Themes extends Base {
   @Column({ type: 'varchar' })
   picture: string;
 
-  @OneToMany(() => Users, (user) => user.theme)
+  @OneToMany(() => Users, (user) => user.theme_id)
   users: Users[];
 
   @OneToMany(() => TenancyConfig, (tenancy) => tenancy.theme)

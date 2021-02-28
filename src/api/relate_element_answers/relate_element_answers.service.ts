@@ -22,7 +22,7 @@ export class RelateElementAnswersService extends BaseService<
   ): Promise<RelateElementAnswers[]> {
     return await this.repository.find({
       where: {
-        activity_relate_element: question_id,
+        activity_relate_element_id: question_id,
       },
     });
   }

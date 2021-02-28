@@ -20,8 +20,9 @@ export class ActivityTryUsers extends Base {
 
   @ManyToOne(() => Users, (user) => user.activity_try_users)
   @JoinColumn({ name: 'user_id' })
-  user: Users | number;
+  user: Users;
   @RelationId((activity_try_users: ActivityTryUsers) => activity_try_users.user)
+  @Column({ type: 'integer' })
   user_id: number;
 
   @ManyToOne(
@@ -29,11 +30,12 @@ export class ActivityTryUsers extends Base {
     (lesson_activity) => lesson_activity.activity_try_users,
   )
   @JoinColumn({ name: 'lesson_activity_id' })
-  lesson_activity: LessonActivities | number;
+  lesson_activity: LessonActivities;
   @RelationId(
     (activity_try_users: ActivityTryUsers) =>
       activity_try_users.lesson_activity,
   )
+  @Column({ type: 'integer' })
   lesson_activity_id: number;
 
   @OneToMany(

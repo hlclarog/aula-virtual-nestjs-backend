@@ -17,8 +17,32 @@ export class ProgramUsersService extends BaseService<
   @Inject(PROGRAM_USERS_PROVIDER) repository: BaseRepo<ProgramUsers>;
 
   async findByProgram(id: number): Promise<ProgramUsers[]> {
-    return await this.repository.find({
-      where: { program: id },
-    });
+    return this.repository
+      .createQueryBuilder('program_users')
+      .select([
+        'program_users.id',
+        'program_users.program_id',
+        'program_users.user_id',
+        'program_users.enrollment_status_id',
+        'program_users.enrollment_type_id',
+        'program_users.transaction_status_id',
+        'program_users.begin_date',
+        'program_users.end_date',
+        'program_users.ref_transaction',
+        'program_users.certificate_file',
+        'program_users.certificate_code_validation',
+        'program_users.private_inscription',
+        'program_users.favorite',
+        'program_users.downloaded',
+        'program_users.paid_value',
+        'program_users.active',
+        'user.id',
+        'user.name',
+        'user.email',
+        'user.active',
+      ])
+      .leftJoin('program_users.user', 'user')
+      .where('program_users.program_id = :id', { id })
+      .getMany();
   }
 }

@@ -16,10 +16,11 @@ export class SortItemAnswers extends Base {
     (activity_sort_items) => activity_sort_items.sort_item_answers,
   )
   @JoinColumn({ name: 'activity_sort_item_id' })
-  activity_sort_item: ActivitySortItems | number;
+  activity_sort_item: ActivitySortItems;
   @RelationId(
     (sort_item_answers: SortItemAnswers) =>
       sort_item_answers.activity_sort_item,
   )
+  @Column({ type: 'integer' })
   activity_sort_item_id: number;
 }

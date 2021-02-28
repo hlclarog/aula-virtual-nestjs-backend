@@ -34,7 +34,7 @@ export class CreateActivitySortItemsDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly resource_type?: number;
+  readonly resource_type_id?: number;
 }
 
 export class UpdateActivitySortItemsDto extends UpdateBaseDto {
@@ -65,7 +65,7 @@ export class UpdateActivitySortItemsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly resource_type?: number;
+  readonly resource_type_id?: number;
   @ApiProperty({ required: false, isArray: true })
   @IsArray()
   @IsOptional()

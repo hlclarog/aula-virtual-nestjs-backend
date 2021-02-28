@@ -35,11 +35,12 @@ export class ActivityMultipleOptions extends Base {
     (resource_types) => resource_types.activity_multiple_options,
   )
   @JoinColumn({ name: 'resource_type_id' })
-  resource_type: ResourceTypes | number;
+  resource_type: ResourceTypes;
   @RelationId(
     (activity_multiple_options: ActivityMultipleOptions) =>
       activity_multiple_options.resource_type,
   )
+  @Column({ type: 'integer' })
   resource_type_id: number;
 
   @OneToMany(

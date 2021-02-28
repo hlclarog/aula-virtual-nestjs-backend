@@ -14,6 +14,7 @@ import { AwsService } from '../../aws/aws.service';
 import { typeFilesAwsNames } from '../../aws/aws.dto';
 import * as shortid from 'shortid';
 import { generate } from '../../utils/random';
+import { timeConvert } from './../../utils/helper';
 
 @Injectable()
 export class CoursesService extends BaseService<
@@ -29,6 +30,30 @@ export class CoursesService extends BaseService<
   ) {
     super();
   }
+  async find() {
+    return await this.repository
+      .createQueryBuilder('course')
+      .select([
+        'course.id',
+        'course.name',
+        'course.short_name',
+        'course.description',
+        'course.organization_id',
+        'course.course_status_id',
+        'course.user_id',
+        'course.active',
+        'users.id',
+        'users.name',
+        'course_status.id',
+        'course_status.description',
+        'organizations.id',
+        'organizations.description',
+      ])
+      .leftJoin('course.user', 'users')
+      .leftJoin('course.organization', 'organizations')
+      .leftJoin('course.course_status', 'course_status')
+      .getMany();
+  }
 
   async findAllCatalog(
     user_id: number,
@@ -41,7 +66,7 @@ export class CoursesService extends BaseService<
       .leftJoinAndSelect(
         'course.course_users',
         'course_user',
-        'course_user.user_id = :user_id AND course_user.course_id = course.id',
+        'course_user.user_id = :user_id AND course_user.course_id = course.id AND course_user.deleted_at is null',
         {
           user_id,
         },
@@ -98,10 +123,89 @@ export class CoursesService extends BaseService<
 
   async findOne(id: number): Promise<Courses> {
     const course = await this.repository.findOneOrFail(id, {
-      relations: ['course_interest_areas'],
+      relations: [
+        'course_interest_areas',
+        'user',
+        'course_competences',
+        'course_competences.competence',
+      ],
     });
     if (course.picture) {
       course.picture = await this.awsService.getFile(course.picture);
+    }
+    return course;
+  }
+
+  async findOneToStudent(id: number, user_id: number): Promise<Courses> {
+    const course: any = await this.repository
+      .createQueryBuilder('course')
+      .select([
+        'course.id',
+        'course.name',
+        'course.code',
+        'course.description',
+        'course.picture',
+        'course.short_name',
+        'course.free',
+        'course.user_id',
+        'course_interest_area.interest_area_id',
+        'interest_area.id',
+        'interest_area.description',
+        'user.id',
+        'user.name',
+        'course_user',
+        'course_user.user',
+        'student.id',
+        'student.name',
+        'organization.id',
+        'organization.name',
+        'organization.description',
+        'course_competence.id',
+        'competence.id',
+        'competence.description',
+        'fee',
+      ])
+      .leftJoin('course.course_interest_areas', 'course_interest_area')
+      .leftJoin('course_interest_area.interest_area', 'interest_area')
+      .leftJoin('course.user', 'user')
+      .leftJoin('course.organization', 'organization')
+      .leftJoin('course.course_competences', 'course_competence')
+      .leftJoin('course_competence.competence', 'competence')
+      .leftJoin(
+        'course.course_users',
+        'course_user',
+        'course_user.user_id = :user_id AND course_user.course_id = course.id AND course_user.deleted_at is null',
+        {
+          user_id,
+        },
+      )
+      .leftJoin(
+        'course.course_fee_schedules',
+        'fee',
+        '(now() BETWEEN fee.begin AND fee.end) AND fee.course_id = course.id',
+      )
+      .leftJoin('course_user.user', 'student')
+      .where('course.id = :id', { id })
+      .getOne();
+    if (course.picture) {
+      course.picture = await this.awsService.getFile(course.picture);
+    }
+    const info_sum = await this.getDurations([String(id)]);
+    if (course.course_users) {
+      const user: any = Object.assign([], course.course_users);
+      delete course.course_users;
+      course.student = user?.length > 0 ? user[0].user : null;
+    }
+    if (course.course_fee_schedules) {
+      const prices: any = Object.assign([], course.course_fee_schedules);
+      delete course.course_fee_schedules;
+      course.course_val =
+        prices?.length > 0 ? Number(prices[0].course_val) : null;
+      course.certificate_val =
+        prices?.length > 0 ? Number(prices[0].certificate_val) : null;
+      let suma = info_sum.map((i) => i.course_id).indexOf(course.id);
+      suma = suma >= 0 ? info_sum[suma].duration : 0;
+      course.duration = `${timeConvert(suma)}`;
     }
     return course;
   }
@@ -147,7 +251,7 @@ export class CoursesService extends BaseService<
 
   async findByTeacher(id: number): Promise<Courses[]> {
     const courses = await this.repository.find({
-      where: { user: id },
+      where: { user_id: id },
       relations: [
         'user',
         'organization',
@@ -197,6 +301,22 @@ export class CoursesService extends BaseService<
       .getOneOrFail();
 
     return result.course_units;
+  }
+
+  async getDurations(list: string[]): Promise<any[]> {
+    const result =
+      list.length > 0
+        ? await this.repository
+            .createQueryBuilder('course')
+            .select('course.id')
+            .addSelect('SUM(lessons.duration)', 'duration')
+            .groupBy('course.id')
+            .leftJoin('course.course_units', 'course_units')
+            .leftJoin('course_units.lessons', 'lessons')
+            .where(`course.id in (${list.join(',')})`)
+            .getRawMany()
+        : [];
+    return result;
   }
 
   generateCode() {

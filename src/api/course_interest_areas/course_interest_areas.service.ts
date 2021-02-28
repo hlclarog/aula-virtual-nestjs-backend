@@ -19,7 +19,7 @@ export class CourseInterestAreasService extends BaseService<
 
   async findByCourse(id: number): Promise<CourseInterestAreas[]> {
     return await this.repository.find({
-      where: { course: id },
+      where: { course_id: id },
     });
   }
 
@@ -65,7 +65,7 @@ export class CourseInterestAreasService extends BaseService<
       .getMany();
     // SAVE ITEMS NEWS
     const values: any[] = areas.map((idArea) => {
-      return { course: idCourse, interest_area: idArea };
+      return { course_id: idCourse, interest_area_id: idArea };
     });
     await this.repository
       .createQueryBuilder()
@@ -73,8 +73,9 @@ export class CourseInterestAreasService extends BaseService<
       .into(CourseInterestAreas)
       .values(
         values.filter((v) =>
-          founds.map((f: any) => f.interest_area.id).indexOf(v.interest_area) >=
-          0
+          founds
+            .map((f: any) => f.interest_area.id)
+            .indexOf(v.interest_area_id) >= 0
             ? false
             : true,
         ),

@@ -45,7 +45,7 @@ export class ActivityTryUsersController extends BaseController<
 
   @Post()
   async post(@Body() createDto: CreateActivityTryUsersDto) {
-    createDto.user = this.infoUser.id;
+    createDto.user_id = this.infoUser.id;
     return await this.create(createDto);
   }
 

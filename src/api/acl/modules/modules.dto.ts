@@ -16,7 +16,7 @@ export class CreateModulesDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly parent?: number;
+  readonly parent_id?: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly icon: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly path: string;
@@ -31,7 +31,7 @@ export class UpdateModulesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly parent?: number;
+  readonly parent_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

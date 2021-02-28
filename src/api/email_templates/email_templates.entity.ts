@@ -19,11 +19,12 @@ export class EmailTemplates extends Base {
   @Column({ type: 'varchar' })
   observations: string;
 
-  @ManyToOne(() => Languages, (language) => language.templates, { eager: true })
+  @ManyToOne(() => Languages, (language) => language.templates)
   @JoinColumn({ name: 'language_id' })
-  language: Languages | number;
+  language: Languages;
 
   @RelationId((email_templates: EmailTemplates) => email_templates.language)
+  @Column({ type: 'integer' })
   language_id: number;
 
   @OneToMany(

@@ -14,23 +14,23 @@ import { LessonDetails } from '../lesson_details/lesson_details.entity';
 import { LessonScorms } from '../lesson_scorms/lesson_scorms.entity';
 import { LessonScormIntents } from '../lesson_scorm_intents/lesson_scorm_intents.entity';
 import { LessonActivities } from '../lesson_activities/lesson_activities.entity';
+import { LessonTryUsers } from '../lesson_try_users/lesson_try_users.entity';
+import { LessonComments } from '../lesson_comments/lesson_comments.entity';
 
 @Entity(COURSE_UNITS_ENTITY)
 export class Lessons extends Base {
-  @ManyToOne(() => LessonTypes, (lesson_type) => lesson_type.lessons, {
-    eager: true,
-  })
+  @ManyToOne(() => LessonTypes, (lesson_type) => lesson_type.lessons)
   @JoinColumn({ name: 'lesson_type_id' })
-  lesson_type: LessonTypes | number;
+  lesson_type: LessonTypes;
   @RelationId((lessons: Lessons) => lessons.lesson_type)
+  @Column('integer')
   lesson_type_id: number;
 
-  @ManyToOne(() => CourseUnits, (course_unit) => course_unit.lessons, {
-    eager: true,
-  })
+  @ManyToOne(() => CourseUnits, (course_unit) => course_unit.lessons)
   @JoinColumn({ name: 'course_unit_id' })
-  course_unit: CourseUnits | number;
+  course_unit: CourseUnits;
   @RelationId((courses: Lessons) => courses.course_unit)
+  @Column('integer')
   course_unit_id: number;
 
   @Column({ type: 'varchar' }) name: string;
@@ -59,4 +59,10 @@ export class Lessons extends Base {
     (lesson_activities) => lesson_activities.lesson,
   )
   lesson_activities: LessonActivities[];
+
+  @OneToMany(() => LessonTryUsers, (lesson_try_user) => lesson_try_user.lesson)
+  lesson_try_users: LessonTryUsers[];
+
+  @OneToMany(() => LessonComments, (lesson_comment) => lesson_comment.lesson)
+  lesson_comments: LessonComments[];
 }

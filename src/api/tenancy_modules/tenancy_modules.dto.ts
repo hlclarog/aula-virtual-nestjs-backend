@@ -6,19 +6,19 @@ export const TENANCY_MODULES_PROVIDER = 'TENANCY_MODULES_REPOSITORY';
 export const TENANCY_MODULES_ENTITY = 'tenancy_modules';
 
 export class CreateTenancyModulesDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly tenancy: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly module: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly tenancy_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly module_id: number;
 }
 
 export class UpdateTenancyModulesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly tenancy?: number;
+  readonly tenancy_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly module?: number;
+  readonly module_id?: number;
 }
 
 export class CreateTenancyModulesCreateGroupDto extends CreateBaseDto {

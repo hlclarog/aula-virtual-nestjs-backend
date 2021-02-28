@@ -25,8 +25,9 @@ export class LessonActivities extends Base {
 
   @ManyToOne(() => Lessons, (lessons) => lessons.lesson_activities)
   @JoinColumn({ name: 'lesson_id' })
-  lesson: Lessons | number;
+  lesson: Lessons;
   @RelationId((lessonActivities: LessonActivities) => lessonActivities.lesson)
+  @Column('integer')
   lesson_id: number;
 
   @ManyToOne(
@@ -34,10 +35,11 @@ export class LessonActivities extends Base {
     (activityTypes) => activityTypes.lesson_activities,
   )
   @JoinColumn({ name: 'activity_type_id' })
-  activity_type: ActivityTypes | number;
+  activity_type: ActivityTypes;
   @RelationId(
     (lessonActivities: LessonActivities) => lessonActivities.activity_type,
   )
+  @Column('integer')
   activity_type_id: number;
 
   @OneToMany(

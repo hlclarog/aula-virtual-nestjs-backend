@@ -30,5 +30,6 @@ import { InterestAreasModule } from '../interest_areas/interest_areas.module';
     CoursesService,
     AuthorizationsUserService,
   ],
+  exports: [COURSES_PROVIDER, CoursesService],
 })
 export class CoursesModule {}

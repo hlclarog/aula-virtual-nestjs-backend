@@ -10,7 +10,7 @@ export class CreateRelateElementAnswersDto extends CreateBaseDto {
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  readonly activity_relate_element: number;
+  readonly activity_relate_element_id: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -25,7 +25,7 @@ export class UpdateRelateElementAnswersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly activity_relate_element?: number;
+  readonly activity_relate_element_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

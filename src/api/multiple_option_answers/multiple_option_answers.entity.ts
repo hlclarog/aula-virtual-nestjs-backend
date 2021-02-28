@@ -17,10 +17,11 @@ export class MultipleOptionAnswers extends Base {
       activity_multiple_options.multiple_option_answers,
   )
   @JoinColumn({ name: 'activity_multiple_option_id' })
-  activity_multiple_option: ActivityMultipleOptions | number;
+  activity_multiple_option: ActivityMultipleOptions;
   @RelationId(
     (multiple_option_answers: MultipleOptionAnswers) =>
       multiple_option_answers.activity_multiple_option,
   )
+  @Column({ type: 'integer' })
   activity_multiple_option_id: number;
 }

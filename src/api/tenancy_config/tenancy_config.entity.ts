@@ -9,20 +9,23 @@ import { TENANCY_CONFIG_ENTITY } from './tenancy_config.dto';
 export class TenancyConfig extends Base {
   @ManyToOne(() => Tenancies, (tenancy) => tenancy.config)
   @JoinColumn({ name: 'tenancy_id' })
-  tenancy: TenancyConfig | number;
+  tenancy: TenancyConfig;
   @RelationId((tenancy_config: TenancyConfig) => tenancy_config.tenancy)
+  @Column({ type: 'integer' })
   tenancy_id: number;
 
   @ManyToOne(() => Themes, (theme) => theme.tenancies_config)
   @JoinColumn({ name: 'theme_id' })
-  theme: Themes | number;
+  theme: Themes;
   @RelationId((tenancy_config: TenancyConfig) => tenancy_config.theme)
+  @Column({ type: 'integer' })
   theme_id: number;
 
   @ManyToOne(() => Roles, (rol) => rol.tenancy_config)
   @JoinColumn({ name: 'rol_default_id' })
-  rol_default: Roles | number;
+  rol_default: Roles;
   @RelationId((tenancy_config: TenancyConfig) => tenancy_config.rol_default)
+  @Column({ type: 'integer' })
   rol_default_id: number;
 
   @Column({ type: 'varchar' })

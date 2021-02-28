@@ -1,7 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { PROGRAM_COMMISSION_ORGANIZATIONS_ENTITY } from './program_commission_organizations.dto';
-import { Courses } from '../courses/courses.entity';
 import { Organizations } from '../organizations/organizations.entity';
 import { Programs } from '../programs/programs.entity';
 
@@ -17,6 +16,7 @@ export class ProgramCommissionOrganizations extends Base {
     (courseCommissionOrganizations: ProgramCommissionOrganizations) =>
       courseCommissionOrganizations.program,
   )
+  @Column({ type: 'integer' })
   program_id: number;
 
   @ManyToOne(
@@ -29,6 +29,7 @@ export class ProgramCommissionOrganizations extends Base {
     (courseCommissionOrganizations: ProgramCommissionOrganizations) =>
       courseCommissionOrganizations.organization,
   )
+  @Column({ type: 'integer' })
   organization_id: number;
 
   @Column({ type: 'int' }) percentage: number;

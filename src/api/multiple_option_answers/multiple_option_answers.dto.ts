@@ -16,7 +16,7 @@ export class CreateMultipleOptionAnswersDto extends CreateBaseDto {
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  readonly activity_multiple_option: number;
+  readonly activity_multiple_option_id: number;
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
@@ -31,7 +31,7 @@ export class UpdateMultipleOptionAnswersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly activity_multiple_option?: number;
+  readonly activity_multiple_option_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

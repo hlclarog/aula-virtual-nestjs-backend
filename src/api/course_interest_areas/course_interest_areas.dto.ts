@@ -6,17 +6,17 @@ export const COURSE_INTEREST_AREAS_PROVIDER =
   'COURSE_INTEREST_AREAS_REPOSITORY';
 export const COURSE_INTEREST_AREAS_ENTITY = 'course_interest_areas';
 export class CreateCourseInterestAreasDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly interest_area: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly interest_area_id: number;
 }
 
 export class UpdateCourseInterestAreasDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly course?: number;
+  readonly course_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly interest_area?: number;
+  readonly interest_area_id?: number;
 }

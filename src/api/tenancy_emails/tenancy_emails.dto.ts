@@ -12,7 +12,7 @@ export const TENANCY_EMAILS_PROVIDER = 'TENANCY_EMAILS_REPOSITORY';
 export const TENANCY_EMAILS_ENTITY = 'tenancy_emails';
 
 export class CreateTenancyEmailsDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly tenancy: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly tenancy_id: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly email_address: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly email_name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly username: string;
@@ -29,7 +29,7 @@ export class UpdateTenancyEmailsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly tenancy?: number;
+  readonly tenancy_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

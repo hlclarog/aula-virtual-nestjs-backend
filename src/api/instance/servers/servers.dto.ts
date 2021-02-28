@@ -18,8 +18,8 @@ export class CreateServersDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly user: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly pass: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly ssh_key: string;
-  @ApiProperty() @IsNumber() @IsNumber() readonly server_type: number;
-  @ApiProperty() @IsNumber() @IsNumber() readonly connection_type: number;
+  @ApiProperty() @IsNumber() @IsNumber() readonly server_type_id: number;
+  @ApiProperty() @IsNumber() @IsNumber() readonly connection_type_id: number;
 }
 
 export class UpdateServersDto extends UpdateBaseDto {
@@ -50,9 +50,9 @@ export class UpdateServersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly server_type?: number;
+  readonly server_type_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly connection_type?: number;
+  readonly connection_type_id?: number;
 }

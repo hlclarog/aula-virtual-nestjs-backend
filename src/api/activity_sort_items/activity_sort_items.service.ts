@@ -54,7 +54,7 @@ export class ActivitySortItemsService extends BaseService<
       .createQueryBuilder()
       .delete()
       .where(
-        `activity_sort_item = :id AND id not in (${
+        `activity_sort_item_id = :id AND id not in (${
           ids.length > 0 ? ids.join() : [0].join()
         })`,
         {

@@ -7,6 +7,7 @@ import {
   CreateCourseByTeacherDto,
   CreateCourseDto,
   SubscribeCourseStudentDto,
+  UnSubscribeCourseStudentDto,
   UpdateCourseDto,
 } from './courses.dto';
 import { Courses } from './courses.entity';
@@ -41,7 +42,10 @@ export class CoursesController extends BaseController<
 
   @Get()
   async fetchAll() {
-    return await this.findAll();
+    const result = await this.coursesService.find();
+    return {
+      data: result,
+    };
   }
 
   @Get('catalog/:type')
@@ -81,6 +85,15 @@ export class CoursesController extends BaseController<
         );
         break;
     }
+    return { data: result };
+  }
+
+  @Get('student/detail/:id')
+  async fetchCourseToStudent(@Param('id') id: number) {
+    const result = await this.coursesService.findOneToStudent(
+      id,
+      this.infoUser.id,
+    );
     return { data: result };
   }
 
@@ -136,10 +149,22 @@ export class CoursesController extends BaseController<
 
   @Post('subscribe_student')
   async subscribeStudent(@Body() subscribeDto: SubscribeCourseStudentDto) {
-    const result = await this.courseUsersService.create({
-      course: subscribeDto.course,
-      user: this.infoUser.id,
+    const result = await this.courseUsersService.subscribe({
+      course_id: subscribeDto.course_id,
+      user_id: this.infoUser.id,
       begin_date: subscribeDto.begin_date,
+    });
+    return {
+      data: result,
+    };
+  }
+
+  @Post('unsubscribe_student')
+  async unsubscribeStudent(@Body() subscribeDto: UnSubscribeCourseStudentDto) {
+    const result = await this.courseUsersService.unSubscribe({
+      course_id: subscribeDto.course_id,
+      user_id: this.infoUser.id,
+      end_date: subscribeDto.end_date,
     });
     return {
       data: result,
@@ -180,7 +205,7 @@ export class CoursesController extends BaseController<
     @Param('id') id: string,
     @Body() updateDto: UpdateCourseDto,
   ) {
-    updateDto.user = this.infoUser.id;
+    updateDto.user_id = this.infoUser.id;
     return await this.update(id, updateDto);
   }
 }

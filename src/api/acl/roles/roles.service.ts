@@ -91,7 +91,7 @@ export class RolesService extends BaseService<
           'show_in_menu',
         ],
         relations: ['permissions', 'children', 'children.children'],
-        where: { parent: null, id: In(modulesTenancy) },
+        where: { parent_id: null, id: In(modulesTenancy) },
       });
       const permisos = await this.repositoryPermissions.find({
         select: ['id', 'name', 'display_name', 'description'],

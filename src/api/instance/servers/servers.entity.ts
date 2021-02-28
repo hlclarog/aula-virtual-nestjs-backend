@@ -32,18 +32,20 @@ export class Servers extends Base {
   @Column({ type: 'varchar' })
   ip_address: string;
 
-  @ManyToOne(() => ServerTypes, (server) => server.servers, { eager: true })
+  @ManyToOne(() => ServerTypes, (server) => server.servers)
   @JoinColumn({ name: 'server_type_id' })
   server_type: ServerTypes;
 
   @RelationId((server: Servers) => server.server_type)
+  @Column({ type: 'integer' })
   server_type_id: number;
 
-  @ManyToOne(() => ConnectionTypes, (server) => server.servers, { eager: true })
+  @ManyToOne(() => ConnectionTypes, (server) => server.servers)
   @JoinColumn({ name: 'connection_type_id' })
   connection_type: ConnectionTypes;
 
   @RelationId((server: Servers) => server.connection_type)
+  @Column({ type: 'integer' })
   connection_type_id: number;
 
   @OneToMany(() => Tenancies, (tenancies) => tenancies.back_server)

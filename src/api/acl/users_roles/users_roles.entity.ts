@@ -11,6 +11,7 @@ export class UsersRoles extends Base {
   user: Users;
 
   @RelationId((users_roles: UsersRoles) => users_roles.user)
+  @Column({ type: 'integer' })
   user_id: number;
 
   @ManyToOne(() => Roles, (rol) => rol.users_roles)
@@ -18,6 +19,7 @@ export class UsersRoles extends Base {
   rol: Roles;
 
   @RelationId((users_roles: UsersRoles) => users_roles.rol)
+  @Column({ type: 'integer' })
   rol_id: number;
 
   @Column({ type: 'boolean', default: false })

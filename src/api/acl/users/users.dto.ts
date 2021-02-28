@@ -13,6 +13,10 @@ export const USERS_ENTITY = 'users';
 
 export class CreateUsersDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly lastname?: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly email: string;
   @ApiProperty() @IsString() @IsNotEmpty() password: string;
   @ApiProperty({
@@ -31,7 +35,12 @@ export class CreateUsersDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly theme?: number;
+  readonly theme_id?: number;
+
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly language_id?: number;
 }
 
 export class UpdateUsersDto extends UpdateBaseDto {
@@ -158,7 +167,12 @@ export class UpdateUsersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly theme?: number;
+  readonly theme_id?: number;
+
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly language_id?: number;
 }
 
 export class searchByRol {

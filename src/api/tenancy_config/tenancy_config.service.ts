@@ -13,7 +13,7 @@ export class TenancyConfigService {
   async findOne(id: number): Promise<TenancyConfig> {
     return this.repository.findOne({
       where: {
-        tenancy: id,
+        tenancy_id: id,
       },
       relations: ['theme', 'tenancy', 'rol_default'],
     });
@@ -24,7 +24,7 @@ export class TenancyConfigService {
     if (data) {
       await this.repository.update(data.id, updateDto);
     } else {
-      await this.repository.save({ ...updateDto, tenancy: id });
+      await this.repository.save({ ...updateDto, tenancy_id: id });
     }
     data = await this.findOne(id);
     return data;

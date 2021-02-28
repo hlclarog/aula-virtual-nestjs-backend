@@ -18,7 +18,7 @@ export class CourseCompetencesService extends BaseService<
 
   async findByCourse(id: number): Promise<CourseCompetences[]> {
     return await this.repository.find({
-      where: { course: id },
+      where: { course_id: id },
       relations: ['competence', 'course'],
     });
   }

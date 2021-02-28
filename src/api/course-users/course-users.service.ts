@@ -7,6 +7,10 @@ import {
   CreateCourseUsersDto,
   UpdateCourseUsersDto,
 } from './course-users.dto';
+import {
+  SubscribeCourseStudentDto,
+  UnSubscribeCourseStudentDto,
+} from '../courses/courses.dto';
 
 @Injectable()
 export class CourseUsersService extends BaseService<
@@ -18,7 +22,7 @@ export class CourseUsersService extends BaseService<
 
   async findByCourse(id: number): Promise<CourseUsers[]> {
     return await this.repository.find({
-      where: { course: id },
+      where: { course_id: id },
       relations: ['user', 'enrollment_status', 'enrollment_type', 'course'],
     });
   }
@@ -27,8 +31,8 @@ export class CourseUsersService extends BaseService<
     const founds = await this.repository
       .createQueryBuilder()
       .where('user_id = :user AND course_id = :course', {
-        user: `${createDto.user}`,
-        course: `${createDto.course}`,
+        user: `${createDto.user_id}`,
+        course: `${createDto.course_id}`,
       })
       .withDeleted()
       .getCount();
@@ -41,8 +45,8 @@ export class CourseUsersService extends BaseService<
         .where(
           'user_id = :user AND course_id = :course AND deleted_at is not null',
           {
-            user: createDto.user,
-            course: createDto.course,
+            user_id: createDto.user_id,
+            course_id: createDto.course_id,
           },
         )
         .execute();
@@ -55,6 +59,37 @@ export class CourseUsersService extends BaseService<
         .execute();
     }
 
+    return { data: result };
+  }
+
+  async subscribe(createDto: SubscribeCourseStudentDto) {
+    const match = await this.repository.findOne({
+      where: { course_id: createDto.course_id, user_id: createDto.user_id },
+      withDeleted: true,
+    });
+    console.log(match);
+    if (!match) {
+      return await this.repository.save(createDto);
+    } else {
+      return await this.repository.update(match.id, {
+        deleted_at: null,
+        end_date: null,
+      });
+    }
+  }
+
+  async unSubscribe(data: UnSubscribeCourseStudentDto) {
+    await this.repository.update(
+      {
+        course_id: data.course_id,
+        user_id: data.user_id,
+      },
+      { end_date: data.end_date },
+    );
+    const result = await this.repository.softDelete({
+      user_id: data.user_id,
+      course_id: data.course_id,
+    });
     return { data: result };
   }
 }

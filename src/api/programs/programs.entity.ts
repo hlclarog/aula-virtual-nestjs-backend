@@ -19,28 +19,25 @@ import { ProgramInterestAreas } from '../program_interest_areas/program_interest
 import { ProgramCommissionOrganizations } from '../program_comission_organizations/program_commission_organizations.entity';
 @Entity({ name: PROGRAMS_ENTITY })
 export class Programs extends Base {
-  @ManyToOne(() => ProgramTypes, (program_type) => program_type.programs, {
-    eager: true,
-  })
+  @ManyToOne(() => ProgramTypes, (program_type) => program_type.programs)
   @JoinColumn({ name: 'program_type_id' })
-  program_type: Users | number;
+  program_type: Users;
   @RelationId((programs: Programs) => programs.program_type)
+  @Column({ type: 'int' })
   program_type_id: number;
 
-  @ManyToOne(() => ProgramStatus, (program_status) => program_status.programs, {
-    eager: true,
-  })
+  @ManyToOne(() => ProgramStatus, (program_status) => program_status.programs)
   @JoinColumn({ name: 'program_status_id' })
-  program_status: ProgramStatus | number;
+  program_status: ProgramStatus;
   @RelationId((programs: Programs) => programs.program_status)
+  @Column({ type: 'int' })
   program_status_id: number;
 
-  @ManyToOne(() => Organizations, (organization) => organization.programs, {
-    eager: true,
-  })
+  @ManyToOne(() => Organizations, (organization) => organization.programs)
   @JoinColumn({ name: 'organization_id' })
-  organization: Organizations | number;
+  organization: Organizations;
   @RelationId((programs: Programs) => programs.organization)
+  @Column({ type: 'int' })
   organization_id: number;
 
   @Column({ type: 'varchar' }) name: string;

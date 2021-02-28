@@ -26,10 +26,11 @@ export class TenancyEmails extends Base {
   @Column({ type: 'varchar' })
   authentication_required: string;
 
-  @ManyToOne(() => Tenancies, (tenancies) => tenancies.emails, { eager: true })
+  @ManyToOne(() => Tenancies, (tenancies) => tenancies.emails)
   @JoinColumn({ name: 'tenancy_id' })
   tenancy: Tenancies;
 
   @RelationId((tenancy_emails: TenancyEmails) => tenancy_emails.tenancy)
+  @Column({ type: 'integer' })
   tenancy_id: number;
 }

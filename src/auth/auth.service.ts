@@ -21,7 +21,7 @@ import {
   RegisterDto,
 } from './auth.dto';
 import { CreateUsersDto } from './../api/acl/users/users.dto';
-import { TenancyConfigService } from 'src/api/tenancy_config/tenancy_config.service';
+import { TenancyConfigService } from './../api/tenancy_config/tenancy_config.service';
 
 @Injectable()
 export class AuthService {
@@ -58,7 +58,7 @@ export class AuthService {
       password: data.password,
       users_roles: config.rol_default_id ? [config.rol_default_id] : [],
       rol_default: config.rol_default_id,
-      theme: config.theme_id,
+      theme_id: config.theme_id,
     };
     if (config.allow_registration) {
       const newUser = await this.usersService.create(user);

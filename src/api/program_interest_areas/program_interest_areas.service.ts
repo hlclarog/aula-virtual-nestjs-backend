@@ -19,7 +19,7 @@ export class ProgramInterestAreasService extends BaseService<
 
   async findByProgram(id: number): Promise<ProgramInterestAreas[]> {
     return await this.repository.find({
-      where: { program: id },
+      where: { program_id: id },
     });
   }
 
@@ -50,16 +50,18 @@ export class ProgramInterestAreasService extends BaseService<
       .getMany();
     // SAVE ITEMS NEWS
     const values: any[] = areas.map((idArea) => {
-      return { program: idProgram, interest_area: idArea };
+      return { program_id: idProgram, interest_area_id: idArea };
     });
+    console.log(values, idProgram);
     await this.repository
       .createQueryBuilder()
       .insert()
       .into(ProgramInterestAreas)
       .values(
         values.filter((v) =>
-          founds.map((f: any) => f.interest_area.id).indexOf(v.interest_area) >=
-          0
+          founds
+            .map((f: any) => f.interest_area.id)
+            .indexOf(v.interest_area_id) >= 0
             ? false
             : true,
         ),

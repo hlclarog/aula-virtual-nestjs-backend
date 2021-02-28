@@ -6,17 +6,17 @@ export const COURSE_COMPETENCES_PROVIDER = 'COURSE_COMPETENCES_REPOSITORY';
 export const COURSE_COMPETENCES_ENTITY = 'course_competences';
 
 export class CreateCourseCompetencesDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly competence: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly competence_id: number;
 }
 
 export class UpdateCourseCompetencesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly course?: number;
+  readonly course_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly competence?: number;
+  readonly competence_id?: number;
 }

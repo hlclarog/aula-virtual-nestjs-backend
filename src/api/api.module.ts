@@ -71,6 +71,9 @@ import { ActivityTryUsersModule } from './activity_try_users/activity_try_users.
 import { ActivityTriesModule } from './activity_tries/activity_tries.module';
 import { TenancyConfigModule } from './tenancy_config/tenancy_config.module';
 import { ThemesModule } from './themes/themes.module';
+import { LessonTryUsersModule } from './lesson_try_users/lesson_try_users.module';
+import { LessonCommentsModule } from './lesson_comments/lesson_comments.module';
+import { LessonCommentReactionsModule } from './lesson_comment_reactions/lesson_comment_reactions.module';
 
 @Module({
   imports: [
@@ -146,6 +149,9 @@ import { ThemesModule } from './themes/themes.module';
     ActivityTriesModule,
     TenancyConfigModule,
     ThemesModule,
+    LessonTryUsersModule,
+    LessonCommentsModule,
+    LessonCommentReactionsModule,
   ],
   controllers: [],
   providers: [],

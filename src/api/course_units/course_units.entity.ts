@@ -17,6 +17,7 @@ export class CourseUnits extends Base {
   @JoinColumn({ name: 'course_id' })
   course: Courses;
   @RelationId((courseUnits: CourseUnits) => courseUnits.course)
+  @Column({ type: 'integer' })
   course_id: number;
 
   @Column({ type: 'varchar' }) description: string;

@@ -14,14 +14,20 @@ import { ProgramUsers } from './../../program_users/program_users.entity';
 import { Courses } from '../../courses/courses.entity';
 import { LessonScormIntents } from './../../lesson_scorm_intents/lesson_scorm_intents.entity';
 import { ActivityTryUsers } from './../../activity_try_users/activity_try_users.entity';
-import { Themes } from 'src/api/themes/themes.entity';
+import { Themes } from './../../themes/themes.entity';
+import { LessonTryUsers } from './../../lesson_try_users/lesson_try_users.entity';
+import { LessonComments } from './../../lesson_comments/lesson_comments.entity';
+import { LessonCommentReactions } from './../../lesson_comment_reactions/lesson_comment_reactions.entity';
+import { Languages } from './../../languages/languages.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
   @ManyToOne(() => Themes, (theme) => theme.users)
   @JoinColumn({ name: 'theme_id' })
   theme: Themes;
+
   @RelationId((user: Users) => user.theme)
+  @Column({ type: 'integer' })
   theme_id: number;
 
   @Column({ type: 'varchar' })
@@ -110,4 +116,24 @@ export class Users extends Base {
     (activity_try_user) => activity_try_user.user,
   )
   activity_try_users: ActivityTryUsers[];
+
+  @OneToMany(() => LessonTryUsers, (lesson_try_user) => lesson_try_user.user)
+  lesson_try_users: LessonTryUsers[];
+
+  @OneToMany(() => LessonComments, (lesson_comment) => lesson_comment.user)
+  lesson_comments: LessonComments[];
+
+  @OneToMany(
+    () => LessonCommentReactions,
+    (lesson_comment_reactions) => lesson_comment_reactions.user,
+  )
+  lesson_comment_reactions: LessonCommentReactions[];
+
+  @ManyToOne(() => Languages, (language) => language.users)
+  @JoinColumn({ name: 'language_id' })
+  language: Languages;
+
+  @RelationId((user: Users) => user.language)
+  @Column({ type: 'integer' })
+  language_id: number;
 }

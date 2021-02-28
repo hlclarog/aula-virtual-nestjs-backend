@@ -6,26 +6,22 @@ import { Programs } from '../programs/programs.entity';
 
 @Entity({ name: PROGRAM_FEE_SCHEDULE_ENTITY })
 export class ProgramFeeSchedules extends Base {
-  @ManyToOne(
-    () => Currencies,
-    (currencies) => currencies.program_fee_schedules,
-    { eager: true },
-  )
+  @ManyToOne(() => Currencies, (currencies) => currencies.program_fee_schedules)
   @JoinColumn({ name: 'currency_id' })
-  currency: Currencies | number;
+  currency: Currencies;
   @RelationId(
     (programFeeSchedules: ProgramFeeSchedules) => programFeeSchedules.currency,
   )
+  @Column({ type: 'integer' })
   currency_id: number;
 
-  @ManyToOne(() => Programs, (program) => program.program_fee_schedules, {
-    eager: true,
-  })
+  @ManyToOne(() => Programs, (program) => program.program_fee_schedules)
   @JoinColumn({ name: 'program_id' })
-  program: Programs | number;
+  program: Programs;
   @RelationId(
     (programFeeSchedules: ProgramFeeSchedules) => programFeeSchedules.program,
   )
+  @Column({ type: 'integer' })
   program_id: number;
 
   @Column({ type: 'date' }) begin: string;

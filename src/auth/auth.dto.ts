@@ -1,5 +1,5 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import { CreateUsersDto } from './../api/acl/users/users.dto';
 
 export const DEFAULT_TIME_TOKEN_AUTH = '10h';
@@ -19,6 +19,10 @@ export class LoginDto {
 
 export class RegisterDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly lastname?: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly email: string;
   @ApiProperty() @IsString() @IsNotEmpty() password: string;
 }

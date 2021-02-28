@@ -38,7 +38,7 @@ export class CreateActivityIdentifyWordsDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly resource_type?: number;
+  readonly resource_type_id?: number;
 }
 
 export class UpdateActivityIdentifyWordsDto extends UpdateBaseDto {
@@ -73,5 +73,5 @@ export class UpdateActivityIdentifyWordsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly resource_type?: number;
+  readonly resource_type_id?: number;
 }

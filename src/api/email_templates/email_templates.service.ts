@@ -9,7 +9,6 @@ import { BaseRepo } from '../../base/base.repository';
 import { EmailTemplates } from './email_templates.entity';
 import { EmailActivitiesTemplateService } from '../email_activities_template/email_activities_template.service';
 import { EmailActivitiesService } from '../email_activities/email_activities.service';
-import { Users } from '../acl/users/users.entity';
 
 @Injectable()
 export class EmailTemplatesService extends BaseService<

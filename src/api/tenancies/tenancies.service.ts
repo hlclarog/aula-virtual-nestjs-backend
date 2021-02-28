@@ -33,7 +33,7 @@ export class TenanciesService extends BaseService<
 
   async create(createDto: CreateTenanciesDto): Promise<any> {
     createDto.password = this.cryptoService.hashPassword(createDto.password);
-    createDto.tenancy_status = TENANCY_STATUS_ENUM.StartProcessing;
+    createDto.tenancy_status_id = TENANCY_STATUS_ENUM.StartProcessing;
     const dataSave = await this.repository.save(createDto);
     const tenancy = await this.findOne(dataSave.id);
     await this.instanceProcessQueue.add('create', tenancy);

@@ -35,11 +35,12 @@ export class ActivityRelateElements extends Base {
     (resource_types) => resource_types.activity_relate_elements,
   )
   @JoinColumn({ name: 'resource_type_id' })
-  resource_type: ResourceTypes | number;
+  resource_type: ResourceTypes;
   @RelationId(
     (activity_relate_elements: ActivityRelateElements) =>
       activity_relate_elements.resource_type,
   )
+  @Column({ type: 'integer' })
   resource_type_id: number;
 
   @OneToMany(

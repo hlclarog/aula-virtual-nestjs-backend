@@ -29,8 +29,8 @@ export class EmailActivitiesTemplateService extends BaseService<
   ) {
     const values: any[] = emailActivities.map((emailActivity) => {
       return {
-        email_template: emailTemplate.id,
-        email_activity: emailActivity.id,
+        email_template_id: emailTemplate.id,
+        email_activity_id: emailActivity.id,
       };
     });
 

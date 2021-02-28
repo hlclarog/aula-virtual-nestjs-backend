@@ -1,7 +1,6 @@
-import { PartialType } from '@nestjs/mapped-types';
 import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDecimal, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export const CURRENCY_PROVIDER = 'CURRENCY_REPOSITORY';
 export const CURRENCY_ENTITY = 'currencies';
 

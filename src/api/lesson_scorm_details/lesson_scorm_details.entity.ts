@@ -8,16 +8,14 @@ export class LessonScormDetails extends Base {
   @ManyToOne(
     () => LessonScormIntents,
     (lesson_scorm_intent) => lesson_scorm_intent.lesson_scorm_details,
-    {
-      eager: true,
-    },
   )
   @JoinColumn({ name: 'lesson_scorm_intent_id' })
-  lesson_scorm_intent: LessonScormIntents | number;
+  lesson_scorm_intent: LessonScormIntents;
   @RelationId(
     (lessonScormDetails: LessonScormDetails) =>
       lessonScormDetails.lesson_scorm_intent,
   )
+  @Column('integer')
   lesson_scorm_intent_id: number;
 
   @Column({ type: 'varchar' }) key: string;

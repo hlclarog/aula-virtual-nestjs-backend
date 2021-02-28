@@ -40,12 +40,12 @@ export class Clients extends Base {
   @ManyToOne(
     () => IdentificationTypes,
     (identification_type) => identification_type.clients,
-    { eager: true },
   )
   @JoinColumn({ name: 'identification_type_id' })
   identification_type: IdentificationTypes;
 
   @RelationId((client: Clients) => client.identification_type)
+  @Column({ type: 'integer' })
   identification_type_id: number;
 
   @OneToMany(() => Tenancies, (tenancies) => tenancies.tenancy_status)

@@ -35,7 +35,7 @@ export class CreateActivityMultipleOptionsDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly resource_type?: number;
+  readonly resource_type_id?: number;
 }
 
 export class UpdateActivityMultipleOptionsDto extends UpdateBaseDto {
@@ -66,7 +66,7 @@ export class UpdateActivityMultipleOptionsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly resource_type?: number;
+  readonly resource_type_id?: number;
   @ApiProperty({ required: false, isArray: true })
   @IsArray()
   @IsOptional()

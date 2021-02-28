@@ -11,8 +11,19 @@ import { ActivitySortItemsModule } from '../activity_sort_items/activity_sort_it
 import { ActivityCompleteTextsModule } from '../activity_complete_texts/activity_complete_texts.module';
 import { ActivityIdentifyWordsModule } from '../activity_identify_words/activity_identify_words.module';
 import { ActivityRelateElementsModule } from '../activity_relate_elements/activity_relate_elements.module';
+import { AwsModule } from './../../aws/aws.module';
 
 @Module({
+  imports: [
+    AwsModule,
+    ActivityMultipleOptionsModule,
+    MultipleOptionAnswersModule,
+    ActivityMultipleOptionsModule,
+    ActivitySortItemsModule,
+    ActivityRelateElementsModule,
+    ActivityCompleteTextsModule,
+    ActivityIdentifyWordsModule,
+  ],
   controllers: [LessonActivitiesController],
   providers: [
     {
@@ -24,14 +35,5 @@ import { ActivityRelateElementsModule } from '../activity_relate_elements/activi
     LessonActivitiesService,
   ],
   exports: [LESSON_ACTIVITIES_PROVIDER, LessonActivitiesService],
-  imports: [
-    ActivityMultipleOptionsModule,
-    MultipleOptionAnswersModule,
-    ActivityMultipleOptionsModule,
-    ActivitySortItemsModule,
-    ActivityRelateElementsModule,
-    ActivityCompleteTextsModule,
-    ActivityIdentifyWordsModule,
-  ],
 })
 export class LessonActivitiesModule {}

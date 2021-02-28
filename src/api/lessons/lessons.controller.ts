@@ -2,8 +2,12 @@ import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { BaseController } from '../../base/base.controller';
 import { Lessons } from './lessons.entity';
 import { CreateLessonsDto, UpdateLessonsDto } from './lessons.dto';
-import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Delete, Get, Inject, Param, Post, Put } from '@nestjs/common';
 import { LessonsService } from './lessons.service';
+import {
+  InfoUserProvider,
+  INFO_USER_PROVIDER,
+} from './../../utils/providers/info-user.module';
 
 @ControllerApi({ name: 'lessons' })
 export class LessonsController extends BaseController<
@@ -11,7 +15,10 @@ export class LessonsController extends BaseController<
   CreateLessonsDto,
   UpdateLessonsDto
 > {
-  constructor(private lessonsService: LessonsService) {
+  constructor(
+    private lessonsService: LessonsService,
+    @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
+  ) {
     super(lessonsService);
   }
 
@@ -28,6 +35,15 @@ export class LessonsController extends BaseController<
   @Get(':id')
   async find(@Param('id') id: string) {
     return await this.findOne(id);
+  }
+
+  @Get('student/:id')
+  async student(@Param('id') id: number) {
+    const result = await this.lessonsService.findLessonForStudent(
+      id,
+      this.infoUser.id,
+    );
+    return { data: result };
   }
 
   @Put(':id')

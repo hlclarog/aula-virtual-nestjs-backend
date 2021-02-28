@@ -30,10 +30,11 @@ export class ActivityCompleteTexts extends Base {
     (resource_types) => resource_types.activity_complete_texts,
   )
   @JoinColumn({ name: 'resource_type_id' })
-  resource_type: ResourceTypes | number;
+  resource_type: ResourceTypes;
   @RelationId(
     (activity_complete_texts: ActivityCompleteTexts) =>
       activity_complete_texts.resource_type,
   )
+  @Column({ type: 'integer' })
   resource_type_id: number;
 }

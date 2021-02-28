@@ -29,31 +29,25 @@ export class Courses extends Base {
   @Column({ type: 'boolean' }) free: boolean;
   @Column({ type: 'boolean' }) certifiable: boolean;
 
-  @ManyToOne(() => Users, (users) => users.course, {
-    eager: true,
-  })
+  @ManyToOne(() => Users, (users) => users.course)
   @JoinColumn({ name: 'user_id' })
-  user: Users | number;
-
+  user: Users;
   @RelationId((courses: Courses) => courses.user)
+  @Column({ type: 'integer' })
   user_id: number;
 
-  @ManyToOne(() => Organizations, (organization) => organization.course, {
-    eager: true,
-  })
+  @ManyToOne(() => Organizations, (organization) => organization.course)
   @JoinColumn({ name: 'organization_id' })
-  organization: Organizations | number;
-
+  organization: Organizations;
   @RelationId((courses: Courses) => courses.organization)
+  @Column({ type: 'integer' })
   organization_id: number;
 
-  @ManyToOne(() => CourseStatus, (coursesStatus) => coursesStatus.course, {
-    eager: true,
-  })
+  @ManyToOne(() => CourseStatus, (coursesStatus) => coursesStatus.course)
   @JoinColumn({ name: 'course_status_id' })
-  course_status: CourseStatus | number;
-
+  course_status: CourseStatus;
   @RelationId((courses: Courses) => courses.course_status)
+  @Column({ type: 'integer' })
   course_status_id: number;
 
   @OneToMany(
