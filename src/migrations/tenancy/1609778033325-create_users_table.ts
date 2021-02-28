@@ -23,6 +23,11 @@ export class createUsersTable1609778033325 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'language_id',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'name',
             type: 'varchar',
           },
@@ -70,6 +75,15 @@ export class createUsersTable1609778033325 implements MigrationInterface {
         columnNames: ['theme_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'public.themes',
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      'users',
+      new TableForeignKey({
+        columnNames: ['language_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'public.languages',
       }),
     );
   }

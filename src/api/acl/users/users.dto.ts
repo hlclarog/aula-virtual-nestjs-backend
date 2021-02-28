@@ -36,6 +36,11 @@ export class CreateUsersDto extends CreateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly theme_id?: number;
+
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly language_id?: number;
 }
 
 export class UpdateUsersDto extends UpdateBaseDto {
@@ -163,6 +168,11 @@ export class UpdateUsersDto extends UpdateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly theme_id?: number;
+
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly language_id?: number;
 }
 
 export class searchByRol {

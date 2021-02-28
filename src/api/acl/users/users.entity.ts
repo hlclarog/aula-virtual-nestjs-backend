@@ -18,6 +18,7 @@ import { Themes } from './../../themes/themes.entity';
 import { LessonTryUsers } from './../../lesson_try_users/lesson_try_users.entity';
 import { LessonComments } from './../../lesson_comments/lesson_comments.entity';
 import { LessonCommentReactions } from './../../lesson_comment_reactions/lesson_comment_reactions.entity';
+import { Languages } from './../../languages/languages.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -127,4 +128,12 @@ export class Users extends Base {
     (lesson_comment_reactions) => lesson_comment_reactions.user,
   )
   lesson_comment_reactions: LessonCommentReactions[];
+
+  @ManyToOne(() => Languages, (language) => language.users)
+  @JoinColumn({ name: 'language_id' })
+  language: Languages;
+
+  @RelationId((user: Users) => user.language)
+  @Column({ type: 'integer' })
+  language_id: number;
 }
