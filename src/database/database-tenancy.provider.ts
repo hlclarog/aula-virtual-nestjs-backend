@@ -47,7 +47,7 @@ export const databaseTenancyProvider = {
         migrations: [__dirname + '/../migrations/tenancy/*{.ts,.js}'],
         entities: [
           __dirname + '/../api/**/*.entity{.ts,.js}',
-          __dirname + '/../../node_modules/@switchit/**/*.entity.js',
+          __dirname + '/../../node_modules/nestjs-oauth2-server/**/*.entity.js',
         ],
         // subscribers: [__dirname + '/../api/**/*.subscriber{.ts,.js}'],
         cli: { migrationsDir: __dirname + '/../migrations/tenancy' },

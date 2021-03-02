@@ -23,6 +23,6 @@ export class TestTable1609707699833 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('test');
+    // await queryRunner.dropTable('test');
   }
 }

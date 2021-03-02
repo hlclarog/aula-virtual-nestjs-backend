@@ -3,7 +3,7 @@ import {
   UserValidatorInterface,
   UserInterface,
   InvalidUserException,
-} from '@switchit/nestjs-oauth2-server';
+} from 'nestjs-oauth2-server';
 
 @Injectable()
 export class UserValidator implements UserValidatorInterface {

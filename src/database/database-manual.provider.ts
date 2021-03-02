@@ -34,7 +34,7 @@ export const databaseManualProvider = {
         migrations: [__dirname + '/../migrations/tenancy/*{.ts,.js}'],
         entities: [
           __dirname + '/../api/**/*.entity{.ts,.js}',
-          __dirname + '/../../node_modules/@switchit/**/*.entity.js',
+          __dirname + '/../../node_modules/nestjs-oauth2-server/**/*.entity.js',
         ],
         cli: { migrationsDir: __dirname + '/../migrations/tenancy' },
         synchronize: false,
