@@ -8,7 +8,6 @@ import { HttpExceptionFilter } from './utils/filters/http-exception.filter';
 import { TransformInterceptor } from './utils/interceptors/transform.interceptor';
 import * as bodyParser from 'body-parser';
 import { ValidationPipe } from '@nestjs/common';
-import { useContainer } from 'class-validator';
 //import { RedisIoAdapter } from './websocket/websocket.adapter';
 
 async function bootstrap() {
@@ -27,8 +26,6 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
     }),
   );
 

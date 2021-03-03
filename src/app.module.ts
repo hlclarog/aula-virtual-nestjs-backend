@@ -47,7 +47,19 @@ const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
     Auth2ConfigModule.forRoot(),
   ],
   controllers: [AppController],
-  providers: [AppService, TokenService, InfoTenancyService],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        transform: true,
+        whitelist: true,
+        forbidNonWhitelisted: true,
+      }),
+    },
+    AppService,
+    TokenService,
+    InfoTenancyService,
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

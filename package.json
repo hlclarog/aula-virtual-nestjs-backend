@@ -49,7 +49,7 @@
     "module": "^1.2.5",
     "moment": "^2.29.1",
     "mongo": "^0.1.0",
-    "nestjs-oauth2-server": "^1.1.16",
+    "nestjs-oauth2-server": "^1.1.18",
     "passport-jwt": "^4.0.0",
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
