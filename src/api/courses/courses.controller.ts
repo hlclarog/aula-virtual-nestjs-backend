@@ -195,7 +195,7 @@ export class CoursesController extends BaseController<
 
   @Post('teacher')
   async postByTeacher(@Body() createDto: CreateCourseByTeacherDto) {
-    createDto.user = this.infoUser.id;
+    createDto.user_id = this.infoUser.id;
     const data: any = createDto;
     return await this.create(data);
   }

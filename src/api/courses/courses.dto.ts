@@ -74,7 +74,7 @@ export class CreateCourseByTeacherDto extends CreateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly organization_id?: number;
-  @ApiProperty({ required: false }) @IsNumber() @IsOptional() user?: number;
+  user_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
