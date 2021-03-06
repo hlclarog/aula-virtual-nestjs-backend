@@ -32,6 +32,10 @@ export class CreateCourseDto extends CreateBaseDto {
   @IsString()
   @IsOptional()
   readonly picture?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly picture_banner?: string;
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly free: boolean;
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly certifiable: boolean;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly organization_id: number;
@@ -88,6 +92,14 @@ export class CreateCourseByTeacherDto extends CreateBaseDto {
   @IsArray()
   @IsOptional()
   interest_areas?: number[];
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly picture?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly picture_banner?: string;
 }
 
 export class UpdateCourseDto extends UpdateBaseDto {
@@ -107,6 +119,10 @@ export class UpdateCourseDto extends UpdateBaseDto {
   @IsString()
   @IsOptional()
   readonly picture?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly picture_banner?: string;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

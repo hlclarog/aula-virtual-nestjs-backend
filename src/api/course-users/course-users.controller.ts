@@ -1,9 +1,13 @@
-import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Delete, Get, Inject, Param, Post, Put } from '@nestjs/common';
 import { BaseController } from '../../base/base.controller';
 import { CourseUsers } from './course-users.entity';
 import { CourseUsersService } from './course-users.service';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { CreateCourseUsersDto, UpdateCourseUsersDto } from './course-users.dto';
+import {
+  INFO_USER_PROVIDER,
+  InfoUserProvider,
+} from 'src/utils/providers/info-user.module';
 
 @ControllerApi({ name: 'course-users' })
 export class CourseUsersController extends BaseController<
@@ -11,7 +15,10 @@ export class CourseUsersController extends BaseController<
   CreateCourseUsersDto,
   UpdateCourseUsersDto
 > {
-  constructor(private readonly courseUsersService: CourseUsersService) {
+  constructor(
+    @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
+    private readonly courseUsersService: CourseUsersService,
+  ) {
     super(courseUsersService);
   }
 
@@ -33,6 +40,30 @@ export class CourseUsersController extends BaseController<
   @Put(':id')
   async edit(@Param('id') id: string, @Body() updateDto: UpdateCourseUsersDto) {
     return await this.update(id, updateDto);
+  }
+
+  @Put('favorite/:course_id/:condition')
+  async setFavorite(
+    @Param('course_id') course_id: number,
+    @Param('condition') condition: boolean,
+  ) {
+    return await this.courseUsersService.setFavorite(
+      this.infoUser.id,
+      course_id,
+      condition,
+    );
+  }
+
+  @Put('score/:course_id/:qualification')
+  async setScore(
+    @Param('course_id') course_id: number,
+    @Param('qualification') qualification: number,
+  ) {
+    return await this.courseUsersService.setScore(
+      this.infoUser.id,
+      course_id,
+      qualification,
+    );
   }
 
   @Delete(':id')

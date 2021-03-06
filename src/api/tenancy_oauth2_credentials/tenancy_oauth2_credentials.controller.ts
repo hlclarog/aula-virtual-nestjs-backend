@@ -1,4 +1,4 @@
-import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Delete, Get, Inject, Param, Post, Put } from '@nestjs/common';
 import { TenancyOauth2CredentialsService } from './tenancy_oauth2_credentials.service';
 import {
   CreateTenancyOauth2CredentialsDto,
@@ -7,6 +7,10 @@ import {
 import { BaseController } from '../../base/base.controller';
 import { TenancyOauth2Credentials } from './tenancy_oauth2_credentials.entity';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
+import {
+  INFO_TENANCY_PROVIDER,
+  InfoTenancyDomain,
+} from './../../utils/providers/info-tenancy.module';
 
 @ControllerApi({ name: 'tenancy_oauth2_credentials' })
 export class TenancyOauth2CredentialsController extends BaseController<
@@ -15,13 +19,15 @@ export class TenancyOauth2CredentialsController extends BaseController<
   UpdateTenancyOauth2CredentialsDto
 > {
   constructor(
-    tenancy_oauth2_credentialsService: TenancyOauth2CredentialsService,
+    @Inject(INFO_TENANCY_PROVIDER) private tenancy: InfoTenancyDomain,
+    private tenancy_oauth2_credentialsService: TenancyOauth2CredentialsService,
   ) {
     super(tenancy_oauth2_credentialsService);
   }
 
   @Post()
   async post(@Body() createDto: CreateTenancyOauth2CredentialsDto) {
+    createDto.tenancy_id = this.tenancy.id;
     return await this.create(createDto);
   }
 
@@ -35,11 +41,17 @@ export class TenancyOauth2CredentialsController extends BaseController<
     return await this.findOne(id);
   }
 
+  @Get('tenancy/:id')
+  async findByTenancy(@Param('id') id: number) {
+    return await this.tenancy_oauth2_credentialsService.findByTenancy(id);
+  }
+
   @Put(':id')
   async edit(
     @Param('id') id: string,
     @Body() updateDto: UpdateTenancyOauth2CredentialsDto,
   ) {
+    updateDto.tenancy_id = this.tenancy.id;
     return await this.update(id, updateDto);
   }
 

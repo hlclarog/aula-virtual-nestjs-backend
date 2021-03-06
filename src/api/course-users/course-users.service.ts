@@ -78,6 +78,24 @@ export class CourseUsersService extends BaseService<
     }
   }
 
+  async setFavorite(user_id: number, course_id: number, favorite: boolean) {
+    return await this.repository.update(
+      { course_id, user_id },
+      {
+        favorite,
+      },
+    );
+  }
+
+  async setScore(user_id: number, course_id: number, score: number) {
+    return await this.repository.update(
+      { course_id, user_id },
+      {
+        score,
+      },
+    );
+  }
+
   async unSubscribe(data: UnSubscribeCourseStudentDto) {
     await this.repository.update(
       {

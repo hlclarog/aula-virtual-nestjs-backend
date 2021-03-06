@@ -25,6 +25,7 @@ export class Courses extends Base {
   @Column({ type: 'varchar' }) name: string;
   @Column({ type: 'varchar' }) description: string;
   @Column({ type: 'varchar' }) picture: string;
+  @Column({ type: 'varchar' }) picture_banner: string;
   @Column({ type: 'varchar' }) short_name: string;
   @Column({ type: 'boolean' }) free: boolean;
   @Column({ type: 'boolean' }) certifiable: boolean;

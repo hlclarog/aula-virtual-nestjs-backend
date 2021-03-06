@@ -40,7 +40,7 @@ export class LessonScormsService extends BaseService<
         'lesson_scorm_resource.identifier',
       ])
       .leftJoin('lesson_scorm.lesson_scorm_resources', 'lesson_scorm_resource')
-      .where('lesson_id = :id', { id: id })
+      .where('lesson_scorm.lesson_id = :id', { id: id })
       .getMany();
 
     for (let i = 0; i < data.length; i++) {
