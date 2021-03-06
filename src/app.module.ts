@@ -44,7 +44,7 @@ const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
     QueuesModule,
     WebsocketModule,
     AwsProviderModule.forRoot(),
-    Auth2ConfigModule.forRoot(),
+    // Auth2ConfigModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [

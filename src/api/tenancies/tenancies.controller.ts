@@ -18,7 +18,7 @@ export class TenanciesController extends BaseController<
 > {
   constructor(
     private tenanciesService: TenanciesService,
-    private clientHandlerOauth2: CreateClientHandler,
+    // private clientHandlerOauth2: CreateClientHandler,
   ) {
     super(tenanciesService);
   }
@@ -53,17 +53,17 @@ export class TenanciesController extends BaseController<
     return await this.remove(id);
   }
 
-  @Post('client_oauth')
-  async createClient(@Body() data: CreateKeysOauthServerDto) {
-    return await this.clientHandlerOauth2.execute({
-      name: data.name,
-      scope: data.scope,
-      grants: data.grants,
-    });
-  }
+  // @Post('client_oauth')
+  // async createClient(@Body() data: CreateKeysOauthServerDto) {
+  //   return await this.clientHandlerOauth2.execute({
+  //     name: data.name,
+  //     scope: data.scope,
+  //     grants: data.grants,
+  //   });
+  // }
 
-  @Get('clients/oauth')
-  async findClientsOAuth2() {
-    return await this.clientHandlerOauth2.findAll();
-  }
+  // @Get('clients/oauth')
+  // async findClientsOAuth2() {
+  //   return await this.clientHandlerOauth2.findAll();
+  // }
 }

@@ -6,7 +6,6 @@ import { DATABASE_TENANCY_PROVIDER } from './../database/database.dto';
 
 export const OAUTH2_CONFIG = 'OAUTH2_CONFIG';
 
-@Global()
 @Module({})
 export class Auth2ConfigModule {
   static forRoot(): DynamicModule {
