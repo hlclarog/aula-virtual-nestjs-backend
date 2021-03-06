@@ -12,6 +12,8 @@ import { typeFilesAwsNames } from '../../aws/aws.dto';
 import * as shortid from 'shortid';
 import { UpdateResult } from 'typeorm';
 import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
+import { COURSES_PROVIDER } from '../courses/courses.dto';
+import { Courses } from '../courses/courses.entity';
 
 @Injectable()
 export class LessonsService extends BaseService<
@@ -20,6 +22,7 @@ export class LessonsService extends BaseService<
   UpdateLessonsDto
 > {
   @Inject(COURSE_UNITS_PROVIDER) repository: BaseRepo<Lessons>;
+  @Inject(COURSES_PROVIDER) repositoryCourses: BaseRepo<Courses>;
 
   constructor(
     private awsService: AwsService,
@@ -89,6 +92,121 @@ export class LessonsService extends BaseService<
     return await this.repository.find({
       where: { course_id: id },
     });
+  }
+
+  async findProgessByCourse(
+    courses_id: number[],
+    user_id: number,
+  ): Promise<Courses[]> {
+    const metadata = await this.repositoryCourses
+      .createQueryBuilder('course')
+      .select([
+        'course.id',
+        'course.name',
+        'course.description',
+        'course_unit.description',
+        'course_unit.id',
+        'course_unit.course_id',
+        'lesson.id',
+        'lesson.name',
+        'lesson.description',
+        'lesson.min_progress',
+        'lesson.duration',
+        'lesson.lesson_type_id',
+        'lesson_type.id',
+        'lesson_type.description',
+        'lesson_try_user.percent',
+        'lesson_activity.id',
+        'lesson_activity.activity_type_id',
+        'activity_try_user.id',
+        'activity_try.id',
+        'activity_try.passed',
+        'activity_try.date',
+      ])
+      .leftJoin('course.course_units', 'course_unit')
+      .leftJoin('course_unit.lessons', 'lesson')
+      .leftJoin('lesson.lesson_type', 'lesson_type')
+      .leftJoin(
+        'lesson.lesson_try_users',
+        'lesson_try_user',
+        'lesson_try_user.user_id = :user_id',
+        { user_id },
+      )
+      .leftJoin('lesson.lesson_activities', 'lesson_activity')
+      .leftJoin(
+        'lesson_activity.activity_try_users',
+        'activity_try_user',
+        'activity_try_user.user_id = :user_id',
+        { user_id },
+      )
+      .leftJoin(
+        'activity_try_user.activity_tries',
+        'activity_try',
+        'activity_try.passed = true',
+      )
+      .where(`course.id in (${courses_id.join()})`)
+      .getMany();
+    for (let q = 0; q < metadata.length; q++) {
+      const course = metadata[q];
+      let total_duration = 0;
+      let progress_course = 0;
+      course.course_units.forEach((coursesItem) => {
+        coursesItem.lessons.forEach((lesson) => {
+          total_duration += lesson.min_progress ? lesson.min_progress : 0;
+        });
+      });
+      for (let w = 0; w < course.course_units.length; w++) {
+        const units = course.course_units[w];
+        for (let e = 0; e < units.lessons.length; e++) {
+          const element = units.lessons[e];
+          element['part'] = element.min_progress / total_duration;
+          element['progress_lesson'] = 0;
+          element['progress_course'] = 0;
+          switch (element.lesson_type_id) {
+            case 1:
+              if (element.lesson_try_users.length > 0) {
+                const progress_in_lesson = element.lesson_try_users[0].percent;
+                const progress_in_course = progress_in_lesson * element['part'];
+                element['progress_lesson'] = progress_in_lesson;
+                element['progress_course'] = progress_in_course;
+                progress_course += progress_in_course;
+              }
+              break;
+            case 2:
+              let activities_finalized = 0;
+              for (let j = 0; j < element.lesson_activities.length; j++) {
+                const lesson_activity = element.lesson_activities[j];
+                if (lesson_activity.activity_try_users.length > 0) {
+                  for (
+                    let k = 0;
+                    k < lesson_activity.activity_try_users.length;
+                    k++
+                  ) {
+                    const lesson_tries = lesson_activity.activity_try_users[k];
+                    if (lesson_tries.activity_tries.length > 0) {
+                      activities_finalized++;
+                    }
+                  }
+                }
+              }
+              const progress_in_lesson =
+                (activities_finalized / element.lesson_activities.length) * 100;
+              const progress_in_course = progress_in_lesson * element['part'];
+              element['progress_lesson'] = progress_in_lesson
+                ? progress_in_lesson
+                : 0;
+              element['progress_course'] = progress_in_course
+                ? progress_in_course
+                : 0;
+              progress_course += progress_in_course ? progress_in_course : 0;
+              break;
+          }
+        }
+      }
+      course['duration'] = total_duration;
+      course['progress'] = progress_course;
+    }
+    return metadata;
   }
 
   async changeOrder(data: {

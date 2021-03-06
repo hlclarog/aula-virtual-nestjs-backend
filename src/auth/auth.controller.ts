@@ -2,7 +2,7 @@ import { Body, Get, Inject, Param, Post } from '@nestjs/common';
 import {
   INFO_TENANCY_PROVIDER,
   InfoTenancyDomain,
-} from 'src/utils/providers/info-tenancy.module';
+} from './../utils/providers/info-tenancy.module';
 import { ControllerAuth } from './../utils/decorators/controllers.decorator';
 import {
   ChangePasswordEmailDto,

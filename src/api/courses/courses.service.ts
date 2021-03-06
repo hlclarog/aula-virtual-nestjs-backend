@@ -15,6 +15,7 @@ import { typeFilesAwsNames } from '../../aws/aws.dto';
 import * as shortid from 'shortid';
 import { generate } from '../../utils/random';
 import { timeConvert } from './../../utils/helper';
+import { LessonsService } from '../lessons/lessons.service';
 
 @Injectable()
 export class CoursesService extends BaseService<
@@ -26,6 +27,7 @@ export class CoursesService extends BaseService<
 
   constructor(
     private courseInterestAreasService: CourseInterestAreasService,
+    private lessonsService: LessonsService,
     private awsService: AwsService,
   ) {
     super();
@@ -74,6 +76,8 @@ export class CoursesService extends BaseService<
       .select([
         'course',
         'course_user.id',
+        'course_user.favorite',
+        'course_user.score',
         'course_user.begin_date',
         'course_user.end_date',
       ])
@@ -102,6 +106,17 @@ export class CoursesService extends BaseService<
       if (item.picture) {
         item.picture = await this.awsService.getFile(item.picture);
       }
+      if (user_id) {
+        const dataprogress = await this.lessonsService.findProgessByCourse(
+          [item.id],
+          user_id,
+        );
+        const idx = dataprogress.map((d) => d.id).indexOf(item.id);
+        if (idx >= 0) {
+          item['duration'] = dataprogress[idx]['duration'];
+          item['progress'] = dataprogress[idx]['progress'];
+        }
+      }
       return item;
     } else {
       list = await result.getMany();
@@ -117,6 +132,22 @@ export class CoursesService extends BaseService<
           course.picture = await this.awsService.getFile(course.picture);
         }
       }
+      if (user_id) {
+        const courses_id = list.map((c) => c.id);
+        const dataprogress = await this.lessonsService.findProgessByCourse(
+          courses_id,
+          user_id,
+        );
+        for (let i = 0; i < list.length; i++) {
+          const course = list[i];
+          const idx = dataprogress.map((d) => d.id).indexOf(course.id);
+          if (idx >= 0) {
+            course['duration'] = dataprogress[idx]['duration'];
+            course['progress'] = dataprogress[idx]['progress'];
+          }
+        }
+      }
+
       return list;
     }
   }
@@ -194,6 +225,14 @@ export class CoursesService extends BaseService<
       .getOne();
     if (course.picture) {
       course.picture = await this.awsService.getFile(course.picture);
+    }
+    const dataprogress = await this.lessonsService.findProgessByCourse(
+      [id],
+      user_id,
+    );
+    const idx = dataprogress.map((d) => d.id).indexOf(course.id);
+    if (idx >= 0) {
+      course['progress'] = dataprogress[idx]['progress'];
     }
     const info_sum = await this.getDurations([String(id)]);
     if (course.course_users) {
@@ -313,6 +352,45 @@ export class CoursesService extends BaseService<
       .addOrderBy('course_units.order', 'ASC')
       .getOneOrFail();
 
+    return result.course_units;
+  }
+
+  async getUnitsLessonsFoStudent(
+    id: number,
+    user_id: number,
+  ): Promise<CourseUnits[]> {
+    const result = await this.repository
+      .createQueryBuilder('course')
+      .leftJoinAndSelect('course.course_units', 'course_units')
+      .leftJoinAndSelect('course_units.lessons', 'lessons')
+      .where('course.id = :id', { id })
+      .orderBy('lessons.order', 'ASC')
+      .addOrderBy('course_units.order', 'ASC')
+      .getOneOrFail();
+    const dataprogress = await this.lessonsService.findProgessByCourse(
+      [id],
+      user_id,
+    );
+    for (let i = 0; i < result.course_units.length; i++) {
+      const element = result.course_units[i];
+      const unit = dataprogress[0].course_units
+        .map((u) => u.id)
+        .indexOf(element.id);
+      for (let k = 0; k < element.lessons.length; k++) {
+        const lesson = element.lessons[k];
+        const less = dataprogress[0].course_units[unit].lessons
+          .map((u) => u.id)
+          .indexOf(lesson.id);
+        if (dataprogress.length > 0) {
+          if (less >= 0) {
+            lesson['progress_lesson'] =
+              dataprogress[0].course_units[unit].lessons[less][
+                'progress_lesson'
+              ];
+          }
+        }
+      }
+    }
     return result.course_units;
   }
 

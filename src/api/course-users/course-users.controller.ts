@@ -7,7 +7,7 @@ import { CreateCourseUsersDto, UpdateCourseUsersDto } from './course-users.dto';
 import {
   INFO_USER_PROVIDER,
   InfoUserProvider,
-} from 'src/utils/providers/info-user.module';
+} from './../../utils/providers/info-user.module';
 
 @ControllerApi({ name: 'course-users' })
 export class CourseUsersController extends BaseController<

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CoursesController } from './courses.controller';
 import { InstanceProcessModule } from '../../queues/instance_process/instance_process.module';
@@ -11,6 +11,7 @@ import { AwsModule } from './../../aws/aws.module';
 import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
 import { CourseUsersModule } from '../course-users/course-users.module';
 import { InterestAreasModule } from '../interest_areas/interest_areas.module';
+import { LessonsModule } from '../lessons/lessons.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { InterestAreasModule } from '../interest_areas/interest_areas.module';
     CourseUsersModule,
     CourseInterestAreasModule,
     InterestAreasModule,
+    forwardRef(() => LessonsModule),
     AwsModule,
   ],
   controllers: [CoursesController],

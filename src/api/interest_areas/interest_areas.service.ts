@@ -10,6 +10,7 @@ import { InterestAreas } from './interest_areas.entity';
 import { AwsService } from './../../aws/aws.service';
 import { CoursesService } from '../courses/courses.service';
 import { timeConvert } from './../../utils/helper';
+import { LessonsService } from '../lessons/lessons.service';
 
 @Injectable()
 export class InterestAreasService extends BaseService<
@@ -20,6 +21,7 @@ export class InterestAreasService extends BaseService<
   constructor(
     private awsService: AwsService,
     private coursesService: CoursesService,
+    private lessonsService: LessonsService,
   ) {
     super();
   }
@@ -176,6 +178,10 @@ export class InterestAreasService extends BaseService<
       );
     });
     const info_sum = await this.coursesService.getDurations(courses_ids);
+    const dataprogress = await this.lessonsService.findProgessByCourse(
+      courses_ids,
+      user_id,
+    );
     for (let i = 0; i < list.length; i++) {
       const interest_area = list[i];
       if (interest_area.course_interest_areas) {
@@ -186,6 +192,15 @@ export class InterestAreasService extends BaseService<
               course_area.course.picture = await this.awsService.getFile(
                 course_area.course.picture,
               );
+            }
+            if (type_user == 'student') {
+              const idx = dataprogress
+                .map((d) => d.id)
+                .indexOf(course_area.course.id);
+              if (idx >= 0) {
+                course_area.course['duration'] = dataprogress[idx]['duration'];
+                course_area.course['progress'] = dataprogress[idx]['progress'];
+              }
             }
           }
           if (course_area.course.course_users) {
