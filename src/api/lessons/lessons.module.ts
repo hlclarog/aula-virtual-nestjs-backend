@@ -1,5 +1,5 @@
 import { LessonsController } from './lessons.controller';
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { COURSE_UNITS_PROVIDER } from './lessons.dto';
 import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
@@ -7,9 +7,10 @@ import { Lessons } from './lessons.entity';
 import { LessonsService } from './lessons.service';
 import { AwsModule } from './../../aws/aws.module';
 import { LessonTryUsersModule } from '../lesson_try_users/lesson_try_users.module';
+import { CoursesModule } from '../courses/courses.module';
 
 @Module({
-  imports: [LessonTryUsersModule, AwsModule],
+  imports: [forwardRef(() => CoursesModule), LessonTryUsersModule, AwsModule],
   controllers: [LessonsController],
   providers: [
     {
@@ -19,5 +20,6 @@ import { LessonTryUsersModule } from '../lesson_try_users/lesson_try_users.modul
     },
     LessonsService,
   ],
+  exports: [COURSE_UNITS_PROVIDER, LessonsService],
 })
 export class LessonsModule {}

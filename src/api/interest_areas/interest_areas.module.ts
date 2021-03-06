@@ -7,9 +7,10 @@ import { INTEREST_AREAS_PROVIDER } from './interest_areas.dto';
 import { InterestAreas } from './interest_areas.entity';
 import { AwsModule } from './../../aws/aws.module';
 import { CoursesModule } from '../courses/courses.module';
+import { LessonsModule } from '../lessons/lessons.module';
 
 @Module({
-  imports: [AwsModule, forwardRef(() => CoursesModule)],
+  imports: [AwsModule, forwardRef(() => CoursesModule), LessonsModule],
   controllers: [InterestAreasController],
   providers: [
     {
