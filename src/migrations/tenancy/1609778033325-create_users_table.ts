@@ -19,12 +19,12 @@ export class createUsersTable1609778033325 implements MigrationInterface {
           },
           {
             name: 'theme_id',
-            type: 'varchar',
+            type: 'int',
             isNullable: true,
           },
           {
             name: 'language_id',
-            type: 'varchar',
+            type: 'int',
             isNullable: true,
           },
           {

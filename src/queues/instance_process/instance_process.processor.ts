@@ -251,7 +251,7 @@ export class InstanceProcessProcessor {
           title: data.name,
           allow_registration: true,
         };
-        await this.connection.getRepository(TenancyConfig).save(tenancyConfig);
+        await con.getRepository(TenancyConfig).save(tenancyConfig);
         await this.instanceProcessLogService.setStatusSeeders({
           tenant: data.schema,
           status_seeders: true,
@@ -269,6 +269,7 @@ export class InstanceProcessProcessor {
       await this.connection
         .getRepository(Tenancies)
         .update(data.id, { tenancy_status_id: 2 });
+      this.logger.debug('..::End::..');
     } catch (e) {
       this.logger.error(`Failed to Create Tenancy ${data.alias}`);
       await this.instanceProcessLogService.setStatusRegister({
