@@ -133,6 +133,11 @@ export class CoursesService extends BaseService<
     if (course.picture) {
       course.picture = await this.awsService.getFile(course.picture);
     }
+    if (course.picture_banner) {
+      course.picture_banner = await this.awsService.getFile(
+        course.picture_banner,
+      );
+    }
     return course;
   }
 
@@ -216,6 +221,9 @@ export class CoursesService extends BaseService<
     if (createDto.picture) {
       data.picture = await this.setPicture(createDto.picture);
     }
+    if (createDto.picture_banner) {
+      data.picture_banner = await this.setPicture(createDto.picture_banner);
+    }
     const dataNew = await this.repository.save(data);
     if (createDto.interest_areas) {
       await this.courseInterestAreasService.set(
@@ -233,6 +241,11 @@ export class CoursesService extends BaseService<
       data.picture = await this.setPicture(updateDto.picture);
     } else {
       delete data.picture;
+    }
+    if (updateDto.picture_banner) {
+      data.picture_banner = await this.setPicture(updateDto.picture_banner);
+    } else {
+      delete data.picture_banner;
     }
     if (updateDto.interest_areas) {
       await this.courseInterestAreasService.set(id, updateDto.interest_areas);

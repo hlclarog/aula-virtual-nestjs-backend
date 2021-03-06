@@ -14,13 +14,21 @@ export class LessonScormsController extends BaseController<
   CreateLessonScormsDto,
   UpdateLessonScormsDto
 > {
-  constructor(lesson_scormsService: LessonScormsService) {
+  constructor(private lesson_scormsService: LessonScormsService) {
     super(lesson_scormsService);
   }
 
   @Post()
   async post(@Body() createDto: CreateLessonScormsDto) {
     return await this.create(createDto);
+  }
+
+  @Get('lesson/:id')
+  async byLesson(@Param('id') id: number) {
+    const result = await this.lesson_scormsService.getByLesson(id);
+    return {
+      data: result,
+    };
   }
 
   @Get(':id')

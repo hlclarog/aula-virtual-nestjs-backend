@@ -28,12 +28,26 @@ export class PermissionsService extends BaseService<
   async findForTenancy(): Promise<Permissions[]> {
     const modules = await this.repositoryTenanciesModules.find();
     const modulesListIds = modules.map((module) => module.module_id);
-    return await this.repository.find({
-      where: {
-        module: {
-          id: In(modulesListIds),
-        },
-      },
-    });
+    return await this.repository
+      .createQueryBuilder('permission')
+      .select([
+        'permission.id',
+        'permission.name',
+        'permission.display_name',
+        'permission.description',
+        'permission.module_id',
+        'permission.active',
+        'module.id',
+        'module.name',
+        'module.translate',
+      ])
+      .leftJoin('permission.module', 'module')
+      .where(
+        `permission.id in (${
+          modulesListIds.length > 0 ? modulesListIds.join() : [0].join()
+        })`,
+        {},
+      )
+      .getMany();
   }
 }

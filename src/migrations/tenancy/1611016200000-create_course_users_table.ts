@@ -77,6 +77,11 @@ export class createCourseUsersTable1611016200000 implements MigrationInterface {
             default: false,
           },
           {
+            name: 'score',
+            type: 'int',
+            isNullable: true,
+          },
+          {
             name: 'downloaded',
             type: 'bool',
             default: false,

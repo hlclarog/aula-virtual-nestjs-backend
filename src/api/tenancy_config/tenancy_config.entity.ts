@@ -9,7 +9,7 @@ import { TENANCY_CONFIG_ENTITY } from './tenancy_config.dto';
 export class TenancyConfig extends Base {
   @ManyToOne(() => Tenancies, (tenancy) => tenancy.config)
   @JoinColumn({ name: 'tenancy_id' })
-  tenancy: TenancyConfig;
+  tenancy: Tenancies;
   @RelationId((tenancy_config: TenancyConfig) => tenancy_config.tenancy)
   @Column({ type: 'integer' })
   tenancy_id: number;
@@ -30,6 +30,21 @@ export class TenancyConfig extends Base {
 
   @Column({ type: 'varchar' })
   title: string;
+
+  @Column({ type: 'varchar' })
+  web_client_oauth: string;
+
+  @Column({ type: 'varchar' })
+  short_name: string;
+
+  @Column({ type: 'varchar' })
+  message_welcome: string;
+
+  @Column({ type: 'varchar' })
+  image_small: string;
+
+  @Column({ type: 'varchar' })
+  image_big: string;
 
   @Column('boolean', { default: true })
   allow_registration: boolean;

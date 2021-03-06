@@ -18,4 +18,9 @@ export class SetTenancyConfigDto extends CreateBaseDto {
   @IsBoolean()
   @IsOptional()
   readonly allow_registration?: boolean;
+  @ApiProperty() @IsString() @IsOptional() readonly web_client_oauth?: string;
+  @ApiProperty() @IsString() @IsOptional() readonly short_name?: string;
+  @ApiProperty() @IsString() @IsOptional() readonly message_welcome?: string;
+  @ApiProperty() @IsString() @IsOptional() readonly image_small?: string;
+  @ApiProperty() @IsString() @IsOptional() readonly image_big?: string;
 }
