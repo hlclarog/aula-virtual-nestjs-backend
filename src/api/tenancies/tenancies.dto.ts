@@ -29,6 +29,12 @@ export class CreateTenanciesDto extends CreateBaseDto {
   readonly activation_time?: string;
 }
 
+export class CreateKeysOauthServerDto extends CreateBaseDto {
+  @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly scope: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly grants: string[];
+}
+
 export class UpdateTenanciesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
