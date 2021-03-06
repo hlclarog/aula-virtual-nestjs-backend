@@ -1,4 +1,8 @@
-import { Body, Get, Param, Post } from '@nestjs/common';
+import { Body, Get, Inject, Param, Post } from '@nestjs/common';
+import {
+  INFO_TENANCY_PROVIDER,
+  InfoTenancyDomain,
+} from 'src/utils/providers/info-tenancy.module';
 import { ControllerAuth } from './../utils/decorators/controllers.decorator';
 import {
   ChangePasswordEmailDto,
@@ -10,7 +14,10 @@ import { AuthService } from './auth.service';
 
 @ControllerAuth({ name: '' })
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    @Inject(INFO_TENANCY_PROVIDER) private tenancy: InfoTenancyDomain,
+    private authService: AuthService,
+  ) {}
 
   @Post('login')
   async login(@Body() data: LoginDto) {
@@ -21,6 +28,12 @@ export class AuthController {
   @Post('register')
   async register(@Body() data: RegisterDto) {
     const result = await this.authService.register(data);
+    return result;
+  }
+
+  @Get('tenancy_info')
+  async tenancyInfo() {
+    const result = await this.authService.infoTenancy(this.tenancy.id);
     return result;
   }
 

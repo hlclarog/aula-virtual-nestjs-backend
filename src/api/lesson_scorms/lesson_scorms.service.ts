@@ -27,6 +27,37 @@ export class LessonScormsService extends BaseService<
     super();
   }
 
+  async getByLesson(id: number): Promise<any> {
+    const data = await this.repository
+      .createQueryBuilder('lesson_scorm')
+      .select([
+        'lesson_scorm.id',
+        'lesson_scorm.lesson_id',
+        'lesson_scorm.content',
+        'lesson_scorm.identifier',
+        'lesson_scorm.title',
+        'lesson_scorm_resource.index',
+        'lesson_scorm_resource.identifier',
+      ])
+      .leftJoin('lesson_scorm.lesson_scorm_resources', 'lesson_scorm_resource')
+      .where('lesson_id = :id', { id: id })
+      .getMany();
+
+    for (let i = 0; i < data.length; i++) {
+      const item = data[i];
+      if (item.lesson_scorm_resources.length > 0) {
+        item['index'] = item.lesson_scorm_resources[0].index;
+        item['identifier'] = item.lesson_scorm_resources[0].identifier;
+      }
+      if (item.content) {
+        const content = `${item.content}/${item['identifier']}`;
+        item.content = await this.awsService.getFile(content);
+      }
+    }
+
+    return data;
+  }
+
   async findOne(id: number): Promise<LessonScorms> {
     const lesson_scorm = await this.repository.findOneOrFail(id);
     const lesson_scorm_resource = await this.repository_resources.findOneOrFail(

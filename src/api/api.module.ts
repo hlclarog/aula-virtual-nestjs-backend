@@ -74,6 +74,7 @@ import { ThemesModule } from './themes/themes.module';
 import { LessonTryUsersModule } from './lesson_try_users/lesson_try_users.module';
 import { LessonCommentsModule } from './lesson_comments/lesson_comments.module';
 import { LessonCommentReactionsModule } from './lesson_comment_reactions/lesson_comment_reactions.module';
+import { TenancyOauth2CredentialsModule } from './tenancy_oauth2_credentials/tenancy_oauth2_credentials.module';
 
 @Module({
   imports: [
@@ -152,6 +153,7 @@ import { LessonCommentReactionsModule } from './lesson_comment_reactions/lesson_
     LessonTryUsersModule,
     LessonCommentsModule,
     LessonCommentReactionsModule,
+    TenancyOauth2CredentialsModule,
   ],
   controllers: [],
   providers: [],

@@ -88,6 +88,15 @@ export class AuthService {
       });
   }
 
+  async infoTenancy(id) {
+    const config = await this.tenancyConfigService.findOne(id);
+    return {
+      data: {
+        config,
+      },
+    };
+  }
+
   async requestForgotPassword(data: RequestPasswordEmailDto) {
     const dataUser = await this.usersService.findByEmail(data.email);
     if (dataUser) {

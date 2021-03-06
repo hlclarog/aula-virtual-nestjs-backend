@@ -1,0 +1,64 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
+
+export const TENANCY_DOMAINS_PROVIDER = 'TENANCY_DOMAINS_REPOSITORY';
+export const TENANCY_DOMAINS_ENTITY = 'tenancy_oauth2_credentials';
+
+export class CreateTenancyOauth2CredentialsDto extends CreateBaseDto {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly tenancy_id: number;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly type: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly client_id: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly client_secret?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly scope?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly private_key?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly public_key?: string;
+}
+
+export class UpdateTenancyOauth2CredentialsDto extends UpdateBaseDto {
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly tenancy_id?: number;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly description?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly type?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly client_id?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly client_secret?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly scope?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly private_key?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly public_key?: string;
+}

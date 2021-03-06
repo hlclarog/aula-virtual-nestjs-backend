@@ -5,12 +5,12 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class createTenancyConfigTable1609758000000
+export class tenancyOauth2CredentialsTable1614989908089
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'tenancy_config',
+        name: 'tenancy_oauth2_credentials',
         columns: [
           {
             name: 'id',
@@ -23,49 +23,37 @@ export class createTenancyConfigTable1609758000000
             type: 'int',
           },
           {
-            name: 'theme_id',
-            type: 'int',
+            name: 'type',
+            type: 'text',
+          },
+          {
+            name: 'description',
+            type: 'text',
+          },
+          {
+            name: 'client_id',
+            type: 'text',
+          },
+          {
+            name: 'client_secret',
+            type: 'text',
             isNullable: true,
           },
           {
-            name: 'rol_default_id',
-            type: 'int',
-            isNullable: true,
-          },
-          {
-            name: 'web_client_oauth',
+            name: 'scope',
             type: 'varchar',
+            length: '500',
             isNullable: true,
           },
           {
-            name: 'title',
-            type: 'varchar',
+            name: 'private_key',
+            type: 'text',
             isNullable: true,
           },
           {
-            name: 'short_name',
-            type: 'varchar',
+            name: 'public_key',
+            type: 'text',
             isNullable: true,
-          },
-          {
-            name: 'message_welcome',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'image_small',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'image_big',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'allow_registration',
-            type: 'bool',
-            default: true,
           },
           {
             name: 'active',
@@ -93,25 +81,16 @@ export class createTenancyConfigTable1609758000000
     );
 
     await queryRunner.createForeignKey(
-      'tenancy_config',
+      'tenancy_oauth2_credentials',
       new TableForeignKey({
         columnNames: ['tenancy_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'public.tenancies',
       }),
     );
-
-    await queryRunner.createForeignKey(
-      'tenancy_config',
-      new TableForeignKey({
-        columnNames: ['theme_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'public.themes',
-      }),
-    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('tenancy_config');
+    await queryRunner.dropTable('tenancy_oauth2_credentials');
   }
 }
