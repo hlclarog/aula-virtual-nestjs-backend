@@ -196,13 +196,29 @@ export class InstanceProcessProcessor {
             tenancyModules.push(tenancyModule);
           });
           await con.getRepository(TenancyModules).save(tenancyModules);
-          const rol: Partial<Roles> = {
-            name: 'admin',
-            display_name: 'Administrator',
-            description: 'System Administrator',
-            translate: 'ES',
-            active: true,
-          };
+          const rol: Partial<Roles>[] = [
+            {
+              name: 'admin',
+              display_name: 'Administrator',
+              description: 'System Administrator',
+              translate: 'ES',
+              active: true,
+            },
+            {
+              name: 'teacher',
+              display_name: 'Docente',
+              description: 'Role de Docente',
+              translate: 'ES',
+              active: true,
+            },
+            {
+              name: 'student',
+              display_name: 'Estudiante',
+              description: 'Role de Estudiante',
+              translate: 'ES',
+              active: true,
+            }
+          ];
           const savedRole = await con.getRepository(Roles).save(rol);
           if (savedRole) {
             const moduleIds = tenancyModules.map((f) => f.module_id);
