@@ -137,6 +137,17 @@ export class CoursesController extends BaseController<
     };
   }
 
+  @Get('student/units_lessons/:id')
+  async getUnitsLessonsFoStudent(@Param('id') id: number) {
+    const result = await this.coursesService.getUnitsLessonsFoStudent(
+      id,
+      this.infoUser.id,
+    );
+    return {
+      data: result,
+    };
+  }
+
   @Put(':id')
   async edit(@Param('id') id: string, @Body() updateDto: UpdateCourseDto) {
     const user = (await this.coursesService.findOne(Number(id))).user_id;

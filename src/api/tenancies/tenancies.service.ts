@@ -35,7 +35,9 @@ export class TenanciesService extends BaseService<
     createDto.password = this.cryptoService.hashPassword(createDto.password);
     createDto.tenancy_status_id = TENANCY_STATUS_ENUM.StartProcessing;
     const dataSave = await this.repository.save(createDto);
-    const tenancy = await this.findOne(dataSave.id);
+    const tenancy = await this.repository.findOne(dataSave.id, {
+      relations: ['front_server'],
+    });
     await this.instanceProcessQueue.add('create', tenancy);
     return {
       message: 'Processing',

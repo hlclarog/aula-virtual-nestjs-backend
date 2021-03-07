@@ -62,6 +62,15 @@ export class LessonsController extends BaseController<
     return { data: result };
   }
 
+  @Get('progress/course/:id')
+  async findProgessByCourse(@Param('id') id: number) {
+    const result = await this.lessonsService.findProgessByCourse(
+      [id],
+      this.infoUser.id,
+    );
+    return { data: result };
+  }
+
   @Post('change/order')
   async changeOrder(@Body() body: any) {
     const result = await this.lessonsService.changeOrder(body);

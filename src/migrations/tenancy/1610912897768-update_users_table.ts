@@ -9,11 +9,6 @@ export class updateUsersTable1610912897768 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.addColumns('users', [
       new TableColumn({
-        name: 'lastname',
-        type: 'varchar',
-        isNullable: true,
-      }),
-      new TableColumn({
         name: 'picture',
         type: 'varchar',
         isNullable: true,
