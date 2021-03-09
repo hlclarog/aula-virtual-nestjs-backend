@@ -19,7 +19,10 @@ export class TenancyModulesService extends BaseService<
   @Inject(TENANCY_MODULES_PROVIDER) repository: BaseRepo<TenancyModules>;
 
   async findByTenancy(id: number): Promise<TenancyModules[]> {
-    return await this.repository.find({ where: { tenancy_id: id } });
+    return await this.repository.find({
+      where: { tenancy_id: id },
+      relations: ['module', 'tenancy'],
+    });
   }
 
   async set(createDto: CreateTenancyModulesCreateGroupDto): Promise<any> {
