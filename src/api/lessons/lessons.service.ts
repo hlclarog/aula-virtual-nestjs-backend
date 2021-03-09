@@ -152,14 +152,14 @@ export class LessonsService extends BaseService<
       let progress_course = 0;
       course.course_units.forEach((coursesItem) => {
         coursesItem.lessons.forEach((lesson) => {
-          total_duration += lesson.min_progress ? lesson.min_progress : 0;
+          total_duration += lesson.duration ? lesson.duration : 0;
         });
       });
       for (let w = 0; w < course.course_units.length; w++) {
         const units = course.course_units[w];
         for (let e = 0; e < units.lessons.length; e++) {
           const element = units.lessons[e];
-          element['part'] = element.min_progress / total_duration;
+          element['part'] = element.duration / total_duration;
           element['progress_lesson'] = 0;
           element['progress_course'] = 0;
           switch (element.lesson_type_id) {
