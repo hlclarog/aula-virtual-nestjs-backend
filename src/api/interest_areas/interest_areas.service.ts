@@ -31,26 +31,6 @@ export class InterestAreasService extends BaseService<
     let list: InterestAreas[] = [];
     switch (type_user) {
       case 'all':
-        // const properties = [
-        //   'interest_areas.id',
-        //   'interest_areas.description',
-        //   'course_interest_area.id',
-        //   'course_interest_area.course_id',
-        //   'course_user.id',
-        //   'course.id',
-        //   'course.name',
-        //   'course.code',
-        //   'course.description',
-        //   'course.picture',
-        //   'course.short_name',
-        //   'course.free',
-        //   'course.user_id',
-        //   'user.id',
-        //   'user.name',
-        //   'course_user.user',
-        //   'student.id',
-        //   'student.name',
-        // ];
         list = await this.repository
           .createQueryBuilder('interest_areas')
           .select([
@@ -71,9 +51,14 @@ export class InterestAreasService extends BaseService<
             'course_user.user',
             'student.id',
             'student.name',
-            'fee',
+            'fee.course_val',
+            'fee.certificate_val',
+            'currency.id',
+            'currency.description',
+            'currency.code',
+            'currency.symbol',
+            'currency.decimals',
           ])
-          // .addSelect('SUM(lessons.duration)', 'sum')
           .leftJoin(
             'interest_areas.course_interest_areas',
             'course_interest_area',
@@ -96,11 +81,8 @@ export class InterestAreasService extends BaseService<
             'fee',
             '(now() BETWEEN fee.begin AND fee.end) AND fee.course_id = course.id',
           )
+          .leftJoin('fee.currency', 'currency')
           .leftJoin('course_user.user', 'student')
-          // .leftJoin('course.course_units', 'units')
-          // .groupBy(properties.join(' , '))
-          // .leftJoin('units.lessons', 'lessons')
-          // .getRawMany();
           .getMany();
         break;
       case 'student':
@@ -120,6 +102,13 @@ export class InterestAreasService extends BaseService<
             'course.user_id',
             'user.id',
             'user.name',
+            'fee.course_val',
+            'fee.certificate_val',
+            'currency.id',
+            'currency.description',
+            'currency.code',
+            'currency.symbol',
+            'currency.decimals',
           ])
           .leftJoin(
             'interest_areas.course_interest_areas',
@@ -134,6 +123,12 @@ export class InterestAreasService extends BaseService<
               user_id,
             },
           )
+          .leftJoin(
+            'course.course_fee_schedules',
+            'fee',
+            '(now() BETWEEN fee.begin AND fee.end) AND fee.course_id = course.id',
+          )
+          .leftJoin('fee.currency', 'currency')
           .leftJoin('course.user', 'user')
           .leftJoin('course.organization', 'organization')
           .leftJoin('course.course_status', 'course_status')
@@ -157,11 +152,24 @@ export class InterestAreasService extends BaseService<
             'course.user_id',
             'user.id',
             'user.name',
+            'fee.course_val',
+            'fee.certificate_val',
+            'currency.id',
+            'currency.description',
+            'currency.code',
+            'currency.symbol',
+            'currency.decimals',
           ])
           .leftJoin(
             'interest_areas.course_interest_areas',
             'course_interest_area',
           )
+          .leftJoin(
+            'course.course_fee_schedules',
+            'fee',
+            '(now() BETWEEN fee.begin AND fee.end) AND fee.course_id = course.id',
+          )
+          .leftJoin('fee.currency', 'currency')
           .leftJoin('course_interest_area.course', 'course')
           .leftJoin('course.user', 'user')
           .leftJoin('course.organization', 'organization')
@@ -202,6 +210,12 @@ export class InterestAreasService extends BaseService<
                 course_area.course['progress'] = dataprogress[idx]['progress'];
               }
             }
+
+            course_area.course['fee'] =
+              course_area.course.course_fee_schedules?.length > 0
+                ? course_area.course.course_fee_schedules[0]
+                : null;
+            delete course_area.course.course_fee_schedules;
           }
           if (course_area.course.course_users) {
             const user: any = Object.assign(

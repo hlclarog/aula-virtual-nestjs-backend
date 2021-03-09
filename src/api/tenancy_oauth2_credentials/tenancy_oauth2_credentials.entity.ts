@@ -13,7 +13,10 @@ export class TenancyOauth2Credentials extends Base {
   @Column({ type: 'varchar' }) private_key: string;
   @Column({ type: 'varchar' }) public_key: string;
 
-  @ManyToOne(() => Tenancies, (tenancies) => tenancies.domains)
+  @ManyToOne(
+    () => Tenancies,
+    (tenancies) => tenancies.tenancy_oauth2_credentials,
+  )
   @JoinColumn({ name: 'tenancy_id' })
   tenancy: Tenancies;
 
