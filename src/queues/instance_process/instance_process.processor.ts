@@ -196,14 +196,14 @@ export class InstanceProcessProcessor {
             tenancyModules.push(tenancyModule);
           });
           await con.getRepository(TenancyModules).save(tenancyModules);
-          const rol: Partial<Roles>[] = [
-            {
-              name: 'admin',
-              display_name: 'Administrator',
-              description: 'System Administrator',
-              translate: 'ES',
-              active: true,
-            },
+          const rol: Partial<Roles> = {
+            name: 'admin',
+            display_name: 'Administrator',
+            description: 'System Administrator',
+            translate: 'ES',
+            active: true,
+          };
+          const rolusers: Partial<Roles>[] = [
             {
               name: 'teacher',
               display_name: 'Docente',
@@ -217,9 +217,10 @@ export class InstanceProcessProcessor {
               description: 'Role de Estudiante',
               translate: 'ES',
               active: true,
-            }
+            },
           ];
           const savedRole = await con.getRepository(Roles).save(rol);
+          await con.getRepository(Roles).save(rolusers);
           if (savedRole) {
             const moduleIds = tenancyModules.map((f) => f.module_id);
             const permissions: Permissions[] = await this.connection
@@ -275,6 +276,7 @@ export class InstanceProcessProcessor {
         this.logger.debug('End Created Seeders...');
       } catch (e) {
         this.logger.error('Error Add Seeders...');
+        console.log(e);
         await this.instanceProcessLogService.setStatusSeeders({
           tenant: data.schema,
           status_seeders: false,
