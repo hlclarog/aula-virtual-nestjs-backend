@@ -21,10 +21,39 @@ export class CourseUsersService extends BaseService<
   @Inject(COURSE_USERS_PROVIDER) repository: BaseRepo<CourseUsers>;
 
   async findByCourse(id: number): Promise<CourseUsers[]> {
-    return await this.repository.find({
-      where: { course_id: id },
-      relations: ['user', 'enrollment_status', 'enrollment_type', 'course'],
-    });
+    // return await this.repository.find({
+    //   where: { course_id: id },
+    //   relations: ['user', 'enrollment_status', 'enrollment_type', 'course'],
+    // });
+    return await this.repository
+      .createQueryBuilder('course_user')
+      .select([
+        'course_user.course_id',
+        'course_user.user_id',
+        'course_user.enrollment_status_id',
+        'course_user.enrollment_type_id',
+        'course_user.begin_date',
+        'course_user.end_date',
+        'course_user.ref_transaction',
+        'course_user.certificate_file',
+        'course_user.certificate_code_validation',
+        'course_user.private_inscription',
+        'course_user.favorite',
+        'course_user.score',
+        'course_user.downloaded',
+        'course_user.paid_value',
+        'course_user.val_course',
+        'course_user.val_certificate',
+        'course_user.active',
+        'course_user.state',
+        'user.id',
+        'user.name',
+        'user.lastname',
+        'user.last_login',
+      ])
+      .leftJoin('course_user.user', 'user')
+      .where('course_user.course_id = :id', { id })
+      .getMany();
   }
 
   async set(createDto: CreateCourseUsersDto): Promise<any> {

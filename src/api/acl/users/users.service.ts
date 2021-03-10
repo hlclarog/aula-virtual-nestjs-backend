@@ -14,6 +14,7 @@ import {
 import { AwsService } from './../../../aws/aws.service';
 import { typeFilesAwsNames } from './../../../aws/aws.dto';
 import * as shortid from 'shortid';
+import { getActualDate } from './../../../utils/date';
 
 @Injectable()
 export class UsersService extends BaseService<
@@ -100,7 +101,11 @@ export class UsersService extends BaseService<
 
   async verifyUser(loginDto: LoginDto) {
     loginDto.password = this.cryptoService.hashPassword(loginDto.password);
-    return await this.repository.findOne({ where: loginDto });
+    const user = await this.repository.findOne({ where: loginDto });
+    if (user) {
+      await this.repository.update(user.id, { last_login: getActualDate() });
+    }
+    return user;
   }
 
   async changePassword(changePasswordDto: ChangePasswordDto) {

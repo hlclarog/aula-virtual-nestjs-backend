@@ -4,6 +4,12 @@ import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export const COURSE_USERS_PROVIDER = 'COURSE_USERS_REPOSITORY';
 export const COURSE_USERS_ENTITY = 'course_users';
+
+export enum STATES_COURSE_USER {
+  PROGRESS = 1,
+  FINALIZATED = 2,
+}
+
 export class CreateCourseUsersDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;

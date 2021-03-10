@@ -50,6 +50,11 @@ export class createUsersTable1609778033325 implements MigrationInterface {
             default: true,
           },
           {
+            name: 'last_login',
+            type: 'timestamp',
+            default: 'now()',
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',

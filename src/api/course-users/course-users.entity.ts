@@ -54,7 +54,12 @@ export class CourseUsers extends Base {
   certificate_code_validation: string;
   @Column({ type: 'bool', default: false }) private_inscription: boolean;
   @Column({ type: 'bool', default: false }) favorite: boolean;
-  @Column({ type: 'integer', default: false }) score: number;
+  @Column({ type: 'integer', default: 0 }) score: number;
   @Column({ type: 'bool', default: false }) downloaded: boolean;
   @Column({ type: 'decimal', nullable: true, default: 0.0 }) paid_value: number;
+  @Column({ type: 'decimal', nullable: true, default: 0.0 })
+  val_course: number;
+  @Column({ type: 'decimal', nullable: true, default: 0.0 })
+  val_certificate: number;
+  @Column({ type: 'integer', default: 1 }) state: number;
 }
