@@ -11,6 +11,7 @@ import {
   SubscribeCourseStudentDto,
   UnSubscribeCourseStudentDto,
 } from '../courses/courses.dto';
+import { LessonsService } from '../lessons/lessons.service';
 
 @Injectable()
 export class CourseUsersService extends BaseService<
@@ -20,12 +21,12 @@ export class CourseUsersService extends BaseService<
 > {
   @Inject(COURSE_USERS_PROVIDER) repository: BaseRepo<CourseUsers>;
 
+  constructor(private lessonsService: LessonsService) {
+    super();
+  }
+
   async findByCourse(id: number): Promise<CourseUsers[]> {
-    // return await this.repository.find({
-    //   where: { course_id: id },
-    //   relations: ['user', 'enrollment_status', 'enrollment_type', 'course'],
-    // });
-    return await this.repository
+    const result = await this.repository
       .createQueryBuilder('course_user')
       .select([
         'course_user.course_id',
@@ -54,6 +55,17 @@ export class CourseUsersService extends BaseService<
       .leftJoin('course_user.user', 'user')
       .where('course_user.course_id = :id', { id })
       .getMany();
+    for (let i = 0; i < result.length; i++) {
+      const element = result[i];
+      const dataprogress = await this.lessonsService.findProgessByCourse(
+        [id],
+        element.user_id,
+      );
+      const infoProgress = dataprogress.length > 0 ? dataprogress[0] : {};
+      console.log(infoProgress['progress'], id, element.user_id);
+      element['progress'] = infoProgress['progress'];
+    }
+    return result;
   }
 
   async set(createDto: CreateCourseUsersDto): Promise<any> {
