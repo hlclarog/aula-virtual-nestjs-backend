@@ -15,6 +15,11 @@ import { AwsService } from './../../../aws/aws.service';
 import { typeFilesAwsNames } from './../../../aws/aws.dto';
 import * as shortid from 'shortid';
 import { getActualDate } from './../../../utils/date';
+import { TenancyConfigService } from './../../tenancy_config/tenancy_config.service';
+import {
+  INFO_TENANCY_PROVIDER,
+  InfoTenancyDomain,
+} from './../../../utils/providers/info-tenancy.module';
 
 @Injectable()
 export class UsersService extends BaseService<
@@ -23,10 +28,12 @@ export class UsersService extends BaseService<
   UpdateUsersDto
 > {
   @Inject(USERS_PROVIDER) repository: BaseRepo<Users>;
+  @Inject(INFO_TENANCY_PROVIDER) private tenancy: InfoTenancyDomain;
 
   constructor(
     private cryptoService: CryptoService,
     private usersRolesService: UsersRolesService,
+    private tenancyConfigService: TenancyConfigService,
     @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
     private awsService: AwsService,
   ) {
@@ -54,10 +61,16 @@ export class UsersService extends BaseService<
   }
 
   async create(createDto: CreateUsersDto) {
+    const configTenancy = await this.tenancyConfigService.findOne(
+      this.tenancy.id,
+    );
     const data: any = Object.assign({}, createDto);
     data.password = this.cryptoService.hashPassword(data.password);
     delete data.users_roles;
     delete data.rol_default;
+    if (createDto.theme_id) {
+      data.theme_id = configTenancy.theme_id;
+    }
     const dataNew = await this.repository.save(data);
     if (createDto.users_roles) {
       await this.usersRolesService.set(

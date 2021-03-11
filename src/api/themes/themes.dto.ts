@@ -5,6 +5,8 @@ import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 export const THEMES_PROVIDER = 'THEMES_REPOSITORY';
 export const THEMES_ENTITY = 'themes';
 
+export const THEME_DEFAULT_ID = 1;
+
 export class CreateThemesDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly code: string;
   @ApiProperty({ required: false })
