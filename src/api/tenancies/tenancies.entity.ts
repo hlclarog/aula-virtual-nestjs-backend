@@ -15,6 +15,7 @@ import { TenancyDomains } from '../tenancy_domains/tenancy_domains.entity';
 import { TenancyEmails } from '../tenancy_emails/tenancy_emails.entity';
 import { TenancyLanguages } from '../tenancy_languages/tenancy_languages.entity';
 import { TenancyModules } from '../tenancy_modules/tenancy_modules.entity';
+import { TenancyOauth2Credentials } from '../tenancy_oauth2_credentials/tenancy_oauth2_credentials.entity';
 import { TenancyStatus } from '../tenancy_status/tenancy_status.entity';
 import { TENANCIES_ENTITY } from './tenancies.dto';
 
@@ -101,4 +102,10 @@ export class Tenancies extends Base {
   @RelationId((tenancie: Tenancies) => tenancie.plan)
   @Column({ type: 'integer' })
   plan_id: number;
+
+  @OneToMany(
+    () => TenancyOauth2Credentials,
+    (tenancy_oauth2_credentials) => tenancy_oauth2_credentials.tenancy,
+  )
+  tenancy_oauth2_credentials: TenancyOauth2Credentials[];
 }

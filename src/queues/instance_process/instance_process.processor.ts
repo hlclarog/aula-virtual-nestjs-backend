@@ -21,6 +21,7 @@ import { Permissions } from '../../api/acl/permissions/permissions.entity';
 import { RolesPermissions } from '../../api/acl/roles_permissions/roles_permissions.entity';
 import { UsersRoles } from '../../api/acl/users_roles/users_roles.entity';
 import { TenancyConfig } from './../../api/tenancy_config/tenancy_config.entity';
+import { THEME_DEFAULT_ID } from './../../api/themes/themes.dto';
 
 @Processor(INSTANCE_PROCESS_QUEUE)
 export class InstanceProcessProcessor {
@@ -243,6 +244,7 @@ export class InstanceProcessProcessor {
                 name: data.name,
                 email: data.administrator,
                 password: data.password,
+                theme_id: THEME_DEFAULT_ID,
                 active: true,
               };
               const savedUser = await con.getRepository(Users).save(user);
@@ -267,6 +269,7 @@ export class InstanceProcessProcessor {
           tenancy_id: data.id,
           title: data.name,
           allow_registration: true,
+          theme_id: THEME_DEFAULT_ID,
         };
         await con.getRepository(TenancyConfig).save(tenancyConfig);
         await this.instanceProcessLogService.setStatusSeeders({

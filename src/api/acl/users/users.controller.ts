@@ -8,6 +8,11 @@ import {
   INFO_USER_PROVIDER,
   InfoUserProvider,
 } from '../../../utils/providers/info-user.module';
+import { TenancyConfigService } from './../../tenancy_config/tenancy_config.service';
+import {
+  INFO_TENANCY_PROVIDER,
+  InfoTenancyDomain,
+} from './../../../utils/providers/info-tenancy.module';
 
 @ControllerApi({ name: 'users' })
 export class UsersController extends BaseController<
@@ -17,7 +22,9 @@ export class UsersController extends BaseController<
 > {
   constructor(
     private usersService: UsersService,
+    private tenancyConfigService: TenancyConfigService,
     @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
+    @Inject(INFO_TENANCY_PROVIDER) private tenancy: InfoTenancyDomain,
   ) {
     super(usersService);
   }
@@ -63,8 +70,14 @@ export class UsersController extends BaseController<
 
   @Get('profile/info')
   async profile() {
+    const config = await this.tenancyConfigService.findOne(this.tenancy.id);
     const result = await this.usersService.profile();
-    return result;
+    return {
+      data: {
+        ...result,
+        tenancy: config,
+      },
+    };
   }
 
   @Put('/profile/info')

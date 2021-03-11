@@ -93,6 +93,9 @@ export class Users extends Base {
   @Column({ type: 'text' })
   password: string;
 
+  @Column({ type: 'timestamp' })
+  last_login: Date;
+
   @OneToMany(() => UsersRoles, (user_rol) => user_rol.user)
   users_roles: UsersRoles[];
 

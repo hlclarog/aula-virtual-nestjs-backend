@@ -73,6 +73,12 @@ export class CoursesService extends BaseService<
           user_id,
         },
       )
+      .leftJoin(
+        'course.course_fee_schedules',
+        'fee',
+        '(now() BETWEEN fee.begin AND fee.end) AND fee.course_id = course.id',
+      )
+      .leftJoin('fee.currency', 'currency')
       .select([
         'course',
         'course_user.id',
@@ -80,6 +86,13 @@ export class CoursesService extends BaseService<
         'course_user.score',
         'course_user.begin_date',
         'course_user.end_date',
+        'fee.course_val',
+        'fee.certificate_val',
+        'currency.id',
+        'currency.description',
+        'currency.code',
+        'currency.symbol',
+        'currency.decimals',
       ])
       .orderBy('course.id', 'ASC');
     if (only_user) {
@@ -106,6 +119,11 @@ export class CoursesService extends BaseService<
       if (item.picture) {
         item.picture = await this.awsService.getFile(item.picture);
       }
+      delete item.course_fee_schedules;
+      item['fee'] =
+        course.course_fee_schedules?.length > 0
+          ? course.course_fee_schedules[0]
+          : null;
       if (user_id) {
         const dataprogress = await this.lessonsService.findProgessByCourse(
           [item.id],
@@ -124,6 +142,9 @@ export class CoursesService extends BaseService<
         const item: any = Object.assign({}, c);
         delete item.course_users;
         item.student = c.course_users?.length > 0 ? c.course_users[0] : null;
+        delete item.course_fee_schedules;
+        item['fee'] =
+          c.course_fee_schedules?.length > 0 ? c.course_fee_schedules[0] : null;
         return item;
       });
       for (let i = 0; i < list.length; i++) {

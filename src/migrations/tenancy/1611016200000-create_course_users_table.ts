@@ -87,12 +87,33 @@ export class createCourseUsersTable1611016200000 implements MigrationInterface {
             default: false,
           },
           {
+            name: 'val_course',
+            type: 'decimal',
+            isNullable: true,
+            default: 0.0,
+            precision: 18,
+            scale: 2,
+          },
+          {
+            name: 'val_certificate',
+            type: 'decimal',
+            isNullable: true,
+            default: 0.0,
+            precision: 18,
+            scale: 2,
+          },
+          {
             name: 'paid_value',
             type: 'decimal',
             isNullable: true,
             default: 0.0,
             precision: 18,
             scale: 2,
+          },
+          {
+            name: 'state',
+            type: 'integer',
+            default: 1,
           },
           {
             name: 'active',

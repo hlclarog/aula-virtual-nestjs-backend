@@ -5,8 +5,10 @@ import { Connection } from 'typeorm';
 import { TENANCY_CONFIG_PROVIDER } from './tenancy_config.dto';
 import { TenancyConfig } from './tenancy_config.entity';
 import { DATABASE_TENANCY_PROVIDER } from './../../database/database.dto';
+import { AwsModule } from './../../aws/aws.module';
 
 @Module({
+  imports: [AwsModule],
   controllers: [TenancyConfigController],
   providers: [
     {

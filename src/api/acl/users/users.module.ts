@@ -8,9 +8,10 @@ import { Users } from './users.entity';
 import { CryptoService } from '../../../utils/services/crypto.service';
 import { UsersRolesModule } from '../users_roles/users_roles.module';
 import { AwsModule } from './../../../aws/aws.module';
+import { TenancyConfigModule } from './../../tenancy_config/tenancy_config.module';
 
 @Module({
-  imports: [UsersRolesModule, AwsModule],
+  imports: [TenancyConfigModule, UsersRolesModule, AwsModule],
   controllers: [UsersController],
   providers: [
     {

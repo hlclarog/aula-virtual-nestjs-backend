@@ -5,8 +5,10 @@ import { Connection } from 'typeorm';
 import { COURSE_USERS_PROVIDER } from './course-users.dto';
 import { CourseUsers } from './course-users.entity';
 import { DATABASE_TENANCY_PROVIDER } from './../../database/database.dto';
+import { LessonsModule } from '../lessons/lessons.module';
 
 @Module({
+  imports: [LessonsModule],
   controllers: [CourseUsersController],
   providers: [
     {
