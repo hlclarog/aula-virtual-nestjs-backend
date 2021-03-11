@@ -19,6 +19,7 @@ import { LessonTryUsers } from './../../lesson_try_users/lesson_try_users.entity
 import { LessonComments } from './../../lesson_comments/lesson_comments.entity';
 import { LessonCommentReactions } from './../../lesson_comment_reactions/lesson_comment_reactions.entity';
 import { Languages } from './../../languages/languages.entity';
+import { PointsUserLog } from './../../points_user_log/points_user_log.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -96,6 +97,12 @@ export class Users extends Base {
   @Column({ type: 'timestamp' })
   last_login: Date;
 
+  @Column({ type: 'integer' })
+  points: number;
+
+  @Column({ type: 'integer' })
+  lives: number;
+
   @OneToMany(() => UsersRoles, (user_rol) => user_rol.user)
   users_roles: UsersRoles[];
 
@@ -139,4 +146,7 @@ export class Users extends Base {
   @RelationId((user: Users) => user.language)
   @Column({ type: 'integer' })
   language_id: number;
+
+  @OneToMany(() => PointsUserLog, (points_user_log) => points_user_log.user)
+  points_user_log: PointsUserLog[];
 }

@@ -48,4 +48,10 @@ export class TenancyConfig extends Base {
 
   @Column('boolean', { default: true })
   allow_registration: boolean;
+
+  @Column({ type: 'integer' })
+  initial_lives: number;
+
+  @Column({ type: 'integer' })
+  initial_points: number;
 }

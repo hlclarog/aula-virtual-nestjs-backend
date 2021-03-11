@@ -18,6 +18,7 @@ import { CourseInterestAreas } from '../course_interest_areas/course_interest_ar
 import { CourseCompetences } from '../course_competences/course_competences.entity';
 import { CourseCommissionOrganizations } from '../course_comission_organizations/course_commission_organizations.entity';
 import { CourseUnits } from '../course_units/course_units.entity';
+import { PointsUserLog } from '../points_user_log/points_user_log.entity';
 
 @Entity({ name: COURSE_ENTITY })
 export class Courses extends Base {
@@ -83,6 +84,9 @@ export class Courses extends Base {
 
   @OneToMany(() => CourseUnits, (courseUnits) => courseUnits.course)
   course_units: CourseUnits[];
+
+  @OneToMany(() => PointsUserLog, (point_user_log) => point_user_log.course)
+  points_user_log: PointsUserLog[];
 
   // @AfterLoad()
   // async updateCounters() {

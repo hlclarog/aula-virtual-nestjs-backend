@@ -23,4 +23,6 @@ export class SetTenancyConfigDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsOptional() readonly message_welcome?: string;
   @ApiProperty() @IsString() @IsOptional() image_small?: string;
   @ApiProperty() @IsString() @IsOptional() image_big?: string;
+  @ApiProperty() @IsNumber() @IsOptional() initial_points?: number;
+  @ApiProperty() @IsNumber() @IsOptional() initial_lives?: number;
 }

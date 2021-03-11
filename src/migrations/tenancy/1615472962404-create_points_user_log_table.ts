@@ -5,11 +5,12 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class createUsersTable1609778033325 implements MigrationInterface {
+export class createPointsUserLogTable1615472962404
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'users',
+        name: 'points_user_log',
         columns: [
           {
             name: 'id',
@@ -18,51 +19,39 @@ export class createUsersTable1609778033325 implements MigrationInterface {
             isGenerated: true,
           },
           {
-            name: 'theme_id',
+            name: 'user_id',
             type: 'int',
-            isNullable: true,
           },
           {
-            name: 'language_id',
+            name: 'point_reason_id',
             type: 'int',
-            isNullable: true,
-          },
-          {
-            name: 'name',
-            type: 'varchar',
-          },
-          {
-            name: 'lastname',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'email',
-            type: 'varchar',
-          },
-          {
-            name: 'password',
-            type: 'varchar',
           },
           {
             name: 'points',
-            type: 'int',
+            type: 'decimal',
             default: 0,
+            precision: 18,
+            scale: 0,
           },
           {
-            name: 'lives',
+            name: 'course_id',
             type: 'int',
-            default: 0,
+            isNullable: true,
+          },
+          {
+            name: 'lesson_id',
+            type: 'int',
+            isNullable: true,
+          },
+          {
+            name: 'activity_id',
+            type: 'int',
+            isNullable: true,
           },
           {
             name: 'active',
             type: 'bool',
             default: true,
-          },
-          {
-            name: 'last_login',
-            type: 'timestamp',
-            default: 'now()',
           },
           {
             name: 'created_at',
@@ -83,27 +72,36 @@ export class createUsersTable1609778033325 implements MigrationInterface {
       }),
       true,
     );
-
-    await queryRunner.createForeignKey(
-      'users',
+    await queryRunner.createForeignKeys('points_user_log', [
       new TableForeignKey({
-        columnNames: ['theme_id'],
+        columnNames: ['user_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'public.themes',
+        referencedTableName: 'users',
       }),
-    );
-
-    await queryRunner.createForeignKey(
-      'users',
       new TableForeignKey({
-        columnNames: ['language_id'],
+        columnNames: ['point_reason_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'public.languages',
+        referencedTableName: 'public.point_reasons',
       }),
-    );
+      new TableForeignKey({
+        columnNames: ['course_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'courses',
+      }),
+      new TableForeignKey({
+        columnNames: ['lesson_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'lessons',
+      }),
+      new TableForeignKey({
+        columnNames: ['activity_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'lesson_activities',
+      }),
+    ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('users');
+    await queryRunner.dropTable('points_user_log');
   }
 }

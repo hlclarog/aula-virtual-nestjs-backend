@@ -68,6 +68,16 @@ export class createTenancyConfigTable1609758000000
             default: true,
           },
           {
+            name: 'initial_points',
+            type: 'int',
+            default: 0,
+          },
+          {
+            name: 'initial_lives',
+            type: 'int',
+            default: 0,
+          },
+          {
             name: 'active',
             type: 'bool',
             default: true,

@@ -11,6 +11,7 @@ import { LESSON_ACTIVITIES_ENTITY } from './lesson_activities.dto';
 import { Lessons } from '../lessons/lessons.entity';
 import { ActivityTypes } from '../activity_types/activity_types.entity';
 import { ActivityTryUsers } from '../activity_try_users/activity_try_users.entity';
+import { PointsUserLog } from '../points_user_log/points_user_log.entity';
 
 @Entity(LESSON_ACTIVITIES_ENTITY)
 export class LessonActivities extends Base {
@@ -47,4 +48,7 @@ export class LessonActivities extends Base {
     (activity_try_user) => activity_try_user.lesson_activity,
   )
   activity_try_users: ActivityTryUsers[];
+
+  @OneToMany(() => PointsUserLog, (point_user_log) => point_user_log.activity)
+  points_user_log: PointsUserLog[];
 }

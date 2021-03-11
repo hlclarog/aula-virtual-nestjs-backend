@@ -22,6 +22,6 @@ import { TenancyConfigModule } from './../../tenancy_config/tenancy_config.modul
     UsersService,
     CryptoService,
   ],
-  exports: [UsersService],
+  exports: [USERS_PROVIDER, UsersService],
 })
 export class UsersModule {}
