@@ -12,7 +12,7 @@ import {
   InfoUserProvider,
 } from './../../../utils/providers/info-user.module';
 import { AwsService } from './../../../aws/aws.service';
-import { typeFilesAwsNames } from './../../../aws/aws.dto';
+import { durationFilesUrl, typeFilesAwsNames } from './../../../aws/aws.dto';
 import * as shortid from 'shortid';
 import { getActualDate } from './../../../utils/date';
 import { TenancyConfigService } from './../../tenancy_config/tenancy_config.service';
@@ -51,7 +51,10 @@ export class UsersService extends BaseService<
       relations: ['users_roles', 'users_roles.rol', 'theme', 'language'],
     });
     if (user.picture) {
-      user.picture = await this.awsService.getFile(user.picture);
+      user.picture = await this.awsService.getFile(
+        user.picture,
+        durationFilesUrl.img_user,
+      );
     }
     return user;
   }
@@ -135,8 +138,10 @@ export class UsersService extends BaseService<
     const rolDefault = await this.usersRolesService.findRolDefault(
       this.infoUser.id,
     );
+    const bar_power = 0;
     return {
       ...data,
+      bar_power,
       rol_default: rolDefault.rol,
       rol_default_id: rolDefault.rol.id,
     };

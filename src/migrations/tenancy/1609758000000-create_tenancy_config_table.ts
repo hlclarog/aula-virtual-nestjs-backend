@@ -78,6 +78,31 @@ export class createTenancyConfigTable1609758000000
             default: 0,
           },
           {
+            name: 'limit_lives',
+            type: 'int',
+            default: 0,
+          },
+          {
+            name: 'image_lives',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'image_points',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'bar_span_days',
+            type: 'int',
+            default: 0,
+          },
+          {
+            name: 'bar_expected_points',
+            type: 'int',
+            default: 0,
+          },
+          {
             name: 'active',
             type: 'bool',
             default: true,
