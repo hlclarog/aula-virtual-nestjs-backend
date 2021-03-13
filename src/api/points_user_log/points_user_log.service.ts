@@ -10,6 +10,7 @@ import { PointsUserLog } from './points_user_log.entity';
 import { PointReasonsValue } from '../point_reasons_value/point_reasons_value.entity';
 import { Users } from '../acl/users/users.entity';
 import { USERS_PROVIDER } from '../acl/users/users.dto';
+import { subtractDaysForActualDate } from './../../utils/date';
 
 @Injectable()
 export class PointsUserLogService {
@@ -81,5 +82,23 @@ export class PointsUserLogService {
       points: new_points,
       lives: new_lives,
     };
+  }
+
+  async pointsUserTotalRangeDates(user_id: number, days: number) {
+    const range = subtractDaysForActualDate(days);
+    const result: any = await this.repository
+      .createQueryBuilder('log')
+      .select('coalesce(SUM(log.points),0)', 'points')
+      .where(
+        'log.user_id = :user_id  AND CAST(log.created_at as date) Between :begin AND :end',
+        {
+          user_id,
+          begin: range.start,
+          end: range.end,
+        },
+      )
+      .getRawOne();
+    const points = result.points ? Number(result.points) : 0;
+    return points;
   }
 }

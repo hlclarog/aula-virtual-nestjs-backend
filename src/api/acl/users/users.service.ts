@@ -20,6 +20,7 @@ import {
   INFO_TENANCY_PROVIDER,
   InfoTenancyDomain,
 } from './../../../utils/providers/info-tenancy.module';
+import { PointsUserLogService } from './../../points_user_log/points_user_log.service';
 
 @Injectable()
 export class UsersService extends BaseService<
@@ -31,10 +32,11 @@ export class UsersService extends BaseService<
   @Inject(INFO_TENANCY_PROVIDER) private tenancy: InfoTenancyDomain;
 
   constructor(
+    @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
     private cryptoService: CryptoService,
     private usersRolesService: UsersRolesService,
     private tenancyConfigService: TenancyConfigService,
-    @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
+    private pointsUserLogService: PointsUserLogService,
     private awsService: AwsService,
   ) {
     super();
@@ -138,7 +140,7 @@ export class UsersService extends BaseService<
     const rolDefault = await this.usersRolesService.findRolDefault(
       this.infoUser.id,
     );
-    const bar_power = 0;
+    const bar_power = await this.getPowerBar(this.infoUser.id);
     return {
       ...data,
       bar_power,
@@ -165,5 +167,23 @@ export class UsersService extends BaseService<
         },
       )
       .getMany();
+  }
+
+  async getPowerBar(user_id: number) {
+    const configTenancy = await this.tenancyConfigService.findOne(
+      this.tenancy.id,
+    );
+    let bar_power = 0;
+    const days = Number(configTenancy.bar_span_days);
+    const points_expected = Number(configTenancy.bar_expected_points);
+    const z = 100;
+    const points = await this.pointsUserLogService.pointsUserTotalRangeDates(
+      user_id,
+      days,
+    );
+    bar_power = (points * z) / points_expected;
+    bar_power = bar_power ? Math.round(bar_power) : 0;
+    bar_power = bar_power > 100 ? 100 : bar_power < 0 ? 0 : bar_power;
+    return bar_power;
   }
 }
