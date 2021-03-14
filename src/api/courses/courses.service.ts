@@ -212,6 +212,8 @@ export class CoursesService extends BaseService<
         'user.name',
         'course_user',
         'course_user.user',
+        'course_user.favorite',
+        'course_user.score',
         'student.id',
         'student.name',
         'organization.id',

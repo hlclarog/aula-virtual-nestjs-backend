@@ -118,10 +118,12 @@ export class AwsService {
     });
   }
 
-  async getFile(myKey): Promise<string> {
+  async getFile(myKey, ExpireSeconds?: number): Promise<string> {
     return await new Promise((resolve) => {
       const myBucket = this.configService.getAwsBucket();
-      const signedUrlExpireSeconds = durationFilesUrl.img_user;
+      const signedUrlExpireSeconds = ExpireSeconds
+        ? ExpireSeconds
+        : durationFilesUrl.default;
       const url = this.aws_s3.getSignedUrl('getObject', {
         Bucket: myBucket,
         Key: myKey,

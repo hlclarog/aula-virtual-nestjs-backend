@@ -75,6 +75,9 @@ import { LessonTryUsersModule } from './lesson_try_users/lesson_try_users.module
 import { LessonCommentsModule } from './lesson_comments/lesson_comments.module';
 import { LessonCommentReactionsModule } from './lesson_comment_reactions/lesson_comment_reactions.module';
 import { TenancyOauth2CredentialsModule } from './tenancy_oauth2_credentials/tenancy_oauth2_credentials.module';
+import { PointReasonsModule } from './point_reasons/point_reasons.module';
+import { PointsUserLogModule } from './points_user_log/points_user_log.module';
+import { PointReasonsValueModule } from './point_reasons_value/point_reasons_value.module';
 
 @Module({
   imports: [
@@ -154,6 +157,9 @@ import { TenancyOauth2CredentialsModule } from './tenancy_oauth2_credentials/ten
     LessonCommentsModule,
     LessonCommentReactionsModule,
     TenancyOauth2CredentialsModule,
+    PointReasonsModule,
+    PointReasonsValueModule,
+    PointsUserLogModule,
   ],
   controllers: [],
   providers: [],

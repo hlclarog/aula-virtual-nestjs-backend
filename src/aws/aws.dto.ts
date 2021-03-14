@@ -43,5 +43,8 @@ export interface SaveFileAws {
 }
 
 export enum durationFilesUrl {
-  img_user = 60 * 5,
+  // seconds * minutes
+  default = 60 * 5,
+  img_user = 60 * (60 * 12),
+  images_tenancy = 60 * (60 * 24),
 }

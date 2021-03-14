@@ -7,7 +7,7 @@ import { BaseRepo } from '../../base/base.repository';
 import { TenancyConfig } from './tenancy_config.entity';
 import { AwsService } from './../../aws/aws.service';
 import * as shortid from 'shortid';
-import { typeFilesAwsNames } from './../../aws/aws.dto';
+import { durationFilesUrl, typeFilesAwsNames } from './../../aws/aws.dto';
 
 @Injectable()
 export class TenancyConfigService {
@@ -30,6 +30,13 @@ export class TenancyConfigService {
         'config.image_small',
         'config.image_big',
         'config.allow_registration',
+        'config.initial_points',
+        'config.initial_lives',
+        'config.limit_lives',
+        'config.image_lives',
+        'config.image_points',
+        'config.bar_span_days',
+        'config.bar_expected_points',
         'theme.id',
         'theme.code',
         'theme.description',
@@ -61,10 +68,28 @@ export class TenancyConfigService {
     config['external_credentials'] = list;
 
     if (config.image_small) {
-      config.image_small = await this.awsService.getFile(config.image_small);
+      config.image_small = await this.awsService.getFile(
+        config.image_small,
+        durationFilesUrl.images_tenancy,
+      );
     }
     if (config.image_big) {
-      config.image_big = await this.awsService.getFile(config.image_big);
+      config.image_big = await this.awsService.getFile(
+        config.image_big,
+        durationFilesUrl.images_tenancy,
+      );
+    }
+    if (config.image_points) {
+      config.image_points = await this.awsService.getFile(
+        config.image_points,
+        durationFilesUrl.images_tenancy,
+      );
+    }
+    if (config.image_lives) {
+      config.image_lives = await this.awsService.getFile(
+        config.image_lives,
+        durationFilesUrl.images_tenancy,
+      );
     }
     return config;
   }
@@ -81,6 +106,16 @@ export class TenancyConfigService {
       info.image_small = await this.setPicture(info.image_small);
     } else {
       delete info.image_small;
+    }
+    if (info.image_points) {
+      info.image_points = await this.setPicture(info.image_points);
+    } else {
+      delete info.image_points;
+    }
+    if (info.image_lives) {
+      info.image_lives = await this.setPicture(info.image_lives);
+    } else {
+      delete info.image_lives;
     }
     if (data) {
       await this.repository.update(data.id, info);

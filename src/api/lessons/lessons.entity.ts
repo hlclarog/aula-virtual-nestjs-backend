@@ -16,6 +16,7 @@ import { LessonScormIntents } from '../lesson_scorm_intents/lesson_scorm_intents
 import { LessonActivities } from '../lesson_activities/lesson_activities.entity';
 import { LessonTryUsers } from '../lesson_try_users/lesson_try_users.entity';
 import { LessonComments } from '../lesson_comments/lesson_comments.entity';
+import { PointsUserLog } from '../points_user_log/points_user_log.entity';
 
 @Entity(COURSE_UNITS_ENTITY)
 export class Lessons extends Base {
@@ -65,4 +66,7 @@ export class Lessons extends Base {
 
   @OneToMany(() => LessonComments, (lesson_comment) => lesson_comment.lesson)
   lesson_comments: LessonComments[];
+
+  @OneToMany(() => PointsUserLog, (point_user_log) => point_user_log.lesson)
+  points_user_log: PointsUserLog[];
 }
