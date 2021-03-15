@@ -26,6 +26,17 @@ export class PointReasonsValueService {
       .getMany();
   }
 
+  async findForType(point_reason_id): Promise<number> {
+    const result = await this.repository
+      .createQueryBuilder('point_reason_value')
+      .select(['point_reason_value.points'])
+      .where('point_reason_value.point_reason_id = :point_reason_id', {
+        point_reason_id,
+      })
+      .getOne();
+    return result ? (result.points ? Number(result.points) : 0) : 0;
+  }
+
   async update(updateDto: SetPointReasonsValueDto) {
     for (let i = 0; i < updateDto.reasons.length; i++) {
       const element = updateDto.reasons[i];

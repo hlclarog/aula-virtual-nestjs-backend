@@ -6,9 +6,10 @@ import { POINTS_USER_LOG_PROVIDER } from './points_user_log.dto';
 import { PointsUserLog } from './points_user_log.entity';
 import { DATABASE_TENANCY_PROVIDER } from './../../database/database.dto';
 import { UsersModule } from '../acl/users/users.module';
+import { PointReasonsValueModule } from '../point_reasons_value/point_reasons_value.module';
 
 @Module({
-  imports: [forwardRef(() => UsersModule)],
+  imports: [forwardRef(() => UsersModule), PointReasonsValueModule],
   controllers: [PointsUserLogController],
   providers: [
     {

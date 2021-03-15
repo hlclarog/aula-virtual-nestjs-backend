@@ -11,6 +11,8 @@ import {
 import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
 import { LessonTryUsers } from './lesson_try_users.entity';
+import { PointsUserLogService } from '../points_user_log/points_user_log.service';
+import { TypesReasonsPoints } from '../points_user_log/points_user_log.dto';
 
 @Injectable()
 export class LessonTryUsersService extends BaseService<
@@ -18,6 +20,9 @@ export class LessonTryUsersService extends BaseService<
   CreateLessonTryUsersDto,
   EndLessonTryUsersDto
 > {
+  constructor(private pointsUserLogService: PointsUserLogService) {
+    super();
+  }
   @Inject(ACTIVITY_TRY_USERS_PROVIDER)
   repository: BaseRepo<LessonTryUsers>;
 
@@ -95,6 +100,7 @@ export class LessonTryUsersService extends BaseService<
         user_id,
         lesson_id,
       },
+      relations: ['lesson', 'lesson.course_unit'],
     });
   }
 
@@ -116,6 +122,15 @@ export class LessonTryUsersService extends BaseService<
       updateDto.lesson_id,
     );
     if (actual) {
+      if (!actual.end) {
+        const pointsResult = await this.pointsUserLogService.generatePoints(
+          updateDto.user_id,
+          TypesReasonsPoints.TEORIC_LESSON_END,
+          actual.lesson.course_unit.course_id,
+          updateDto.lesson_id,
+        );
+        console.log(pointsResult);
+      }
       return await this.repository.update(actual.id, updateDto);
     } else {
       throw new InternalServerErrorException('LESSON NOT INITIALIZED');

@@ -11,11 +11,16 @@ import { PointReasonsValue } from '../point_reasons_value/point_reasons_value.en
 import { Users } from '../acl/users/users.entity';
 import { USERS_PROVIDER } from '../acl/users/users.dto';
 import { subtractDaysForActualDate } from './../../utils/date';
+import { PointReasonsValueService } from '../point_reasons_value/point_reasons_value.service';
 
 @Injectable()
 export class PointsUserLogService {
-  @Inject(POINTS_USER_LOG_PROVIDER) repository: BaseRepo<PointsUserLog>;
-  @Inject(USERS_PROVIDER) repository_users: BaseRepo<Users>;
+  constructor(
+    @Inject(POINTS_USER_LOG_PROVIDER)
+    private repository: BaseRepo<PointsUserLog>,
+    @Inject(USERS_PROVIDER) private repository_users: BaseRepo<Users>,
+    private pointReasonsValueService: PointReasonsValueService,
+  ) {}
 
   async findForUser(user_id: number): Promise<PointReasonsValue[]> {
     return await this.repository
@@ -100,5 +105,23 @@ export class PointsUserLogService {
       .getRawOne();
     const points = result.points ? Number(result.points) : 0;
     return points;
+  }
+
+  async generatePoints(
+    user_id: number,
+    reason_id: number,
+    course_id?: number,
+    lesson_id?: number,
+    activity_id?: number,
+  ) {
+    const points = await this.pointReasonsValueService.findForType(reason_id);
+    return await this.create({
+      user_id: user_id,
+      point_reason_id: TypesReasonsPoints.BUY_LIVES,
+      points: points,
+      course_id: course_id,
+      lesson_id: lesson_id,
+      activity_id: activity_id,
+    });
   }
 }

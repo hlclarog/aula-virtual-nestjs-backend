@@ -12,6 +12,7 @@ import { ActivitySortItemsModule } from '../activity_sort_items/activity_sort_it
 import { ActivityRelateElementsModule } from '../activity_relate_elements/activity_relate_elements.module';
 import { ActivityCompleteTextsModule } from '../activity_complete_texts/activity_complete_texts.module';
 import { ActivityIdentifyWordsModule } from '../activity_identify_words/activity_identify_words.module';
+import { PointsUserLogModule } from '../points_user_log/points_user_log.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ActivityIdentifyWordsModule } from '../activity_identify_words/activity
     ActivityRelateElementsModule,
     ActivityCompleteTextsModule,
     ActivityIdentifyWordsModule,
+    PointsUserLogModule,
   ],
   controllers: [ActivityTriesController],
   providers: [
