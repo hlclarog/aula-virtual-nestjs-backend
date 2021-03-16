@@ -63,6 +63,7 @@ export class InfoUserModule {
           ? await tokenService
               .verifyTokenKey(token.split(' ')[1], secret)
               .then((result: any) => result.data)
+              .catch(() => null)
           : null;
         const dataRoles = dataToken
           ? await connection.getRepository(UsersRoles).find({
