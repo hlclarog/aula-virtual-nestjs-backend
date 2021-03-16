@@ -118,17 +118,22 @@ export class ActivityTriesService extends BaseService<
         end: passed ? createDto.date : null,
         active: true,
       });
+      if (passed) {
+        this.registerPoints(
+          lesson_activity.lesson.course_unit.course_id,
+          lesson_activity.lesson_id,
+          createDto.lesson_activity_id,
+        );
+      }
     } else if (activity_try_user.id && passed && !activity_try_user.end) {
-      await this.pointsUserLogService.generatePoints(
-        this.infoUser.id,
-        TypesReasonsPoints.ACTIVITY_END,
+      await this.activityTryUsersService.update(activity_try_user.id, {
+        end: createDto.date,
+      });
+      this.registerPoints(
         lesson_activity.lesson.course_unit.course_id,
         lesson_activity.lesson_id,
         createDto.lesson_activity_id,
       );
-      await this.activityTryUsersService.update(activity_try_user.id, {
-        end: createDto.date,
-      });
     }
     if (!activity_try_user.end) {
       const register: Partial<ActivityTries> = {
@@ -145,5 +150,15 @@ export class ActivityTriesService extends BaseService<
         activity_try_user_id: activity_try_user.id,
       });
     }
+  }
+
+  async registerPoints(course_id, lesson_id, lesson_activity_id) {
+    await this.pointsUserLogService.generatePoints(
+      this.infoUser.id,
+      TypesReasonsPoints.ACTIVITY_END,
+      course_id,
+      lesson_id,
+      lesson_activity_id,
+    );
   }
 }

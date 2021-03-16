@@ -123,13 +123,12 @@ export class LessonTryUsersService extends BaseService<
     );
     if (actual) {
       if (!actual.end) {
-        const pointsResult = await this.pointsUserLogService.generatePoints(
+        await this.pointsUserLogService.generatePoints(
           updateDto.user_id,
           TypesReasonsPoints.TEORIC_LESSON_END,
           actual.lesson.course_unit.course_id,
           updateDto.lesson_id,
         );
-        console.log(pointsResult);
       }
       return await this.repository.update(actual.id, updateDto);
     } else {

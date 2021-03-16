@@ -117,7 +117,7 @@ export class PointsUserLogService {
     const points = await this.pointReasonsValueService.findForType(reason_id);
     return await this.create({
       user_id: user_id,
-      point_reason_id: TypesReasonsPoints.BUY_LIVES,
+      point_reason_id: reason_id,
       points: points,
       course_id: course_id,
       lesson_id: lesson_id,
