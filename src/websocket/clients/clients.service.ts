@@ -10,11 +10,26 @@ export class ClientsService {
 
   constructor(private channelsService: ChannelsService) {}
 
-  async create(socket: string, channel: string) {
-    const client = await this.repository.findOne({ socket });
+  async findUser(user_id) {
+    return await this.repository.findOne({ user_id });
+  }
+
+  async create(socket: string, channel: string, user_id?: string) {
+    let client = await this.repository.findOne({ socket });
+    if (user_id) {
+      client = await this.repository.findOne({ user_id });
+    }
     await this.channelsService.create(socket, channel);
     if (!client) {
-      await this.repository.save({ socket, channel });
+      await this.repository.save({
+        socket,
+        channel,
+        user_id: user_id ? user_id : null,
+      });
+    } else {
+      this.repository.update(client.id, {
+        socket,
+      });
     }
   }
 
@@ -24,7 +39,9 @@ export class ClientsService {
 
   async remove(socket: string) {
     const client = await this.repository.findOne({ socket });
-    await this.channelsService.removeClient(socket, client.channel);
+    if (client) {
+      await this.channelsService.removeClient(socket, client.channel);
+    }
     await this.repository.delete({ socket });
   }
 

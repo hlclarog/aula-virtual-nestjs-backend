@@ -12,6 +12,7 @@ import { Users } from '../acl/users/users.entity';
 import { USERS_PROVIDER } from '../acl/users/users.dto';
 import { subtractDaysForActualDate } from './../../utils/date';
 import { PointReasonsValueService } from '../point_reasons_value/point_reasons_value.service';
+import { GatewayService } from './../../utils/services/gateway.service';
 
 @Injectable()
 export class PointsUserLogService {
@@ -20,6 +21,7 @@ export class PointsUserLogService {
     private repository: BaseRepo<PointsUserLog>,
     @Inject(USERS_PROVIDER) private repository_users: BaseRepo<Users>,
     private pointReasonsValueService: PointReasonsValueService,
+    private datewayService: GatewayService,
   ) {}
 
   async findForUser(user_id: number): Promise<PointReasonsValue[]> {
@@ -81,6 +83,13 @@ export class PointsUserLogService {
     await this.repository_users.update(user_id, {
       points: new_points,
       lives: new_lives,
+    });
+    await this.datewayService.emitChangeGamification({
+      user_id,
+      info: {
+        points: new_points,
+        lives: new_lives,
+      },
     });
     return {
       user_id,

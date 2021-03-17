@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Post, Render } from '@nestjs/common';
+import { Body, Controller, Get, Post, Render, Req } from '@nestjs/common';
+import { Request } from 'express';
+import { getHostFromOrigin } from './../utils/helper';
 import { ConfigService } from './../config/config.service';
 import { GatewayService } from './../utils/services/gateway.service';
 
@@ -20,5 +22,15 @@ export class WebsocketController {
   @Post('emit-event')
   public async emitEvent(@Body() payload: any) {
     await this.gatewayService.sendEvent(payload.event, payload.data);
+  }
+
+  @Post('connected-private')
+  public async connectPrivate(@Body() payload: any, @Req() request: Request) {
+    const host = getHostFromOrigin(request.headers);
+    await this.gatewayService.connectPrivate(
+      host,
+      payload.user_id,
+      payload.socket,
+    );
   }
 }

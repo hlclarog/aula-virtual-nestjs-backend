@@ -13,6 +13,7 @@ import { BaseRepo } from '../../base/base.repository';
 import { LessonTryUsers } from './lesson_try_users.entity';
 import { PointsUserLogService } from '../points_user_log/points_user_log.service';
 import { TypesReasonsPoints } from '../points_user_log/points_user_log.dto';
+import { TypesLesson } from '../lesson_types/lesson_types.dto';
 
 @Injectable()
 export class LessonTryUsersService extends BaseService<
@@ -123,12 +124,26 @@ export class LessonTryUsersService extends BaseService<
     );
     if (actual) {
       if (!actual.end) {
-        await this.pointsUserLogService.generatePoints(
-          updateDto.user_id,
-          TypesReasonsPoints.TEORIC_LESSON_END,
-          actual.lesson.course_unit.course_id,
-          updateDto.lesson_id,
-        );
+        let reason = null;
+        switch (actual.lesson.lesson_type_id) {
+          case TypesLesson.TEORIC:
+            reason = TypesReasonsPoints.TEORIC_LESSON_END;
+            break;
+          case TypesLesson.PRACTICE:
+            reason = TypesReasonsPoints.PRACTICE_LESSON_END;
+            break;
+          case TypesLesson.FORUM:
+            reason = TypesReasonsPoints.FORUM_LESSON_END;
+            break;
+        }
+        if (reason) {
+          await this.pointsUserLogService.generatePoints(
+            updateDto.user_id,
+            reason,
+            actual.lesson.course_unit.course_id,
+            updateDto.lesson_id,
+          );
+        }
       }
       return await this.repository.update(actual.id, updateDto);
     } else {
