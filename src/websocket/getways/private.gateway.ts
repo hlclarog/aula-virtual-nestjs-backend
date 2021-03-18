@@ -25,9 +25,8 @@ export class PrivateGateway
   async sendChangeGamification(data: EmitchangeGamificationUser) {
     const user = await this.clientsService.findUser(data.user_id.toString());
     if (user) {
-      console.log(data, user);
       this.server
-        .to(user.socket)
+        // .to(user.socket)
         .emit(EVENTS_SOCKET.CHANGE_GAMIFICATION_USER, data.info);
     }
   }

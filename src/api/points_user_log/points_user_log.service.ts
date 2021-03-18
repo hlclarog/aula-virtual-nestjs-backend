@@ -87,6 +87,7 @@ export class PointsUserLogService {
     await this.datewayService.emitChangeGamification({
       user_id,
       info: {
+        user_id,
         points: new_points,
         lives: new_lives,
       },

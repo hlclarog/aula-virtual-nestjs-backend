@@ -6,7 +6,7 @@ import { INFO_CHANNEL_PROVIDER } from '../providers/info-channel.module';
 import { ControlleSocket } from '../decorators/socket.decorator';
 import { PublicGateway } from '../../websocket/getways/public.gateway';
 import { PrivateGateway } from '../../websocket/getways/private.gateway';
-import { ClientsService } from 'src/websocket/clients/clients.service';
+import { ClientsService } from './../../websocket/clients/clients.service';
 import { EmitchangeGamificationUser } from './../../websocket/websocket.dto';
 
 @Injectable()

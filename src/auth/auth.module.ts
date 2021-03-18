@@ -6,6 +6,7 @@ import { TokenService } from './../utils/services/token.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TenancyConfigModule } from './../api/tenancy_config/tenancy_config.module';
+import { PointsUserLogModule } from './../api/points_user_log/points_user_log.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { TenancyConfigModule } from './../api/tenancy_config/tenancy_config.modu
     TenancyConfigModule,
     JwtModule.register({}),
     InfoUserModule.forRoot(),
+    PointsUserLogModule,
   ],
   controllers: [AuthController],
   providers: [TokenService, AuthService],

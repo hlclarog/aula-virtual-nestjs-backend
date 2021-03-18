@@ -6,6 +6,7 @@ export enum EVENTS_SOCKET {
 export interface EmitchangeGamificationUser {
   user_id: number;
   info: {
+    user_id: number;
     points: number;
     lives: number;
   };

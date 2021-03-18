@@ -113,6 +113,12 @@ export class LessonTryUsersService extends BaseService<
     if (actual) {
       return actual;
     } else {
+      await this.pointsUserLogService.generatePoints(
+        createDto.user_id,
+        TypesReasonsPoints.LESSON_INIT,
+        actual.lesson.course_unit.course_id,
+        createDto.lesson_id,
+      );
       return await this.repository.save(createDto);
     }
   }
