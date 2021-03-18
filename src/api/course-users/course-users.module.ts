@@ -6,9 +6,10 @@ import { COURSE_USERS_PROVIDER } from './course-users.dto';
 import { CourseUsers } from './course-users.entity';
 import { DATABASE_TENANCY_PROVIDER } from './../../database/database.dto';
 import { LessonsModule } from '../lessons/lessons.module';
+import { PointsUserLogModule } from './../points_user_log/points_user_log.module';
 
 @Module({
-  imports: [LessonsModule],
+  imports: [LessonsModule, PointsUserLogModule],
   controllers: [CourseUsersController],
   providers: [
     {
