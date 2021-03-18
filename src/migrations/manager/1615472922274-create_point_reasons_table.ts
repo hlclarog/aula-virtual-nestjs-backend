@@ -18,6 +18,11 @@ export class createPointReasonsTable1615472922274
             type: 'varchar',
           },
           {
+            name: 'private',
+            type: 'bool',
+            default: false,
+          },
+          {
             name: 'active',
             type: 'bool',
             default: true,

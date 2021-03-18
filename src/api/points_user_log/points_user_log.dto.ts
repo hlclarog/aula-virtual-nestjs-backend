@@ -13,6 +13,14 @@ export enum TypesReasonsPoints {
   PRACTICE_LESSON_END = 5,
   VIEW_ANSWER = 6,
   BUY_LIVES = 7,
+
+  LOGIN = 8,
+  LOGOUT = 9,
+  LESSON_INIT = 10,
+  COURSE_INIT = 11,
+  COURSE_END = 12,
+  SHARE_CONTENT = 13,
+  DOWNLOAD_CERTIFICATE = 14,
 }
 
 export class CreatePointsUserLogDto extends CreateBaseDto {

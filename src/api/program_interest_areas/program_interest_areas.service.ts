@@ -52,7 +52,6 @@ export class ProgramInterestAreasService extends BaseService<
     const values: any[] = areas.map((idArea) => {
       return { program_id: idProgram, interest_area_id: idArea };
     });
-    console.log(values, idProgram);
     await this.repository
       .createQueryBuilder()
       .insert()

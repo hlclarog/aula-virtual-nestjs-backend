@@ -12,6 +12,8 @@ import {
   UnSubscribeCourseStudentDto,
 } from '../courses/courses.dto';
 import { LessonsService } from '../lessons/lessons.service';
+import { TypesReasonsPoints } from '../points_user_log/points_user_log.dto';
+import { PointsUserLogService } from '../points_user_log/points_user_log.service';
 
 @Injectable()
 export class CourseUsersService extends BaseService<
@@ -21,7 +23,10 @@ export class CourseUsersService extends BaseService<
 > {
   @Inject(COURSE_USERS_PROVIDER) repository: BaseRepo<CourseUsers>;
 
-  constructor(private lessonsService: LessonsService) {
+  constructor(
+    private lessonsService: LessonsService,
+    private pointsUserLogService: PointsUserLogService,
+  ) {
     super();
   }
 
@@ -62,7 +67,6 @@ export class CourseUsersService extends BaseService<
         element.user_id,
       );
       const infoProgress = dataprogress.length > 0 ? dataprogress[0] : {};
-      console.log(infoProgress['progress'], id, element.user_id);
       element['progress'] = infoProgress['progress'];
     }
     return result;
@@ -108,8 +112,12 @@ export class CourseUsersService extends BaseService<
       where: { course_id: createDto.course_id, user_id: createDto.user_id },
       withDeleted: true,
     });
-    console.log(match);
     if (!match) {
+      await this.pointsUserLogService.generatePoints(
+        createDto.user_id,
+        TypesReasonsPoints.COURSE_INIT,
+        createDto.course_id,
+      );
       return await this.repository.save(createDto);
     } else {
       return await this.repository.update(match.id, {

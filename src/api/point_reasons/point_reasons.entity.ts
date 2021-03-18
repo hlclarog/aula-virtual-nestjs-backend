@@ -9,6 +9,9 @@ export class PointReasons extends Base {
   @Column({ type: 'varchar' })
   description: string;
 
+  @Column({ type: 'boolean' })
+  private: boolean;
+
   @OneToMany(
     () => PointReasonsValue,
     (point_reason_value) => point_reason_value.point_reason,
