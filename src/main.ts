@@ -13,8 +13,8 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.use(bodyParser.json({ limit: '300mb' }));
-  app.use(bodyParser.urlencoded({ limit: '300mb', extended: true }));
+  app.use(bodyParser.json({ limit: '800mb' }));
+  app.use(bodyParser.urlencoded({ limit: '800mb', extended: true }));
   app.enableCors();
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
