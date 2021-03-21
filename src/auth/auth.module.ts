@@ -10,6 +10,7 @@ import { PointsUserLogModule } from '../api/points_user_log/points_user_log.modu
 import { GoogleController } from './google/google.controller';
 import { GoogleService } from './google/google.service';
 import { PassportModule } from '@nestjs/passport';
+import { GoogleStrategy } from './google/google.strategy';
 
 @Module({
   imports: [
@@ -18,9 +19,9 @@ import { PassportModule } from '@nestjs/passport';
     JwtModule.register({}),
     InfoUserModule.forRoot(),
     PointsUserLogModule,
-    PassportModule.register({ session: true })
+    PassportModule.register({ session: true }),
   ],
   controllers: [AuthController, GoogleController],
-  providers: [TokenService, AuthService, GoogleService],
+  providers: [TokenService, AuthService, GoogleService, GoogleStrategy],
 })
 export class AuthModule {}
