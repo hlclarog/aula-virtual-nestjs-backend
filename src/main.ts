@@ -9,6 +9,7 @@ import { TransformInterceptor } from './utils/interceptors/transform.interceptor
 import * as bodyParser from 'body-parser';
 import { ValidationPipe } from '@nestjs/common';
 import { IoAdapter } from '@nestjs/platform-socket.io';
+import * as passport from 'passport';
 //import { RedisIoAdapter } from './websocket/websocket.adapter';
 
 async function bootstrap() {
@@ -29,6 +30,8 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  app.use(passport.initialize());
 
   app.useWebSocketAdapter(new IoAdapter(app));
 
