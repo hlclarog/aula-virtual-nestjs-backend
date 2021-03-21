@@ -1,17 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { ConfigService } from '../../config/config.service';
-import { DATA_TENANCY_PROVIDER } from '../../utils/providers/providers.dto';
-import { TenancyConfig } from '../../api/tenancy_config/tenancy_config.entity';
+import {
+  INFO_TENANCY_PROVIDER,
+  InfoTenancyDomain,
+} from '../../utils/providers/info-tenancy.module';
 
 @Injectable()
 export class GoogleService {
-  // @Inject(DATA_TENANCY_PROVIDER) tenancyConfig: TenancyConfig;
+  @Inject(INFO_TENANCY_PROVIDER) tenancyInfo: InfoTenancyDomain;
 
   constructor(private configService: ConfigService) {}
 
   createStrategy() {
-    console.log('this.tenancyConfig');
+    console.log(this.tenancyInfo);
     const strategy = new Strategy(
       {
         clientID:

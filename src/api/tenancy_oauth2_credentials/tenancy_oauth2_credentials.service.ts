@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
   CreateTenancyOauth2CredentialsDto,
-  UpdateTenancyOauth2CredentialsDto,
   TENANCY_DOMAINS_PROVIDER,
+  UpdateTenancyOauth2CredentialsDto,
 } from './tenancy_oauth2_credentials.dto';
 import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
@@ -33,5 +33,19 @@ export class TenancyOauth2CredentialsService extends BaseService<
       ])
       .where('credentials.tenancy_id: id', { id })
       .getMany();
+  }
+
+  async findCredentials(): Promise<any> {
+    const tenancyOauth2Credentials = await this.findAll();
+    let credential: any;
+    tenancyOauth2Credentials.forEach((tenancyOauth2Credential) => {
+      credential[tenancyOauth2Credential.type] = {
+        client_iD: tenancyOauth2Credential.client_id,
+        client_secret: tenancyOauth2Credential.client_secret,
+        callback_url: tenancyOauth2Credential.callback_url,
+        scope: tenancyOauth2Credential.scope,
+      };
+    });
+    return credential;
   }
 }

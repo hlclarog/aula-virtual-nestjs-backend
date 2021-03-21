@@ -17,6 +17,10 @@ export class CreateTenancyOauth2CredentialsDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
+  readonly callback_url?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
   readonly scope?: string;
   @ApiProperty({ required: false })
   @IsString()
@@ -46,6 +50,10 @@ export class UpdateTenancyOauth2CredentialsDto extends UpdateBaseDto {
   @IsString()
   @IsOptional()
   readonly client_secret?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly callback_url?: string;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

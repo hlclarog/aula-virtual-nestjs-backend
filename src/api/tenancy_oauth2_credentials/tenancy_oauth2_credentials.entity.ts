@@ -12,6 +12,7 @@ export class TenancyOauth2Credentials extends Base {
   @Column({ type: 'varchar' }) scope: string;
   @Column({ type: 'varchar' }) private_key: string;
   @Column({ type: 'varchar' }) public_key: string;
+  @Column({ type: 'varchar' }) callback_url: string;
 
   @ManyToOne(
     () => Tenancies,
