@@ -5,6 +5,7 @@ import { INFO_TENANCY_PROVIDER, InfoTenancyDomain } from '../../utils/providers/
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
+
   constructor() {
     super({
       clientID:
