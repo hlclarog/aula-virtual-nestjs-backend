@@ -11,6 +11,10 @@ import { GoogleController } from './google/google.controller';
 import { GoogleService } from './google/google.service';
 import { PassportModule } from '@nestjs/passport';
 import { GoogleStrategy } from './google/google.strategy';
+import { LinkedinController } from './linkedin/linkedin.controller';
+import { LinkedinStrategy } from './linkedin/linkedin.strategy';
+import { FacebookController } from './facebook/facebook.controller';
+import { FacebookStrategy } from './facebook/facebook.strategy';
 
 @Module({
   imports: [
@@ -21,7 +25,19 @@ import { GoogleStrategy } from './google/google.strategy';
     PointsUserLogModule,
     PassportModule.register({ session: true }),
   ],
-  controllers: [AuthController, GoogleController],
-  providers: [TokenService, AuthService, GoogleService, GoogleStrategy],
+  controllers: [
+    AuthController,
+    GoogleController,
+    LinkedinController,
+    FacebookController,
+  ],
+  providers: [
+    TokenService,
+    AuthService,
+    GoogleService,
+    GoogleStrategy,
+    LinkedinStrategy,
+    FacebookStrategy,
+  ],
 })
 export class AuthModule {}

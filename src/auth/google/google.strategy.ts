@@ -1,6 +1,7 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { INFO_TENANCY_PROVIDER, InfoTenancyDomain } from '../../utils/providers/info-tenancy.module';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
