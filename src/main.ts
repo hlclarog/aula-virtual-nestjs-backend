@@ -8,6 +8,7 @@ import { HttpExceptionFilter } from './utils/filters/http-exception.filter';
 import { TransformInterceptor } from './utils/interceptors/transform.interceptor';
 import * as bodyParser from 'body-parser';
 import { ValidationPipe } from '@nestjs/common';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 //import { RedisIoAdapter } from './websocket/websocket.adapter';
 
 async function bootstrap() {
@@ -29,7 +30,7 @@ async function bootstrap() {
     }),
   );
 
-  //app.useWebSocketAdapter(new RedisIoAdapter(app));
+  app.useWebSocketAdapter(new IoAdapter(app));
 
   // SWAGER CONFIG
   const options = new DocumentBuilder()

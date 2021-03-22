@@ -24,7 +24,7 @@ import { DatabaseManualModule } from './database/database-manual.module';
 import { InfoTenancyModule } from './utils/providers/info-tenancy.module';
 import { InfoTenancyService } from './utils/services/info-tenancy.service';
 import { AwsProviderModule } from './aws/providers/aws.provider';
-import { Auth2ConfigModule } from './oauth2/oauth2-provider';
+// import { Auth2ConfigModule } from './oauth2/oauth2-provider';
 
 const FOLDER_ENV = join(__dirname, '..', 'env');
 const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;

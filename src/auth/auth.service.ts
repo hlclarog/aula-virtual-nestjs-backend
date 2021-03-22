@@ -22,6 +22,8 @@ import {
 } from './auth.dto';
 import { CreateUsersDto } from './../api/acl/users/users.dto';
 import { TenancyConfigService } from './../api/tenancy_config/tenancy_config.service';
+import { TypesReasonsPoints } from './../api/points_user_log/points_user_log.dto';
+import { PointsUserLogService } from './../api/points_user_log/points_user_log.service';
 
 @Injectable()
 export class AuthService {
@@ -31,6 +33,7 @@ export class AuthService {
     private usersService: UsersService,
     private configService: ConfigService,
     private tenancyConfigService: TenancyConfigService,
+    private pointsUserLogService: PointsUserLogService,
   ) {}
   async login(data: LoginDto) {
     const user = await this.usersService.verifyUser(data);
@@ -43,12 +46,23 @@ export class AuthService {
       const token = await this.tokenService
         .createTokenKey(payload, DEFAULT_TIME_TOKEN_AUTH, this.tenancy.secret)
         .then((res) => res);
+      await this.pointsUserLogService.generatePoints(
+        user.id,
+        TypesReasonsPoints.LOGIN,
+      );
       return { payload, token };
     } else {
       throw new ForbiddenException({
         message: MESSAGE_FORBIDDEN,
       });
     }
+  }
+  async logout(user_id: number) {
+    await this.pointsUserLogService.generatePoints(
+      user_id,
+      TypesReasonsPoints.LOGOUT,
+    );
+    return { logout: true };
   }
   async register(data: RegisterDto) {
     const config = await this.tenancyConfigService.findOne(this.tenancy.id);

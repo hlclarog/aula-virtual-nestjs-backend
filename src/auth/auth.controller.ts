@@ -25,6 +25,13 @@ export class AuthController {
     return result;
   }
 
+  @Get('logout/:token')
+  async logout(@Param('token') token: string) {
+    const dataToken = await this.authService.verify(token);
+    const result = await this.authService.logout(dataToken.data.id);
+    return result;
+  }
+
   @Post('register')
   async register(@Body() data: RegisterDto) {
     const result = await this.authService.register(data);

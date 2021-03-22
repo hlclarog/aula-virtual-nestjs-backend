@@ -49,6 +49,12 @@ export class LessonActivitiesService extends BaseService<
     super();
   }
 
+  async findOne(id: number): Promise<LessonActivities> {
+    return this.repository.findOneOrFail(id, {
+      relations: ['lesson', 'lesson.course_unit'],
+    });
+  }
+
   async create(createDto: CreateLessonActivitiesDto) {
     const resultLessonActivity = await this.repository.save(createDto);
 

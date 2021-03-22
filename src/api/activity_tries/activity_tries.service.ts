@@ -19,6 +19,8 @@ import { ActivitySortItemsService } from '../activity_sort_items/activity_sort_i
 import { ActivityRelateElementsService } from '../activity_relate_elements/activity_relate_elements.service';
 import { ActivityCompleteTextsService } from '../activity_complete_texts/activity_complete_texts.service';
 import { ActivityIdentifyWordsService } from '../activity_identify_words/activity_identify_words.service';
+import { PointsUserLogService } from '../points_user_log/points_user_log.service';
+import { TypesReasonsPoints } from '../points_user_log/points_user_log.dto';
 
 @Injectable()
 export class ActivityTriesService extends BaseService<
@@ -40,6 +42,7 @@ export class ActivityTriesService extends BaseService<
     private activityRelateElementsService: ActivityRelateElementsService,
     private activityCompleteTextsService: ActivityCompleteTextsService,
     private activityIdentifyWordsService: ActivityIdentifyWordsService,
+    private pointsUserLogService: PointsUserLogService,
   ) {
     super();
   }
@@ -128,6 +131,26 @@ export class ActivityTriesService extends BaseService<
         activity_try_user_id: activity_try_user.id,
         active: true,
       };
+      if (passed) {
+        this.pointsUserLogService.updatePointsUser(
+          lesson_activity.lesson.course_unit.course_id,
+          lesson_activity.lesson_id,
+          createDto.lesson_activity_id,
+        );
+        await this.pointsUserLogService.generatePoints(
+          this.infoUser.id,
+          TypesReasonsPoints.ACTIVITY_END,
+          lesson_activity.lesson.course_unit.course_id,
+          lesson_activity.lesson_id,
+          createDto.lesson_activity_id,
+        );
+      } else {
+        await this.pointsUserLogService.updatePointsUser(
+          this.infoUser.id,
+          0,
+          -1,
+        );
+      }
       return await this.repository.save(register);
     } else {
       return this.repository.findOne({

@@ -14,6 +14,7 @@ export enum CONTENT_TYPES_LIST {
   URL = 6,
   VIDEO_FILE = 7,
   AUDIO_FILE = 8,
+  EMBEBED_FILE = 9,
 }
 export const CONTENT_TYPES_S3 = [
   CONTENT_TYPES_LIST.IMAGE,

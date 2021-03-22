@@ -51,7 +51,6 @@ export class LessonsService extends BaseService<
       user_id,
       lesson_id,
     );
-    console.log(user_id, lesson_id, intent);
     lesson.intent = intent;
     return lesson;
   }

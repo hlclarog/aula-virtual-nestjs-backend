@@ -9,14 +9,14 @@
 <body>
     
     <div class="container-fluid">
-        <div class="row">
+        <div class="container">
             <div class="col-md-12">
                 <h2>
                     Suscripcion manual del canal <br>
                     <code>Conexion al servidor de sockets</code>
                 </h2>
                 <div class="row">
-                    <div class="col-md-4 col-sm-8">
+                    <div class="col-md-12 mt-4">
                         <label for="host">CANAL</label>
                         <input type="text" class="form-control inut-sm" id="channel">
                     </div>
@@ -41,41 +41,56 @@
             document.getElementById('connectSocket').addEventListener('click', () =>{
                 const url = document.getElementById('channel').value;
                 if(url) {
+                    document.getElementById('channel').disabled = true;
+                    document.getElementById('connectSocket').disabled = true;
                     const socket = io('{{host}}/' + url);
+                    socket.on('connection', socket => {
+                        console.log('connect')
+                    });
                     socket.on('connect', () => {
-                        console.log('conectted to ' + url);
+                        setLog(`conectted to ${url} <br/>`);
                     });
                     socket.on('disconnect', () => {
-                        console.log('user disconnected');
+                        setLog(`user disconnected <br/>`);
                     });
                     socket.on('subscribe', (data) => {
-                        console.log('your user is: ' + data);
+                        //socket.join(data);
+                        setLog(`your user is: ${data} <br/>`);
                     });
                     socket.on('new_tenancy', (data) => {
-                        console.log('new_tenancy', data);
+                        setLog(`new_tenancy ${data} <br/>`);
                     });
                     socket.on('status_register', (data) => {
-                        console.log('status_register', data);
+                        setLog(`status_register ${data} <br/>`);
                     });
                     socket.on('status_subdomain', (data) => {
-                        console.log('status_subdomain', data);
+                        setLog(`status_subdomain ${data} <br/>`);
                     });
                     socket.on('status_virtualhost', (data) => {
-                        console.log('status_virtualhost', data);
+                        setLog(`status_virtualhost ${data} <br/>`);
                     });
                     socket.on('status_schema', (data) => {
-                        console.log('status_schema', data);
+                        setLog(`status_schema ${data} <br/>`);
                     });
                     socket.on('status_migrations', (data) => {
-                        console.log('status_migrations', data);
+                        setLog(`status_migrations ${data} <br/>`);
                     });
                     socket.on('status_seeders', (data) => {
-                        console.log('status_seeders', data);
+                        setLog(`status_seeders ${data} <br/>`);
+                    });
+                    socket.on('change_me_gamification', (data) => {
+                        console.log(data);
+                        setLog(`change me gamification <br/> ${JSON.stringify(data)} <br/>`);
                     });
                 } else {
                     alert('Digitar canal');
                 }
             })
+
+            function setLog(text) {
+                const ac = document.getElementById('logs').innerHTML;
+                document.getElementById('logs').innerHTML = ac + `${text}`;
+            }
         });
     </script>
 
