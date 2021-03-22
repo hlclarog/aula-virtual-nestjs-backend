@@ -103,6 +103,11 @@ export class createTenancyConfigTable1609758000000
             default: 0,
           },
           {
+            name: 'unenroll_reset',
+            type: 'bool',
+            default: false,
+          },
+          {
             name: 'active',
             type: 'bool',
             default: true,

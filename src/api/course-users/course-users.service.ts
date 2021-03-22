@@ -14,6 +14,12 @@ import {
 import { LessonsService } from '../lessons/lessons.service';
 import { TypesReasonsPoints } from '../points_user_log/points_user_log.dto';
 import { PointsUserLogService } from '../points_user_log/points_user_log.service';
+import {
+  INFO_TENANCY_PROVIDER,
+  InfoTenancyDomain,
+} from './../../utils/providers/info-tenancy.module';
+import { TenancyConfigService } from '../tenancy_config/tenancy_config.service';
+import { ActivityTryUsersService } from '../activity_try_users/activity_try_users.service';
 
 @Injectable()
 export class CourseUsersService extends BaseService<
@@ -24,8 +30,11 @@ export class CourseUsersService extends BaseService<
   @Inject(COURSE_USERS_PROVIDER) repository: BaseRepo<CourseUsers>;
 
   constructor(
+    @Inject(INFO_TENANCY_PROVIDER) private tenancy: InfoTenancyDomain,
+    private tenancyConfigService: TenancyConfigService,
     private lessonsService: LessonsService,
     private pointsUserLogService: PointsUserLogService,
+    private activityTryUsersService: ActivityTryUsersService,
   ) {
     super();
   }
@@ -146,6 +155,7 @@ export class CourseUsersService extends BaseService<
   }
 
   async unSubscribe(data: UnSubscribeCourseStudentDto) {
+    const config = await this.tenancyConfigService.findOne(this.tenancy.id);
     await this.repository.update(
       {
         course_id: data.course_id,
@@ -153,10 +163,20 @@ export class CourseUsersService extends BaseService<
       },
       { end_date: data.end_date },
     );
-    const result = await this.repository.softDelete({
-      user_id: data.user_id,
-      course_id: data.course_id,
-    });
-    return { data: result };
+
+    if (config.unenroll_reset) {
+      await this.activityTryUsersService.resetProgressUser(data.user_id);
+      await this.repository.delete({
+        course_id: data.course_id,
+        user_id: data.user_id,
+      });
+    } else {
+      await this.repository.softDelete({
+        user_id: data.user_id,
+        course_id: data.course_id,
+      });
+    }
+
+    return { data: { unroll: true } };
   }
 }

@@ -7,9 +7,16 @@ import { CourseUsers } from './course-users.entity';
 import { DATABASE_TENANCY_PROVIDER } from './../../database/database.dto';
 import { LessonsModule } from '../lessons/lessons.module';
 import { PointsUserLogModule } from './../points_user_log/points_user_log.module';
+import { TenancyConfigModule } from '../tenancy_config/tenancy_config.module';
+import { ActivityTryUsersModule } from '../activity_try_users/activity_try_users.module';
 
 @Module({
-  imports: [LessonsModule, PointsUserLogModule],
+  imports: [
+    LessonsModule,
+    PointsUserLogModule,
+    TenancyConfigModule,
+    ActivityTryUsersModule,
+  ],
   controllers: [CourseUsersController],
   providers: [
     {
