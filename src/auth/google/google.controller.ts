@@ -23,11 +23,40 @@ export class GoogleController {
   }
 
   @Get(':tenancy/callback')
-  @UseGuards(AuthGuard('google'))
-  async googleRedirect(@Req() req: Request, @Param('tenancy') tenancy: string) {
-    console.log(tenancy);
-    return { data: req.user };
+  async googleRedirect(
+    @Req() req,
+    @Res() res,
+    @Next() next,
+    @Param('tenancy') tenancy: string,
+  ) {
+    const strategy = await this.googleService.createStrategy();
+    authenticate(strategy, (err, user) => {
+      console.log(err);
+      console.log(user);
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return res.redirect('/');
+      }
+      req.logIn(user, async (err) => {
+        if (err) {
+          return next(err);
+        }
+        const auth: any = await this.googleService.googleLogin(user);
+        console.log(auth);
+        res.redirect(`http://localhost:4200/auth/login/${auth.token}`);
+        // return res.send(user);
+      });
+    })(req, res, next);
   }
+
+  // @Get(':tenancy/callback')
+  // @UseGuards(AuthGuard('google'))
+  // async googleRedirect(@Req() req: Request, @Param('tenancy') tenancy: string) {
+  //   console.log(tenancy);
+  //   return { data: req.user };
+  // }
 
   // @Get('redirect')
   // @UseGuards(AuthGuard('google'))

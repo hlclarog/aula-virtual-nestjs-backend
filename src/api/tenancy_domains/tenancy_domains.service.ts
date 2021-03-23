@@ -28,6 +28,8 @@ export class TenancyDomainsService extends BaseService<
   }
 
   async findTenancyOauth2Credentials(): Promise<TenancyOauth2Credentials[]> {
-    return await this.tenancyOauth2Credentials.find();
+    return await this.tenancyOauth2Credentials.find({
+      relations: ['integration_type'],
+    });
   }
 }

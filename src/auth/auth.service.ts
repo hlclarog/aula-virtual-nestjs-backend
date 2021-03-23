@@ -18,7 +18,7 @@ import {
   RequestPasswordEmailDto,
   DEFAULT_TIME_TOKEN_REQUEST_PASS_EMAIL,
   ChangePasswordEmailDto,
-  RegisterDto,
+  RegisterDto, SignUpDto,
 } from './auth.dto';
 import { CreateUsersDto } from './../api/acl/users/users.dto';
 import { TenancyConfigService } from './../api/tenancy_config/tenancy_config.service';
@@ -145,5 +145,43 @@ export class AuthService {
       .catch((err) => {
         throw new ForbiddenException(err);
       });
+  }
+
+  async loginEmail(data: SignUpDto) {
+    return new Promise(async (resolve) => {
+      const dataUser = await this.usersService.findByEmail(data.email);
+      if (dataUser) {
+        const dataToken = await this.createTokenLogin(dataUser, {
+          email: data.email,
+        });
+        resolve({ ...dataToken, new: false });
+      } else {
+        const dataNew = new CreateUsersDto();
+        dataNew.name = data.name;
+        dataNew.email = data.email;
+        dataNew.origin = data.origin;
+        dataNew.password = '';
+        dataNew.users_roles = [];
+        const user = await this.usersService.create(dataNew);
+        const dataToken = await this.createTokenLogin(user, {
+          email: data.email,
+        });
+        resolve({ ...dataToken, new: true });
+      }
+    });
+  }
+
+  async createTokenLogin(user, data) {
+    if (user) {
+      const payload = { ...data };
+      const token = await this.tokenService
+        .createToken(payload, DEFAULT_TIME_TOKEN_AUTH)
+        .then((res) => res);
+      return { payload, token };
+    } else {
+      throw new ForbiddenException({
+        message: MESSAGE_FORBIDDEN,
+      });
+    }
   }
 }

@@ -1,23 +1,27 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { ConfigService } from '../../config/config.service';
 import {
   INFO_TENANCY_PROVIDER,
   InfoTenancyDomain,
 } from '../../utils/providers/info-tenancy.module';
-import * as passport from 'passport';
+import { deserializeUser, serializeUser } from 'passport';
+import { AuthService } from '../auth.service';
 
 @Injectable()
 export class GoogleService {
   @Inject(INFO_TENANCY_PROVIDER) tenancyInfo: InfoTenancyDomain;
 
-  constructor(private configService: ConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    private authService: AuthService,
+  ) {}
 
   createStrategy() {
     const tenancyOauth2Credential = this.tenancyInfo.tenancyOauth2Credentials.find(
-      (f) => f.type === 'google',
+      (f) => f.integration_type_id === 1,
     );
-    const strategy = new Strategy(
+    return new Strategy(
       {
         clientID: tenancyOauth2Credential.client_id,
         clientSecret: tenancyOauth2Credential.client_secret,
@@ -39,19 +43,23 @@ export class GoogleService {
           origin: 'google',
         };
 
-
-
-        passport.serializeUser((user, done) => {
+        serializeUser((user, done) => {
           done(null, user);
         });
 
-        passport.deserializeUser((user, done) => {
+        deserializeUser((user, done) => {
           done(null, user);
         });
 
         done(null, user);
       },
     );
-    return strategy;
+  }
+
+  async googleLogin(user) {
+    if (!user) {
+      throw new ForbiddenException({ message: 'No user from google' });
+    }
+    return await this.authService.loginEmail(user).then((result) => result);
   }
 }
