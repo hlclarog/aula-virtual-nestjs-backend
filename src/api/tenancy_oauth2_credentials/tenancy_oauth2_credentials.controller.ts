@@ -39,7 +39,10 @@ export class TenancyOauth2CredentialsController extends BaseController<
 
   @Get('tenancy/:id')
   async findByTenancy(@Param('id') id: number) {
-    return await this.tenancy_oauth2_credentialsService.findByTenancy(id);
+    const result = await this.tenancy_oauth2_credentialsService.findByTenancy(
+      id,
+    );
+    return { data: result };
   }
 
   @Put(':id')

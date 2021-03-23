@@ -23,15 +23,18 @@ export class TenancyOauth2CredentialsService extends BaseService<
       .select([
         'credentials.id',
         'credentials.description',
-        'credentials.type',
+        'credentials.integration_type_id',
         'credentials.client_id',
         'credentials.client_secret',
         'credentials.scope',
         'credentials.private_key',
         'credentials.public_key',
         'credentials.tenancy_id',
+        'integration_type.id',
+        'integration_type.description',
       ])
-      .where('credentials.tenancy_id: id', { id })
+      .leftJoin('credentials.integration_type', 'integration_type')
+      .where('credentials.tenancy_id = :id', { id })
       .getMany();
   }
 }

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ActivityTriesService } from './activity_tries.service';
 import { ActivityTriesController } from './activity_tries.controller';
 import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
@@ -16,7 +16,7 @@ import { PointsUserLogModule } from '../points_user_log/points_user_log.module';
 
 @Module({
   imports: [
-    ActivityTryUsersModule,
+    forwardRef(() => ActivityTryUsersModule),
     LessonActivitiesModule,
     ActivityMultipleOptionsModule,
     ActivitySortItemsModule,

@@ -8,6 +8,8 @@ import {
   InfoUserProvider,
   INFO_USER_PROVIDER,
 } from './../../utils/providers/info-user.module';
+import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
+import { getActualDate } from './../../utils/date';
 
 @ControllerApi({ name: 'lessons' })
 export class LessonsController extends BaseController<
@@ -17,6 +19,7 @@ export class LessonsController extends BaseController<
 > {
   constructor(
     private lessonsService: LessonsService,
+    private lesson_try_usersService: LessonTryUsersService,
     @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
   ) {
     super(lessonsService);
@@ -43,6 +46,11 @@ export class LessonsController extends BaseController<
       id,
       this.infoUser.id,
     );
+    await this.lesson_try_usersService.start({
+      user_id: this.infoUser.id,
+      lesson_id: id,
+      begin: getActualDate(),
+    });
     return { data: result };
   }
 

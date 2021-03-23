@@ -23,8 +23,8 @@ export class tenancyOauth2CredentialsTable1614989908089
             type: 'int',
           },
           {
-            name: 'type',
-            type: 'text',
+            name: 'integration_type_id',
+            type: 'int',
           },
           {
             name: 'description',
@@ -61,6 +61,11 @@ export class tenancyOauth2CredentialsTable1614989908089
             isNullable: true,
           },
           {
+            name: 'callback_url',
+            type: 'text',
+            isNullable: true,
+          },
+          {
             name: 'active',
             type: 'bool',
             default: true,
@@ -91,6 +96,14 @@ export class tenancyOauth2CredentialsTable1614989908089
         columnNames: ['tenancy_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'public.tenancies',
+      }),
+    );
+    await queryRunner.createForeignKey(
+      'tenancy_oauth2_credentials',
+      new TableForeignKey({
+        columnNames: ['integration_type_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'public.integration_types',
       }),
     );
   }

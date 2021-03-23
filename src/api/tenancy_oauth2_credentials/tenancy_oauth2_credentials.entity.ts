@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
+import { IntegrationTypes } from '../integration_types/integration_types.entity';
 import { Tenancies } from '../tenancies/tenancies.entity';
 import { TENANCY_OAUTH2_CREDENTIALS_ENTITY } from './tenancy_oauth2_credentials.dto';
 
@@ -27,4 +28,18 @@ export class TenancyOauth2Credentials extends Base {
   )
   @Column({ type: 'integer' })
   tenancy_id: number;
+
+  @ManyToOne(
+    () => IntegrationTypes,
+    (integration_type) => integration_type.credentials,
+  )
+  @JoinColumn({ name: 'integration_type_id' })
+  integration_type: IntegrationTypes;
+
+  @RelationId(
+    (tenancy_oauth2_credentials: TenancyOauth2Credentials) =>
+      tenancy_oauth2_credentials.integration_type,
+  )
+  @Column({ type: 'integer' })
+  integration_type_id: number;
 }
