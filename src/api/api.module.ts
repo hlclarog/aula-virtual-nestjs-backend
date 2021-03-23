@@ -78,6 +78,7 @@ import { TenancyOauth2CredentialsModule } from './tenancy_oauth2_credentials/ten
 import { PointReasonsModule } from './point_reasons/point_reasons.module';
 import { PointsUserLogModule } from './points_user_log/points_user_log.module';
 import { PointReasonsValueModule } from './point_reasons_value/point_reasons_value.module';
+import { IntegrationTypesModule } from './integration_types/integration_types.module';
 
 @Module({
   imports: [
@@ -160,6 +161,7 @@ import { PointReasonsValueModule } from './point_reasons_value/point_reasons_val
     PointReasonsModule,
     PointReasonsValueModule,
     PointsUserLogModule,
+    IntegrationTypesModule,
   ],
   controllers: [],
   providers: [],
