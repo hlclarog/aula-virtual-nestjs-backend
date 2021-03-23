@@ -6,8 +6,8 @@ export const INTEGRATION_TYPES_PROVIDER = 'INTEGRATION_TYPES_REPOSITORY';
 export const INTEGRATION_TYPES_ENTITY = 'integration_types';
 
 export class CreateIntegrationTypesDto extends CreateBaseDto {
-  tenancy_id: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly type: string;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -15,11 +15,14 @@ export class CreateIntegrationTypesDto extends CreateBaseDto {
 }
 
 export class UpdateIntegrationTypesDto extends UpdateBaseDto {
-  tenancy_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
   readonly description?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly type?: string;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

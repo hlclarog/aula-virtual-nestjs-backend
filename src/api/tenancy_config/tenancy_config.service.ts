@@ -50,16 +50,20 @@ export class TenancyConfigService {
         'rol_default.display_name',
         'credentials.description',
         'credentials.client_id',
-        'credentials.type',
+        'credentials.integration_type_id',
+        'integration_type.id',
+        'integration_type.description',
+        'integration_type.type',
       ])
       .leftJoin('config.theme', 'theme')
       .leftJoin('config.tenancy', 'tenancy')
       .leftJoin('config.rol_default', 'rol_default')
       .leftJoin('tenancy.tenancy_oauth2_credentials', 'credentials')
+      .leftJoin('credentials.integration_type', 'integration_type')
       .where('config.tenancy_id = :id', { id })
       .getOne();
     const listCredentials = config.tenancy.tenancy_oauth2_credentials.map(
-      (t) => t.type,
+      (t) => t.integration_type.type,
     );
     const list = {};
     for (let i = 0; i < listCredentials.length; i++) {

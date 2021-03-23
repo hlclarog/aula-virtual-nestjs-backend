@@ -7,7 +7,6 @@ import { TENANCY_OAUTH2_CREDENTIALS_ENTITY } from './tenancy_oauth2_credentials.
 @Entity({ name: TENANCY_OAUTH2_CREDENTIALS_ENTITY })
 export class TenancyOauth2Credentials extends Base {
   @Column({ type: 'varchar' }) description: string;
-  @Column({ type: 'varchar' }) type: string;
   @Column({ type: 'varchar' }) client_id: string;
   @Column({ type: 'varchar' }) client_secret: string;
   @Column({ type: 'varchar' }) scope: string;
