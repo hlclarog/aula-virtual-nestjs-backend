@@ -95,6 +95,24 @@ export class LessonTryUsersService extends BaseService<
       .getMany();
   }
 
+  async findAllByCourseForUser(
+    user_id: number,
+    course_id: number,
+  ): Promise<LessonTryUsers[]> {
+    return await this.repository
+      .createQueryBuilder('lesson_try_users')
+      .leftJoin('lesson_try_users.lesson', 'lesson')
+      .leftJoin('lesson.course_unit', 'course_unit')
+      .where(
+        'course_unit.course_id = :course_id AND lesson_try_users.user_id = user_id',
+        {
+          user_id,
+          course_id,
+        },
+      )
+      .getMany();
+  }
+
   async getActualTry(user_id: number, lesson_id: number) {
     return await this.repository.findOne({
       where: {
@@ -106,20 +124,22 @@ export class LessonTryUsersService extends BaseService<
   }
 
   async start(createDto: CreateLessonTryUsersDto) {
-    const actual = await this.getActualTry(
+    let actual = await this.getActualTry(
       createDto.user_id,
       createDto.lesson_id,
     );
     if (actual) {
       return actual;
     } else {
+      const result = await this.repository.save(createDto);
+      actual = await this.getActualTry(createDto.user_id, createDto.lesson_id);
       await this.pointsUserLogService.generatePoints(
         createDto.user_id,
         TypesReasonsPoints.LESSON_INIT,
         actual.lesson.course_unit.course_id,
         createDto.lesson_id,
       );
-      return await this.repository.save(createDto);
+      return result;
     }
   }
 
@@ -155,5 +175,14 @@ export class LessonTryUsersService extends BaseService<
     } else {
       throw new InternalServerErrorException('LESSON NOT INITIALIZED');
     }
+  }
+
+  async resetProgressUser(user_id: number, course_id: number) {
+    const intents = await this.findAllByCourseForUser(user_id, course_id);
+    for (let i = 0; i < intents.length; i++) {
+      const intent = intents[i];
+      await this.repository.delete(intent.id);
+    }
+    return { reset: true };
   }
 }

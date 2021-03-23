@@ -88,9 +88,11 @@ export class LessonsService extends BaseService<
   }
 
   async findByCourse(id: number): Promise<Lessons[]> {
-    return await this.repository.find({
-      where: { course_id: id },
-    });
+    return await this.repository
+      .createQueryBuilder('lesson')
+      .leftJoin('lesson.course_unit', 'course_unit')
+      .where(`course_unit.course_id = :course_id`, { course_id: id })
+      .getMany();
   }
 
   async findProgessByCourse(
@@ -166,8 +168,8 @@ export class LessonsService extends BaseService<
               if (element.lesson_try_users.length > 0) {
                 const progress_in_lesson = element.lesson_try_users[0].percent;
                 const progress_in_course = progress_in_lesson * element['part'];
-                element['progress_lesson'] = progress_in_lesson;
-                element['progress_course'] = progress_in_course;
+                element['progress_lesson'] = Math.round(progress_in_lesson);
+                element['progress_course'] = Math.round(progress_in_course);
                 progress_course += progress_in_course;
               }
               break;
@@ -192,10 +194,10 @@ export class LessonsService extends BaseService<
                 (activities_finalized / element.lesson_activities.length) * 100;
               const progress_in_course = progress_in_lesson * element['part'];
               element['progress_lesson'] = progress_in_lesson
-                ? progress_in_lesson
+                ? Math.round(progress_in_lesson)
                 : 0;
               element['progress_course'] = progress_in_course
-                ? progress_in_course
+                ? Math.round(progress_in_course)
                 : 0;
               progress_course += progress_in_course ? progress_in_course : 0;
               break;

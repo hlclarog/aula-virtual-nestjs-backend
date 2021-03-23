@@ -51,15 +51,33 @@ export class ActivityTryUsersService extends BaseService<
       .getMany();
   }
 
-  async resetProgressUser(user_id) {
-    const intents = await this.repository.find({ where: { user_id } });
+  async findAllByCourseForUser(
+    user_id: number,
+    course_id: number,
+  ): Promise<ActivityTryUsers[]> {
+    return await this.repository
+      .createQueryBuilder('activity_try_users')
+      .leftJoin('activity_try_users.lesson_activity', 'lesson_activity')
+      .leftJoin('lesson_activity.lesson', 'lesson')
+      .leftJoin('lesson.course_unit', 'course_unit')
+      .where(
+        'course_unit.course_id = :course_id AND activity_try_users.user_id = user_id',
+        {
+          course_id,
+          user_id,
+        },
+      )
+      .getMany();
+  }
+
+  async resetProgressUser(user_id: number, course_id: number) {
+    const intents = await this.findAllByCourseForUser(user_id, course_id);
     for (let i = 0; i < intents.length; i++) {
       const intent = intents[i];
-      this.repositoryActivityTries.delete({ activity_try_user_id: intent.id });
-    }
-    for (let i = 0; i < intents.length; i++) {
-      const intent = intents[i];
-      this.repository.delete(intent.id);
+      await this.repositoryActivityTries.delete({
+        activity_try_user_id: intent.id,
+      });
+      await this.repository.delete(intent.id);
     }
     return { reset: true };
   }

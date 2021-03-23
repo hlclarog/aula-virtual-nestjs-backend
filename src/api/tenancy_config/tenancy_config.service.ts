@@ -37,6 +37,7 @@ export class TenancyConfigService {
         'config.image_points',
         'config.bar_span_days',
         'config.bar_expected_points',
+        'config.unenroll_reset',
         'theme.id',
         'theme.code',
         'theme.description',

@@ -20,6 +20,8 @@ import {
 } from './../../utils/providers/info-tenancy.module';
 import { TenancyConfigService } from '../tenancy_config/tenancy_config.service';
 import { ActivityTryUsersService } from '../activity_try_users/activity_try_users.service';
+import { LessonScormIntentsService } from '../lesson_scorm_intents/lesson_scorm_intents.service';
+import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
 
 @Injectable()
 export class CourseUsersService extends BaseService<
@@ -35,6 +37,8 @@ export class CourseUsersService extends BaseService<
     private lessonsService: LessonsService,
     private pointsUserLogService: PointsUserLogService,
     private activityTryUsersService: ActivityTryUsersService,
+    private lessonScormIntentsService: LessonScormIntentsService,
+    private lessonTryUsersService: LessonTryUsersService,
   ) {
     super();
   }
@@ -163,9 +167,19 @@ export class CourseUsersService extends BaseService<
       },
       { end_date: data.end_date },
     );
-
     if (config.unenroll_reset) {
-      await this.activityTryUsersService.resetProgressUser(data.user_id);
+      await this.activityTryUsersService.resetProgressUser(
+        data.user_id,
+        data.course_id,
+      );
+      await this.lessonScormIntentsService.resetProgressUser(
+        data.user_id,
+        data.course_id,
+      );
+      await this.lessonTryUsersService.resetProgressUser(
+        data.user_id,
+        data.course_id,
+      );
       await this.repository.delete({
         course_id: data.course_id,
         user_id: data.user_id,

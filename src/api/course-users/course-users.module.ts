@@ -9,6 +9,8 @@ import { LessonsModule } from '../lessons/lessons.module';
 import { PointsUserLogModule } from './../points_user_log/points_user_log.module';
 import { TenancyConfigModule } from '../tenancy_config/tenancy_config.module';
 import { ActivityTryUsersModule } from '../activity_try_users/activity_try_users.module';
+import { LessonScormIntentsModule } from '../lesson_scorm_intents/lesson_scorm_intents.module';
+import { LessonTryUsersModule } from '../lesson_try_users/lesson_try_users.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { ActivityTryUsersModule } from '../activity_try_users/activity_try_users
     PointsUserLogModule,
     TenancyConfigModule,
     ActivityTryUsersModule,
+    LessonScormIntentsModule,
+    LessonTryUsersModule,
   ],
   controllers: [CourseUsersController],
   providers: [
