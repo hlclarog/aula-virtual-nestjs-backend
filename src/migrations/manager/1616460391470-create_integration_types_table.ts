@@ -18,6 +18,10 @@ export class createIntegrationTypesTable1616460391470
             type: 'varchar',
           },
           {
+            name: 'type',
+            type: 'varchar',
+          },
+          {
             name: 'callback',
             isNullable: true,
             type: 'varchar',

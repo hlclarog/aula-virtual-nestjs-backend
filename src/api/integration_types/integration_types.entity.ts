@@ -6,6 +6,7 @@ import { INTEGRATION_TYPES_ENTITY } from './integration_types.dto';
 @Entity({ name: INTEGRATION_TYPES_ENTITY, schema: 'public' })
 export class IntegrationTypes extends Base {
   @Column({ type: 'varchar' }) description: string;
+  @Column({ type: 'varchar' }) type: string;
   @Column({ type: 'varchar' }) callback: string;
   @OneToMany(
     () => TenancyOauth2Credentials,
