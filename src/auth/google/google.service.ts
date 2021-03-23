@@ -5,6 +5,7 @@ import {
   INFO_TENANCY_PROVIDER,
   InfoTenancyDomain,
 } from '../../utils/providers/info-tenancy.module';
+import * as passport from 'passport';
 
 @Injectable()
 export class GoogleService {
@@ -13,13 +14,14 @@ export class GoogleService {
   constructor(private configService: ConfigService) {}
 
   createStrategy() {
-    console.log(this.tenancyInfo);
+    const tenancyOauth2Credential = this.tenancyInfo.tenancyOauth2Credentials.find(
+      (f) => f.type === 'google',
+    );
     const strategy = new Strategy(
       {
-        clientID:
-          '456867738303-dcqdufhmeruhusknavesu0ps6f3uurn1.apps.googleusercontent.com',
-        clientSecret: 'Y0UEFrkVQCc5FFa33BiCvJaG',
-        callbackURL: 'http://localhost:3000/auth/google/cua/callback',
+        clientID: tenancyOauth2Credential.client_id,
+        clientSecret: tenancyOauth2Credential.client_secret,
+        callbackURL: tenancyOauth2Credential.callback_url,
         scope: ['email', 'profile'],
       },
       (
@@ -28,7 +30,6 @@ export class GoogleService {
         profile: any,
         done: VerifyCallback,
       ) => {
-        console.log('30', profile);
         const { name, emails, photos } = profile;
         const user = {
           email: emails[0].value,
@@ -37,7 +38,17 @@ export class GoogleService {
           accessToken,
           origin: 'google',
         };
-        console.log(profile);
+
+
+
+        passport.serializeUser((user, done) => {
+          done(null, user);
+        });
+
+        passport.deserializeUser((user, done) => {
+          done(null, user);
+        });
+
         done(null, user);
       },
     );

@@ -5,7 +5,6 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class LinkedinStrategy extends PassportStrategy(Strategy, 'linkedin') {
   constructor() {
-    console.log('LinkedinStrategy');
     super({
       clientID: '78t7pay7blplb0',
       clientSecret: 'vX38XOQaQnt2EBCB',

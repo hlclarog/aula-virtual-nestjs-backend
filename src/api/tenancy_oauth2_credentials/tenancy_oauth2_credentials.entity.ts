@@ -1,9 +1,9 @@
 import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Tenancies } from '../tenancies/tenancies.entity';
-import { TENANCY_DOMAINS_ENTITY } from './tenancy_oauth2_credentials.dto';
+import { TENANCY_OAUTH2_CREDENTIALS_ENTITY } from './tenancy_oauth2_credentials.dto';
 
-@Entity({ name: TENANCY_DOMAINS_ENTITY })
+@Entity({ name: TENANCY_OAUTH2_CREDENTIALS_ENTITY })
 export class TenancyOauth2Credentials extends Base {
   @Column({ type: 'varchar' }) description: string;
   @Column({ type: 'varchar' }) type: string;

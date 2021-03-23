@@ -2,8 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 
-export const TENANCY_DOMAINS_PROVIDER = 'TENANCY_DOMAINS_REPOSITORY';
-export const TENANCY_DOMAINS_ENTITY = 'tenancy_oauth2_credentials';
+export const TENANCY_OAUTH2_CREDENTIALS_PROVIDER =
+  'TENANCY_OAUTH2_CREDENTIALS_REPOSITORY';
+export const TENANCY_OAUTH2_CREDENTIALS_ENTITY = 'tenancy_oauth2_credentials';
 
 export class CreateTenancyOauth2CredentialsDto extends CreateBaseDto {
   tenancy_id: number;

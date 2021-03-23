@@ -8,27 +8,17 @@ import { TenancyDomains } from '../../api/tenancy_domains/tenancy_domains.entity
 import { CryptoService } from '../services/crypto.service';
 import { ConfigService } from '../../config/config.service';
 import { ConfigModule } from '../../config/config.module';
-import { TenancyOauth2CredentialsService,
-} from '../../api/tenancy_oauth2_credentials/tenancy_oauth2_credentials.service';
+import { TenancyOauth2Credentials } from '../../api/tenancy_oauth2_credentials/tenancy_oauth2_credentials.entity';
 
 export const INFO_TENANCY_PROVIDER = 'INFO_TENANCY_PROVIDER';
-export interface ICredential {
-  client_iD: string;
-  client_secret: string;
-  callback_url: string;
-  scope: string;
-}
+
 export interface InfoTenancyDomain {
   id: number;
   domain: TenancyDomains;
   schema: string;
   host: string;
   secret: string;
-  credentials: {
-    google: ICredential;
-    facebook: ICredential;
-    linkedin: ICredential;
-  };
+  tenancyOauth2Credentials: TenancyOauth2Credentials[];
 }
 
 @Global()
@@ -44,11 +34,9 @@ export class InfoTenancyModule {
         configService: ConfigService,
         tenancyDomainsService: TenancyDomainsService,
         cryptoService: CryptoService,
-        tenancyOauth2CredentialsService: TenancyOauth2CredentialsService,
       ) => {
         const host = getHostFromOrigin(req.headers);
         const domain = await tenancyDomainsService.findForDomain(host);
-        const credentials = await tenancyOauth2CredentialsService.findCredentials();
         const schema = domain
           ? domain.tenancy
             ? domain.tenancy.schema
@@ -59,13 +47,14 @@ export class InfoTenancyModule {
           payload,
           configService.hashTokenSecret(),
         );
+        const tenancyOauth2Credentials: TenancyOauth2Credentials[] = await tenancyDomainsService.findTenancyOauth2Credentials();
         return {
           id: domain.tenancy_id,
           domain,
           host,
           schema,
           secret,
-          credentials,
+          tenancyOauth2Credentials,
         };
       },
     };
@@ -77,5 +66,3 @@ export class InfoTenancyModule {
     };
   }
 }
-
-// @Inject(INFO_TENANCY_PROVIDER) private tenancy: InfoTenancyDomain;
