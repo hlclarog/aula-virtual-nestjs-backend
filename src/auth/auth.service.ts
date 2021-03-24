@@ -163,7 +163,7 @@ export class AuthService {
         dataNew.email = data.email;
         dataNew.origin = data.origin;
         dataNew.password = '';
-        dataNew.users_roles = [];
+        dataNew.users_roles = [3];
         const user = await this.usersService.create(dataNew);
         const dataToken = await this.createTokenLogin(user, {
           email: data.email,
