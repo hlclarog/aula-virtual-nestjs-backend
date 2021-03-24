@@ -204,10 +204,31 @@ export class LessonsService extends BaseService<
           }
         }
       }
-      course['duration'] = total_duration;
-      course['progress'] = progress_course;
+      course['duration'] = Math.round(total_duration);
+      course['progress'] = Math.round(progress_course);
     }
     return metadata;
+  }
+
+  async getProgressToLesson(dataprogress: Courses[], lesson_id: number) {
+    let progress = 0;
+    for (let i = 0; i < dataprogress.length; i++) {
+      const course = dataprogress[i];
+      if (course.course_units) {
+        for (let j = 0; j < course.course_units.length; j++) {
+          const course_unit = course.course_units[j];
+          if (course_unit.lessons) {
+            for (let k = 0; k < course_unit.lessons.length; k++) {
+              const lesson = course_unit.lessons[k];
+              if (lesson.id == lesson_id) {
+                progress = lesson['progress_lesson'];
+              }
+            }
+          }
+        }
+      }
+    }
+    return progress;
   }
 
   async changeOrder(data: {

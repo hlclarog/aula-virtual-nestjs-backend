@@ -21,6 +21,9 @@ import { ActivityCompleteTextsService } from '../activity_complete_texts/activit
 import { ActivityIdentifyWordsService } from '../activity_identify_words/activity_identify_words.service';
 import { PointsUserLogService } from '../points_user_log/points_user_log.service';
 import { TypesReasonsPoints } from '../points_user_log/points_user_log.dto';
+import { LessonsService } from '../lessons/lessons.service';
+import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
+import { getActualDate } from './../../utils/date';
 
 @Injectable()
 export class ActivityTriesService extends BaseService<
@@ -43,6 +46,8 @@ export class ActivityTriesService extends BaseService<
     private activityCompleteTextsService: ActivityCompleteTextsService,
     private activityIdentifyWordsService: ActivityIdentifyWordsService,
     private pointsUserLogService: PointsUserLogService,
+    private lessonTryUsersService: LessonTryUsersService,
+    private lessonsService: LessonsService,
   ) {
     super();
   }
@@ -132,11 +137,6 @@ export class ActivityTriesService extends BaseService<
         active: true,
       };
       if (passed) {
-        this.pointsUserLogService.updatePointsUser(
-          lesson_activity.lesson.course_unit.course_id,
-          lesson_activity.lesson_id,
-          createDto.lesson_activity_id,
-        );
         await this.pointsUserLogService.generatePoints(
           this.infoUser.id,
           TypesReasonsPoints.ACTIVITY_END,
@@ -151,9 +151,27 @@ export class ActivityTriesService extends BaseService<
           -1,
         );
       }
-      return await this.repository.save(register);
+      const result = await this.repository.save(register);
+      if (passed) {
+        const dataprogress = await this.lessonsService.findProgessByCourse(
+          [lesson_activity.lesson.course_unit.course_id],
+          this.infoUser.id,
+        );
+        const progress = await this.lessonsService.getProgressToLesson(
+          dataprogress,
+          lesson_activity.lesson_id,
+        );
+        if (progress >= 100) {
+          await this.lessonTryUsersService.end({
+            user_id: this.infoUser.id,
+            lesson_id: lesson_activity.lesson_id,
+            end: getActualDate(),
+          });
+        }
+      }
+      return result;
     } else {
-      return this.repository.findOne({
+      return await this.repository.findOne({
         passed: true,
         activity_try_user_id: activity_try_user.id,
       });
