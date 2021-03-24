@@ -38,6 +38,7 @@ export class GoogleService {
           picture: photos[0].value,
           accessToken,
           origin: 'google',
+          secret: this.tenancyInfo.secret,
           frontEndUrl: this.tenancyInfo.domain.description,
         };
 

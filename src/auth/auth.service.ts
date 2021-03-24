@@ -18,7 +18,8 @@ import {
   RequestPasswordEmailDto,
   DEFAULT_TIME_TOKEN_REQUEST_PASS_EMAIL,
   ChangePasswordEmailDto,
-  RegisterDto, SignUpDto,
+  RegisterDto,
+  SignUpDto,
 } from './auth.dto';
 import { CreateUsersDto } from './../api/acl/users/users.dto';
 import { TenancyConfigService } from './../api/tenancy_config/tenancy_config.service';
@@ -147,12 +148,13 @@ export class AuthService {
       });
   }
 
-  async loginEmail(data: SignUpDto) {
+  async loginEmail(data: any) {
     return new Promise(async (resolve) => {
       const dataUser = await this.usersService.findByEmail(data.email);
       if (dataUser) {
         const dataToken = await this.createTokenLogin(dataUser, {
           email: data.email,
+          secret: data.secret,
         });
         resolve({ ...dataToken, new: false });
       } else {
@@ -165,6 +167,7 @@ export class AuthService {
         const user = await this.usersService.create(dataNew);
         const dataToken = await this.createTokenLogin(user, {
           email: data.email,
+          secret: data.secret,
         });
         resolve({ ...dataToken, new: true });
       }
@@ -175,7 +178,7 @@ export class AuthService {
     if (user) {
       const payload = { ...data };
       const token = await this.tokenService
-        .createToken(payload, DEFAULT_TIME_TOKEN_AUTH)
+        .createTokenKey(payload, DEFAULT_TIME_TOKEN_AUTH, data.secret)
         .then((res) => res);
       return { payload, token };
     } else {
