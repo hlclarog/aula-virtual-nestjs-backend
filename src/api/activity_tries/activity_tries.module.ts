@@ -13,6 +13,7 @@ import { ActivityRelateElementsModule } from '../activity_relate_elements/activi
 import { ActivityCompleteTextsModule } from '../activity_complete_texts/activity_complete_texts.module';
 import { ActivityIdentifyWordsModule } from '../activity_identify_words/activity_identify_words.module';
 import { PointsUserLogModule } from '../points_user_log/points_user_log.module';
+import { LessonsModule } from '../lessons/lessons.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { PointsUserLogModule } from '../points_user_log/points_user_log.module';
     ActivityCompleteTextsModule,
     ActivityIdentifyWordsModule,
     PointsUserLogModule,
+    LessonsModule,
   ],
   controllers: [ActivityTriesController],
   providers: [
