@@ -23,6 +23,16 @@ export enum TypesReasonsPoints {
   DOWNLOAD_CERTIFICATE = 14,
 }
 
+export interface PointsGerenerated {
+  user_id: number;
+  points: number;
+  lives: number;
+  generated: {
+    points: number;
+    lives: number;
+  };
+}
+
 export class CreatePointsUserLogDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly point_reason_id: number;

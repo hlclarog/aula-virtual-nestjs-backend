@@ -14,7 +14,6 @@ export class GoogleService {
   constructor(private authService: AuthService) {}
 
   createStrategy() {
-    console.log(this.tenancyInfo);
     const tenancyOauth2Credential = this.tenancyInfo.tenancyOauth2Credentials.find(
       (f) => f.integration_type_id === 1,
     );

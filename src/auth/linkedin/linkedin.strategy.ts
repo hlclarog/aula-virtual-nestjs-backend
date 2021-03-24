@@ -34,7 +34,6 @@ export class LinkedinStrategy extends PassportStrategy(Strategy, 'linkedin') {
       accessToken,
       origin: 'linkedin',
     };
-    console.log(user);
     process.nextTick(function () {
       // To keep the example simple, the user's LinkedIn profile is returned to
       // represent the logged-in user. In a typical application, you would want

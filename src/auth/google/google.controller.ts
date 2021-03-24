@@ -21,7 +21,6 @@ export class GoogleController {
   ) {
     const strategy = await this.googleService.createStrategy();
     authenticate(strategy, (err, user) => {
-      console.log(user);
       if (err) {
         return next(err);
       }

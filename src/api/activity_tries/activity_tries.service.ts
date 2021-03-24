@@ -20,7 +20,10 @@ import { ActivityRelateElementsService } from '../activity_relate_elements/activ
 import { ActivityCompleteTextsService } from '../activity_complete_texts/activity_complete_texts.service';
 import { ActivityIdentifyWordsService } from '../activity_identify_words/activity_identify_words.service';
 import { PointsUserLogService } from '../points_user_log/points_user_log.service';
-import { TypesReasonsPoints } from '../points_user_log/points_user_log.dto';
+import {
+  PointsGerenerated,
+  TypesReasonsPoints,
+} from '../points_user_log/points_user_log.dto';
 import { LessonsService } from '../lessons/lessons.service';
 import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
 import { getActualDate } from './../../utils/date';
@@ -71,10 +74,12 @@ export class ActivityTriesService extends BaseService<
 
   async create(createDto: CreateIntentUserDto): Promise<any> {
     let passed = false;
+    let points: PointsGerenerated = null;
     let activity_try_user = await this.repositoryTryUsers.findOne({
       lesson_activity_id: createDto.lesson_activity_id,
       user_id: this.infoUser.id,
     });
+    let terminated = false;
     const lesson_activity = await this.lessonActivitiesService.findOne(
       createDto.lesson_activity_id,
     );
@@ -115,6 +120,11 @@ export class ActivityTriesService extends BaseService<
         );
         break;
     }
+    if (activity_try_user) {
+      if (activity_try_user.end) {
+        terminated = true;
+      }
+    }
     if (!activity_try_user) {
       activity_try_user = await this.activityTryUsersService.create({
         lesson_activity_id: createDto.lesson_activity_id,
@@ -127,8 +137,9 @@ export class ActivityTriesService extends BaseService<
       await this.activityTryUsersService.update(activity_try_user.id, {
         end: createDto.date,
       });
+      activity_try_user.end = createDto.date;
     }
-    if (!activity_try_user.end) {
+    if (!terminated) {
       const register: Partial<ActivityTries> = {
         passed,
         answer: createDto.answer,
@@ -137,7 +148,7 @@ export class ActivityTriesService extends BaseService<
         active: true,
       };
       if (passed) {
-        await this.pointsUserLogService.generatePoints(
+        points = await this.pointsUserLogService.generatePoints(
           this.infoUser.id,
           TypesReasonsPoints.ACTIVITY_END,
           lesson_activity.lesson.course_unit.course_id,
@@ -145,7 +156,7 @@ export class ActivityTriesService extends BaseService<
           createDto.lesson_activity_id,
         );
       } else {
-        await this.pointsUserLogService.updatePointsUser(
+        points = await this.pointsUserLogService.updatePointsUser(
           this.infoUser.id,
           0,
           -1,
@@ -169,12 +180,13 @@ export class ActivityTriesService extends BaseService<
           });
         }
       }
-      return result;
+      return { ...result, points_generated: points ? points.generated : null };
     } else {
-      return await this.repository.findOne({
+      const result = await this.repository.findOne({
         passed: true,
         activity_try_user_id: activity_try_user.id,
       });
+      return { ...result, points_generated: points };
     }
   }
 }

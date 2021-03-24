@@ -5,14 +5,17 @@ import {
 } from '@nestjs/common';
 import {
   CreateLessonTryUsersDto,
-  ACTIVITY_TRY_USERS_PROVIDER,
+  LESSON_TRY_USERS_PROVIDER,
   EndLessonTryUsersDto,
 } from './lesson_try_users.dto';
 import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
 import { LessonTryUsers } from './lesson_try_users.entity';
 import { PointsUserLogService } from '../points_user_log/points_user_log.service';
-import { TypesReasonsPoints } from '../points_user_log/points_user_log.dto';
+import {
+  PointsGerenerated,
+  TypesReasonsPoints,
+} from '../points_user_log/points_user_log.dto';
 import { TypesLesson } from '../lesson_types/lesson_types.dto';
 
 @Injectable()
@@ -24,7 +27,7 @@ export class LessonTryUsersService extends BaseService<
   constructor(private pointsUserLogService: PointsUserLogService) {
     super();
   }
-  @Inject(ACTIVITY_TRY_USERS_PROVIDER)
+  @Inject(LESSON_TRY_USERS_PROVIDER)
   repository: BaseRepo<LessonTryUsers>;
 
   async findAll(): Promise<LessonTryUsers[]> {
@@ -133,17 +136,18 @@ export class LessonTryUsersService extends BaseService<
     } else {
       const result = await this.repository.save(createDto);
       actual = await this.getActualTry(createDto.user_id, createDto.lesson_id);
-      await this.pointsUserLogService.generatePoints(
+      const points = await this.pointsUserLogService.generatePoints(
         createDto.user_id,
         TypesReasonsPoints.LESSON_INIT,
         actual.lesson.course_unit.course_id,
         createDto.lesson_id,
       );
-      return result;
+      return { ...result, points_generated: points };
     }
   }
 
   async end(updateDto: EndLessonTryUsersDto) {
+    let points: PointsGerenerated = null;
     const actual = await this.getActualTry(
       updateDto.user_id,
       updateDto.lesson_id,
@@ -163,7 +167,7 @@ export class LessonTryUsersService extends BaseService<
             break;
         }
         if (reason) {
-          await this.pointsUserLogService.generatePoints(
+          points = await this.pointsUserLogService.generatePoints(
             updateDto.user_id,
             reason,
             actual.lesson.course_unit.course_id,
@@ -171,7 +175,8 @@ export class LessonTryUsersService extends BaseService<
           );
         }
       }
-      return await this.repository.update(actual.id, updateDto);
+      const result = await this.repository.update(actual.id, updateDto);
+      return { ...result, points: points ? points.generated : null };
     } else {
       throw new InternalServerErrorException('LESSON NOT INITIALIZED');
     }
