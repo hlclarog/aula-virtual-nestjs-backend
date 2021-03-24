@@ -1,6 +1,5 @@
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
-import { ConfigService } from '../../config/config.service';
 import {
   INFO_TENANCY_PROVIDER,
   InfoTenancyDomain,
@@ -12,12 +11,10 @@ import { AuthService } from '../auth.service';
 export class GoogleService {
   @Inject(INFO_TENANCY_PROVIDER) tenancyInfo: InfoTenancyDomain;
 
-  constructor(
-    private configService: ConfigService,
-    private authService: AuthService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
   createStrategy() {
+    console.log(this.tenancyInfo);
     const tenancyOauth2Credential = this.tenancyInfo.tenancyOauth2Credentials.find(
       (f) => f.integration_type_id === 1,
     );
@@ -41,6 +38,7 @@ export class GoogleService {
           picture: photos[0].value,
           accessToken,
           origin: 'google',
+          frontEndUrl: this.tenancyInfo.domain.description,
         };
 
         serializeUser((user, done) => {
