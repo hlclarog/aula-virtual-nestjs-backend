@@ -1,7 +1,11 @@
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { BaseController } from '../../base/base.controller';
 import { Lessons } from './lessons.entity';
-import { CreateLessonsDto, UpdateLessonsDto } from './lessons.dto';
+import {
+  CreateLessonsDto,
+  LESSON_PERMISSIONS,
+  UpdateLessonsDto,
+} from './lessons.dto';
 import { Body, Delete, Get, Inject, Param, Post, Put } from '@nestjs/common';
 import { LessonsService } from './lessons.service';
 import {
@@ -10,6 +14,7 @@ import {
 } from './../../utils/providers/info-user.module';
 import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
 import { getActualDate } from './../../utils/date';
+import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
 
 @ControllerApi({ name: 'lessons' })
 export class LessonsController extends BaseController<
@@ -20,6 +25,7 @@ export class LessonsController extends BaseController<
   constructor(
     private lessonsService: LessonsService,
     private lesson_try_usersService: LessonTryUsersService,
+    private authorizationsUserService: AuthorizationsUserService,
     @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
   ) {
     super(lessonsService);
@@ -77,6 +83,26 @@ export class LessonsController extends BaseController<
       this.infoUser.id,
     );
     return { data: result };
+  }
+
+  @Get('course_progress/:course_id/:user_id')
+  async findProgessByUser(
+    @Param('course_id') course_id: number,
+    @Param('user_id') user_id: number,
+  ) {
+    try {
+      await this.authorizationsUserService.accesAction(
+        [LESSON_PERMISSIONS.GET_ALL_PROGRESS],
+        this.infoUser.id,
+      );
+    } catch (error) {
+      user_id = this.infoUser.id;
+    }
+    const result = await this.lessonsService.findProgessByCourse(
+      [course_id],
+      user_id,
+    );
+    return { data: result.length > 0 ? result[0] : {} };
   }
 
   @Post('change/order')

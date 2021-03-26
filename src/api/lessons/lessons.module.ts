@@ -8,9 +8,16 @@ import { LessonsService } from './lessons.service';
 import { AwsModule } from './../../aws/aws.module';
 import { LessonTryUsersModule } from '../lesson_try_users/lesson_try_users.module';
 import { CoursesModule } from '../courses/courses.module';
+import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
+import { UsersRolesModule } from '../acl/users_roles/users_roles.module';
 
 @Module({
-  imports: [forwardRef(() => CoursesModule), LessonTryUsersModule, AwsModule],
+  imports: [
+    forwardRef(() => CoursesModule),
+    LessonTryUsersModule,
+    AwsModule,
+    UsersRolesModule,
+  ],
   controllers: [LessonsController],
   providers: [
     {
@@ -19,6 +26,7 @@ import { CoursesModule } from '../courses/courses.module';
       useFactory: (connection: Connection) => connection.getRepository(Lessons),
     },
     LessonsService,
+    AuthorizationsUserService,
   ],
   exports: [COURSE_UNITS_PROVIDER, LessonsService],
 })

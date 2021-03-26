@@ -1,4 +1,5 @@
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import { UsersRolesService } from './../../api/acl/users_roles/users_roles.service';
 import {
   INFO_USER_PROVIDER,
   InfoUserProvider,
@@ -6,15 +7,28 @@ import {
 
 @Injectable()
 export class AuthorizationsUserService {
+  constructor(private usersRolesService: UsersRolesService) {}
   @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider;
 
+  public async accesActionUserMatch(
+    requiredPermissions: string[],
+    idUserPermitted: number,
+  ) {
+    const match = this.accesAction(requiredPermissions, this.infoUser.id);
+    if (!match && idUserPermitted != this.infoUser.id) {
+      throw new ForbiddenException();
+    }
+  }
   public async accesAction(
     requiredPermissions: string[],
     idUserPermitted: number,
   ) {
     let match = false;
     let permissions = [];
-    this.infoUser.roles.map((item) => {
+    const infoRoles = await this.usersRolesService.getInfoRolUser(
+      idUserPermitted,
+    );
+    infoRoles.map((item) => {
       permissions = permissions.concat(
         item.rol.roles_permissions.map(
           (roles_permissions: any) => roles_permissions.permission.name,
@@ -32,8 +46,9 @@ export class AuthorizationsUserService {
       }
       i++;
     }
-    if (!match && idUserPermitted != this.infoUser.id) {
+    if (!match) {
       throw new ForbiddenException();
     }
+    return match;
   }
 }

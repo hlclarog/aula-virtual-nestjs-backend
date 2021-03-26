@@ -11,6 +11,10 @@ import { ApiProperty } from '@nestjs/swagger';
 export const COURSE_UNITS_PROVIDER = 'COURSE_UNITS_REPOSITORY';
 export const COURSE_UNITS_ENTITY = 'lessons';
 
+export enum LESSON_PERMISSIONS {
+  GET_ALL_PROGRESS = 'get-all-progress-students',
+}
+
 export class CreateLessonsDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson_type_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_unit_id: number;
