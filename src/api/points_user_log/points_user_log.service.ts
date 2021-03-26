@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   BuyLivesDto,
   CreatePointsUserLogDto,
+  FilterPointsUserLogDto,
   PointsGerenerated,
   POINTS_USER_LOG_PROVIDER,
   TypesReasonsPoints,
@@ -38,6 +39,42 @@ export class PointsUserLogService {
       ])
       .leftJoin('log.point_reason', 'point_reason')
       .where('log.user_id = :user_id', { user_id })
+      .getMany();
+  }
+
+  async findFiltered(
+    filters: FilterPointsUserLogDto,
+  ): Promise<PointReasonsValue[]> {
+    return await this.repository
+      .createQueryBuilder('log')
+      .select([
+        'log.id',
+        'log.user_id',
+        'log.point_reason_id',
+        'log.points',
+        'point_reason.id',
+        'point_reason.description',
+      ])
+      .leftJoin('log.point_reason', 'point_reason')
+      .where(
+        `
+          log.user_id = COALESCE(:user_id, log.user_id) and
+          log.point_reason_id = COALESCE(:point_reason_id, log.point_reason_id) and
+          COALESCE(log.course_id, 1) = COALESCE(:course_id,COALESCE(log.course_id, 1)) and
+          COALESCE(log.lesson_id, 1) = COALESCE(:lesson_id,COALESCE(log.lesson_id, 1)) and
+          COALESCE(log.activity_id, 1) = COALESCE(:activity_id,COALESCE(log.activity_id, 1)) and
+          log.created_at BETWEEN COALESCE(:begin, log.created_at) AND COALESCE(:end, log.created_at)
+        `,
+        {
+          user_id: filters.user_id,
+          point_reason_id: filters.point_reason_id,
+          course_id: filters.course_id,
+          lesson_id: filters.lesson_id,
+          activity_id: filters.activity_id,
+          begin: filters.begin,
+          end: filters.end,
+        },
+      )
       .getMany();
   }
 

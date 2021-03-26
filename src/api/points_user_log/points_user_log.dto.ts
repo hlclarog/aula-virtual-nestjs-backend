@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { CreateBaseDto } from '../../base/base.dto';
 
 export const POINTS_USER_LOG_PROVIDER = 'POINTS_USER_LOG_REPOSITORY';
@@ -21,6 +21,10 @@ export enum TypesReasonsPoints {
   COURSE_END = 12,
   SHARE_CONTENT = 13,
   DOWNLOAD_CERTIFICATE = 14,
+}
+
+export enum POINTS_USER_LOG_PERMISSIONS {
+  GET_ALL_POINTS = 'get-all-points-students',
 }
 
 export interface PointsGerenerated {
@@ -53,6 +57,37 @@ export class CreatePointsUserLogDto extends CreateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly lives?: number;
+}
+
+export class FilterPointsUserLogDto {
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  user_id?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly point_reason_id?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly course_id?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly lesson_id?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly activity_id?: number;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly begin?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly end?: string;
 }
 
 export class BuyLivesDto {
