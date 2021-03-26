@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   BuyLivesDto,
   CreatePointsUserLogDto,
+  PointsGerenerated,
   POINTS_USER_LOG_PROVIDER,
   TypesReasonsPoints,
 } from './points_user_log.dto';
@@ -76,7 +77,11 @@ export class PointsUserLogService {
     return await this.repository.softDelete(id);
   }
 
-  async updatePointsUser(user_id: number, points: number, lives?: number) {
+  async updatePointsUser(
+    user_id: number,
+    points: number,
+    lives?: number,
+  ): Promise<PointsGerenerated> {
     const user = await this.repository_users.findOne(user_id);
     const new_points = Number(user.points) + (points ? Number(points) : 0);
     const new_lives = Number(user.lives) + (lives ? Number(lives) : 0);
@@ -96,6 +101,10 @@ export class PointsUserLogService {
       user_id,
       points: new_points,
       lives: new_lives,
+      generated: {
+        points,
+        lives,
+      },
     };
   }
 

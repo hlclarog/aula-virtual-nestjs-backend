@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
   CreateTenancyOauth2CredentialsDto,
+  TENANCY_OAUTH2_CREDENTIALS_PROVIDER,
   UpdateTenancyOauth2CredentialsDto,
-  TENANCY_DOMAINS_PROVIDER,
 } from './tenancy_oauth2_credentials.dto';
 import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
@@ -14,7 +14,7 @@ export class TenancyOauth2CredentialsService extends BaseService<
   CreateTenancyOauth2CredentialsDto,
   UpdateTenancyOauth2CredentialsDto
 > {
-  @Inject(TENANCY_DOMAINS_PROVIDER)
+  @Inject(TENANCY_OAUTH2_CREDENTIALS_PROVIDER)
   repository: BaseRepo<TenancyOauth2Credentials>;
 
   async findByTenancy(id: number): Promise<TenancyOauth2Credentials[]> {
@@ -23,15 +23,18 @@ export class TenancyOauth2CredentialsService extends BaseService<
       .select([
         'credentials.id',
         'credentials.description',
-        'credentials.type',
+        'credentials.integration_type_id',
         'credentials.client_id',
         'credentials.client_secret',
         'credentials.scope',
         'credentials.private_key',
         'credentials.public_key',
         'credentials.tenancy_id',
+        'integration_type.id',
+        'integration_type.description',
       ])
-      .where('credentials.tenancy_id: id', { id })
+      .leftJoin('credentials.integration_type', 'integration_type')
+      .where('credentials.tenancy_id = :id', { id })
       .getMany();
   }
 }

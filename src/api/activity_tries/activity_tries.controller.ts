@@ -1,4 +1,4 @@
-import { Body, Delete, Get, Inject, Param, Post } from '@nestjs/common';
+import { Body, Delete, Get, Param, Post } from '@nestjs/common';
 import { ActivityTriesService } from './activity_tries.service';
 import { CreateIntentUserDto } from './activity_tries.dto';
 import { BaseController } from '../../base/base.controller';
@@ -33,7 +33,8 @@ export class ActivityTriesController extends BaseController<
 
   @Post()
   async post(@Body() createDto: CreateIntentUserDto) {
-    return await this.activity_triesService.create(createDto);
+    const result = await this.activity_triesService.create(createDto);
+    return { data: result };
   }
 
   @Delete(':id')

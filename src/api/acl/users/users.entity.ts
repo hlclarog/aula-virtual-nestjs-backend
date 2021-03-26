@@ -149,4 +149,7 @@ export class Users extends Base {
 
   @OneToMany(() => PointsUserLog, (points_user_log) => points_user_log.user)
   points_user_log: PointsUserLog[];
+
+  @Column({ type: 'text', default: 'local' })
+  origin: string;
 }

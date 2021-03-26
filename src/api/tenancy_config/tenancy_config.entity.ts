@@ -69,4 +69,7 @@ export class TenancyConfig extends Base {
 
   @Column({ type: 'integer' })
   bar_expected_points: number;
+
+  @Column('boolean', { default: false })
+  unenroll_reset: boolean;
 }

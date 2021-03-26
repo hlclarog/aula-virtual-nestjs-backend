@@ -1,12 +1,20 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { InfoUserModule } from './../utils/providers/info-user.module';
-import { UsersModule } from './../api/acl/users/users.module';
-import { TokenService } from './../utils/services/token.service';
+import { InfoUserModule } from '../utils/providers/info-user.module';
+import { UsersModule } from '../api/acl/users/users.module';
+import { TokenService } from '../utils/services/token.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { TenancyConfigModule } from './../api/tenancy_config/tenancy_config.module';
-import { PointsUserLogModule } from './../api/points_user_log/points_user_log.module';
+import { TenancyConfigModule } from '../api/tenancy_config/tenancy_config.module';
+import { PointsUserLogModule } from '../api/points_user_log/points_user_log.module';
+import { GoogleController } from './google/google.controller';
+import { GoogleService } from './google/google.service';
+import { PassportModule } from '@nestjs/passport';
+import { GoogleStrategy } from './google/google.strategy';
+import { LinkedinController } from './linkedin/linkedin.controller';
+import { LinkedinStrategy } from './linkedin/linkedin.strategy';
+import { FacebookController } from './facebook/facebook.controller';
+import { FacebookStrategy } from './facebook/facebook.strategy';
 
 @Module({
   imports: [
@@ -15,8 +23,21 @@ import { PointsUserLogModule } from './../api/points_user_log/points_user_log.mo
     JwtModule.register({}),
     InfoUserModule.forRoot(),
     PointsUserLogModule,
+    PassportModule.register({ session: true }),
   ],
-  controllers: [AuthController],
-  providers: [TokenService, AuthService],
+  controllers: [
+    AuthController,
+    GoogleController,
+    LinkedinController,
+    FacebookController,
+  ],
+  providers: [
+    TokenService,
+    AuthService,
+    GoogleService,
+    GoogleStrategy,
+    LinkedinStrategy,
+    FacebookStrategy,
+  ],
 })
 export class AuthModule {}
