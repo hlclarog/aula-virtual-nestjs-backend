@@ -19,6 +19,14 @@ export class WebsocketController {
     };
   }
 
+  @Get('/test-socket-back')
+  @Render('test-socket-back')
+  getTestSocketBack() {
+    return {
+      host: `${this.configService.urlBackend()}:${this.configService.portSocket()}`,
+    };
+  }
+
   @Post('emit-event')
   public async emitEvent(@Body() payload: any) {
     await this.gatewayService.sendEvent(payload.event, payload.data);

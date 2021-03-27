@@ -56,35 +56,6 @@
                     socket.on('subscribe', (data) => {
                         //socket.join(data);
                         setLog(`your user is: ${data} <br/>`);
-                        socket.emit('suscribeme_to_comments_lesson', 21);
-                    });
-                    socket.on('new_tenancy', (data) => {
-                        setLog(`new_tenancy ${data} <br/>`);
-                    });
-                    socket.on('new_comment_lesson', (data) => {
-                        setLog(`new_comment_lesson ${data} <br/>`);
-                    });
-                    socket.on('status_register', (data) => {
-                        setLog(`status_register ${data} <br/>`);
-                    });
-                    socket.on('status_subdomain', (data) => {
-                        setLog(`status_subdomain ${data} <br/>`);
-                    });
-                    socket.on('status_virtualhost', (data) => {
-                        setLog(`status_virtualhost ${data} <br/>`);
-                    });
-                    socket.on('status_schema', (data) => {
-                        setLog(`status_schema ${data} <br/>`);
-                    });
-                    socket.on('status_migrations', (data) => {
-                        setLog(`status_migrations ${data} <br/>`);
-                    });
-                    socket.on('status_seeders', (data) => {
-                        setLog(`status_seeders ${data} <br/>`);
-                    });
-                    socket.on('change_me_gamification', (data) => {
-                        console.log(data);
-                        setLog(`change me gamification <br/> ${JSON.stringify(data)} <br/>`);
                     });
                     socket.on('test_only_me', (data) => {
                         setLog(`test_only_me ${data} <br/>`);
