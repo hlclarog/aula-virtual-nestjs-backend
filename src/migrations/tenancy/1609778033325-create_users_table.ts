@@ -55,12 +55,6 @@ export class createUsersTable1609778033325 implements MigrationInterface {
             default: 0,
           },
           {
-            name: 'origin',
-            type: 'text',
-            default: 'local',
-            isNullable: true,
-          },
-          {
             name: 'active',
             type: 'bool',
             default: true,

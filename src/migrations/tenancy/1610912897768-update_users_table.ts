@@ -103,6 +103,11 @@ export class updateUsersTable1610912897768 implements MigrationInterface {
         type: 'date',
         isNullable: true,
       }),
+      new TableColumn({
+        name: 'origin',
+        type: 'varchar',
+        isNullable: true,
+      }),
     ]);
 
     await queryRunner.createForeignKey(
