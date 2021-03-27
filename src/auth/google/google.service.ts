@@ -71,7 +71,7 @@ export class GoogleService {
     if (subDomain === 'localhost') {
       payload = `${tenancy.schema}.${tenancyDomain.description}`;
     } else {
-      payload = tenancyDomain.description;
+      payload = `${tenancy.schema}.${tenancyDomain.description}`;
     }
     const secret = await this.cryptoService.hashSecret(
       payload,
