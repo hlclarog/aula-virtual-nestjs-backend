@@ -2,24 +2,29 @@ import { Controller, Get, Next, Param, Req, Res } from '@nestjs/common';
 import { GoogleService } from './google.service';
 import { authenticate } from 'passport';
 
-@Controller('auth/google')
+@Controller('auth/google/')
 export class GoogleController {
   constructor(private googleService: GoogleService) {}
 
-  @Get()
-  async googleAuth(@Req() req, @Res() res, @Next() next) {
-    const strategy = await this.googleService.createStrategy();
+  @Get(':hostname')
+  async googleAuth(
+    @Req() req,
+    @Res() res,
+    @Next() next,
+    @Param('hostname') hostname: string,
+  ) {
+    const strategy = await this.googleService.createStrategy(hostname);
     authenticate(strategy, {})(req, res, next);
   }
 
-  @Get(':tenancy/callback')
+  @Get(':hostname/callback')
   async googleRedirect(
     @Req() req,
     @Res() res,
     @Next() next,
-    @Param('tenancy') tenancy: string,
+    @Param('hostname') hostname: string,
   ) {
-    const strategy = await this.googleService.createStrategy();
+    const strategy = await this.googleService.createStrategy(hostname);
     authenticate(strategy, (err, user) => {
       if (err) {
         return next(err);
@@ -31,8 +36,8 @@ export class GoogleController {
         if (err) {
           return next(err);
         }
-        const auth: any = await this.googleService.googleLogin(user);
-        let url = '';
+        const auth: any = await this.googleService.googleLogin(user, hostname);
+        let url: string;
         if (user.frontEndUrl == 'localhost') {
           url = `${user.frontEndUrl}:4200`;
         } else {

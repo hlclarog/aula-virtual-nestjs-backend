@@ -15,6 +15,7 @@ import { LinkedinController } from './linkedin/linkedin.controller';
 import { LinkedinStrategy } from './linkedin/linkedin.strategy';
 import { FacebookController } from './facebook/facebook.controller';
 import { FacebookStrategy } from './facebook/facebook.strategy';
+import { CryptoService } from '../utils/services/crypto.service';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { FacebookStrategy } from './facebook/facebook.strategy';
     GoogleStrategy,
     LinkedinStrategy,
     FacebookStrategy,
+    CryptoService,
   ],
 })
 export class AuthModule {}
