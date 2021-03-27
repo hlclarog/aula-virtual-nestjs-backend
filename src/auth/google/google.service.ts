@@ -22,10 +22,13 @@ export class GoogleService {
     private cryptoService: CryptoService,
   ) {}
 
-  async createStrategy(hostname) {
+  async createStrategy(subDomain) {
     const tenancyDomain = await this.connection
       .getRepository(TenancyDomains)
-      .findOne({ description: hostname });
+      .findOne({
+        description:
+          subDomain === 'localhost' ? subDomain : `${subDomain}.omarenco.com`,
+      });
 
     const tenancy = await this.connection
       .getRepository(Tenancies)
@@ -65,7 +68,7 @@ export class GoogleService {
 
     let payload: string;
 
-    if (hostname === 'localhost') {
+    if (subDomain === 'localhost') {
       payload = `${tenancy.schema}.${tenancyDomain.description}`;
     } else {
       payload = tenancyDomain.description;
@@ -96,7 +99,7 @@ export class GoogleService {
           accessToken,
           origin: 'google',
           secret: secret,
-          frontEndUrl: hostname,
+          frontEndUrl: tenancyDomain.description,
         };
 
         serializeUser((user, done) => {

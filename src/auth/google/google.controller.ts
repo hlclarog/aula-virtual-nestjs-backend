@@ -6,25 +6,25 @@ import { authenticate } from 'passport';
 export class GoogleController {
   constructor(private googleService: GoogleService) {}
 
-  @Get(':hostname')
+  @Get(':subDomain')
   async googleAuth(
     @Req() req,
     @Res() res,
     @Next() next,
-    @Param('hostname') hostname: string,
+    @Param('subDomain') subDomain: string,
   ) {
-    const strategy = await this.googleService.createStrategy(hostname);
+    const strategy = await this.googleService.createStrategy(subDomain);
     authenticate(strategy, {})(req, res, next);
   }
 
-  @Get(':hostname/callback')
+  @Get(':subDomain/callback')
   async googleRedirect(
     @Req() req,
     @Res() res,
     @Next() next,
-    @Param('hostname') hostname: string,
+    @Param('subDomain') subDomain: string,
   ) {
-    const strategy = await this.googleService.createStrategy(hostname);
+    const strategy = await this.googleService.createStrategy(subDomain);
     authenticate(strategy, (err, user) => {
       if (err) {
         return next(err);
@@ -36,7 +36,10 @@ export class GoogleController {
         if (err) {
           return next(err);
         }
-        const auth: any = await this.googleService.googleLogin(user, hostname);
+        const auth: any = await this.googleService.googleLogin(
+          user,
+          user.frontEndUrl,
+        );
         let url: string;
         if (user.frontEndUrl == 'localhost') {
           url = `${user.frontEndUrl}:4200`;
