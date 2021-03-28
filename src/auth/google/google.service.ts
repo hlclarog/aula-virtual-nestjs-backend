@@ -20,7 +20,6 @@ export class GoogleService {
   @Inject(DATABASE_MANAGER_PROVIDER) connection: Connection;
 
   constructor(
-    private authService: AuthService,
     private configService: ConfigService,
     private cryptoService: CryptoService,
     private tokenService: TokenService,
