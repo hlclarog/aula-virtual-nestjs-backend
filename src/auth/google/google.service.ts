@@ -9,7 +9,6 @@ import { Tenancies } from '../../api/tenancies/tenancies.entity';
 import { TenancyOauth2Credentials } from '../../api/tenancy_oauth2_credentials/tenancy_oauth2_credentials.entity';
 import { TenancyDomains } from '../../api/tenancy_domains/tenancy_domains.entity';
 import { CryptoService } from '../../utils/services/crypto.service';
-import { INFO_TENANCY_PROVIDER } from '../../utils/providers/info-tenancy.module';
 
 @Injectable()
 export class GoogleService {
