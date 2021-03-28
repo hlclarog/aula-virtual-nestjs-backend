@@ -16,6 +16,7 @@ import { LinkedinStrategy } from './linkedin/linkedin.strategy';
 import { FacebookController } from './facebook/facebook.controller';
 import { FacebookStrategy } from './facebook/facebook.strategy';
 import { CryptoService } from '../utils/services/crypto.service';
+import { FacebookService } from './facebook/facebook.service';
 
 @Module({
   imports: [
@@ -36,9 +37,9 @@ import { CryptoService } from '../utils/services/crypto.service';
     TokenService,
     AuthService,
     GoogleService,
+    FacebookService,
     GoogleStrategy,
     LinkedinStrategy,
-    FacebookStrategy,
     CryptoService,
   ],
 })
