@@ -14,7 +14,6 @@ import { INFO_TENANCY_PROVIDER } from '../../utils/providers/info-tenancy.module
 @Injectable()
 export class GoogleService {
   @Inject(DATABASE_MANAGER_PROVIDER) connection: Connection;
-  @Inject(INFO_TENANCY_PROVIDER) tenancyInfo: Connection;
 
   constructor(
     private authService: AuthService,
