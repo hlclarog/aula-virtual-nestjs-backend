@@ -20,6 +20,10 @@
                         <label for="host">CANAL</label>
                         <input type="text" class="form-control inut-sm" id="channel">
                     </div>
+                    <div class="col-md-12 mt-1">
+                        <label for="host">TOKEN</label>
+                        <input type="text" class="form-control inut-sm" id="token">
+                    </div>
                 </div>
             </div>
             <div class="col-md-12 mt-4">
@@ -40,10 +44,18 @@
         $(function () {
             document.getElementById('connectSocket').addEventListener('click', () =>{
                 const url = document.getElementById('channel').value;
+                const token = document.getElementById('token').value;
                 if(url) {
                     document.getElementById('channel').disabled = true;
+                    document.getElementById('token').disabled = true;
                     document.getElementById('connectSocket').disabled = true;
-                    const socket = io('{{host}}/' + url);
+                    const pc = '{{host}}/' + url;
+                    const socket = io(pc, {
+                        transports: ['websocket'],
+                        query: { 
+                            'Authorization': token,
+                        },
+                    });
                     socket.on('connection', socket => {
                         console.log('connect')
                     });

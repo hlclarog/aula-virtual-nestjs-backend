@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { InfoUserModule } from '../utils/providers/info-user.module';
 import { UsersModule } from '../api/acl/users/users.module';
@@ -22,7 +22,7 @@ import { FacebookStrategy } from './facebook/facebook.strategy';
     TenancyConfigModule,
     JwtModule.register({}),
     InfoUserModule.forRoot(),
-    PointsUserLogModule,
+    forwardRef(() => PointsUserLogModule),
     PassportModule.register({ session: true }),
   ],
   controllers: [
