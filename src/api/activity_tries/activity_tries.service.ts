@@ -182,11 +182,11 @@ export class ActivityTriesService extends BaseService<
       }
       return { ...result, points_generated: points ? points.generated : null };
     } else {
-      const result = await this.repository.findOne({
-        passed: true,
-        activity_try_user_id: activity_try_user.id,
-      });
-      return { ...result, points_generated: points };
+      // const result = await this.repository.findOne({
+      //   passed: true,
+      //   activity_try_user_id: activity_try_user.id,
+      // });
+      return { passed, points_generated: points };
     }
   }
 }
