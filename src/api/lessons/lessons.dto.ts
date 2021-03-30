@@ -93,3 +93,8 @@ export class UpdateLessonsDto extends UpdateBaseDto {
   @IsOptional()
   readonly visible?: boolean;
 }
+
+export class CopyLessonsDto {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_unit_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly lessons_id: number[];
+}

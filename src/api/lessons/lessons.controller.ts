@@ -2,6 +2,7 @@ import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { BaseController } from '../../base/base.controller';
 import { Lessons } from './lessons.entity';
 import {
+  CopyLessonsDto,
   CreateLessonsDto,
   LESSON_PERMISSIONS,
   UpdateLessonsDto,
@@ -15,6 +16,7 @@ import {
 import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
 import { getActualDate } from './../../utils/date';
 import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
+import { COURSES_PERMISSIONS } from '../courses/courses.dto';
 
 @ControllerApi({ name: 'lessons' })
 export class LessonsController extends BaseController<
@@ -108,6 +110,32 @@ export class LessonsController extends BaseController<
   @Post('change/order')
   async changeOrder(@Body() body: any) {
     const result = await this.lessonsService.changeOrder(body);
+    return { data: result };
+  }
+
+  @Get('copy/search/:name')
+  async searchLessonsCopyDto(@Param('name') name: string) {
+    let all = false;
+    try {
+      await this.authorizationsUserService.accesAction(
+        [COURSES_PERMISSIONS.MANAGER],
+        this.infoUser.id,
+      );
+      all = true;
+    } catch (error) {
+      all = false;
+    }
+    const result = await this.lessonsService.searchLessonsCopy(
+      name,
+      this.infoUser.id,
+      all,
+    );
+    return { data: result };
+  }
+
+  @Post('copy')
+  async copyLessonsDto(@Body() body: CopyLessonsDto) {
+    const result = await this.lessonsService.copyLessons(body);
     return { data: result };
   }
 }

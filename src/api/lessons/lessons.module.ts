@@ -10,13 +10,21 @@ import { LessonTryUsersModule } from '../lesson_try_users/lesson_try_users.modul
 import { CoursesModule } from '../courses/courses.module';
 import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
 import { UsersRolesModule } from '../acl/users_roles/users_roles.module';
+import { LessonDetailsModule } from '../lesson_details/lesson_details.module';
+import { LessonActivitiesModule } from '../lesson_activities/lesson_activities.module';
+import { LessonScormsModule } from '../lesson_scorms/lesson_scorms.module';
+import { LessonScormResourcesModule } from '../lesson_scorm_resources/lesson_scorm_resources.module';
 
 @Module({
   imports: [
     forwardRef(() => CoursesModule),
     LessonTryUsersModule,
+    LessonDetailsModule,
+    LessonActivitiesModule,
     AwsModule,
     UsersRolesModule,
+    LessonScormsModule,
+    LessonScormResourcesModule,
   ],
   controllers: [LessonsController],
   providers: [
