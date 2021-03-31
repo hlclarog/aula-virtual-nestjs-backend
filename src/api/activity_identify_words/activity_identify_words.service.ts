@@ -50,4 +50,24 @@ export class ActivityIdentifyWordsService extends BaseService<
     const question = await this.findOne(detail_id);
     return question.word === answer;
   }
+
+  async getByDetailId(detail_id: number) {
+    return await this.repository
+      .createQueryBuilder('activity')
+      .select([
+        'activity.id',
+        'activity.statement',
+        'activity.observation',
+        'activity.word',
+        'activity.picture',
+        'activity.video',
+        'activity.audio',
+        'activity.resource_content',
+        'activity.resource_type_id',
+      ])
+      .where('activity.id = :detail_id', {
+        detail_id,
+      })
+      .getOne();
+  }
 }
