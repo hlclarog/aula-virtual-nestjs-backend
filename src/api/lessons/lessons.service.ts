@@ -16,7 +16,10 @@ import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.serv
 import { COURSES_PROVIDER } from '../courses/courses.dto';
 import { Courses } from '../courses/courses.entity';
 import { LessonDetailsService } from '../lesson_details/lesson_details.service';
-import { LessonActivitiesService } from '../lesson_activities/lesson_activities.service';
+import {
+  EnumActivityType,
+  LessonActivitiesService,
+} from '../lesson_activities/lesson_activities.service';
 import { LessonActivities } from '../lesson_activities/lesson_activities.entity';
 import { LessonDetails } from '../lesson_details/lesson_details.entity';
 import { TypesLesson } from '../lesson_types/lesson_types.dto';
@@ -24,6 +27,25 @@ import { LessonScorms } from '../lesson_scorms/lesson_scorms.entity';
 import { LessonScormsService } from '../lesson_scorms/lesson_scorms.service';
 import { LessonScormResources } from '../lesson_scorm_resources/lesson_scorm_resources.entity';
 import { LessonScormResourcesService } from '../lesson_scorm_resources/lesson_scorm_resources.service';
+import { ActivityMultipleOptionsService } from '../activity_multiple_options/activity_multiple_options.service';
+import { ActivityMultipleOptions } from '../activity_multiple_options/activity_multiple_options.entity';
+import { MultipleOptionAnswersService } from '../multiple_option_answers/multiple_option_answers.service';
+import { MultipleOptionAnswers } from '../multiple_option_answers/multiple_option_answers.entity';
+import { ActivitySortItemsService } from '../activity_sort_items/activity_sort_items.service';
+import { SortItemAnswersService } from '../sort_item_answers/sort_item_answers.service';
+import { ActivityRelateElementsService } from '../activity_relate_elements/activity_relate_elements.service';
+import { RelateElementAnswersService } from '../relate_element_answers/relate_element_answers.service';
+import { ActivityIdentifyWordsService } from '../activity_identify_words/activity_identify_words.service';
+import { ActivityCompleteTextsService } from '../activity_complete_texts/activity_complete_texts.service';
+import { ActivitySortItems } from '../activity_sort_items/activity_sort_items.entity';
+import { SortItemAnswers } from '../sort_item_answers/sort_item_answers.entity';
+import { ActivityRelateElements } from '../activity_relate_elements/activity_relate_elements.entity';
+import { RelateElementAnswers } from '../relate_element_answers/relate_element_answers.entity';
+import { ActivityIdentifyWords } from '../activity_identify_words/activity_identify_words.entity';
+import { ActivityCompleteTexts } from '../activity_complete_texts/activity_complete_texts.entity';
+import { LESSON_SCORMS_PROVIDER } from '../lesson_scorms/lesson_scorms.dto';
+import { LESSON_SCORM_RESOURCES_PROVIDER } from '../lesson_scorm_resources/lesson_scorm_resources.dto';
+import { LESSON_ACTIVITIES_PROVIDER } from '../lesson_activities/lesson_activities.dto';
 
 @Injectable()
 export class LessonsService extends BaseService<
@@ -33,6 +55,11 @@ export class LessonsService extends BaseService<
 > {
   @Inject(COURSE_UNITS_PROVIDER) repository: BaseRepo<Lessons>;
   @Inject(COURSES_PROVIDER) repositoryCourses: BaseRepo<Courses>;
+  @Inject(LESSON_SCORMS_PROVIDER) repositoryScorms: BaseRepo<LessonScorms>;
+  @Inject(LESSON_SCORM_RESOURCES_PROVIDER)
+  repositoryScormsResources: BaseRepo<LessonScormResources>;
+  @Inject(LESSON_ACTIVITIES_PROVIDER)
+  repositoryLessonActivity: BaseRepo<LessonActivities>;
 
   constructor(
     private awsService: AwsService,
@@ -41,6 +68,14 @@ export class LessonsService extends BaseService<
     private lessonActivitiesService: LessonActivitiesService,
     private lessonScormsService: LessonScormsService,
     private lessonScormResourcesService: LessonScormResourcesService,
+    private activityMultipleOptionsService: ActivityMultipleOptionsService,
+    private multipleOptionAnswersService: MultipleOptionAnswersService,
+    private activitySortItemsService: ActivitySortItemsService,
+    private sortItemAnswersService: SortItemAnswersService,
+    private activityRelateElementsService: ActivityRelateElementsService,
+    private relateElementAnswersService: RelateElementAnswersService,
+    private activityIdentifyWordsService: ActivityIdentifyWordsService,
+    private activityCompleteTextsService: ActivityCompleteTextsService,
   ) {
     super();
   }
@@ -347,13 +382,26 @@ export class LessonsService extends BaseService<
       .leftJoin('lesson.lesson_details', 'lesson_detail')
       .leftJoin('lesson.lesson_activities', 'lesson_activity')
       .leftJoin('lesson.lesson_scorms', 'lesson_scorm')
-      .leftJoin('lesson_scorms.lesson_scorm_resources', 'lesson_scorm_resource')
+      .leftJoin('lesson_scorm.lesson_scorm_resources', 'lesson_scorm_resource')
+      .where('lesson.id IN (:lessons_id)', {
+        lessons_id: data.lessons_id.join(),
+      })
       .getMany();
     for (let i = 0; i < lessons.length; i++) {
       const lesson = lessons[i];
-      const lesson_copy = Object.assign({}, lesson);
-      delete lesson_copy.id;
-      const lesson_new = await this.create(lesson_copy);
+      const lesson_new = await this.create({
+        lesson_type_id: lesson.lesson_type_id,
+        course_unit_id: data.course_unit_id,
+        name: lesson.name,
+        description: lesson.description,
+        video_url: lesson.video_url,
+        content: lesson.content,
+        min_progress: lesson.min_progress,
+        order: lesson.order,
+        duration: lesson.duration,
+        suggested_weeks: lesson.suggested_weeks,
+        visible: lesson.visible,
+      });
       lesson_new.lesson_details = [];
       lesson_new.lesson_activities = [];
       switch (lesson.lesson_type_id) {
@@ -379,15 +427,144 @@ export class LessonsService extends BaseService<
               {},
               lesson_activity,
             );
+            switch (lesson_activity.activity_type_id) {
+              case EnumActivityType.MultipleOptions:
+                const activity_multiple: ActivityMultipleOptions = await this.activityMultipleOptionsService.getByDetailId(
+                  lesson_activity.detail_id,
+                );
+                const activity_multiple_copy: ActivityMultipleOptions = Object.assign(
+                  {},
+                  activity_multiple,
+                );
+                delete activity_multiple_copy.id;
+                delete activity_multiple_copy.multiple_option_answers;
+                const activity_multiple_new = await this.activityMultipleOptionsService.create(
+                  activity_multiple_copy,
+                );
+                activity_multiple_new.multiple_option_answers = [];
+                for (
+                  let q = 0;
+                  q < activity_multiple.multiple_option_answers.length;
+                  q++
+                ) {
+                  const answer = activity_multiple.multiple_option_answers[q];
+                  const answer_copy: MultipleOptionAnswers = Object.assign(
+                    {},
+                    answer,
+                  );
+                  delete answer_copy.id;
+                  answer_copy.activity_multiple_option_id =
+                    activity_multiple_new.id;
+                  const answer_new = await this.multipleOptionAnswersService.create(
+                    answer_copy,
+                  );
+                  activity_multiple_new.multiple_option_answers.push(
+                    answer_new,
+                  );
+                }
+                lesson_activity_copy.detail_id = activity_multiple_new.id;
+                break;
+              case EnumActivityType.SortItems:
+                const activity_sort: ActivitySortItems = await this.activitySortItemsService.getByDetailId(
+                  lesson_activity.detail_id,
+                );
+                const activity_sort_copy: ActivitySortItems = Object.assign(
+                  {},
+                  activity_sort,
+                );
+                delete activity_sort_copy.id;
+                delete activity_sort_copy.sort_item_answers;
+                const activity_sort_new = await this.activitySortItemsService.create(
+                  activity_sort_copy,
+                );
+                activity_sort_new.sort_item_answers = [];
+                for (
+                  let q = 0;
+                  q < activity_sort.sort_item_answers.length;
+                  q++
+                ) {
+                  const answer = activity_sort.sort_item_answers[q];
+                  const answer_copy: SortItemAnswers = Object.assign(
+                    {},
+                    answer,
+                  );
+                  delete answer_copy.id;
+                  answer_copy.activity_sort_item_id = activity_sort_new.id;
+                  const answer_new = await this.sortItemAnswersService.create(
+                    answer_copy,
+                  );
+                  activity_sort_new.sort_item_answers.push(answer_new);
+                }
+                lesson_activity_copy.detail_id = activity_sort_new.id;
+                break;
+              case EnumActivityType.RelateElements:
+                const activity_relate: ActivityRelateElements = await this.activityRelateElementsService.getByDetailId(
+                  lesson_activity.detail_id,
+                );
+                const activity_relate_copy: ActivityRelateElements = Object.assign(
+                  {},
+                  activity_relate,
+                );
+                delete activity_relate_copy.id;
+                delete activity_relate_copy.relate_element_answers;
+                const activity_relate_new = await this.activityRelateElementsService.create(
+                  activity_relate_copy,
+                );
+                activity_relate_new.relate_element_answers = [];
+                for (
+                  let q = 0;
+                  q < activity_relate.relate_element_answers.length;
+                  q++
+                ) {
+                  const answer = activity_relate.relate_element_answers[q];
+                  const answer_copy: RelateElementAnswers = Object.assign(
+                    {},
+                    answer,
+                  );
+                  delete answer_copy.id;
+                  answer_copy.activity_relate_element_id =
+                    activity_relate_new.id;
+                  const answer_new = await this.relateElementAnswersService.create(
+                    answer_copy,
+                  );
+                  activity_relate_new.relate_element_answers.push(answer_new);
+                }
+                lesson_activity_copy.detail_id = activity_relate_new.id;
+                break;
+              case EnumActivityType.IdentifyWord:
+                const activity_identify: ActivityIdentifyWords = await this.activityIdentifyWordsService.getByDetailId(
+                  lesson_activity.detail_id,
+                );
+                const activity_identify_copy: ActivityIdentifyWords = Object.assign(
+                  {},
+                  activity_identify,
+                );
+                delete activity_identify_copy.id;
+                const activity_identify_new = await this.activityIdentifyWordsService.create(
+                  activity_identify_copy,
+                );
+                lesson_activity_copy.detail_id = activity_identify_new.id;
+                break;
+              case EnumActivityType.CompleteText:
+                const activity_complete: ActivityCompleteTexts = await this.activityCompleteTextsService.getByDetailId(
+                  lesson_activity.detail_id,
+                );
+                const activity_complete_copy: ActivityCompleteTexts = Object.assign(
+                  {},
+                  activity_complete,
+                );
+                delete activity_complete_copy.id;
+                const activity_complete_new = await this.activityCompleteTextsService.create(
+                  activity_complete_copy,
+                );
+                lesson_activity_copy.detail_id = activity_complete_new.id;
+                break;
+            }
             delete lesson_activity_copy.id;
             lesson_activity_copy.lesson_id = lesson_new.id;
-            const lesson_activity_new = await this.lessonActivitiesService.create(
+            const lesson_activity_new = await this.repositoryLessonActivity.save(
               lesson_activity_copy,
             );
-            // switch (lesson_activity.activity_type_id) {
-            //   case value:
-            //     break;
-            // }
             lesson_new.lesson_activities.push(lesson_activity_new);
           }
           break;
@@ -399,8 +576,9 @@ export class LessonsService extends BaseService<
               lesson_scorm,
             );
             delete lesson_scorm_copy.id;
+            delete lesson_scorm_copy.lesson_scorm_resources;
             lesson_scorm_copy.lesson_id = lesson_new.id;
-            const lesson_scorm_new = await this.lessonScormsService.create(
+            const lesson_scorm_new = await this.repositoryScorms.save(
               lesson_scorm_copy,
             );
             lesson_scorm_new.lesson_scorm_resources = [];
