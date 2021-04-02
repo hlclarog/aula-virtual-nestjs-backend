@@ -42,7 +42,7 @@ export class createProgramCoursesTable1611027978042
             type: 'int',
           },
           {
-            name: 'by_credit',
+            name: 'certifiable',
             type: 'bool',
             default: false,
           },
