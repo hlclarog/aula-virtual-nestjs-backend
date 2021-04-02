@@ -79,6 +79,7 @@ import { PointReasonsModule } from './point_reasons/point_reasons.module';
 import { PointsUserLogModule } from './points_user_log/points_user_log.module';
 import { PointReasonsValueModule } from './point_reasons_value/point_reasons_value.module';
 import { IntegrationTypesModule } from './integration_types/integration_types.module';
+import { ProgramCoursesStatusModule } from './program_courses_status/program_courses_status.module';
 
 @Module({
   imports: [
@@ -162,6 +163,7 @@ import { IntegrationTypesModule } from './integration_types/integration_types.mo
     PointReasonsValueModule,
     PointsUserLogModule,
     IntegrationTypesModule,
+    ProgramCoursesStatusModule,
   ],
   controllers: [],
   providers: [],
