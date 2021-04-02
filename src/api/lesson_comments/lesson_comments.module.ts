@@ -6,9 +6,10 @@ import { Connection } from 'typeorm';
 import { LESSON_DETAILS_PROVIDER } from './lesson_comments.dto';
 import { LessonComments } from './lesson_comments.entity';
 import { AwsModule } from './../../aws/aws.module';
+import { WebsocketModule } from './../../websocket/websocket.module';
 
 @Module({
-  imports: [AwsModule],
+  imports: [AwsModule, WebsocketModule],
   controllers: [LessonCommentsController],
   providers: [
     {

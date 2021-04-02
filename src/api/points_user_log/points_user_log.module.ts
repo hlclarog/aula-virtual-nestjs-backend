@@ -14,8 +14,8 @@ import { AuthorizationsUserService } from './../../utils/services/authorizations
 @Module({
   imports: [
     forwardRef(() => UsersModule),
+    forwardRef(() => WebsocketModule),
     PointReasonsValueModule,
-    WebsocketModule,
     UsersRolesModule,
   ],
   controllers: [PointsUserLogController],

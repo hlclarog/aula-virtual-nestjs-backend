@@ -7,7 +7,10 @@ import { ControlleSocket } from '../decorators/socket.decorator';
 import { PublicGateway } from '../../websocket/getways/public.gateway';
 import { PrivateGateway } from '../../websocket/getways/private.gateway';
 import { ClientsService } from './../../websocket/clients/clients.service';
-import { EmitchangeGamificationUser } from './../../websocket/websocket.dto';
+import {
+  EmitchangeGamificationUser,
+  EmitNewCommentLesson,
+} from './../../websocket/websocket.dto';
 
 @Injectable()
 @ControlleSocket('')
@@ -28,6 +31,10 @@ export class GatewayService {
 
   emitChangeGamification(data: EmitchangeGamificationUser) {
     this.privateGateway.sendChangeGamification(data);
+  }
+
+  sendCommetLesson(data: EmitNewCommentLesson) {
+    this.privateGateway.sendCommetLesson(data);
   }
 
   async connectPrivate(host: string, user_id: string, socket: string) {

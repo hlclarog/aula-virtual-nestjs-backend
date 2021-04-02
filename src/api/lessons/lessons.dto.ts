@@ -1,5 +1,6 @@
 import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 import {
+  IsArray,
   IsBoolean,
   IsNotEmpty,
   IsNumber,
@@ -92,4 +93,16 @@ export class UpdateLessonsDto extends UpdateBaseDto {
   @IsBoolean()
   @IsOptional()
   readonly visible?: boolean;
+}
+
+export class CopyLessonsDto {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_unit_id: number;
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+  })
+  @IsArray()
+  @IsNotEmpty()
+  readonly lessons_id: number[];
 }

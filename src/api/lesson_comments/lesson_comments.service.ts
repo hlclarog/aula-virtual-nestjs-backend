@@ -11,6 +11,7 @@ import { LessonComments } from './lesson_comments.entity';
 import { AwsService } from './../../aws/aws.service';
 import { typeFilesAwsNames } from './../../aws/aws.dto';
 import * as shortid from 'shortid';
+import { GatewayService } from './../../utils/services/gateway.service';
 
 @Injectable()
 export class LessonCommentsService extends BaseService<
@@ -20,7 +21,10 @@ export class LessonCommentsService extends BaseService<
 > {
   @Inject(LESSON_DETAILS_PROVIDER) repository: BaseRepo<LessonComments>;
 
-  constructor(private awsService: AwsService) {
+  constructor(
+    private awsService: AwsService,
+    private gatewayService: GatewayService,
+  ) {
     super();
   }
 
@@ -263,6 +267,7 @@ export class LessonCommentsService extends BaseService<
       data.content = await this.setContent(createDto.content);
     }
     const dataNew = await this.repository.save(data);
+    await this.gatewayService.sendCommetLesson(dataNew);
     return dataNew;
   }
 

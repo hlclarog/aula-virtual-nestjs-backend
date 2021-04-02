@@ -28,7 +28,7 @@ export class LessonCommentsController extends BaseController<
   @Post()
   async post(@Body() createDto: CreateLessonCommentsDto) {
     createDto.user_id = this.infoUser.id;
-    return await this.create(createDto);
+    return await this.lesson_commentsService.create(createDto);
   }
 
   @Get()

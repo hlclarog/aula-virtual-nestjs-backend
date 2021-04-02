@@ -96,4 +96,28 @@ export class ActivityMultipleOptionsService extends BaseService<
     }
     return matchs === listAnswers.filter((a) => a.right).length;
   }
+
+  async getByDetailId(detail_id: number) {
+    return await this.repository
+      .createQueryBuilder('activity')
+      .select([
+        'activity.id',
+        'activity.statement',
+        'activity.observation',
+        'activity.picture',
+        'activity.video',
+        'activity.audio',
+        'activity.resource_content',
+        'activity.resource_type_id',
+        'answer.id',
+        'answer.activity_multiple_option_id',
+        'answer.description',
+        'answer.right',
+      ])
+      .leftJoin('activity.multiple_option_answers', 'answer')
+      .where('activity.id = :detail_id', {
+        detail_id,
+      })
+      .getOne();
+  }
 }
