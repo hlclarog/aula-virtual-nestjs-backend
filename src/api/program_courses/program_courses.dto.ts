@@ -35,7 +35,7 @@ export class UpdateProgramCoursesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly status_program_id?: number;
+  readonly program_courses_status_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
