@@ -8,9 +8,15 @@ import { Connection } from 'typeorm';
 import { Programs } from './programs.entity';
 import { ProgramInterestAreasModule } from '../program_interest_areas/program_interest_areas.module';
 import { AwsModule } from '../../aws/aws.module';
+import { InterestAreasModule } from '../interest_areas/interest_areas.module';
 
 @Module({
-  imports: [InstanceProcessModule, ProgramInterestAreasModule, AwsModule],
+  imports: [
+    InstanceProcessModule,
+    ProgramInterestAreasModule,
+    AwsModule,
+    InterestAreasModule,
+  ],
   controllers: [ProgramsController],
   providers: [
     {
