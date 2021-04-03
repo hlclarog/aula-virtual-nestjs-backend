@@ -47,6 +47,16 @@ export class createProgramCoursesTable1611027978042
             default: false,
           },
           {
+            name: 'begin_date',
+            type: 'date',
+            isNullable: true,
+          },
+          {
+            name: 'end_date',
+            type: 'date',
+            isNullable: true,
+          },
+          {
             name: 'active',
             type: 'bool',
             default: true,

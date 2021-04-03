@@ -48,4 +48,6 @@ export class ProgramCourses extends Base {
 
   @Column({ type: 'int' }) credits: number;
   @Column({ type: 'boolean' }) certifiable: boolean;
+  @Column({ type: 'date', nullable: true }) begin_date: string;
+  @Column({ type: 'date', nullable: true }) end_date: string;
 }

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { CreateBaseDto, UpdateBaseDto } from '../../base/base.dto';
 
 export const PROGRAM_COURSES_PROVIDER = 'PROGRAM_COURSES_REPOSITORY';
@@ -21,6 +21,14 @@ export class CreateProgramCoursesDto extends CreateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly transaction_status_id?: number;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly begin_date?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly end_date?: string;
 }
 
 export class UpdateProgramCoursesDto extends UpdateBaseDto {
@@ -48,4 +56,12 @@ export class UpdateProgramCoursesDto extends UpdateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly transaction_status_id?: number;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly begin_date?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly end_date?: string;
 }
