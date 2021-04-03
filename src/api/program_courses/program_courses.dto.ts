@@ -8,7 +8,7 @@ export const PROGRAM_COURSES_ENTITY = 'program_courses';
 export class CreateProgramCoursesDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly status_program_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_courses_status_id: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
