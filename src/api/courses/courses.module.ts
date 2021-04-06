@@ -12,6 +12,7 @@ import { AuthorizationsUserService } from './../../utils/services/authorizations
 import { CourseUsersModule } from '../course-users/course-users.module';
 import { InterestAreasModule } from '../interest_areas/interest_areas.module';
 import { LessonsModule } from '../lessons/lessons.module';
+import { UsersRolesModule } from '../acl/users_roles/users_roles.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { LessonsModule } from '../lessons/lessons.module';
     InterestAreasModule,
     forwardRef(() => LessonsModule),
     AwsModule,
+    UsersRolesModule,
   ],
   controllers: [CoursesController],
   providers: [

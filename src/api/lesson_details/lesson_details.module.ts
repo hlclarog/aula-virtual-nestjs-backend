@@ -19,5 +19,6 @@ import { AwsModule } from './../../aws/aws.module';
     },
     LessonDetailsService,
   ],
+  exports: [LESSON_DETAILS_PROVIDER, LessonDetailsService],
 })
 export class LessonDetailsModule {}

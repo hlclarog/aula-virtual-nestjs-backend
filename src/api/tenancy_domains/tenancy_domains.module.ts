@@ -5,6 +5,7 @@ import { DATABASE_MANAGER_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { TENANCY_DOMAINS_PROVIDER } from './tenancy_domains.dto';
 import { TenancyDomains } from './tenancy_domains.entity';
+import { TenancyOauth2CredentialsModule } from '../tenancy_oauth2_credentials/tenancy_oauth2_credentials.module';
 
 @Module({
   controllers: [TenancyDomainsController],
@@ -18,5 +19,6 @@ import { TenancyDomains } from './tenancy_domains.entity';
     TenancyDomainsService,
   ],
   exports: [TenancyDomainsService],
+  imports: [TenancyOauth2CredentialsModule],
 })
 export class TenancyDomainsModule {}

@@ -51,6 +51,7 @@ export class Programs extends Base {
   @Column({ type: 'boolean' }) certifiable: boolean;
   @Column({ type: 'varchar' }) requirements: string;
   @Column({ type: 'integer' }) certifiable_number: number;
+  @Column({ type: 'boolean' }) by_credit: boolean;
 
   @OneToMany(
     () => ProgramFeeSchedules,

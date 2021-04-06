@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ActivityTriesService } from './activity_tries.service';
 import { ActivityTriesController } from './activity_tries.controller';
 import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
@@ -13,10 +13,13 @@ import { ActivityRelateElementsModule } from '../activity_relate_elements/activi
 import { ActivityCompleteTextsModule } from '../activity_complete_texts/activity_complete_texts.module';
 import { ActivityIdentifyWordsModule } from '../activity_identify_words/activity_identify_words.module';
 import { PointsUserLogModule } from '../points_user_log/points_user_log.module';
+import { LessonsModule } from '../lessons/lessons.module';
+import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
+import { LessonTryUsersModule } from '../lesson_try_users/lesson_try_users.module';
 
 @Module({
   imports: [
-    ActivityTryUsersModule,
+    forwardRef(() => ActivityTryUsersModule),
     LessonActivitiesModule,
     ActivityMultipleOptionsModule,
     ActivitySortItemsModule,
@@ -24,6 +27,8 @@ import { PointsUserLogModule } from '../points_user_log/points_user_log.module';
     ActivityCompleteTextsModule,
     ActivityIdentifyWordsModule,
     PointsUserLogModule,
+    LessonsModule,
+    LessonTryUsersModule,
   ],
   controllers: [ActivityTriesController],
   providers: [
@@ -34,6 +39,7 @@ import { PointsUserLogModule } from '../points_user_log/points_user_log.module';
         connection.getRepository(ActivityTries),
     },
     ActivityTriesService,
+    LessonTryUsersService,
   ],
   exports: [ACTIVITY_TRIES_PROVIDER, ActivityTriesService],
 })

@@ -1,4 +1,4 @@
-import { ORGANIZATIONS_ENTITY } from './../../api/organizations/organizations.dto';
+import { ORGANIZATIONS_ENTITY } from '../../api/organizations/organizations.dto';
 import {
   MigrationInterface,
   QueryRunner,
@@ -71,6 +71,11 @@ export class createProgramsTable1611027830115 implements MigrationInterface {
           {
             name: 'certifiable_number',
             type: 'int',
+          },
+          {
+            name: 'by_credit',
+            type: 'bool',
+            default: false,
           },
           {
             name: 'active',

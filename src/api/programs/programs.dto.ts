@@ -23,6 +23,7 @@ export class CreateProgramsDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly duration: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly email_to: string;
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly certifiable: boolean;
+  @ApiProperty() @IsBoolean() @IsNotEmpty() readonly by_credit: boolean;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -93,6 +94,10 @@ export class UpdateProgramsDto {
   @IsBoolean()
   @IsOptional()
   readonly certifiable?: boolean;
+  @ApiProperty({ required: false })
+  @IsBoolean()
+  @IsOptional()
+  readonly by_credit?: boolean;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

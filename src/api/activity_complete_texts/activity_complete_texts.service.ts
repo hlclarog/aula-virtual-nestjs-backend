@@ -69,4 +69,24 @@ export class ActivityCompleteTextsService extends BaseService<
     }
     return right;
   }
+
+  async getByDetailId(detail_id: number) {
+    return await this.repository
+      .createQueryBuilder('activity')
+      .select([
+        'activity.id',
+        'activity.statement',
+        'activity.observation',
+        'activity.text',
+        'activity.picture',
+        'activity.video',
+        'activity.audio',
+        'activity.resource_content',
+        'activity.resource_type_id',
+      ])
+      .where('activity.id = :detail_id', {
+        detail_id,
+      })
+      .getOne();
+  }
 }

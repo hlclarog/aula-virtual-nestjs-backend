@@ -30,4 +30,8 @@ export class SetTenancyConfigDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsOptional() image_points?: string;
   @ApiProperty() @IsNumber() @IsOptional() bar_span_days?: number;
   @ApiProperty() @IsNumber() @IsOptional() bar_expected_points?: number;
+  @ApiProperty()
+  @IsBoolean()
+  @IsOptional()
+  readonly unenroll_reset?: boolean;
 }

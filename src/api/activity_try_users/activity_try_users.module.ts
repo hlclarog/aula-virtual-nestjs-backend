@@ -5,8 +5,10 @@ import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { ACTIVITY_TRY_USERS_PROVIDER } from './activity_try_users.dto';
 import { ActivityTryUsers } from './activity_try_users.entity';
+import { ActivityTriesModule } from '../activity_tries/activity_tries.module';
 
 @Module({
+  imports: [ActivityTriesModule],
   controllers: [ActivityTryUsersController],
   providers: [
     {

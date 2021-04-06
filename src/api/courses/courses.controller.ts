@@ -151,7 +151,7 @@ export class CoursesController extends BaseController<
   @Put(':id')
   async edit(@Param('id') id: string, @Body() updateDto: UpdateCourseDto) {
     const user = (await this.coursesService.findOne(Number(id))).user_id;
-    await this.authorizationsUserService.accesAction(
+    await this.authorizationsUserService.accesActionUserMatch(
       [COURSES_PERMISSIONS.MANAGER],
       user,
     );

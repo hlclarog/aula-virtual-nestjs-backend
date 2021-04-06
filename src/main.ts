@@ -9,6 +9,7 @@ import { TransformInterceptor } from './utils/interceptors/transform.interceptor
 import * as bodyParser from 'body-parser';
 import { ValidationPipe } from '@nestjs/common';
 import { IoAdapter } from '@nestjs/platform-socket.io';
+import * as passport from 'passport';
 //import { RedisIoAdapter } from './websocket/websocket.adapter';
 
 async function bootstrap() {
@@ -41,6 +42,8 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document, {});
+
+  app.use(passport.initialize());
 
   const configService = app.get(ConfigService);
 

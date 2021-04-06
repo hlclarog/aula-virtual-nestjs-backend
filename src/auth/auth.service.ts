@@ -7,10 +7,10 @@ import {
 import {
   InfoTenancyDomain,
   INFO_TENANCY_PROVIDER,
-} from './../utils/providers/info-tenancy.module';
-import { UsersService } from './../api/acl/users/users.service';
-import { ConfigService } from './../config/config.service';
-import { TokenService } from './../utils/services/token.service';
+} from '../utils/providers/info-tenancy.module';
+import { UsersService } from '../api/acl/users/users.service';
+import { ConfigService } from '../config/config.service';
+import { TokenService } from '../utils/services/token.service';
 import {
   LoginDto,
   MESSAGE_FORBIDDEN,
@@ -20,14 +20,22 @@ import {
   ChangePasswordEmailDto,
   RegisterDto,
 } from './auth.dto';
-import { CreateUsersDto } from './../api/acl/users/users.dto';
-import { TenancyConfigService } from './../api/tenancy_config/tenancy_config.service';
-import { TypesReasonsPoints } from './../api/points_user_log/points_user_log.dto';
-import { PointsUserLogService } from './../api/points_user_log/points_user_log.service';
+import { CreateUsersDto } from '../api/acl/users/users.dto';
+import { TenancyConfigService } from '../api/tenancy_config/tenancy_config.service';
+import { TypesReasonsPoints } from '../api/points_user_log/points_user_log.dto';
+import { PointsUserLogService } from '../api/points_user_log/points_user_log.service';
+import { TenancyDomains } from '../api/tenancy_domains/tenancy_domains.entity';
+import { Tenancies } from '../api/tenancies/tenancies.entity';
+import { Connection, createConnection, getConnectionManager } from 'typeorm';
+import { DATABASE_MANAGER_PROVIDER } from '../database/database.dto';
+import { Users } from '../api/acl/users/users.entity';
+import { THEME_DEFAULT_ID } from '../api/themes/themes.dto';
+import { UsersRoles } from '../api/acl/users_roles/users_roles.entity';
 
 @Injectable()
 export class AuthService {
   @Inject(INFO_TENANCY_PROVIDER) tenancy: InfoTenancyDomain;
+  @Inject(DATABASE_MANAGER_PROVIDER) connection: Connection;
   constructor(
     private tokenService: TokenService,
     private usersService: UsersService,

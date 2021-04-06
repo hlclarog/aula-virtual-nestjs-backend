@@ -1,10 +1,10 @@
 import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
-import { ACTIVITY_TRY_USERS_ENTITY } from './lesson_try_users.dto';
+import { LESSON_TRY_USERS_ENTITY } from './lesson_try_users.dto';
 import { Users } from '../acl/users/users.entity';
 import { Lessons } from '../lessons/lessons.entity';
 
-@Entity(ACTIVITY_TRY_USERS_ENTITY)
+@Entity(LESSON_TRY_USERS_ENTITY)
 export class LessonTryUsers extends Base {
   @Column({ type: 'date' }) begin: string;
   @Column({ type: 'date', nullable: true }) end: string;
