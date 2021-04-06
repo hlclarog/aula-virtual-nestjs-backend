@@ -5,12 +5,12 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class createLessonScormIntentsTable1611889484677
+export class createLessonCourseUnitsTable1611375600000
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'lesson_scorm_intents',
+        name: 'lesson_course_units',
         columns: [
           {
             name: 'id',
@@ -19,11 +19,32 @@ export class createLessonScormIntentsTable1611889484677
             isGenerated: true,
           },
           {
-            name: 'lesson_course_unit_id',
+            name: 'lesson_id',
             type: 'int',
           },
           {
-            name: 'user_id',
+            name: 'course_unit_id',
+            type: 'int',
+          },
+          {
+            name: 'lesson_permission_type_id',
+            type: 'int',
+          },
+          {
+            name: 'less',
+            type: 'int',
+          },
+          {
+            name: 'description',
+            type: 'varchar',
+          },
+          {
+            name: 'color',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'order',
             type: 'int',
           },
           {
@@ -49,21 +70,26 @@ export class createLessonScormIntentsTable1611889484677
         ],
       }),
     );
-    await queryRunner.createForeignKeys('lesson_scorm_intents', [
+    await queryRunner.createForeignKeys('lesson_course_units', [
       new TableForeignKey({
-        columnNames: ['lesson_course_unit_id'],
+        columnNames: ['lesson_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'lesson_course_units',
+        referencedTableName: 'lessons',
       }),
       new TableForeignKey({
-        columnNames: ['user_id'],
+        columnNames: ['course_unit_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'users',
+        referencedTableName: 'course_units',
+      }),
+      new TableForeignKey({
+        columnNames: ['lesson_permission_type_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'public.lesson_permission_types',
       }),
     ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('lesson_scorm_intents');
+    await queryRunner.dropTable('lesson_course_units');
   }
 }

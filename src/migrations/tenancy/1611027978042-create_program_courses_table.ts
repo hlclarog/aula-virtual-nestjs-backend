@@ -102,7 +102,7 @@ export class createProgramCoursesTable1611027978042
       new TableForeignKey({
         columnNames: ['program_courses_status_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'program_courses_status',
+        referencedTableName: 'public.program_courses_status',
         onUpdate: 'CASCADE',
       }),
     ]);

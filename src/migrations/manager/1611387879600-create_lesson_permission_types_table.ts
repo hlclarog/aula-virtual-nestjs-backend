@@ -1,16 +1,11 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class createLessonScormIntentsTable1611889484677
+export class createLessonPermissionTypesTable1611387879600
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'lesson_scorm_intents',
+        name: 'lesson_permission_types',
         columns: [
           {
             name: 'id',
@@ -19,12 +14,8 @@ export class createLessonScormIntentsTable1611889484677
             isGenerated: true,
           },
           {
-            name: 'lesson_course_unit_id',
-            type: 'int',
-          },
-          {
-            name: 'user_id',
-            type: 'int',
+            name: 'description',
+            type: 'varchar',
           },
           {
             name: 'active',
@@ -49,21 +40,9 @@ export class createLessonScormIntentsTable1611889484677
         ],
       }),
     );
-    await queryRunner.createForeignKeys('lesson_scorm_intents', [
-      new TableForeignKey({
-        columnNames: ['lesson_course_unit_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'lesson_course_units',
-      }),
-      new TableForeignKey({
-        columnNames: ['user_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'users',
-      }),
-    ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('lesson_scorm_intents');
+    await queryRunner.dropTable('lesson_permission_types');
   }
 }

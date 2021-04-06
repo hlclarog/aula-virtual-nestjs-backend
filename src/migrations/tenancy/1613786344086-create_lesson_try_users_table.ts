@@ -23,7 +23,7 @@ export class createLessonTryUsersTable1613786344086
             type: 'int',
           },
           {
-            name: 'lesson_id',
+            name: 'lesson_course_unit_id',
             type: 'int',
           },
           {
@@ -71,9 +71,9 @@ export class createLessonTryUsersTable1613786344086
         referencedTableName: 'users',
       }),
       new TableForeignKey({
-        columnNames: ['lesson_id'],
+        columnNames: ['lesson_course_unit_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'lessons',
+        referencedTableName: 'lesson_course_units',
       }),
     ]);
   }

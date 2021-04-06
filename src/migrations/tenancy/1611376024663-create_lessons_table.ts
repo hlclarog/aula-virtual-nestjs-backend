@@ -22,10 +22,6 @@ export class createLessonsTable1611376024663 implements MigrationInterface {
             type: 'int',
           },
           {
-            name: 'course_unit_id',
-            type: 'int',
-          },
-          {
             name: 'name',
             type: 'varchar',
           },
@@ -97,11 +93,6 @@ export class createLessonsTable1611376024663 implements MigrationInterface {
         columnNames: ['lesson_type_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'public.lesson_types',
-      }),
-      new TableForeignKey({
-        columnNames: ['course_unit_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'course_units',
       }),
     ]);
   }

@@ -39,7 +39,7 @@ export class createPointsUserLogTable1615472962404
             isNullable: true,
           },
           {
-            name: 'lesson_id',
+            name: 'lesson_course_unit_id',
             type: 'int',
             isNullable: true,
           },
@@ -89,9 +89,9 @@ export class createPointsUserLogTable1615472962404
         referencedTableName: 'courses',
       }),
       new TableForeignKey({
-        columnNames: ['lesson_id'],
+        columnNames: ['lesson_course_unit_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'lessons',
+        referencedTableName: 'lesson_course_units',
       }),
       new TableForeignKey({
         columnNames: ['activity_id'],
