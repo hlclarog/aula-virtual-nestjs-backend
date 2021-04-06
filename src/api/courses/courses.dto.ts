@@ -100,6 +100,10 @@ export class CreateCourseByTeacherDto extends CreateBaseDto {
   @IsString()
   @IsOptional()
   readonly picture_banner?: string;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly parent_id?: number;
 }
 
 export class UpdateCourseDto extends UpdateBaseDto {
@@ -147,6 +151,10 @@ export class UpdateCourseDto extends UpdateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly course_status_id?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly parent_id?: number;
   @ApiProperty({
     type: 'number',
     isArray: true,
