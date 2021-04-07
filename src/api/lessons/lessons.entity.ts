@@ -9,14 +9,9 @@ import {
 import { COURSE_UNITS_ENTITY } from './lessons.dto';
 import { Base } from '../../base/base.entity';
 import { LessonTypes } from '../lesson_types/lesson_types.entity';
-import { CourseUnits } from '../course_units/course_units.entity';
-import { LessonDetails } from '../lesson_details/lesson_details.entity';
-import { LessonScorms } from '../lesson_scorms/lesson_scorms.entity';
-import { LessonScormIntents } from '../lesson_scorm_intents/lesson_scorm_intents.entity';
-import { LessonActivities } from '../lesson_activities/lesson_activities.entity';
-import { LessonTryUsers } from '../lesson_try_users/lesson_try_users.entity';
-import { LessonComments } from '../lesson_comments/lesson_comments.entity';
-import { PointsUserLog } from '../points_user_log/points_user_log.entity';
+import { CourseLessons } from '../course_lessons/course_lessons.entity';
+import { LessonPermissionTypes } from '../lesson_permission_types/lesson_permission_types.entity';
+import { Users } from '../acl/users/users.entity';
 
 @Entity(COURSE_UNITS_ENTITY)
 export class Lessons extends Base {
@@ -27,46 +22,32 @@ export class Lessons extends Base {
   @Column('integer')
   lesson_type_id: number;
 
-  @ManyToOne(() => CourseUnits, (course_unit) => course_unit.lessons)
-  @JoinColumn({ name: 'course_unit_id' })
-  course_unit: CourseUnits;
-  @RelationId((courses: Lessons) => courses.course_unit)
+  @ManyToOne(
+    () => LessonPermissionTypes,
+    (lesson_permission_type) => lesson_permission_type.lessons,
+  )
+  @JoinColumn({ name: 'lesson_permission_type_id' })
+  lesson_permission_type: LessonPermissionTypes;
+  @RelationId((lessons: Lessons) => lessons.lesson_permission_type)
   @Column('integer')
-  course_unit_id: number;
+  lesson_permission_type_id: number;
+
+  @ManyToOne(() => Users, (user) => user.lessons)
+  @JoinColumn({ name: 'user_id' })
+  user: Users;
+  @RelationId((lesson: Lessons) => lesson.user)
+  @Column('integer')
+  user_id: number;
 
   @Column({ type: 'varchar' }) name: string;
   @Column({ type: 'varchar', nullable: true }) description: string;
   @Column({ type: 'varchar', nullable: true }) video_url: string;
   @Column({ type: 'varchar', nullable: true }) content: string;
   @Column({ type: 'int', default: 100, nullable: true }) min_progress: number;
-  @Column({ type: 'int', nullable: true }) order: number;
   @Column({ type: 'int' }) duration: number;
   @Column({ type: 'int' }) suggested_weeks: number;
   @Column({ type: 'boolean', default: true, nullable: true }) visible: boolean;
 
-  @OneToMany(() => LessonDetails, (lesson_detail) => lesson_detail.lesson)
-  lesson_details: LessonDetails[];
-
-  @OneToMany(() => LessonScorms, (lesson_scorm) => lesson_scorm.lesson)
-  lesson_scorms: LessonScorms[];
-
-  @OneToMany(
-    () => LessonScormIntents,
-    (lesson_scorm_intent) => lesson_scorm_intent.lesson,
-  )
-  lesson_scorm_intents: LessonScormIntents[];
-  @OneToMany(
-    () => LessonActivities,
-    (lesson_activities) => lesson_activities.lesson,
-  )
-  lesson_activities: LessonActivities[];
-
-  @OneToMany(() => LessonTryUsers, (lesson_try_user) => lesson_try_user.lesson)
-  lesson_try_users: LessonTryUsers[];
-
-  @OneToMany(() => LessonComments, (lesson_comment) => lesson_comment.lesson)
-  lesson_comments: LessonComments[];
-
-  @OneToMany(() => PointsUserLog, (point_user_log) => point_user_log.lesson)
-  points_user_log: PointsUserLog[];
+  @OneToMany(() => CourseLessons, (course_lesson) => course_lesson.lesson)
+  course_lessons: CourseLessons[];
 }

@@ -122,7 +122,7 @@ export class LessonTryUsersService extends BaseService<
         user_id,
         lesson_id,
       },
-      relations: ['lesson', 'lesson.course_unit'],
+      relations: ['course_lesson', 'course_lesson.lesson'],
     });
   }
 
@@ -139,7 +139,7 @@ export class LessonTryUsersService extends BaseService<
       const points = await this.pointsUserLogService.generatePoints(
         createDto.user_id,
         TypesReasonsPoints.LESSON_INIT,
-        actual.lesson.course_unit.course_id,
+        actual.course_lesson.course_id,
         createDto.lesson_id,
       );
       return { ...result, points_generated: points };
@@ -155,7 +155,7 @@ export class LessonTryUsersService extends BaseService<
     if (actual) {
       if (!actual.end) {
         let reason = null;
-        switch (actual.lesson.lesson_type_id) {
+        switch (actual.course_lesson.lesson.lesson_type_id) {
           case TypesLesson.TEORIC:
             reason = TypesReasonsPoints.TEORIC_LESSON_END;
             break;
@@ -170,7 +170,7 @@ export class LessonTryUsersService extends BaseService<
           points = await this.pointsUserLogService.generatePoints(
             updateDto.user_id,
             reason,
-            actual.lesson.course_unit.course_id,
+            actual.course_lesson.course_id,
             updateDto.lesson_id,
           );
         }

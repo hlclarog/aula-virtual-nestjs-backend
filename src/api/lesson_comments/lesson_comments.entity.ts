@@ -11,19 +11,22 @@ import {
 } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Users } from '../acl/users/users.entity';
-import { Lessons } from '../lessons/lessons.entity';
+import { CourseLessons } from '../course_lessons/course_lessons.entity';
 import { LessonCommentReactions } from '../lesson_comment_reactions/lesson_comment_reactions.entity';
 import { LESSON_DETAILS_ENTITY } from './lesson_comments.dto';
 
 @Entity({ name: LESSON_DETAILS_ENTITY })
 @Tree('materialized-path')
 export class LessonComments extends Base {
-  @ManyToOne(() => Lessons, (lessons) => lessons.lesson_comments)
-  @JoinColumn({ name: 'lesson_id' })
-  lesson: Lessons;
-  @RelationId((lessonComments: LessonComments) => lessonComments.lesson)
+  @ManyToOne(
+    () => CourseLessons,
+    (course_lesson) => course_lesson.lesson_comments,
+  )
+  @JoinColumn({ name: 'course_lesson_id' })
+  course_lesson: CourseLessons;
+  @RelationId((lessonComments: LessonComments) => lessonComments.course_lesson)
   @Column('integer')
-  lesson_id: number;
+  course_lesson_id: number;
 
   @ManyToOne(() => Users, (user) => user.lesson_comments)
   @JoinColumn({ name: 'user_id' })

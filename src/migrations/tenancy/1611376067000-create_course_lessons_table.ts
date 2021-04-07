@@ -5,18 +5,22 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class createLessonCourseUnitsTable1611375600000
+export class createLessonCourseUnitsTable1611376067000
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'lesson_course_units',
+        name: 'course_lessons',
         columns: [
           {
             name: 'id',
             type: 'int',
             isPrimary: true,
             isGenerated: true,
+          },
+          {
+            name: 'course_id',
+            type: 'int',
           },
           {
             name: 'lesson_id',
@@ -27,25 +31,9 @@ export class createLessonCourseUnitsTable1611375600000
             type: 'int',
           },
           {
-            name: 'lesson_permission_type_id',
-            type: 'int',
-          },
-          {
-            name: 'less',
-            type: 'int',
-          },
-          {
-            name: 'description',
-            type: 'varchar',
-          },
-          {
-            name: 'color',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
             name: 'order',
             type: 'int',
+            default: 1,
           },
           {
             name: 'active',
@@ -70,7 +58,12 @@ export class createLessonCourseUnitsTable1611375600000
         ],
       }),
     );
-    await queryRunner.createForeignKeys('lesson_course_units', [
+    await queryRunner.createForeignKeys('course_lessons', [
+      new TableForeignKey({
+        columnNames: ['course_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'courses',
+      }),
       new TableForeignKey({
         columnNames: ['lesson_id'],
         referencedColumnNames: ['id'],
@@ -81,15 +74,10 @@ export class createLessonCourseUnitsTable1611375600000
         referencedColumnNames: ['id'],
         referencedTableName: 'course_units',
       }),
-      new TableForeignKey({
-        columnNames: ['lesson_permission_type_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'public.lesson_permission_types',
-      }),
     ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('lesson_course_units');
+    await queryRunner.dropTable('course_lessons');
   }
 }

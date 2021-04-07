@@ -19,6 +19,7 @@ import { CourseCompetences } from '../course_competences/course_competences.enti
 import { CourseCommissionOrganizations } from '../course_comission_organizations/course_commission_organizations.entity';
 import { CourseUnits } from '../course_units/course_units.entity';
 import { PointsUserLog } from '../points_user_log/points_user_log.entity';
+import { CourseLessons } from '../course_lessons/course_lessons.entity';
 
 @Entity({ name: COURSE_ENTITY })
 export class Courses extends Base {
@@ -31,7 +32,7 @@ export class Courses extends Base {
   @Column({ type: 'boolean' }) free: boolean;
   @Column({ type: 'boolean' }) certifiable: boolean;
 
-  @ManyToOne(() => Users, (users) => users.course)
+  @ManyToOne(() => Users, (users) => users.courses)
   @JoinColumn({ name: 'user_id' })
   user: Users;
   @RelationId((courses: Courses) => courses.user)
@@ -84,6 +85,9 @@ export class Courses extends Base {
 
   @OneToMany(() => CourseUnits, (courseUnits) => courseUnits.course)
   course_units: CourseUnits[];
+
+  @OneToMany(() => CourseLessons, (course_lesson) => course_lesson.course)
+  course_lessons: CourseLessons[];
 
   @OneToMany(() => PointsUserLog, (point_user_log) => point_user_log.course)
   points_user_log: PointsUserLog[];

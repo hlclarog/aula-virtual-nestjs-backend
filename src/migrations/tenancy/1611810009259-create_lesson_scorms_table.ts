@@ -19,7 +19,7 @@ export class createLessonScormsTable1611810009259
             isGenerated: true,
           },
           {
-            name: 'lesson_course_unit_id',
+            name: 'course_lesson_id',
             type: 'int',
           },
           {
@@ -59,9 +59,9 @@ export class createLessonScormsTable1611810009259
     );
     await queryRunner.createForeignKeys('lesson_scorms', [
       new TableForeignKey({
-        columnNames: ['lesson_course_unit_id'],
+        columnNames: ['course_lesson_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'lesson_course_units',
+        referencedTableName: 'course_lessons',
       }),
     ]);
   }

@@ -384,11 +384,12 @@ export class CoursesService extends BaseService<
   ): Promise<CourseUnits[]> {
     const result = await this.repository
       .createQueryBuilder('course')
-      .leftJoinAndSelect('course.course_units', 'course_units')
-      .leftJoinAndSelect('course_units.lessons', 'lessons')
+      .leftJoinAndSelect('course.course_units', 'course_unit')
+      .leftJoinAndSelect('course_unit.course_lessons', 'course_lesson')
+      .leftJoinAndSelect('course_lesson.lessons', 'lessons')
       .where('course.id = :id', { id })
       .orderBy('lessons.order', 'ASC')
-      .addOrderBy('course_units.order', 'ASC')
+      .addOrderBy('course_unit.order', 'ASC')
       .getOneOrFail();
     const dataprogress = await this.lessonsService.findProgessByCourse(
       [id],
@@ -399,15 +400,15 @@ export class CoursesService extends BaseService<
       const unit = dataprogress[0].course_units
         .map((u) => u.id)
         .indexOf(element.id);
-      for (let k = 0; k < element.lessons.length; k++) {
-        const lesson = element.lessons[k];
-        const less = dataprogress[0].course_units[unit].lessons
-          .map((u) => u.id)
-          .indexOf(lesson.id);
+      for (let k = 0; k < element.course_lessons.length; k++) {
+        const lesson = element.course_lessons[k];
+        const less = dataprogress[0].course_units[unit].course_lessons
+          .map((u) => u.lesson_id)
+          .indexOf(lesson.lesson_id);
         if (dataprogress.length > 0) {
           if (less >= 0) {
-            lesson['progress_lesson'] =
-              dataprogress[0].course_units[unit].lessons[less][
+            lesson.lesson['progress_lesson'] =
+              dataprogress[0].course_units[unit].course_lessons[less][
                 'progress_lesson'
               ];
           }

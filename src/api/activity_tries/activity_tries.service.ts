@@ -151,8 +151,8 @@ export class ActivityTriesService extends BaseService<
         points = await this.pointsUserLogService.generatePoints(
           this.infoUser.id,
           TypesReasonsPoints.ACTIVITY_END,
-          lesson_activity.lesson.course_unit.course_id,
-          lesson_activity.lesson_id,
+          lesson_activity.course_lesson.course_id,
+          lesson_activity.course_lesson.lesson_id,
           createDto.lesson_activity_id,
         );
       } else {
@@ -165,17 +165,17 @@ export class ActivityTriesService extends BaseService<
       const result = await this.repository.save(register);
       if (passed) {
         const dataprogress = await this.lessonsService.findProgessByCourse(
-          [lesson_activity.lesson.course_unit.course_id],
+          [lesson_activity.course_lesson.course_id],
           this.infoUser.id,
         );
         const progress = await this.lessonsService.getProgressToLesson(
           dataprogress,
-          lesson_activity.lesson_id,
+          lesson_activity.course_lesson.lesson_id,
         );
         if (progress >= 100) {
           await this.lessonTryUsersService.end({
             user_id: this.infoUser.id,
-            lesson_id: lesson_activity.lesson_id,
+            lesson_id: lesson_activity.course_lesson.lesson_id,
             end: getActualDate(),
           });
         }

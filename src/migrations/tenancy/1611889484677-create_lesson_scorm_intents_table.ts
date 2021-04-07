@@ -19,7 +19,7 @@ export class createLessonScormIntentsTable1611889484677
             isGenerated: true,
           },
           {
-            name: 'lesson_course_unit_id',
+            name: 'course_lesson_id',
             type: 'int',
           },
           {
@@ -51,9 +51,9 @@ export class createLessonScormIntentsTable1611889484677
     );
     await queryRunner.createForeignKeys('lesson_scorm_intents', [
       new TableForeignKey({
-        columnNames: ['lesson_course_unit_id'],
+        columnNames: ['course_lesson_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'lesson_course_units',
+        referencedTableName: 'course_lessons',
       }),
       new TableForeignKey({
         columnNames: ['user_id'],
