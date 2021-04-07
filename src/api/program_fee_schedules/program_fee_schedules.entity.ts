@@ -29,5 +29,5 @@ export class ProgramFeeSchedules extends Base {
   @Column({ type: 'decimal', nullable: true, default: 0.0 })
   program_val: number;
   @Column({ type: 'decimal', nullable: true, default: 0.0 })
-  certificate_val: number;
+  inscription_val: number;
 }
