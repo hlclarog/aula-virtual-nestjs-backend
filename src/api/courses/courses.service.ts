@@ -386,9 +386,9 @@ export class CoursesService extends BaseService<
       .createQueryBuilder('course')
       .leftJoinAndSelect('course.course_units', 'course_unit')
       .leftJoinAndSelect('course_unit.course_lessons', 'course_lesson')
-      .leftJoinAndSelect('course_lesson.lessons', 'lessons')
+      .leftJoinAndSelect('course_lesson.lesson', 'lesson')
       .where('course.id = :id', { id })
-      .orderBy('lessons.order', 'ASC')
+      .orderBy('course_lesson.order', 'ASC')
       .addOrderBy('course_unit.order', 'ASC')
       .getOneOrFail();
     const dataprogress = await this.lessonsService.findProgessByCourse(
@@ -407,7 +407,7 @@ export class CoursesService extends BaseService<
           .indexOf(lesson.lesson_id);
         if (dataprogress.length > 0) {
           if (less >= 0) {
-            lesson.lesson['progress_lesson'] =
+            lesson['progress_lesson'] =
               dataprogress[0].course_units[unit].course_lessons[less][
                 'progress_lesson'
               ];
@@ -424,10 +424,11 @@ export class CoursesService extends BaseService<
         ? await this.repository
             .createQueryBuilder('course')
             .select('course.id')
-            .addSelect('SUM(lessons.duration)', 'duration')
+            .addSelect('SUM(lesson.duration)', 'duration')
             .groupBy('course.id')
-            .leftJoin('course.course_units', 'course_units')
-            .leftJoin('course_units.lessons', 'lessons')
+            .leftJoin('course.course_units', 'course_unit')
+            .leftJoin('course_unit.course_lessons', 'course_lesson')
+            .leftJoin('course_lesson.lesson', 'lesson')
             .where(`course.id in (${list.join(',')})`)
             .getRawMany()
         : [];

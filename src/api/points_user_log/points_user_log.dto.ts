@@ -48,7 +48,7 @@ export class CreatePointsUserLogDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly lesson_id?: number;
+  readonly course_lesson_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
@@ -75,7 +75,7 @@ export class FilterPointsUserLogDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly lesson_id?: number;
+  readonly course_lesson_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()

@@ -9,6 +9,7 @@ export class CreateCourseLessonsDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_unit_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly order: number;
 }
 
 export class UpdateCourseLessonsDto extends UpdateBaseDto {
@@ -24,4 +25,8 @@ export class UpdateCourseLessonsDto extends UpdateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly course_unit_id?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly order?: number;
 }

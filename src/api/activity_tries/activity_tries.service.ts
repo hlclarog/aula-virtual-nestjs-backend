@@ -175,7 +175,7 @@ export class ActivityTriesService extends BaseService<
         if (progress >= 100) {
           await this.lessonTryUsersService.end({
             user_id: this.infoUser.id,
-            lesson_id: lesson_activity.course_lesson.lesson_id,
+            course_lesson_id: lesson_activity.course_lesson.id,
             end: getActualDate(),
           });
         }

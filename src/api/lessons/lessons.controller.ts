@@ -35,6 +35,7 @@ export class LessonsController extends BaseController<
 
   @Post()
   async post(@Body() createDto: CreateLessonsDto) {
+    createDto.user_id = this.infoUser.id;
     return await this.create(createDto);
   }
 
@@ -48,15 +49,15 @@ export class LessonsController extends BaseController<
     return await this.findOne(id);
   }
 
-  @Get('student/:id')
-  async student(@Param('id') id: number) {
+  @Get('student/:course_lesson_id')
+  async student(@Param('course_lesson_id') course_lesson_id: number) {
     const result = await this.lessonsService.findLessonForStudent(
-      id,
+      course_lesson_id,
       this.infoUser.id,
     );
     await this.lesson_try_usersService.start({
       user_id: this.infoUser.id,
-      lesson_id: id,
+      course_lesson_id,
       begin: getActualDate(),
     });
     return { data: result };
@@ -105,12 +106,6 @@ export class LessonsController extends BaseController<
       user_id,
     );
     return { data: result.length > 0 ? result[0] : {} };
-  }
-
-  @Post('change/order')
-  async changeOrder(@Body() body: any) {
-    const result = await this.lessonsService.changeOrder(body);
-    return { data: result };
   }
 
   @Get('copy/search/:name')

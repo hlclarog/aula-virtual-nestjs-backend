@@ -22,17 +22,23 @@ export class CourseLessonsService extends BaseService<
     });
   }
 
+  async findByLesson(id: number): Promise<CourseLessons[]> {
+    return await this.repository.find({
+      where: { lesson_id: id },
+    });
+  }
+
   async changeOrder(data: {
     course_id: number;
-    unit_id: number;
+    lesson_id: number;
     new_order: number;
   }): Promise<any> {
     const listCourseLessons: CourseLessons[] = await this.repository
       .createQueryBuilder('course_lessons')
       .where(
-        'course_lessons.id != :unit_id AND course_lessons.course_id = :course_id',
+        'course_lessons.id != :lesson_id AND course_lessons.course_id = :course_id',
         {
-          unit_id: data.unit_id,
+          lesson_id: data.lesson_id,
           course_id: data.course_id,
         },
       )
@@ -46,8 +52,8 @@ export class CourseLessonsService extends BaseService<
         .createQueryBuilder()
         .update()
         .set({ order: order })
-        .where('id = :unit_id', {
-          unit_id: f.id,
+        .where('id = :lesson_id', {
+          lesson_id: f.id,
         })
         .execute();
     }
@@ -56,8 +62,8 @@ export class CourseLessonsService extends BaseService<
       .createQueryBuilder()
       .update()
       .set({ order: data.new_order })
-      .where('id = :unit_id', {
-        unit_id: data.unit_id,
+      .where('id = :lesson_id', {
+        lesson_id: data.lesson_id,
       })
       .execute();
   }

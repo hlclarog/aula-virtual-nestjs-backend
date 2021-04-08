@@ -1,7 +1,10 @@
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { BaseController } from '../../base/base.controller';
 import { CourseLessons } from './course_lessons.entity';
-import { CreateCourseLessonsDto, UpdateCourseLessonsDto } from './course_lessons.dto';
+import {
+  CreateCourseLessonsDto,
+  UpdateCourseLessonsDto,
+} from './course_lessons.dto';
 import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { CourseLessonsService } from './course_lessons.service';
 
@@ -31,7 +34,10 @@ export class CourseLessonsController extends BaseController<
   }
 
   @Put(':id')
-  async edit(@Param('id') id: string, @Body() updateDto: UpdateCourseLessonsDto) {
+  async edit(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateCourseLessonsDto,
+  ) {
     return await this.update(id, updateDto);
   }
 
@@ -43,6 +49,12 @@ export class CourseLessonsController extends BaseController<
   @Get('course/:id')
   async getByCourse(@Param('id') id: number) {
     const result = await this.courseLessonsService.findByCourse(id);
+    return { data: result };
+  }
+
+  @Get('lesson/:id')
+  async getByLesson(@Param('id') id: number) {
+    const result = await this.courseLessonsService.findByLesson(id);
     return { data: result };
   }
 

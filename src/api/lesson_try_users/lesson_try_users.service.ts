@@ -116,11 +116,11 @@ export class LessonTryUsersService extends BaseService<
       .getMany();
   }
 
-  async getActualTry(user_id: number, lesson_id: number) {
+  async getActualTry(user_id: number, course_lesson_id: number) {
     return await this.repository.findOne({
       where: {
         user_id,
-        lesson_id,
+        course_lesson_id,
       },
       relations: ['course_lesson', 'course_lesson.lesson'],
     });
@@ -129,18 +129,21 @@ export class LessonTryUsersService extends BaseService<
   async start(createDto: CreateLessonTryUsersDto) {
     let actual = await this.getActualTry(
       createDto.user_id,
-      createDto.lesson_id,
+      createDto.course_lesson_id,
     );
     if (actual) {
       return actual;
     } else {
       const result = await this.repository.save(createDto);
-      actual = await this.getActualTry(createDto.user_id, createDto.lesson_id);
+      actual = await this.getActualTry(
+        createDto.user_id,
+        createDto.course_lesson_id,
+      );
       const points = await this.pointsUserLogService.generatePoints(
         createDto.user_id,
         TypesReasonsPoints.LESSON_INIT,
         actual.course_lesson.course_id,
-        createDto.lesson_id,
+        createDto.course_lesson_id,
       );
       return { ...result, points_generated: points };
     }
@@ -150,7 +153,7 @@ export class LessonTryUsersService extends BaseService<
     let points: PointsGerenerated = null;
     const actual = await this.getActualTry(
       updateDto.user_id,
-      updateDto.lesson_id,
+      updateDto.course_lesson_id,
     );
     if (actual) {
       if (!actual.end) {
@@ -171,7 +174,7 @@ export class LessonTryUsersService extends BaseService<
             updateDto.user_id,
             reason,
             actual.course_lesson.course_id,
-            updateDto.lesson_id,
+            updateDto.course_lesson_id,
           );
         }
       }

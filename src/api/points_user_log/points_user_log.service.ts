@@ -61,7 +61,7 @@ export class PointsUserLogService {
           log.user_id = COALESCE(:user_id, log.user_id) and
           log.point_reason_id = COALESCE(:point_reason_id, log.point_reason_id) and
           COALESCE(log.course_id, 1) = COALESCE(:course_id,COALESCE(log.course_id, 1)) and
-          COALESCE(log.lesson_id, 1) = COALESCE(:lesson_id,COALESCE(log.lesson_id, 1)) and
+          COALESCE(log.course_lesson_id, 1) = COALESCE(:course_lesson_id,COALESCE(log.course_lesson_id, 1)) and
           COALESCE(log.activity_id, 1) = COALESCE(:activity_id,COALESCE(log.activity_id, 1)) and
           log.created_at BETWEEN COALESCE(:begin, log.created_at) AND COALESCE(:end, log.created_at)
         `,
@@ -69,7 +69,7 @@ export class PointsUserLogService {
           user_id: filters.user_id,
           point_reason_id: filters.point_reason_id,
           course_id: filters.course_id,
-          lesson_id: filters.lesson_id,
+          course_lesson_id: filters.course_lesson_id,
           activity_id: filters.activity_id,
           begin: filters.begin,
           end: filters.end,
@@ -167,7 +167,7 @@ export class PointsUserLogService {
     user_id: number,
     reason_id: number,
     course_id?: number,
-    lesson_id?: number,
+    course_lesson_id?: number,
     activity_id?: number,
   ) {
     const points = await this.pointReasonsValueService.findForType(reason_id);
@@ -176,7 +176,7 @@ export class PointsUserLogService {
       point_reason_id: reason_id,
       points: points,
       course_id: course_id,
-      lesson_id: lesson_id,
+      course_lesson_id: course_lesson_id,
       activity_id: activity_id,
     });
   }

@@ -18,7 +18,10 @@ export enum LESSON_PERMISSIONS {
 
 export class CreateLessonsDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson_type_id: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_unit_id: number;
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  readonly lesson_permission_type_id: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty({ required: false })
   @IsString()
@@ -36,16 +39,13 @@ export class CreateLessonsDto extends CreateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly min_progress?: number;
-  @ApiProperty({ required: false })
-  @IsNumber()
-  @IsOptional()
-  readonly order?: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly duration: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly suggested_weeks: number;
   @ApiProperty({ required: false })
   @IsBoolean()
   @IsOptional()
   readonly visible?: boolean;
+  user_id: number;
 }
 
 export class UpdateLessonsDto extends UpdateBaseDto {
@@ -56,7 +56,7 @@ export class UpdateLessonsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly course_unit_id?: number;
+  readonly lesson_permission_type_id?: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -77,10 +77,6 @@ export class UpdateLessonsDto extends UpdateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly min_progress?: number;
-  @ApiProperty({ required: false })
-  @IsNumber()
-  @IsOptional()
-  readonly order?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
@@ -105,4 +101,16 @@ export class CopyLessonsDto {
   @IsArray()
   @IsNotEmpty()
   readonly lessons_id: number[];
+}
+
+export class FindLessonForStudentDto {
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly lesson_id?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly course_id?: number;
+  user_id: number;
 }

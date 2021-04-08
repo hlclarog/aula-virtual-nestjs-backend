@@ -42,11 +42,7 @@ export class CourseLessons extends Base {
   @Column({ type: 'integer' })
   course_unit_id: number;
 
-  @OneToMany(() => Lessons, (lesson) => lesson.course_lessons)
-  lessons: Lessons[];
-
   @Column({ type: 'int', nullable: true }) order: number;
-  ////////////////////
 
   @OneToMany(
     () => LessonDetails,

@@ -164,13 +164,13 @@ export class InterestAreasService extends BaseService<
             'interest_areas.course_interest_areas',
             'course_interest_area',
           )
+          .leftJoin('course_interest_area.course', 'course')
           .leftJoin(
             'course.course_fee_schedules',
             'fee',
             '(now() BETWEEN fee.begin AND fee.end) AND fee.course_id = course.id',
           )
           .leftJoin('fee.currency', 'currency')
-          .leftJoin('course_interest_area.course', 'course')
           .leftJoin('course.user', 'user')
           .leftJoin('course.organization', 'organization')
           .leftJoin('course.course_status', 'course_status')
