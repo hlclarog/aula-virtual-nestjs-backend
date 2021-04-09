@@ -81,6 +81,7 @@ import { PointReasonsValueModule } from './point_reasons_value/point_reasons_val
 import { IntegrationTypesModule } from './integration_types/integration_types.module';
 import { ProgramCoursesStatusModule } from './program_courses_status/program_courses_status.module';
 import { CourseLessonsModule } from './course_lessons/course_lessons.module';
+import { LessonPermissionTypesModule } from './lesson_permission_types/lesson_permission_types.module';
 
 @Module({
   imports: [
@@ -166,6 +167,7 @@ import { CourseLessonsModule } from './course_lessons/course_lessons.module';
     IntegrationTypesModule,
     ProgramCoursesStatusModule,
     CourseLessonsModule,
+    LessonPermissionTypesModule,
   ],
   controllers: [],
   providers: [],
