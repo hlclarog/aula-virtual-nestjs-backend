@@ -368,13 +368,13 @@ export class CoursesService extends BaseService<
   async getUnitsLessons(id: number): Promise<CourseUnits[]> {
     const result = await this.repository
       .createQueryBuilder('course')
-      .leftJoinAndSelect('course.course_units', 'course_units')
-      .leftJoinAndSelect('course_units.lessons', 'lessons')
+      .leftJoinAndSelect('course.course_units', 'course_unit')
+      .leftJoinAndSelect('course_unit.course_lessons', 'course_lesson')
+      .leftJoinAndSelect('course_lesson.lesson', 'lesson')
       .where('course.id = :id', { id })
-      .orderBy('lessons.order', 'ASC')
-      .addOrderBy('course_units.order', 'ASC')
+      .orderBy('lesson.order', 'ASC')
+      .addOrderBy('course_unit.order', 'ASC')
       .getOneOrFail();
-
     return result.course_units;
   }
 
