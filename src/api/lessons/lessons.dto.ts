@@ -45,6 +45,18 @@ export class CreateLessonsDto extends CreateBaseDto {
   @IsBoolean()
   @IsOptional()
   readonly visible?: boolean;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  course_id?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  course_unit_id?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  order?: number;
   user_id: number;
 }
 

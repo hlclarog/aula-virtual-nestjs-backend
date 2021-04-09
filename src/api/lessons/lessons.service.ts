@@ -46,6 +46,7 @@ import { ActivityCompleteTexts } from '../activity_complete_texts/activity_compl
 import { LESSON_SCORMS_PROVIDER } from '../lesson_scorms/lesson_scorms.dto';
 import { LESSON_SCORM_RESOURCES_PROVIDER } from '../lesson_scorm_resources/lesson_scorm_resources.dto';
 import { LESSON_ACTIVITIES_PROVIDER } from '../lesson_activities/lesson_activities.dto';
+import { CourseLessonsService } from '../course_lessons/course_lessons.service';
 
 @Injectable()
 export class LessonsService extends BaseService<
@@ -76,6 +77,7 @@ export class LessonsService extends BaseService<
     private relateElementAnswersService: RelateElementAnswersService,
     private activityIdentifyWordsService: ActivityIdentifyWordsService,
     private activityCompleteTextsService: ActivityCompleteTextsService,
+    private courseLessonsService: CourseLessonsService,
   ) {
     super();
   }
@@ -113,7 +115,19 @@ export class LessonsService extends BaseService<
     if (createDto.video_url) {
       data.video_url = await this.setVideo(createDto.video_url);
     }
-    return await this.repository.save(data);
+    delete data.course_id;
+    delete data.course_unit_id;
+    delete data.order;
+    const lesson = await this.repository.save(data);
+    if (createDto.course_id && createDto.course_unit_id) {
+      await this.courseLessonsService.create({
+        lesson_id: lesson.id,
+        course_id: createDto.course_id,
+        course_unit_id: createDto.course_unit_id,
+        order: createDto.order,
+      });
+    }
+    return lesson;
   }
 
   async update(id: number, updateDto: UpdateLessonsDto): Promise<UpdateResult> {

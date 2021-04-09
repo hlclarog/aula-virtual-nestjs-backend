@@ -22,6 +22,7 @@ import { ActivityIdentifyWordsModule } from '../activity_identify_words/activity
 import { MultipleOptionAnswersModule } from '../multiple_option_answers/multiple_option_answers.module';
 import { RelateElementAnswersModule } from '../relate_element_answers/relate_element_answers.module';
 import { SortItemAnswersModule } from '../sort_item_answers/sort_item_answers.module';
+import { CourseLessonsModule } from '../course_lessons/course_lessons.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { SortItemAnswersModule } from '../sort_item_answers/sort_item_answers.mo
     SortItemAnswersModule,
     ActivityCompleteTextsModule,
     ActivityIdentifyWordsModule,
+    CourseLessonsModule,
   ],
   controllers: [LessonsController],
   providers: [
