@@ -22,12 +22,6 @@ export class CourseLessonsService extends BaseService<
     });
   }
 
-  async findByLesson(id: number): Promise<CourseLessons[]> {
-    return await this.repository.find({
-      where: { lesson_id: id },
-    });
-  }
-
   async changeOrder(data: {
     course_id: number;
     lesson_id: number;

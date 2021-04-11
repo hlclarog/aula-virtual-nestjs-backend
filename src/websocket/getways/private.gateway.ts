@@ -53,14 +53,14 @@ export class PrivateGateway
 
   async sendCommetLesson(data: EmitNewCommentLesson) {
     await this.server
-      .to(`${EVENTS_SOCKET.NEW_COMMENT_LESSON}_${data.lesson_id}`)
+      .to(`${EVENTS_SOCKET.NEW_COMMENT_LESSON}_${data.course_lesson_id}`)
       .emit(EVENTS_SOCKET.NEW_COMMENT_LESSON, data);
   }
 
   @SubscribeMessage('suscribeme_to_comments_lesson')
-  handleEvent(client: Socket, lesson_id: number) {
-    client.join(`${EVENTS_SOCKET.NEW_COMMENT_LESSON}_${lesson_id}`);
-    return lesson_id;
+  handleEvent(client: Socket, course_lesson_id: number) {
+    client.join(`${EVENTS_SOCKET.NEW_COMMENT_LESSON}_${course_lesson_id}`);
+    return course_lesson_id;
   }
 
   async handleConnection(client: Socket) {

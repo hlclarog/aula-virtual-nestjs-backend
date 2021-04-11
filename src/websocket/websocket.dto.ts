@@ -15,7 +15,7 @@ export interface EmitchangeGamificationUser {
 
 export interface EmitNewCommentLesson {
   user_id: number;
-  lesson_id: number;
+  course_lesson_id: number;
   id?: number;
   comment?: string;
   content?: string;

@@ -20,7 +20,7 @@ import { LessonComments } from './../../lesson_comments/lesson_comments.entity';
 import { LessonCommentReactions } from './../../lesson_comment_reactions/lesson_comment_reactions.entity';
 import { Languages } from './../../languages/languages.entity';
 import { PointsUserLog } from './../../points_user_log/points_user_log.entity';
-import { Lessons } from 'src/api/lessons/lessons.entity';
+import { Lessons } from './../../lessons/lessons.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {

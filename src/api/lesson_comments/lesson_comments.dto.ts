@@ -10,7 +10,7 @@ export enum LESSON_CONTENT_TYPES {
 }
 
 export class CreateLessonCommentsDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_lesson_id: number;
   user_id: number;
   @ApiProperty({ required: false })
   @IsString()

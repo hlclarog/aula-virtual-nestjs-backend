@@ -95,7 +95,6 @@ export class FacebookService {
         done: VerifyCallback,
       ) => {
         const { name, emails } = profile;
-        console.log(profile);
         const user = {
           email: emails[0].value,
           name: `${name.givenName} ${name.familyName}`,

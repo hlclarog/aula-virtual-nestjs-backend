@@ -39,7 +39,7 @@ export class LessonTryUsersService extends BaseService<
         'lesson_try_users.end',
         'lesson_try_users.percent',
         'lesson_try_users.user_id',
-        'lesson_try_users.lesson_id',
+        'lesson_try_users.course_lesson_id',
         'lesson.id',
         'lesson.description',
         'lesson.name',
@@ -60,7 +60,7 @@ export class LessonTryUsersService extends BaseService<
         'lesson_try_users.end',
         'lesson_try_users.percent',
         'lesson_try_users.user_id',
-        'lesson_try_users.lesson_id',
+        'lesson_try_users.course_lesson_id',
         'lesson.id',
         'lesson.description',
         'lesson.name',
@@ -73,7 +73,9 @@ export class LessonTryUsersService extends BaseService<
       .getOne();
   }
 
-  async findAllByLessonActivity(lesson_id: number): Promise<LessonTryUsers[]> {
+  async findAllByCourseLessonActivity(
+    course_lesson_id: number,
+  ): Promise<LessonTryUsers[]> {
     return await this.repository
       .createQueryBuilder('lesson_try_users')
       .select([
@@ -82,17 +84,19 @@ export class LessonTryUsersService extends BaseService<
         'lesson_try_users.end',
         'lesson_try_users.percent',
         'lesson_try_users.user_id',
-        'lesson_try_users.lesson_id',
+        'course_lesson.lesson_id',
+        'course_lesson.course_id',
         'lesson.id',
         'lesson.description',
         'lesson.name',
         'user.id',
         'user.name',
       ])
-      .leftJoin('lesson_try_users.lesson', 'lesson')
+      .leftJoin('lesson_try_users.course_lesson', 'course_lesson')
+      .leftJoin('course_lesson.lesson', 'lesson')
       .leftJoin('lesson_try_users.user', 'user')
-      .where('lesson.id = :id', {
-        id: lesson_id,
+      .where('course_lesson.id = :id', {
+        id: course_lesson_id,
       })
       .orderBy('lesson_try_users.id', 'ASC')
       .getMany();
@@ -104,10 +108,9 @@ export class LessonTryUsersService extends BaseService<
   ): Promise<LessonTryUsers[]> {
     return await this.repository
       .createQueryBuilder('lesson_try_users')
-      .leftJoin('lesson_try_users.lesson', 'lesson')
-      .leftJoin('lesson.course_unit', 'course_unit')
+      .leftJoin('lesson_try_users.course_lesson', 'course_lesson')
       .where(
-        'course_unit.course_id = :course_id AND lesson_try_users.user_id = user_id',
+        'course_lesson.course_id = :course_id AND lesson_try_users.user_id = user_id',
         {
           user_id,
           course_id,

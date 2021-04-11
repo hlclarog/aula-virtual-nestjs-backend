@@ -52,12 +52,6 @@ export class CourseLessonsController extends BaseController<
     return { data: result };
   }
 
-  @Get('lesson/:id')
-  async getByLesson(@Param('id') id: number) {
-    const result = await this.courseLessonsService.findByLesson(id);
-    return { data: result };
-  }
-
   @Post('change/order')
   async changeOrder(@Body() body: any) {
     const result = await this.courseLessonsService.changeOrder(body);
