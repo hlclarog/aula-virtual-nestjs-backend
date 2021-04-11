@@ -109,4 +109,28 @@ export class ActivityRelateElementsService extends BaseService<
     }
     return right;
   }
+
+  async getByDetailId(detail_id: number) {
+    return await this.repository
+      .createQueryBuilder('activity')
+      .select([
+        'activity.id',
+        'activity.statement',
+        'activity.observation',
+        'activity.picture',
+        'activity.video',
+        'activity.audio',
+        'activity.resource_content',
+        'activity.resource_type_id',
+        'answer.id',
+        'answer.activity_relate_element_id',
+        'answer.term',
+        'answer.definition',
+      ])
+      .leftJoin('activity.relate_element_answers', 'answer')
+      .where('activity.id = :detail_id', {
+        detail_id,
+      })
+      .getOne();
+  }
 }

@@ -45,6 +45,21 @@ export class CreateUsersDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
+  readonly gender?: string;
+
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly identification_type_id?: number;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly identification?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
   origin?: string;
 }
 

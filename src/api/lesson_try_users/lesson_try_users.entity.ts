@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { LESSON_TRY_USERS_ENTITY } from './lesson_try_users.dto';
 import { Users } from '../acl/users/users.entity';
-import { Lessons } from '../lessons/lessons.entity';
+import { CourseLessons } from '../course_lessons/course_lessons.entity';
 
 @Entity(LESSON_TRY_USERS_ENTITY)
 export class LessonTryUsers extends Base {
@@ -17,10 +17,15 @@ export class LessonTryUsers extends Base {
   @Column({ type: 'integer' })
   user_id: number;
 
-  @ManyToOne(() => Lessons, (lesson) => lesson.lesson_try_users)
-  @JoinColumn({ name: 'lesson_id' })
-  lesson: Lessons;
-  @RelationId((lesson_try_users: LessonTryUsers) => lesson_try_users.lesson)
-  @Column({ type: 'integer' })
-  lesson_id: number;
+  @ManyToOne(
+    () => CourseLessons,
+    (course_lesson) => course_lesson.lesson_try_users,
+  )
+  @JoinColumn({ name: 'course_lesson_id' })
+  course_lesson: CourseLessons;
+  @RelationId(
+    (lesson_try_users: LessonTryUsers) => lesson_try_users.course_lesson,
+  )
+  @Column('integer')
+  course_lesson_id: number;
 }

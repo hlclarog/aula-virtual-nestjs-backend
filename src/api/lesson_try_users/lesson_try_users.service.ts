@@ -39,7 +39,7 @@ export class LessonTryUsersService extends BaseService<
         'lesson_try_users.end',
         'lesson_try_users.percent',
         'lesson_try_users.user_id',
-        'lesson_try_users.lesson_id',
+        'lesson_try_users.course_lesson_id',
         'lesson.id',
         'lesson.description',
         'lesson.name',
@@ -60,7 +60,7 @@ export class LessonTryUsersService extends BaseService<
         'lesson_try_users.end',
         'lesson_try_users.percent',
         'lesson_try_users.user_id',
-        'lesson_try_users.lesson_id',
+        'lesson_try_users.course_lesson_id',
         'lesson.id',
         'lesson.description',
         'lesson.name',
@@ -73,7 +73,9 @@ export class LessonTryUsersService extends BaseService<
       .getOne();
   }
 
-  async findAllByLessonActivity(lesson_id: number): Promise<LessonTryUsers[]> {
+  async findAllByCourseLessonActivity(
+    course_lesson_id: number,
+  ): Promise<LessonTryUsers[]> {
     return await this.repository
       .createQueryBuilder('lesson_try_users')
       .select([
@@ -82,17 +84,19 @@ export class LessonTryUsersService extends BaseService<
         'lesson_try_users.end',
         'lesson_try_users.percent',
         'lesson_try_users.user_id',
-        'lesson_try_users.lesson_id',
+        'course_lesson.lesson_id',
+        'course_lesson.course_id',
         'lesson.id',
         'lesson.description',
         'lesson.name',
         'user.id',
         'user.name',
       ])
-      .leftJoin('lesson_try_users.lesson', 'lesson')
+      .leftJoin('lesson_try_users.course_lesson', 'course_lesson')
+      .leftJoin('course_lesson.lesson', 'lesson')
       .leftJoin('lesson_try_users.user', 'user')
-      .where('lesson.id = :id', {
-        id: lesson_id,
+      .where('course_lesson.id = :id', {
+        id: course_lesson_id,
       })
       .orderBy('lesson_try_users.id', 'ASC')
       .getMany();
@@ -104,10 +108,9 @@ export class LessonTryUsersService extends BaseService<
   ): Promise<LessonTryUsers[]> {
     return await this.repository
       .createQueryBuilder('lesson_try_users')
-      .leftJoin('lesson_try_users.lesson', 'lesson')
-      .leftJoin('lesson.course_unit', 'course_unit')
+      .leftJoin('lesson_try_users.course_lesson', 'course_lesson')
       .where(
-        'course_unit.course_id = :course_id AND lesson_try_users.user_id = user_id',
+        'course_lesson.course_id = :course_id AND lesson_try_users.user_id = user_id',
         {
           user_id,
           course_id,
@@ -116,31 +119,34 @@ export class LessonTryUsersService extends BaseService<
       .getMany();
   }
 
-  async getActualTry(user_id: number, lesson_id: number) {
+  async getActualTry(user_id: number, course_lesson_id: number) {
     return await this.repository.findOne({
       where: {
         user_id,
-        lesson_id,
+        course_lesson_id,
       },
-      relations: ['lesson', 'lesson.course_unit'],
+      relations: ['course_lesson', 'course_lesson.lesson'],
     });
   }
 
   async start(createDto: CreateLessonTryUsersDto) {
     let actual = await this.getActualTry(
       createDto.user_id,
-      createDto.lesson_id,
+      createDto.course_lesson_id,
     );
     if (actual) {
       return actual;
     } else {
       const result = await this.repository.save(createDto);
-      actual = await this.getActualTry(createDto.user_id, createDto.lesson_id);
+      actual = await this.getActualTry(
+        createDto.user_id,
+        createDto.course_lesson_id,
+      );
       const points = await this.pointsUserLogService.generatePoints(
         createDto.user_id,
         TypesReasonsPoints.LESSON_INIT,
-        actual.lesson.course_unit.course_id,
-        createDto.lesson_id,
+        actual.course_lesson.course_id,
+        createDto.course_lesson_id,
       );
       return { ...result, points_generated: points };
     }
@@ -150,12 +156,12 @@ export class LessonTryUsersService extends BaseService<
     let points: PointsGerenerated = null;
     const actual = await this.getActualTry(
       updateDto.user_id,
-      updateDto.lesson_id,
+      updateDto.course_lesson_id,
     );
     if (actual) {
       if (!actual.end) {
         let reason = null;
-        switch (actual.lesson.lesson_type_id) {
+        switch (actual.course_lesson.lesson.lesson_type_id) {
           case TypesLesson.TEORIC:
             reason = TypesReasonsPoints.TEORIC_LESSON_END;
             break;
@@ -170,8 +176,8 @@ export class LessonTryUsersService extends BaseService<
           points = await this.pointsUserLogService.generatePoints(
             updateDto.user_id,
             reason,
-            actual.lesson.course_unit.course_id,
-            updateDto.lesson_id,
+            actual.course_lesson.course_id,
+            updateDto.course_lesson_id,
           );
         }
       }

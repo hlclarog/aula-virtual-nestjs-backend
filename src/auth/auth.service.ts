@@ -7,10 +7,10 @@ import {
 import {
   InfoTenancyDomain,
   INFO_TENANCY_PROVIDER,
-} from './../utils/providers/info-tenancy.module';
-import { UsersService } from './../api/acl/users/users.service';
-import { ConfigService } from './../config/config.service';
-import { TokenService } from './../utils/services/token.service';
+} from '../utils/providers/info-tenancy.module';
+import { UsersService } from '../api/acl/users/users.service';
+import { ConfigService } from '../config/config.service';
+import { TokenService } from '../utils/services/token.service';
 import {
   LoginDto,
   MESSAGE_FORBIDDEN,
@@ -19,16 +19,23 @@ import {
   DEFAULT_TIME_TOKEN_REQUEST_PASS_EMAIL,
   ChangePasswordEmailDto,
   RegisterDto,
-  SignUpDto,
 } from './auth.dto';
-import { CreateUsersDto } from './../api/acl/users/users.dto';
-import { TenancyConfigService } from './../api/tenancy_config/tenancy_config.service';
-import { TypesReasonsPoints } from './../api/points_user_log/points_user_log.dto';
-import { PointsUserLogService } from './../api/points_user_log/points_user_log.service';
+import { CreateUsersDto } from '../api/acl/users/users.dto';
+import { TenancyConfigService } from '../api/tenancy_config/tenancy_config.service';
+import { TypesReasonsPoints } from '../api/points_user_log/points_user_log.dto';
+import { PointsUserLogService } from '../api/points_user_log/points_user_log.service';
+import { TenancyDomains } from '../api/tenancy_domains/tenancy_domains.entity';
+import { Tenancies } from '../api/tenancies/tenancies.entity';
+import { Connection, createConnection, getConnectionManager } from 'typeorm';
+import { DATABASE_MANAGER_PROVIDER } from '../database/database.dto';
+import { Users } from '../api/acl/users/users.entity';
+import { THEME_DEFAULT_ID } from '../api/themes/themes.dto';
+import { UsersRoles } from '../api/acl/users_roles/users_roles.entity';
 
 @Injectable()
 export class AuthService {
   @Inject(INFO_TENANCY_PROVIDER) tenancy: InfoTenancyDomain;
+  @Inject(DATABASE_MANAGER_PROVIDER) connection: Connection;
   constructor(
     private tokenService: TokenService,
     private usersService: UsersService,
@@ -146,45 +153,5 @@ export class AuthService {
       .catch((err) => {
         throw new ForbiddenException(err);
       });
-  }
-
-  async loginEmail(data: any) {
-    return new Promise(async (resolve) => {
-      const dataUser = await this.usersService.findByEmail(data.email);
-      if (dataUser) {
-        const dataToken = await this.createTokenLogin(dataUser, {
-          email: data.email,
-          secret: data.secret,
-        });
-        resolve({ ...dataToken, new: false });
-      } else {
-        const dataNew = new CreateUsersDto();
-        dataNew.name = data.name;
-        dataNew.email = data.email;
-        dataNew.origin = data.origin;
-        dataNew.password = '';
-        dataNew.users_roles = [3];
-        const user = await this.usersService.create(dataNew);
-        const dataToken = await this.createTokenLogin(user, {
-          email: data.email,
-          secret: data.secret,
-        });
-        resolve({ ...dataToken, new: true });
-      }
-    });
-  }
-
-  async createTokenLogin(user, data) {
-    if (user) {
-      const payload = { ...data };
-      const token = await this.tokenService
-        .createTokenKey(payload, DEFAULT_TIME_TOKEN_AUTH, data.secret)
-        .then((res) => res);
-      return { payload, token };
-    } else {
-      throw new ForbiddenException({
-        message: MESSAGE_FORBIDDEN,
-      });
-    }
   }
 }

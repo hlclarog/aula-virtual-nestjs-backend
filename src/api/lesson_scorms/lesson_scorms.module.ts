@@ -20,5 +20,6 @@ import { LessonScormResourcesModule } from '../lesson_scorm_resources/lesson_sco
     },
     LessonScormsService,
   ],
+  exports: [LESSON_SCORMS_PROVIDER, LessonScormsService],
 })
 export class LessonScormsModule {}

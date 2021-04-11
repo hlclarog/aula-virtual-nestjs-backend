@@ -7,18 +7,21 @@ import {
   RelationId,
 } from 'typeorm';
 import { Base } from '../../base/base.entity';
-import { Lessons } from '../lessons/lessons.entity';
+import { CourseLessons } from '../course_lessons/course_lessons.entity';
 import { LessonScormResources } from '../lesson_scorm_resources/lesson_scorm_resources.entity';
 import { LESSON_SCORMS_ENTITY } from './lesson_scorms.dto';
 
 @Entity({ name: LESSON_SCORMS_ENTITY })
 export class LessonScorms extends Base {
-  @ManyToOne(() => Lessons, (lessons) => lessons.lesson_scorms)
-  @JoinColumn({ name: 'lesson_id' })
-  lesson: Lessons;
-  @RelationId((lessonScorms: LessonScorms) => lessonScorms.lesson)
+  @ManyToOne(
+    () => CourseLessons,
+    (course_lesson) => course_lesson.lesson_scorms,
+  )
+  @JoinColumn({ name: 'course_lesson_id' })
+  course_lesson: CourseLessons;
+  @RelationId((lessonScorms: LessonScorms) => lessonScorms.course_lesson)
   @Column('integer')
-  lesson_id: number;
+  course_lesson_id: number;
 
   @Column({ type: 'varchar' }) content: string;
   @Column({ type: 'varchar' }) identifier: string;

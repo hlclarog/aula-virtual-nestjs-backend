@@ -40,11 +40,6 @@ export class tenancyOauth2CredentialsTable1614989908089
             isNullable: true,
           },
           {
-            name: 'callback_url',
-            type: 'text',
-            isNullable: true,
-          },
-          {
             name: 'scope',
             type: 'varchar',
             length: '500',

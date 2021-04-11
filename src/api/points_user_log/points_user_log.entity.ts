@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Users } from '../acl/users/users.entity';
 import { Courses } from '../courses/courses.entity';
-import { Lessons } from '../lessons/lessons.entity';
+import { CourseLessons } from '../course_lessons/course_lessons.entity';
 import { LessonActivities } from '../lesson_activities/lesson_activities.entity';
 import { PointReasons } from '../point_reasons/point_reasons.entity';
 import { POINTS_USER_LOG_ENTITY } from './points_user_log.dto';
@@ -33,12 +33,15 @@ export class PointsUserLog extends Base {
   @Column({ type: 'integer' })
   course_id: number;
 
-  @ManyToOne(() => Lessons, (lesson) => lesson.points_user_log)
-  @JoinColumn({ name: 'lesson_id' })
-  lesson: Lessons;
-  @RelationId((points_user_log: PointsUserLog) => points_user_log.lesson)
-  @Column({ type: 'integer' })
-  lesson_id: number;
+  @ManyToOne(
+    () => CourseLessons,
+    (course_lesson) => course_lesson.points_user_log,
+  )
+  @JoinColumn({ name: 'course_lesson_id' })
+  course_lesson: CourseLessons;
+  @RelationId((points_user_log: PointsUserLog) => points_user_log.course_lesson)
+  @Column('integer')
+  course_lesson_id: number;
 
   @ManyToOne(
     () => LessonActivities,

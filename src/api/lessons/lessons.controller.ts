@@ -1,7 +1,12 @@
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { BaseController } from '../../base/base.controller';
 import { Lessons } from './lessons.entity';
-import { CreateLessonsDto, UpdateLessonsDto } from './lessons.dto';
+import {
+  CopyLessonsDto,
+  CreateLessonsDto,
+  LESSON_PERMISSIONS,
+  UpdateLessonsDto,
+} from './lessons.dto';
 import { Body, Delete, Get, Inject, Param, Post, Put } from '@nestjs/common';
 import { LessonsService } from './lessons.service';
 import {
@@ -10,6 +15,8 @@ import {
 } from './../../utils/providers/info-user.module';
 import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
 import { getActualDate } from './../../utils/date';
+import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
+import { COURSES_PERMISSIONS } from '../courses/courses.dto';
 
 @ControllerApi({ name: 'lessons' })
 export class LessonsController extends BaseController<
@@ -20,6 +27,7 @@ export class LessonsController extends BaseController<
   constructor(
     private lessonsService: LessonsService,
     private lesson_try_usersService: LessonTryUsersService,
+    private authorizationsUserService: AuthorizationsUserService,
     @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
   ) {
     super(lessonsService);
@@ -27,6 +35,7 @@ export class LessonsController extends BaseController<
 
   @Post()
   async post(@Body() createDto: CreateLessonsDto) {
+    createDto.user_id = this.infoUser.id;
     return await this.create(createDto);
   }
 
@@ -40,15 +49,15 @@ export class LessonsController extends BaseController<
     return await this.findOne(id);
   }
 
-  @Get('student/:id')
-  async student(@Param('id') id: number) {
+  @Get('student/:course_lesson_id')
+  async student(@Param('course_lesson_id') course_lesson_id: number) {
     const result = await this.lessonsService.findLessonForStudent(
-      id,
+      course_lesson_id,
       this.infoUser.id,
     );
     await this.lesson_try_usersService.start({
       user_id: this.infoUser.id,
-      lesson_id: id,
+      course_lesson_id,
       begin: getActualDate(),
     });
     return { data: result };
@@ -79,9 +88,49 @@ export class LessonsController extends BaseController<
     return { data: result };
   }
 
-  @Post('change/order')
-  async changeOrder(@Body() body: any) {
-    const result = await this.lessonsService.changeOrder(body);
+  @Get('course_progress/:course_id/:user_id')
+  async findProgessByUser(
+    @Param('course_id') course_id: number,
+    @Param('user_id') user_id: number,
+  ) {
+    try {
+      await this.authorizationsUserService.accesAction(
+        [LESSON_PERMISSIONS.GET_ALL_PROGRESS],
+        this.infoUser.id,
+      );
+    } catch (error) {
+      user_id = this.infoUser.id;
+    }
+    const result = await this.lessonsService.findProgessByCourse(
+      [course_id],
+      user_id,
+    );
+    return { data: result.length > 0 ? result[0] : {} };
+  }
+
+  @Get('copy/search/:name')
+  async searchLessonsCopyDto(@Param('name') name: string) {
+    let all = false;
+    try {
+      await this.authorizationsUserService.accesAction(
+        [COURSES_PERMISSIONS.MANAGER],
+        this.infoUser.id,
+      );
+      all = true;
+    } catch (error) {
+      all = false;
+    }
+    const result = await this.lessonsService.searchLessonsCopy(
+      name,
+      this.infoUser.id,
+      all,
+    );
+    return { data: result };
+  }
+
+  @Post('copy')
+  async copyLessonsDto(@Body() body: CopyLessonsDto) {
+    const result = await this.lessonsService.copyLessons(body);
     return { data: result };
   }
 }

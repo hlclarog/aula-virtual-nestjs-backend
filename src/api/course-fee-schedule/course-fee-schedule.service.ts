@@ -63,8 +63,25 @@ export class CourseFeeScheduleService extends BaseService<
   }
 
   async findByCourse(id: number): Promise<CourseFeeSchedules[]> {
-    return await this.repository.find({
-      where: { course_id: id },
-    });
+    return await this.repository
+      .createQueryBuilder('fee')
+      .select([
+        'fee.id',
+        'fee.currency_id',
+        'fee.course_id',
+        'fee.begin',
+        'fee.end',
+        'fee.course_val',
+        'fee.certificate_val',
+        'fee.end',
+        'fee.active',
+        'currency.id',
+        'currency.description',
+        'currency.code',
+        'currency.symbol',
+      ])
+      .leftJoin('fee.currency', 'currency')
+      .where('fee.course_id = :id', { id })
+      .getMany();
   }
 }

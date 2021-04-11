@@ -202,9 +202,11 @@ export class CoursesService extends BaseService<
         'course.code',
         'course.description',
         'course.picture',
+        'course.picture_banner',
         'course.short_name',
         'course.free',
         'course.user_id',
+        'course_interest_area.interest_area_id',
         'course_interest_area.interest_area_id',
         'interest_area.id',
         'interest_area.description',
@@ -248,6 +250,11 @@ export class CoursesService extends BaseService<
       .getOne();
     if (course.picture) {
       course.picture = await this.awsService.getFile(course.picture);
+    }
+    if (course.picture_banner) {
+      course.picture_banner = await this.awsService.getFile(
+        course.picture_banner,
+      );
     }
     const dataprogress = await this.lessonsService.findProgessByCourse(
       [id],
@@ -368,13 +375,13 @@ export class CoursesService extends BaseService<
   async getUnitsLessons(id: number): Promise<CourseUnits[]> {
     const result = await this.repository
       .createQueryBuilder('course')
-      .leftJoinAndSelect('course.course_units', 'course_units')
-      .leftJoinAndSelect('course_units.lessons', 'lessons')
+      .leftJoinAndSelect('course.course_units', 'course_unit')
+      .leftJoinAndSelect('course_unit.course_lessons', 'course_lesson')
+      .leftJoinAndSelect('course_lesson.lesson', 'lesson')
       .where('course.id = :id', { id })
-      .orderBy('lessons.order', 'ASC')
-      .addOrderBy('course_units.order', 'ASC')
+      .orderBy('lesson.order', 'ASC')
+      .addOrderBy('course_unit.order', 'ASC')
       .getOneOrFail();
-
     return result.course_units;
   }
 
@@ -384,11 +391,12 @@ export class CoursesService extends BaseService<
   ): Promise<CourseUnits[]> {
     const result = await this.repository
       .createQueryBuilder('course')
-      .leftJoinAndSelect('course.course_units', 'course_units')
-      .leftJoinAndSelect('course_units.lessons', 'lessons')
+      .leftJoinAndSelect('course.course_units', 'course_unit')
+      .leftJoinAndSelect('course_unit.course_lessons', 'course_lesson')
+      .leftJoinAndSelect('course_lesson.lesson', 'lesson')
       .where('course.id = :id', { id })
-      .orderBy('lessons.order', 'ASC')
-      .addOrderBy('course_units.order', 'ASC')
+      .orderBy('course_lesson.order', 'ASC')
+      .addOrderBy('course_unit.order', 'ASC')
       .getOneOrFail();
     const dataprogress = await this.lessonsService.findProgessByCourse(
       [id],
@@ -399,15 +407,15 @@ export class CoursesService extends BaseService<
       const unit = dataprogress[0].course_units
         .map((u) => u.id)
         .indexOf(element.id);
-      for (let k = 0; k < element.lessons.length; k++) {
-        const lesson = element.lessons[k];
-        const less = dataprogress[0].course_units[unit].lessons
-          .map((u) => u.id)
-          .indexOf(lesson.id);
+      for (let k = 0; k < element.course_lessons.length; k++) {
+        const lesson = element.course_lessons[k];
+        const less = dataprogress[0].course_units[unit].course_lessons
+          .map((u) => u.lesson_id)
+          .indexOf(lesson.lesson_id);
         if (dataprogress.length > 0) {
           if (less >= 0) {
             lesson['progress_lesson'] =
-              dataprogress[0].course_units[unit].lessons[less][
+              dataprogress[0].course_units[unit].course_lessons[less][
                 'progress_lesson'
               ];
           }
@@ -423,10 +431,11 @@ export class CoursesService extends BaseService<
         ? await this.repository
             .createQueryBuilder('course')
             .select('course.id')
-            .addSelect('SUM(lessons.duration)', 'duration')
+            .addSelect('SUM(lesson.duration)', 'duration')
             .groupBy('course.id')
-            .leftJoin('course.course_units', 'course_units')
-            .leftJoin('course_units.lessons', 'lessons')
+            .leftJoin('course.course_units', 'course_unit')
+            .leftJoin('course_unit.course_lessons', 'course_lesson')
+            .leftJoin('course_lesson.lesson', 'lesson')
             .where(`course.id in (${list.join(',')})`)
             .getRawMany()
         : [];

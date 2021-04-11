@@ -46,10 +46,10 @@ export class LessonDetailsService extends BaseService<
     return lesson_detail;
   }
 
-  async getByLesson(id: number): Promise<any> {
+  async getByCourseLesson(id: number): Promise<any> {
     const data = await this.repository
       .createQueryBuilder('lesson_details')
-      .where('lesson_id = :id', { id: id })
+      .where('course_lesson_id = :id', { id: id })
       .orderBy('lesson_details.order', 'ASC')
       .getMany();
 

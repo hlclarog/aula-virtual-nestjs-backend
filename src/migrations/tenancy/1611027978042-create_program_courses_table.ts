@@ -32,6 +32,31 @@ export class createProgramCoursesTable1611027978042
             type: 'int',
           },
           {
+            name: 'program_courses_status_id',
+            isNullable: true,
+            type: 'int',
+          },
+          {
+            name: 'credits',
+            isNullable: true,
+            type: 'int',
+          },
+          {
+            name: 'certifiable',
+            type: 'bool',
+            default: false,
+          },
+          {
+            name: 'begin_date',
+            type: 'date',
+            isNullable: true,
+          },
+          {
+            name: 'end_date',
+            type: 'date',
+            isNullable: true,
+          },
+          {
             name: 'active',
             type: 'bool',
             default: true,
@@ -72,6 +97,12 @@ export class createProgramCoursesTable1611027978042
         columnNames: ['transaction_status_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'transaction_status',
+        onUpdate: 'CASCADE',
+      }),
+      new TableForeignKey({
+        columnNames: ['program_courses_status_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'public.program_courses_status',
         onUpdate: 'CASCADE',
       }),
     ]);

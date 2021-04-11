@@ -9,7 +9,7 @@ import {
 import { COURSE_UNITS_ENTITY } from './course_units.dto';
 import { Base } from '../../base/base.entity';
 import { Courses } from '../courses/courses.entity';
-import { Lessons } from '../lessons/lessons.entity';
+import { CourseLessons } from '../course_lessons/course_lessons.entity';
 
 @Entity(COURSE_UNITS_ENTITY)
 export class CourseUnits extends Base {
@@ -24,6 +24,6 @@ export class CourseUnits extends Base {
   @Column({ type: 'varchar' }) color: string;
   @Column({ type: 'int' }) order: number;
 
-  @OneToMany(() => Lessons, (lesson) => lesson.course_unit)
-  lessons: Lessons[];
+  @OneToMany(() => CourseLessons, (course_lesson) => course_lesson.course_unit)
+  course_lessons: CourseLessons[];
 }

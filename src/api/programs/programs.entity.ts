@@ -17,6 +17,7 @@ import { ProgramCourses } from '../program_courses/program_courses.entity';
 import { ProgramUsers } from '../program_users/program_users.entity';
 import { ProgramInterestAreas } from '../program_interest_areas/program_interest_areas.entity';
 import { ProgramCommissionOrganizations } from '../program_comission_organizations/program_commission_organizations.entity';
+import { ProgramPayment } from '../program_payment/program_payment.entity';
 @Entity({ name: PROGRAMS_ENTITY })
 export class Programs extends Base {
   @ManyToOne(() => ProgramTypes, (program_type) => program_type.programs)
@@ -51,6 +52,7 @@ export class Programs extends Base {
   @Column({ type: 'boolean' }) certifiable: boolean;
   @Column({ type: 'varchar' }) requirements: string;
   @Column({ type: 'integer' }) certifiable_number: number;
+  @Column({ type: 'boolean' }) by_credit: boolean;
 
   @OneToMany(
     () => ProgramFeeSchedules,
@@ -75,4 +77,7 @@ export class Programs extends Base {
     (programCommissionOrganizations) => programCommissionOrganizations.program,
   )
   program_commission_organizations: ProgramCommissionOrganizations[];
+
+  @OneToMany(() => ProgramPayment, (program_payment) => program_payment.programs)
+  program_payment: ProgramPayment[];
 }

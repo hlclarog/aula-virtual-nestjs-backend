@@ -30,9 +30,9 @@ export class LessonTryUsersController extends BaseController<
     return await this.findAll();
   }
 
-  @Get('lesson/list/:id')
+  @Get('course_lesson/list/:id')
   async findAllByLesson(@Param('id') id: number) {
-    const result = await this.lesson_try_usersService.findAllByLessonActivity(
+    const result = await this.lesson_try_usersService.findAllByCourseLessonActivity(
       id,
     );
     return { data: result };

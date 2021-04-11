@@ -23,7 +23,7 @@ export class createLessonCommentsTable1613831078105
             type: 'int',
           },
           {
-            name: 'lesson_id',
+            name: 'course_lesson_id',
             type: 'int',
           },
           {
@@ -84,9 +84,9 @@ export class createLessonCommentsTable1613831078105
         referencedTableName: 'users',
       }),
       new TableForeignKey({
-        columnNames: ['lesson_id'],
+        columnNames: ['course_lesson_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'lessons',
+        referencedTableName: 'course_lessons',
       }),
       new TableForeignKey({
         columnNames: ['comment_answer_id'],

@@ -6,6 +6,7 @@ export const DEFAULT_TIME_TOKEN_AUTH = '10h';
 export const DEFAULT_TIME_TOKEN_REQUEST_PASS_EMAIL = '2h';
 export const DEFAULT_TIME_TOKEN_REQUEST_PASS_NUMBER = 300000;
 export const MESSAGE_FORBIDDEN = 'EMAIL OR PASSWORD INCORRECT';
+export const NAME_HEADER_AUTH = 'Authorization';
 
 export class SignUpDto extends PartialType(CreateUsersDto) {}
 

@@ -9,8 +9,8 @@ import { Programs } from './programs.entity';
 import { BaseRepo } from '../../base/base.repository';
 import { UpdateResult } from 'typeorm';
 import { ProgramInterestAreasService } from '../program_interest_areas/program_interest_areas.service';
-import { AwsService } from './../../aws/aws.service';
-import { typeFilesAwsNames } from './../../aws/aws.dto';
+import { AwsService } from '../../aws/aws.service';
+import { typeFilesAwsNames } from '../../aws/aws.dto';
 import * as shortid from 'shortid';
 
 @Injectable()
@@ -47,6 +47,7 @@ export class ProgramsService extends BaseService<
         'program.certifiable',
         'program.requirements',
         'program.certifiable_number',
+        'program.by_credit',
         'program_types.id',
         'program_types.description',
         'program_status.id',

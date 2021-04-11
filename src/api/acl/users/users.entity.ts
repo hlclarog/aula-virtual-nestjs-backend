@@ -20,6 +20,8 @@ import { LessonComments } from './../../lesson_comments/lesson_comments.entity';
 import { LessonCommentReactions } from './../../lesson_comment_reactions/lesson_comment_reactions.entity';
 import { Languages } from './../../languages/languages.entity';
 import { PointsUserLog } from './../../points_user_log/points_user_log.entity';
+import { Lessons } from './../../lessons/lessons.entity';
+import { ProgramPayment } from '../../program_payment/program_payment.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -107,7 +109,10 @@ export class Users extends Base {
   users_roles: UsersRoles[];
 
   @OneToMany(() => Courses, (courses) => courses.user)
-  course: Courses[];
+  courses: Courses[];
+
+  @OneToMany(() => Lessons, (lessons) => lessons.user)
+  lessons: Lessons[];
 
   @OneToMany(() => CourseUsers, (courseUsers) => courseUsers.user)
   course_users: CourseUsers[];
@@ -117,7 +122,7 @@ export class Users extends Base {
 
   @OneToMany(
     () => LessonScormIntents,
-    (lesson_scorm_intent) => lesson_scorm_intent.lesson,
+    (lesson_scorm_intent) => lesson_scorm_intent.user,
   )
   lesson_scorm_intents: LessonScormIntents[];
 
@@ -152,4 +157,10 @@ export class Users extends Base {
 
   @Column({ type: 'text', default: 'local' })
   origin: string;
+
+  @OneToMany(
+    () => ProgramPayment,
+    (program_payment) => program_payment.programs,
+  )
+  program_payment: ProgramPayment[];
 }

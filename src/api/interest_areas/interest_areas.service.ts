@@ -7,9 +7,9 @@ import {
 import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
 import { InterestAreas } from './interest_areas.entity';
-import { AwsService } from './../../aws/aws.service';
+import { AwsService } from '../../aws/aws.service';
 import { CoursesService } from '../courses/courses.service';
-import { timeConvert } from './../../utils/helper';
+import { timeConvert } from '../../utils/helper';
 import { LessonsService } from '../lessons/lessons.service';
 
 @Injectable()
@@ -164,13 +164,13 @@ export class InterestAreasService extends BaseService<
             'interest_areas.course_interest_areas',
             'course_interest_area',
           )
+          .leftJoin('course_interest_area.course', 'course')
           .leftJoin(
             'course.course_fee_schedules',
             'fee',
             '(now() BETWEEN fee.begin AND fee.end) AND fee.course_id = course.id',
           )
           .leftJoin('fee.currency', 'currency')
-          .leftJoin('course_interest_area.course', 'course')
           .leftJoin('course.user', 'user')
           .leftJoin('course.organization', 'organization')
           .leftJoin('course.course_status', 'course_status')
@@ -244,6 +244,66 @@ export class InterestAreasService extends BaseService<
         }
       }
     }
+    return list;
+  }
+
+  async findGroupProgram(user_id: number, type_user: string): Promise<any[]> {
+    let list: InterestAreas[] = [];
+    switch (type_user) {
+      case 'all':
+        list = await this.repository
+          .createQueryBuilder('interest_areas')
+          .select([
+            'interest_areas.id',
+            'interest_areas.description',
+            'program_interest_area.program_id',
+            'program.id',
+            'program.name',
+            'program.description',
+            'program.picture',
+            'program_user',
+            'program_user.user',
+            'student.id',
+            'student.name',
+            'fee.program_val',
+            'fee.certificate_val',
+            'currency.id',
+            'currency.description',
+            'currency.code',
+            'currency.symbol',
+            'currency.decimals',
+          ])
+          .leftJoin(
+            'interest_areas.program_interest_areas',
+            'program_interest_area',
+          )
+          .leftJoin('program_interest_area.program', 'program')
+          .leftJoin('program.organization', 'organization')
+          .leftJoin('program.program_status', 'program_status')
+          .leftJoin(
+            'program.program_users',
+            'program_user',
+            'program_user.user_id = :user_id AND program_user.program_id = program.id AND program_user.deleted_at is null',
+            {
+              user_id,
+            },
+          )
+          .leftJoin(
+            'program.program_fee_schedules',
+            'fee',
+            '(now() BETWEEN fee.begin AND fee.end) AND fee.program_id = program.id',
+          )
+          .leftJoin('fee.currency', 'currency')
+          .leftJoin('program_user.user', 'student')
+          .getMany();
+        break;
+    }
+    let programs_ids = [];
+    list.map((i) => {
+      programs_ids = programs_ids.concat(
+        i.program_interest_areas.map((j) => String(j.program_id)),
+      );
+    });
     return list;
   }
 }

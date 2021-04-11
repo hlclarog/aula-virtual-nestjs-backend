@@ -42,7 +42,7 @@ export class createProgramFeeSchedulesTable1611027952756
             scale: 2,
           },
           {
-            name: 'certificate_val',
+            name: 'inscription_val',
             type: 'decimal',
             isNullable: false,
             default: 0.0,

@@ -191,6 +191,6 @@ export class CourseUsersService extends BaseService<
       });
     }
 
-    return { data: { unroll: true } };
+    return { unroll: true };
   }
 }

@@ -58,10 +58,9 @@ export class ActivityTryUsersService extends BaseService<
     return await this.repository
       .createQueryBuilder('activity_try_users')
       .leftJoin('activity_try_users.lesson_activity', 'lesson_activity')
-      .leftJoin('lesson_activity.lesson', 'lesson')
-      .leftJoin('lesson.course_unit', 'course_unit')
+      .leftJoin('lesson_activity.course_lesson', 'course_lesson')
       .where(
-        'course_unit.course_id = :course_id AND activity_try_users.user_id = user_id',
+        'course_lesson.course_id = :course_id AND activity_try_users.user_id = user_id',
         {
           course_id,
           user_id,

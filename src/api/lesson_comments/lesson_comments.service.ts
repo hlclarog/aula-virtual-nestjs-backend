@@ -11,6 +11,7 @@ import { LessonComments } from './lesson_comments.entity';
 import { AwsService } from './../../aws/aws.service';
 import { typeFilesAwsNames } from './../../aws/aws.dto';
 import * as shortid from 'shortid';
+import { GatewayService } from './../../utils/services/gateway.service';
 
 @Injectable()
 export class LessonCommentsService extends BaseService<
@@ -20,7 +21,10 @@ export class LessonCommentsService extends BaseService<
 > {
   @Inject(LESSON_DETAILS_PROVIDER) repository: BaseRepo<LessonComments>;
 
-  constructor(private awsService: AwsService) {
+  constructor(
+    private awsService: AwsService,
+    private gatewayService: GatewayService,
+  ) {
     super();
   }
 
@@ -29,7 +33,7 @@ export class LessonCommentsService extends BaseService<
       .createQueryBuilder('lesson_comments')
       .select([
         'lesson_comments.id',
-        'lesson_comments.lesson_id',
+        'lesson_comments.course_lesson_id',
         'lesson_comments.user_id',
         'lesson_comments.comment_answer_id',
         'lesson_comments.comment',
@@ -53,7 +57,7 @@ export class LessonCommentsService extends BaseService<
       .createQueryBuilder('lesson_comments')
       .select([
         'lesson_comments.id',
-        'lesson_comments.lesson_id',
+        'lesson_comments.course_lesson_id',
         'lesson_comments.user_id',
         'lesson_comments.comment_answer_id',
         'lesson_comments.comment',
@@ -70,12 +74,12 @@ export class LessonCommentsService extends BaseService<
     return comment;
   }
 
-  async getByLesson(id: number): Promise<any> {
+  async getByCourseLesson(id: number): Promise<any> {
     const data = await this.repository
       .createQueryBuilder('lesson_comments')
       .select([
         'lesson_comments.id',
-        'lesson_comments.lesson_id',
+        'lesson_comments.course_lesson_id',
         'lesson_comments.user_id',
         'lesson_comments.comment_answer_id',
         'lesson_comments.comment',
@@ -87,7 +91,7 @@ export class LessonCommentsService extends BaseService<
         'user.picture',
       ])
       .leftJoin('lesson_comments.user', 'user')
-      .where('lesson_id = :id', { id: id })
+      .where('course_lesson_id = :id', { id: id })
       .getMany();
     for (let i = 0; i < data.length; i++) {
       const item = data[i];
@@ -102,8 +106,8 @@ export class LessonCommentsService extends BaseService<
     return data;
   }
 
-  async getByLessonForStudent(
-    lesson_id: number,
+  async getByCourseLessonForStudent(
+    course_lesson_id: number,
     student_id: number,
     group?: boolean,
   ): Promise<any> {
@@ -112,7 +116,7 @@ export class LessonCommentsService extends BaseService<
         .createQueryBuilder('lesson_comments')
         .select([
           'lesson_comments.id',
-          'lesson_comments.lesson_id',
+          'lesson_comments.course_lesson_id',
           'lesson_comments.user_id',
           'lesson_comments.comment',
           'lesson_comments.content_type',
@@ -122,7 +126,7 @@ export class LessonCommentsService extends BaseService<
           'user.name',
           'user.picture',
           'answers.id',
-          'answers.lesson_id',
+          'answers.course_lesson_id',
           'answers.user_id',
           'answers.comment',
           'answers.content_type',
@@ -136,9 +140,9 @@ export class LessonCommentsService extends BaseService<
         .leftJoin('lesson_comments.answers', 'answers')
         .leftJoin('answers.user', 'answers_user')
         .where(
-          'lesson_comments.lesson_id = :id AND lesson_comments.comment_answer_id is null',
+          'lesson_comments.course_lesson_id = :id AND lesson_comments.comment_answer_id is null',
           {
-            id: lesson_id,
+            id: course_lesson_id,
           },
         )
         .orderBy('lesson_comments.id', 'ASC')
@@ -179,7 +183,7 @@ export class LessonCommentsService extends BaseService<
         .createQueryBuilder('lesson_comments')
         .select([
           'lesson_comments.id',
-          'lesson_comments.lesson_id',
+          'lesson_comments.course_lesson_id',
           'lesson_comments.user_id',
           'lesson_comments.comment',
           'lesson_comments.content_type',
@@ -189,7 +193,7 @@ export class LessonCommentsService extends BaseService<
           'user.name',
           'user.picture',
           'answer.id',
-          'answer.lesson_id',
+          'answer.course_lesson_id',
           'answer.user_id',
           'answer.comment',
           'answer.content_type',
@@ -206,8 +210,8 @@ export class LessonCommentsService extends BaseService<
         .leftJoin('lesson_comments.comment_answer', 'answer')
         .leftJoin('answer.user', 'answer_user')
         .leftJoin('lesson_comments.lesson_comment_reactions', 'reactions')
-        .where('lesson_comments.lesson_id = :id', {
-          id: lesson_id,
+        .where('lesson_comments.course_lesson_id = :id', {
+          id: course_lesson_id,
         })
         .orderBy('lesson_comments.id', 'ASC')
         .getMany();
@@ -263,6 +267,7 @@ export class LessonCommentsService extends BaseService<
       data.content = await this.setContent(createDto.content);
     }
     const dataNew = await this.repository.save(data);
+    await this.gatewayService.sendCommetLesson(dataNew);
     return dataNew;
   }
 

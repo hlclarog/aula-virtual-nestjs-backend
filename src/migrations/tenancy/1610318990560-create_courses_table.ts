@@ -75,6 +75,11 @@ export class createCoursesTable1610318990560 implements MigrationInterface {
             default: false,
           },
           {
+            name: 'parent_id',
+            type: 'int',
+            isNullable: true,
+          },
+          {
             name: 'active',
             type: 'bool',
             default: true,

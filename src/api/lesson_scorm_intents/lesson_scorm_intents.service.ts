@@ -27,10 +27,9 @@ export class LessonScormIntentsService extends BaseService<
   ): Promise<LessonScormIntents[]> {
     return await this.repository
       .createQueryBuilder('lesson_scorm_intents')
-      .leftJoin('lesson_scorm_intents.lesson', 'lesson')
-      .leftJoin('lesson.course_unit', 'course_unit')
+      .leftJoin('lesson_scorm_intents.course_lesson', 'course_lesson')
       .where(
-        'course_unit.course_id = :course_id AND lesson_scorm_intents.user_id = user_id',
+        'course_lesson.course_id = :course_id AND lesson_scorm_intents.user_id = user_id',
         {
           course_id,
           user_id,

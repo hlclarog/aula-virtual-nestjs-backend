@@ -23,9 +23,9 @@ export class LessonScormsController extends BaseController<
     return await this.create(createDto);
   }
 
-  @Get('lesson/:id')
+  @Get('course_lesson/:id')
   async byLesson(@Param('id') id: number) {
-    const result = await this.lesson_scormsService.getByLesson(id);
+    const result = await this.lesson_scormsService.getByCourseLesson(id);
     return {
       data: result,
     };

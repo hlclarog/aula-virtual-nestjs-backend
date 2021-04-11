@@ -126,4 +126,15 @@ export class UsersRolesService extends BaseService<
 
     return { update: true };
   }
+
+  public async getInfoRolUser(user_id: number) {
+    return await this.repository.find({
+      where: { user_id },
+      relations: [
+        'rol',
+        'rol.roles_permissions',
+        'rol.roles_permissions.permission',
+      ],
+    });
+  }
 }
