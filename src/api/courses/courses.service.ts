@@ -202,9 +202,11 @@ export class CoursesService extends BaseService<
         'course.code',
         'course.description',
         'course.picture',
+        'course.picture_banner',
         'course.short_name',
         'course.free',
         'course.user_id',
+        'course_interest_area.interest_area_id',
         'course_interest_area.interest_area_id',
         'interest_area.id',
         'interest_area.description',
@@ -248,6 +250,11 @@ export class CoursesService extends BaseService<
       .getOne();
     if (course.picture) {
       course.picture = await this.awsService.getFile(course.picture);
+    }
+    if (course.picture_banner) {
+      course.picture_banner = await this.awsService.getFile(
+        course.picture_banner,
+      );
     }
     const dataprogress = await this.lessonsService.findProgessByCourse(
       [id],
