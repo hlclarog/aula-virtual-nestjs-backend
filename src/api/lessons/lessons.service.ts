@@ -120,12 +120,13 @@ export class LessonsService extends BaseService<
     delete data.order;
     const lesson = await this.repository.save(data);
     if (createDto.course_id && createDto.course_unit_id) {
-      await this.courseLessonsService.create({
+      const course_lesson = await this.courseLessonsService.create({
         lesson_id: lesson.id,
         course_id: createDto.course_id,
         course_unit_id: createDto.course_unit_id,
         order: createDto.order,
       });
+      lesson['course_lesson'] = course_lesson;
     }
     return lesson;
   }
