@@ -1,11 +1,4 @@
-import {
-  Get,
-  Post,
-  Body,
-  Put,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { CollectionTypesService } from './collection_types.service';
 import { BaseController } from '../../base/base.controller';
 import { CollectionTypes } from './collection_types.entity';
