@@ -32,3 +32,8 @@ export class UpdateCurrencyDto extends UpdateBaseDto {
   @ApiProperty({ required: false }) @IsString() @IsOptional() readonly bank?: string;
   @ApiProperty({ required: false }) @IsString() @IsOptional() readonly snapshot?: string;
 }
+
+export class AddExternalCollection extends UpdateCurrencyDto {
+  @ApiProperty({ required: false }) @IsNumber() @IsNotEmpty() readonly user_id?: number;
+  @ApiProperty({ required: false }) @IsNumber() @IsNotEmpty() readonly program_id?: number;
+}

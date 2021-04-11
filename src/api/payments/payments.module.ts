@@ -6,9 +6,11 @@ import { PAYMENTS_PROVIDER } from './payments.dto';
 import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { Payments } from './payments.entity';
+import { ProgramPaymentModule } from '../program_payment/program_payment.module';
+import { ProgramsModule } from '../programs/programs.module';
 
 @Module({
-  imports: [InstanceProcessModule],
+  imports: [InstanceProcessModule, ProgramPaymentModule, ProgramsModule],
   controllers: [PaymentsController],
   providers: [
     {

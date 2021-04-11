@@ -3,7 +3,10 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export const COLLECTION_TYPES_PROVIDER = 'COLLECTION_TYPES_REPOSITORY';
 export const COLLECTION_TYPES_ENTITY = 'collection_types';
-
+export enum COLLECTION_TYPES_ENUM {
+  INTERNAL = 1,
+  EXTERNAL = 2,
+}
 export class CreateCurrencyDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
 }

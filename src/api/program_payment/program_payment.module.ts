@@ -19,5 +19,6 @@ import { ProgramPayment } from './program_payment.entity';
     },
     ProgramPaymentService,
   ],
+  exports: [PROGRAM_PAYMENT_PROVIDER, ProgramPaymentService],
 })
 export class ProgramPaymentModule {}

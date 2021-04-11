@@ -2,7 +2,7 @@ import { Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { BaseController } from '../../base/base.controller';
 import { Payments } from './payments.entity';
-import { CreateCurrencyDto, UpdateCurrencyDto } from './payments.dto';
+import { AddExternalCollection, CreateCurrencyDto, UpdateCurrencyDto } from './payments.dto';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 
 @ControllerApi({ name: 'payments' })
@@ -37,5 +37,11 @@ export class PaymentsController extends BaseController<
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.remove(id);
+  }
+
+  @Post('/external/collection')
+  async externalCollection(@Body() input: AddExternalCollection) {
+    const response = await this.paymentsService.externalCollection(input);
+    return { data: response };
   }
 }

@@ -22,6 +22,6 @@ export class ProgramPayment extends Base {
   @RelationId((program_payment: ProgramPayment) => program_payment.payments)
   @Column({ type: 'int' }) payment_id: number;
 
-  @Column({ type: 'int', nullable: true }) credits: string;
+  @Column({ type: 'int', nullable: true }) credits?: number;
   @Column({ type: 'varchar', nullable: true }) description: string;
 }
