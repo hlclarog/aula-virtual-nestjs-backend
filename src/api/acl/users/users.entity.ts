@@ -20,6 +20,7 @@ import { LessonComments } from './../../lesson_comments/lesson_comments.entity';
 import { LessonCommentReactions } from './../../lesson_comment_reactions/lesson_comment_reactions.entity';
 import { Languages } from './../../languages/languages.entity';
 import { PointsUserLog } from './../../points_user_log/points_user_log.entity';
+import { ProgramPayment } from '../../program_payment/program_payment.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -152,4 +153,7 @@ export class Users extends Base {
 
   @Column({ type: 'text', default: 'local' })
   origin: string;
+
+  @OneToMany(() => ProgramPayment, (program_payment) => program_payment.programs)
+  program_payment: ProgramPayment[];
 }

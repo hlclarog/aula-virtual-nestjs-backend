@@ -80,6 +80,10 @@ import { PointsUserLogModule } from './points_user_log/points_user_log.module';
 import { PointReasonsValueModule } from './point_reasons_value/point_reasons_value.module';
 import { IntegrationTypesModule } from './integration_types/integration_types.module';
 import { ProgramCoursesStatusModule } from './program_courses_status/program_courses_status.module';
+import { CollectionTypesModule } from './collection_types/collection_types.module';
+import { PaymentStatusModule } from './payment_status/payment_status.module';
+import { PaymentsModule } from './payments/payments.module';
+import { ProgramPaymentModule } from './program_payment/program_payment.module';
 
 @Module({
   imports: [
@@ -164,6 +168,10 @@ import { ProgramCoursesStatusModule } from './program_courses_status/program_cou
     PointsUserLogModule,
     IntegrationTypesModule,
     ProgramCoursesStatusModule,
+    CollectionTypesModule,
+    PaymentStatusModule,
+    PaymentsModule,
+    ProgramPaymentModule,
   ],
   controllers: [],
   providers: [],
