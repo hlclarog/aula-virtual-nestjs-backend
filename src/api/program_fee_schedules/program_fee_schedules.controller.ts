@@ -84,7 +84,9 @@ export class ProgramFeeSchedulesController extends BaseController<
             : Number(response.program_val) + Number(response.inscription_val),
         },
       };
+      return { data: result };
+    } else {
+      return { message: 'Not Found Fee Schedule' };
     }
-    return { data: result };
   }
 }
