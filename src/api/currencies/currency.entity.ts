@@ -3,6 +3,7 @@ import { CURRENCY_ENTITY } from './currency.dto';
 import { Base } from '../../base/base.entity';
 import { CourseFeeSchedules } from '../course-fee-schedule/course-fee-schedule.entity';
 import { ProgramFeeSchedules } from '../program_fee_schedules/program_fee_schedules.entity';
+import { Payments } from '../payments/payments.entity';
 
 @Entity({ name: CURRENCY_ENTITY })
 export class Currencies extends Base {
@@ -26,4 +27,7 @@ export class Currencies extends Base {
     (programFeeSchedules) => programFeeSchedules.currency,
   )
   program_fee_schedules: ProgramFeeSchedules[];
+
+  @OneToMany(() => Payments, (payments) => payments.payment_state)
+  payments: Payments[];
 }

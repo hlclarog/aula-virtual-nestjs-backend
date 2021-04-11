@@ -4,15 +4,12 @@ import {
   Table,
   TableForeignKey,
 } from 'typeorm';
-import { ORGANIZATIONS_ENTITY } from '../../api/organizations/organizations.dto';
-import { USERS_ENTITY } from '../../api/acl/users/users.dto';
-import { COURSE_STATUS_ENTITY } from '../../api/course-status/course-status.dto';
 
-export class createCoursesTable1610318990560 implements MigrationInterface {
+export class createPaymentsTable1618110277979 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'courses',
+        name: 'payments',
         columns: [
           {
             name: 'id',
@@ -21,14 +18,48 @@ export class createCoursesTable1610318990560 implements MigrationInterface {
             isGenerated: true,
           },
           {
-            name: 'code',
+            name: 'payment_state_id',
+            type: 'int',
+          },
+          {
+            name: 'collection_type_id',
+            type: 'int',
+          },
+          {
+            name: 'currency_type_id',
+            type: 'int',
+          },
+          {
+            name: 'transaction_code',
             type: 'varchar',
             isNullable: true,
           },
           {
-            name: 'name',
+            name: 'transaction_reference',
             type: 'varchar',
-            isNullable: false,
+            isNullable: true,
+          },
+          {
+            name: 'transaction_date',
+            type: 'date',
+            isNullable: true,
+          },
+          {
+            name: 'paid_date',
+            type: 'date',
+            isNullable: true,
+          },
+          {
+            name: 'processed_date',
+            type: 'date',
+            isNullable: true,
+          },
+          {
+            name: 'quantity',
+            type: 'decimal',
+            default: 0.0,
+            precision: 18,
+            scale: 2,
           },
           {
             name: 'description',
@@ -36,47 +67,13 @@ export class createCoursesTable1610318990560 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'picture',
+            name: 'bank',
             type: 'varchar',
             isNullable: true,
           },
           {
-            name: 'picture_banner',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'short_name',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'organization_id',
-            type: 'int',
-            isNullable: true,
-          },
-          {
-            name: 'user_id',
-            type: 'int',
-          },
-          {
-            name: 'course_status_id',
-            type: 'int',
-            isNullable: true,
-          },
-          {
-            name: 'free',
-            type: 'bool',
-            default: true,
-          },
-          {
-            name: 'certifiable',
-            type: 'bool',
-            default: false,
-          },
-          {
-            name: 'parent_id',
-            type: 'int',
+            name: 'snapshot',
+            type: 'text',
             isNullable: true,
           },
           {
@@ -103,27 +100,27 @@ export class createCoursesTable1610318990560 implements MigrationInterface {
       }),
       true,
     );
-    await queryRunner.createForeignKeys('courses', [
+
+    await queryRunner.createForeignKeys('payments', [
       new TableForeignKey({
-        columnNames: ['organization_id'],
+        columnNames: ['payment_state_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: ORGANIZATIONS_ENTITY,
-        onUpdate: 'CASCADE',
+        referencedTableName: 'payment_status',
       }),
       new TableForeignKey({
-        columnNames: ['user_id'],
+        columnNames: ['collection_type_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: USERS_ENTITY,
+        referencedTableName: 'collection_types',
       }),
       new TableForeignKey({
-        columnNames: ['course_status_id'],
+        columnNames: ['currency_type_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: COURSE_STATUS_ENTITY,
+        referencedTableName: 'currencies',
       }),
     ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('Courses');
+    await queryRunner.dropTable('payments');
   }
 }

@@ -97,4 +97,6 @@ export class Courses extends Base {
   //   if (this.picture)
   //     this.picture = await this.awsService.getFile(this.picture);
   // }
+
+  @Column({ type: 'integer' }) parent_id: boolean;
 }

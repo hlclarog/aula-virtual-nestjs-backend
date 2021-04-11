@@ -82,6 +82,10 @@ import { IntegrationTypesModule } from './integration_types/integration_types.mo
 import { ProgramCoursesStatusModule } from './program_courses_status/program_courses_status.module';
 import { CourseLessonsModule } from './course_lessons/course_lessons.module';
 import { LessonPermissionTypesModule } from './lesson_permission_types/lesson_permission_types.module';
+import { CollectionTypesModule } from './collection_types/collection_types.module';
+import { PaymentStatusModule } from './payment_status/payment_status.module';
+import { PaymentsModule } from './payments/payments.module';
+import { ProgramPaymentModule } from './program_payment/program_payment.module';
 
 @Module({
   imports: [
@@ -168,6 +172,10 @@ import { LessonPermissionTypesModule } from './lesson_permission_types/lesson_pe
     ProgramCoursesStatusModule,
     CourseLessonsModule,
     LessonPermissionTypesModule,
+    CollectionTypesModule,
+    PaymentStatusModule,
+    PaymentsModule,
+    ProgramPaymentModule,
   ],
   controllers: [],
   providers: [],

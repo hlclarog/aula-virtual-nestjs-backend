@@ -27,5 +27,6 @@ import { InterestAreasModule } from '../interest_areas/interest_areas.module';
     },
     ProgramsService,
   ],
+  exports: [PROGRAMS_PROVIDER, ProgramsService],
 })
 export class ProgramsModule {}

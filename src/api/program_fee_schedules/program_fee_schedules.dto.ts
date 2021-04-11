@@ -13,7 +13,7 @@ export class CreateProgramFeeSchedulesDto extends CreateBaseDto {
   @IsOptional()
   readonly end?: string;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_val: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly certificate_val: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly inscription_val: number;
 }
 
 export class UpdateProgramFeeSchedulesDto extends UpdateBaseDto {
@@ -40,5 +40,5 @@ export class UpdateProgramFeeSchedulesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly certificate_val?: number;
+  readonly inscription_val?: number;
 }

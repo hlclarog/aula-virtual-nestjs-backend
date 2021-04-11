@@ -53,4 +53,40 @@ export class ProgramFeeSchedulesController extends BaseController<
     const result = await this.programFeeSchedulesService.findByProgram(id);
     return { data: result };
   }
+
+  @Get('program/:programId/:currencyId/:date')
+  async getAmountToPay(
+    @Param('programId') programId: number,
+    @Param('currencyId') currencyId: number,
+    @Param('date') date: string,
+  ) {
+    const response = await this.programFeeSchedulesService.amountToPay(
+      programId,
+      currencyId,
+      date,
+    );
+    let result: any;
+
+    if (response) {
+      const credits: number[] = response.program.program_courses.map(
+        (f) => f.credits,
+      );
+      const reducer = (accumulator, currentValue) => accumulator + currentValue;
+      result = {
+        program_id: response.program_id,
+        program: response.program,
+        credit_total: credits.reduce(reducer),
+        amount_to_pay: {
+          program_val: response.program_val,
+          inscription_val: response.inscription_val,
+          total_amount: response.program.by_credit
+            ? 0
+            : Number(response.program_val) + Number(response.inscription_val),
+        },
+      };
+      return { data: result };
+    } else {
+      return { message: 'Not Found Fee Schedule' };
+    }
+  }
 }

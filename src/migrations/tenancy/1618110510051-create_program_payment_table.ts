@@ -5,12 +5,12 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class createProgramFeeSchedulesTable1611027952756
+export class createProgramPaymentTable1618110510051
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'program_fee_schedules',
+        name: 'program_payment',
         columns: [
           {
             name: 'id',
@@ -19,35 +19,26 @@ export class createProgramFeeSchedulesTable1611027952756
             isGenerated: true,
           },
           {
-            name: 'currency_id',
-            type: 'int',
-          },
-          {
             name: 'program_id',
             type: 'int',
           },
           {
-            name: 'begin',
-            type: 'date',
+            name: 'user_id',
+            type: 'int',
           },
           {
-            name: 'end',
-            type: 'date',
+            name: 'payment_id',
+            type: 'int',
           },
           {
-            name: 'program_val',
-            type: 'decimal',
-            default: 0.0,
-            precision: 18,
-            scale: 2,
+            name: 'credits',
+            type: 'int',
+            isNullable: true,
           },
           {
-            name: 'inscription_val',
-            type: 'decimal',
-            isNullable: false,
-            default: 0.0,
-            precision: 18,
-            scale: 2,
+            name: 'description',
+            type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'active',
@@ -71,23 +62,29 @@ export class createProgramFeeSchedulesTable1611027952756
           },
         ],
       }),
+      true,
     );
 
-    await queryRunner.createForeignKeys('program_fee_schedules', [
-      new TableForeignKey({
-        columnNames: ['currency_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'currencies',
-      }),
+    await queryRunner.createForeignKeys('program_payment', [
       new TableForeignKey({
         columnNames: ['program_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'programs',
       }),
+      new TableForeignKey({
+        columnNames: ['user_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'users',
+      }),
+      new TableForeignKey({
+        columnNames: ['payment_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'payments',
+      }),
     ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('program_fee_schedules');
+    await queryRunner.dropTable('program_payment');
   }
 }

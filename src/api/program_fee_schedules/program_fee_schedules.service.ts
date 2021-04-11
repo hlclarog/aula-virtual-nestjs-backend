@@ -67,4 +67,38 @@ export class ProgramFeeSchedulesService extends BaseService<
       where: { program_id: id },
     });
   }
+
+  async amountToPay(
+    programId: number,
+    currencyId: number,
+    date: string,
+  ): Promise<any> {
+    return this.repository
+      .createQueryBuilder('program_fee_schedules')
+      .select([
+        'program_fee_schedules.id',
+        'program_fee_schedules.program_id',
+        'program_fee_schedules.program_val',
+        'program_fee_schedules.inscription_val',
+        'program.name',
+        'program.description',
+        'program.shortname',
+        'program.by_credit',
+        'program_courses.credits',
+      ])
+      .leftJoin('program_fee_schedules.program', 'program')
+      .leftJoin('program.program_courses', 'program_courses')
+      .where(
+        'program_fee_schedules.program_id = :programId AND program_fee_schedules.currency_id = :currencyId',
+        {
+          programId,
+          currencyId,
+        },
+      )
+      .andWhere(
+        '(:date Between program_fee_schedules.begin AND program_fee_schedules.end)',
+        { date },
+      )
+      .getOne();
+  }
 }
