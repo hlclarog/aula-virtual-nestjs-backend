@@ -5,8 +5,10 @@ import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { CourseLessons } from './course_lessons.entity';
 import { CourseLessonsService } from './course_lessons.service';
+import { AwsModule } from './../../aws/aws.module';
 
 @Module({
+  imports: [AwsModule],
   controllers: [CourseLessonsController],
   providers: [
     {

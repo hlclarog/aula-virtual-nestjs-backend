@@ -7,6 +7,7 @@ import {
 } from './course_lessons.dto';
 import { CourseLessons } from './course_lessons.entity';
 import { BaseRepo } from '../../base/base.repository';
+import { AwsService } from './../../aws/aws.service';
 
 @Injectable()
 export class CourseLessonsService extends BaseService<
@@ -15,6 +16,42 @@ export class CourseLessonsService extends BaseService<
   UpdateCourseLessonsDto
 > {
   @Inject(COURSE_LESSONS_PROVIDER) repository: BaseRepo<CourseLessons>;
+
+  constructor(private awsService: AwsService) {
+    super();
+  }
+
+  async findOne(id: number): Promise<CourseLessons> {
+    const course_lesson = await this.repository
+      .createQueryBuilder('course_lesson')
+      .select([
+        'course_lesson.id',
+        'course_lesson.course_id',
+        'course_lesson.lesson_id',
+        'course_lesson.course_unit_id',
+        'lesson.lesson_permission_type_id',
+        'lesson.id',
+        'lesson.user_id',
+        'lesson.name',
+        'lesson.description',
+        'lesson.video_url',
+        'lesson.content',
+        'lesson.min_progress',
+        'lesson.duration',
+        'lesson.suggested_weeks',
+        'lesson.visible',
+      ])
+      .leftJoin('course_lesson.lesson', 'lesson')
+      .where('course_lesson.id = :id', { id })
+      .getOne();
+
+    if (course_lesson.lesson.video_url) {
+      course_lesson.lesson.video_url = await this.awsService.getFile(
+        course_lesson.lesson.video_url,
+      );
+    }
+    return course_lesson;
+  }
 
   async findByCourse(id: number): Promise<CourseLessons[]> {
     return await this.repository.find({
