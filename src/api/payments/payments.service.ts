@@ -14,6 +14,9 @@ import { PAYMENT_STATUS_ENUM } from '../payment_status/payment_status.dto';
 import { COLLECTION_TYPES_ENUM } from '../collection_types/collection_types.dto';
 import { Programs } from '../programs/programs.entity';
 import { PROGRAMS_PROVIDER } from '../programs/programs.dto';
+import { typeFilesAwsNames } from '../../aws/aws.dto';
+import { AwsService } from '../../aws/aws.service';
+import * as shortid from 'shortid';
 
 @Injectable()
 export class PaymentsService extends BaseService<
@@ -25,17 +28,28 @@ export class PaymentsService extends BaseService<
   @Inject(PROGRAM_PAYMENT_PROVIDER) programPayment: BaseRepo<ProgramPayment>;
   @Inject(PROGRAMS_PROVIDER) programs: BaseRepo<Programs>;
 
+  constructor(private awsService: AwsService) {
+    super();
+  }
+
   async externalCollection(input: AddExternalCollection) {
+
     const paymentData: Partial<Payments> = {
       payment_state_id: PAYMENT_STATUS_ENUM.APPROVED,
       collection_type_id: COLLECTION_TYPES_ENUM.EXTERNAL,
       currency_type_id: input.currency_type_id,
       organization_id: input.organization_id,
-      collection_file: input.collection_file,
       processed_date: input.processed_date,
       paid_date: input.paid_date,
       description: input.description,
     };
+
+    if (input.collection_file) {
+      paymentData.collection_file = await this.setFile(
+        input.collection_file,
+        typeFilesAwsNames.payments_collection,
+      );
+    }
     const paymentsSave = await this.repository.save(paymentData);
     console.log(paymentsSave);
 
@@ -56,5 +70,14 @@ export class PaymentsService extends BaseService<
     };
 
     return await this.programPayment.save(programPaymentData);
+  }
+
+  async setFile(file, type) {
+    const result = await this.awsService.saveFile({
+      file,
+      name: shortid.generate(),
+      type,
+    });
+    return result.Key;
   }
 }

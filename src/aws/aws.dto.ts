@@ -17,6 +17,7 @@ export enum typeFilesAwsNames {
   themes_pictures = 'themes_pictures',
   lesson_comments_files = 'lesson_comments_files',
   tenancy_pictures = 'tenancy/pictures',
+  payments_collection = 'payments/collection',
 }
 
 export type typeFileAwsTypes =

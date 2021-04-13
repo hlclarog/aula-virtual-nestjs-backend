@@ -8,9 +8,15 @@ import { Connection } from 'typeorm';
 import { Payments } from './payments.entity';
 import { ProgramPaymentModule } from '../program_payment/program_payment.module';
 import { ProgramsModule } from '../programs/programs.module';
+import { AwsModule } from '../../aws/aws.module';
 
 @Module({
-  imports: [InstanceProcessModule, ProgramPaymentModule, ProgramsModule],
+  imports: [
+    InstanceProcessModule,
+    ProgramPaymentModule,
+    ProgramsModule,
+    AwsModule,
+  ],
   controllers: [PaymentsController],
   providers: [
     {
