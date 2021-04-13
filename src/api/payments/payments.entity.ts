@@ -5,6 +5,7 @@ import { PaymentStatus } from '../payment_status/payment_status.entity';
 import { CollectionTypes } from '../collection_types/collection_types.entity';
 import { Currencies } from '../currencies/currency.entity';
 import { ProgramPayment } from '../program_payment/program_payment.entity';
+import { Organizations } from '../organizations/organizations.entity';
 
 @Entity({ name: PAYMENTS_ENTITY })
 export class Payments extends Base {
@@ -23,6 +24,12 @@ export class Payments extends Base {
   @RelationId((payments: Payments) => payments.currency_type)
   @Column({ type: 'int' }) currency_type_id: number;
 
+  @ManyToOne(() => Organizations, (organizations) => organizations.payments)
+  @JoinColumn({ name: 'organization_id' }) organization: Organizations;
+  @RelationId((payments: Payments) => payments.organization)
+  @Column({ type: 'int' }) organization_id: number;
+
+  @Column({ type: 'text', nullable: true }) collection_file: string;
   @Column({ type: 'varchar', nullable: true }) transaction_code: string;
   @Column({ type: 'varchar', nullable: true }) transaction_reference: string;
   @Column({ type: 'date', nullable: true }) transaction_date: string;

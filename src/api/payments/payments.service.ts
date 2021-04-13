@@ -30,6 +30,8 @@ export class PaymentsService extends BaseService<
       payment_state_id: PAYMENT_STATUS_ENUM.APPROVED,
       collection_type_id: COLLECTION_TYPES_ENUM.EXTERNAL,
       currency_type_id: input.currency_type_id,
+      organization_id: input.organization_id,
+      collection_file: input.collection_file,
       processed_date: input.processed_date,
       paid_date: input.paid_date,
       description: input.description,
