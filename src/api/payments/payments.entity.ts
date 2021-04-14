@@ -32,13 +32,13 @@ export class Payments extends Base {
   @Column({ type: 'text', nullable: true }) collection_file: string;
   @Column({ type: 'varchar', nullable: true }) transaction_code: string;
   @Column({ type: 'varchar', nullable: true }) transaction_reference: string;
-  @Column({ type: 'date', nullable: true }) transaction_date: string;
-  @Column({ type: 'date', nullable: true }) paid_date: string;
-  @Column({ type: 'date', nullable: true }) processed_date: string;
-  @Column({ type: 'decimal', default: 0.0 }) quantity: string;
+  @Column({ type: 'decimal', default: 0.0 }) quantity: number;
   @Column({ type: 'varchar', nullable: true }) description: string;
   @Column({ type: 'text', nullable: true }) bank: string;
   @Column({ type: 'text', nullable: true }) snapshot: string;
+  @Column({ type: 'date', nullable: true }) transaction_date: string; // Genero el Recibo para pagar => transaction_date
+  @Column({ type: 'date', nullable: true }) paid_date: string; // Pague Al día siguiente en Baloto => paid_date
+  @Column({ type: 'date', nullable: true }) processed_date: string; // Payu es notificado por Baloto al tercer día => processed_date
 
   @OneToMany(() => ProgramPayment, (program_payment) => program_payment.programs)
   program_payment: ProgramPayment[];

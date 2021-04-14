@@ -17,6 +17,8 @@ import { PROGRAMS_PROVIDER } from '../programs/programs.dto';
 import { typeFilesAwsNames } from '../../aws/aws.dto';
 import { AwsService } from '../../aws/aws.service';
 import * as shortid from 'shortid';
+import { PROGRAM_USERS_PROVIDER } from '../program_users/program_users.dto';
+import { ProgramUsers } from '../program_users/program_users.entity';
 
 @Injectable()
 export class PaymentsService extends BaseService<
@@ -27,21 +29,27 @@ export class PaymentsService extends BaseService<
   @Inject(PAYMENTS_PROVIDER) repository: BaseRepo<Payments>;
   @Inject(PROGRAM_PAYMENT_PROVIDER) programPayment: BaseRepo<ProgramPayment>;
   @Inject(PROGRAMS_PROVIDER) programs: BaseRepo<Programs>;
+  @Inject(PROGRAM_USERS_PROVIDER) programUsers: BaseRepo<ProgramUsers>;
 
   constructor(private awsService: AwsService) {
     super();
   }
 
   async externalCollection(input: AddExternalCollection) {
-
     const paymentData: Partial<Payments> = {
       payment_state_id: PAYMENT_STATUS_ENUM.APPROVED,
       collection_type_id: COLLECTION_TYPES_ENUM.EXTERNAL,
       currency_type_id: input.currency_type_id,
-      organization_id: input.organization_id,
-      processed_date: input.processed_date,
-      paid_date: input.paid_date,
-      description: input.description,
+      organization_id: input.organization_id ?? null,
+      transaction_reference: input.transaction_reference ?? null,
+      transaction_code: input.transaction_code ?? null,
+      transaction_date: input.transaction_date ?? null, // Genero el Recibo para pagar => transaction_date
+      paid_date: input.paid_date ?? null, // Pague Al día siguiente en Baloto => paid_date
+      processed_date: input.processed_date ?? null, // Payu es notificado por Baloto al tercer día => processed_date
+      quantity: input.quantity,
+      description: input.description ?? null,
+      bank: input.bank ?? null,
+      snapshot: input.snapshot ?? null,
     };
 
     if (input.collection_file) {
@@ -51,7 +59,6 @@ export class PaymentsService extends BaseService<
       );
     }
     const paymentsSave = await this.repository.save(paymentData);
-    console.log(paymentsSave);
 
     const program = await this.programs.findOne({
       where: { id: input.program_id },
@@ -65,11 +72,31 @@ export class PaymentsService extends BaseService<
       program_id: input.program_id,
       user_id: input.user_id,
       payment_id: paymentsSave.id,
-      credits: credits.reduce(reducer),
       description: input.description,
     };
 
+    if (program) {
+      if (program.by_credit) {
+        if (input.credits > 0 && input.credits <= credits.reduce(reducer)) {
+          programPaymentData.credits = input.credits;
+        }
+      } else {
+        programPaymentData.credits = credits.reduce(reducer);
+      }
+    }
+
     return await this.programPayment.save(programPaymentData);
+
+    // // TODO definir valores para adicionar registro program users
+    // const programUsers: Partial<ProgramUsers> = {
+    //   program_id: program.id,
+    //   user_id: input.user_id,
+    //   enrollment_status_id: 1,
+    //   enrollment_type_id: 1,
+    //   transaction_status_id: 1,
+    // };
+    //
+    // return await this.programUsers.save(programUsers);
   }
 
   async setFile(file, type) {

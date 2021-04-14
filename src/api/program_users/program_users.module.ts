@@ -17,5 +17,6 @@ import { DATABASE_TENANCY_PROVIDER } from './../../database/database.dto';
     },
     ProgramUsersService,
   ],
+  exports: [PROGRAM_USERS_PROVIDER, ProgramUsersService],
 })
 export class ProgramUsersModule {}

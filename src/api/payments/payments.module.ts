@@ -9,6 +9,7 @@ import { Payments } from './payments.entity';
 import { ProgramPaymentModule } from '../program_payment/program_payment.module';
 import { ProgramsModule } from '../programs/programs.module';
 import { AwsModule } from '../../aws/aws.module';
+import { ProgramUsersModule } from '../program_users/program_users.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AwsModule } from '../../aws/aws.module';
     ProgramPaymentModule,
     ProgramsModule,
     AwsModule,
+    ProgramUsersModule,
   ],
   controllers: [PaymentsController],
   providers: [
