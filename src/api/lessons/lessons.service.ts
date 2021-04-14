@@ -47,6 +47,7 @@ import { LESSON_SCORMS_PROVIDER } from '../lesson_scorms/lesson_scorms.dto';
 import { LESSON_SCORM_RESOURCES_PROVIDER } from '../lesson_scorm_resources/lesson_scorm_resources.dto';
 import { LESSON_ACTIVITIES_PROVIDER } from '../lesson_activities/lesson_activities.dto';
 import { CourseLessonsService } from '../course_lessons/course_lessons.service';
+import { CourseLessons } from '../course_lessons/course_lessons.entity';
 
 @Injectable()
 export class LessonsService extends BaseService<
@@ -96,7 +97,31 @@ export class LessonsService extends BaseService<
   ): Promise<Lessons> {
     const lesson: any = await this.repository
       .createQueryBuilder('lesson')
-      .innerJoin('lesson.course_lessons', 'course_lesson')
+      .select([
+        'course_lesson.id',
+        'course_lesson.course_id',
+        'course_lesson.lesson_id',
+        'lesson.id',
+        'lesson.active',
+        'lesson.lesson_type_id',
+        'lesson.lesson_permission_type_id',
+        'lesson.user_id',
+        'lesson.name',
+        'lesson.description',
+        'lesson.video_url',
+        'lesson.content',
+        'lesson.min_progress',
+        'lesson.duration',
+        'lesson.suggested_weeks',
+        'lesson.visible',
+      ])
+      .innerJoinAndMapOne(
+        'lesson.course_lessons',
+        CourseLessons,
+        'course_lesson',
+        'course_lesson.id = :course_lesson_id',
+        { course_lesson_id },
+      )
       .where('course_lesson.id = :course_lesson_id', { course_lesson_id })
       .getOneOrFail();
     if (lesson.video_url) {
