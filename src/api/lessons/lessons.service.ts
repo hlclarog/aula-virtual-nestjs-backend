@@ -47,6 +47,7 @@ import { LESSON_SCORMS_PROVIDER } from '../lesson_scorms/lesson_scorms.dto';
 import { LESSON_SCORM_RESOURCES_PROVIDER } from '../lesson_scorm_resources/lesson_scorm_resources.dto';
 import { LESSON_ACTIVITIES_PROVIDER } from '../lesson_activities/lesson_activities.dto';
 import { CourseLessonsService } from '../course_lessons/course_lessons.service';
+import { CourseLessons } from '../course_lessons/course_lessons.entity';
 
 @Injectable()
 export class LessonsService extends BaseService<
@@ -96,7 +97,31 @@ export class LessonsService extends BaseService<
   ): Promise<Lessons> {
     const lesson: any = await this.repository
       .createQueryBuilder('lesson')
-      .innerJoin('lesson.course_lessons', 'course_lesson')
+      .select([
+        'course_lesson.id',
+        'course_lesson.course_id',
+        'course_lesson.lesson_id',
+        'lesson.id',
+        'lesson.active',
+        'lesson.lesson_type_id',
+        'lesson.lesson_permission_type_id',
+        'lesson.user_id',
+        'lesson.name',
+        'lesson.description',
+        'lesson.video_url',
+        'lesson.content',
+        'lesson.min_progress',
+        'lesson.duration',
+        'lesson.suggested_weeks',
+        'lesson.visible',
+      ])
+      .innerJoinAndMapOne(
+        'lesson.course_lessons',
+        CourseLessons,
+        'course_lesson',
+        'course_lesson.id = :course_lesson_id',
+        { course_lesson_id },
+      )
       .where('course_lesson.id = :course_lesson_id', { course_lesson_id })
       .getOneOrFail();
     if (lesson.video_url) {
@@ -200,7 +225,7 @@ export class LessonsService extends BaseService<
           'lesson_try_user.user_id = :user_id',
           { user_id },
         )
-        .leftJoin('course_lesson.lesson_activities', 'lesson_activity')
+        .leftJoin('lesson.lesson_activities', 'lesson_activity')
         .leftJoin(
           'lesson_activity.activity_try_users',
           'activity_try_user',
@@ -245,8 +270,12 @@ export class LessonsService extends BaseService<
                 break;
               case 2:
                 let activities_finalized = 0;
-                for (let j = 0; j < element.lesson_activities.length; j++) {
-                  const lesson_activity = element.lesson_activities[j];
+                for (
+                  let j = 0;
+                  j < element.lesson.lesson_activities.length;
+                  j++
+                ) {
+                  const lesson_activity = element.lesson.lesson_activities[j];
                   if (lesson_activity.activity_try_users.length > 0) {
                     for (
                       let k = 0;
@@ -262,7 +291,8 @@ export class LessonsService extends BaseService<
                   }
                 }
                 const progress_in_lesson =
-                  (activities_finalized / element.lesson_activities.length) *
+                  (activities_finalized /
+                    element.lesson.lesson_activities.length) *
                   100;
                 const progress_in_course = progress_in_lesson * element['part'];
                 element['progress_lesson'] = progress_in_lesson

@@ -13,7 +13,7 @@ export const LESSON_DETAILS_PROVIDER = 'LESSON_DETAILS_REPOSITORY';
 export const LESSON_DETAILS_ENTITY = 'lesson_details';
 
 export class CreateLessonDetailsDto extends CreateBaseDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_lesson_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly content_type_id: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly content: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
@@ -25,7 +25,7 @@ export class UpdateLessonDetailsDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly course_lesson_id?: number;
+  readonly lesson_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()

@@ -16,6 +16,7 @@ import { PointsUserLogModule } from '../points_user_log/points_user_log.module';
 import { LessonsModule } from '../lessons/lessons.module';
 import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
 import { LessonTryUsersModule } from '../lesson_try_users/lesson_try_users.module';
+import { CourseLessonsModule } from '../course_lessons/course_lessons.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { LessonTryUsersModule } from '../lesson_try_users/lesson_try_users.modul
     PointsUserLogModule,
     LessonsModule,
     LessonTryUsersModule,
+    CourseLessonsModule,
   ],
   controllers: [ActivityTriesController],
   providers: [

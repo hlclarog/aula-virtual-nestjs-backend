@@ -1,20 +1,17 @@
 import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { ContentTypes } from '../content_types/content_types.entity';
-import { CourseLessons } from '../course_lessons/course_lessons.entity';
+import { Lessons } from '../lessons/lessons.entity';
 import { LESSON_DETAILS_ENTITY } from './lesson_details.dto';
 
 @Entity({ name: LESSON_DETAILS_ENTITY })
 export class LessonDetails extends Base {
-  @ManyToOne(
-    () => CourseLessons,
-    (course_lesson) => course_lesson.lesson_details,
-  )
-  @JoinColumn({ name: 'course_lesson_id' })
-  course_lesson: CourseLessons;
-  @RelationId((lessonDetails: LessonDetails) => lessonDetails.course_lesson)
+  @ManyToOne(() => Lessons, (lesson) => lesson.lesson_details)
+  @JoinColumn({ name: 'lesson_id' })
+  lesson: Lessons;
+  @RelationId((lessonDetails: LessonDetails) => lessonDetails.lesson)
   @Column('integer')
-  course_lesson_id: number;
+  lesson_id: number;
 
   @ManyToOne(() => ContentTypes, (content_type) => content_type.lesson_details)
   @JoinColumn({ name: 'content_type_id' })

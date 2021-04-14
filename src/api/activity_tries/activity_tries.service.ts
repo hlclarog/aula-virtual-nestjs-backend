@@ -27,6 +27,7 @@ import {
 import { LessonsService } from '../lessons/lessons.service';
 import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
 import { getActualDate } from './../../utils/date';
+import { CourseLessonsService } from '../course_lessons/course_lessons.service';
 
 @Injectable()
 export class ActivityTriesService extends BaseService<
@@ -51,6 +52,7 @@ export class ActivityTriesService extends BaseService<
     private pointsUserLogService: PointsUserLogService,
     private lessonTryUsersService: LessonTryUsersService,
     private lessonsService: LessonsService,
+    private courseLessonsService: CourseLessonsService,
   ) {
     super();
   }
@@ -79,6 +81,9 @@ export class ActivityTriesService extends BaseService<
       lesson_activity_id: createDto.lesson_activity_id,
       user_id: this.infoUser.id,
     });
+    const course_lesson = await this.courseLessonsService.findOne(
+      createDto.course_lesson_id,
+    );
     let terminated = false;
     const lesson_activity = await this.lessonActivitiesService.findOne(
       createDto.lesson_activity_id,
@@ -151,8 +156,8 @@ export class ActivityTriesService extends BaseService<
         points = await this.pointsUserLogService.generatePoints(
           this.infoUser.id,
           TypesReasonsPoints.ACTIVITY_END,
-          lesson_activity.course_lesson.course_id,
-          lesson_activity.course_lesson.lesson_id,
+          course_lesson.course_id,
+          lesson_activity.lesson_id,
           createDto.lesson_activity_id,
         );
       } else {
@@ -165,17 +170,17 @@ export class ActivityTriesService extends BaseService<
       const result = await this.repository.save(register);
       if (passed) {
         const dataprogress = await this.lessonsService.findProgessByCourse(
-          [lesson_activity.course_lesson.course_id],
+          [course_lesson.course_id],
           this.infoUser.id,
         );
         const progress = await this.lessonsService.getProgressToLesson(
           dataprogress,
-          lesson_activity.course_lesson.lesson_id,
+          lesson_activity.lesson_id,
         );
         if (progress >= 100) {
           await this.lessonTryUsersService.end({
             user_id: this.infoUser.id,
-            course_lesson_id: lesson_activity.course_lesson.id,
+            course_lesson_id: createDto.course_lesson_id,
             end: getActualDate(),
           });
         }
