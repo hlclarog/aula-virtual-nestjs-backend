@@ -4,7 +4,7 @@ import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 export const PAYMENTS_PROVIDER = 'PAYMENTS_REPOSITORY';
 export const PAYMENTS_ENTITY = 'payments';
 
-export class CreateCurrencyDto extends CreateBaseDto {
+export class CreatePaymentsDto extends CreateBaseDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly payment_state_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly collection_type_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly currency_type_id: number;
@@ -20,7 +20,7 @@ export class CreateCurrencyDto extends CreateBaseDto {
   @ApiProperty({ required: false }) @IsString() @IsOptional() readonly bank?: string;
   @ApiProperty({ required: false }) @IsString() @IsOptional() readonly snapshot?: string;
 }
-export class UpdateCurrencyDto extends UpdateBaseDto {
+export class UpdatePaymentsDto extends UpdateBaseDto {
   @ApiProperty({ required: false }) @IsNumber() @IsNotEmpty() readonly payment_state_id?: number;
   @ApiProperty({ required: false }) @IsNumber() @IsNotEmpty() readonly collection_type_id?: number;
   @ApiProperty({ required: false }) @IsNumber() @IsNotEmpty() readonly currency_type_id?: number;

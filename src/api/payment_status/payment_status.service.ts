@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
-  CreateCurrencyDto,
+  CreatePaymentStatusDto,
   PAYMENT_STATUS_PROVIDER,
-  UpdateCurrencyDto,
+  UpdatePaymentStatusDto,
 } from './payment_status.dto';
 import { BaseService } from '../../base/base.service';
 import { PaymentStatus } from './payment_status.entity';
@@ -11,8 +11,8 @@ import { BaseRepo } from '../../base/base.repository';
 @Injectable()
 export class PaymentStatusService extends BaseService<
   PaymentStatus,
-  CreateCurrencyDto,
-  UpdateCurrencyDto
+  CreatePaymentStatusDto,
+  UpdatePaymentStatusDto
 > {
   @Inject(PAYMENT_STATUS_PROVIDER) repository: BaseRepo<PaymentStatus>;
 }

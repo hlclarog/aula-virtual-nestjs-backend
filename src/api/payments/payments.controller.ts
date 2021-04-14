@@ -4,8 +4,8 @@ import { BaseController } from '../../base/base.controller';
 import { Payments } from './payments.entity';
 import {
   AddExternalCollection,
-  CreateCurrencyDto,
-  UpdateCurrencyDto,
+  CreatePaymentsDto,
+  UpdatePaymentsDto,
 } from './payments.dto';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { PROGRAMS_PROVIDER } from '../programs/programs.dto';
@@ -15,15 +15,15 @@ import { Programs } from '../programs/programs.entity';
 @ControllerApi({ name: 'payments' })
 export class PaymentsController extends BaseController<
   Payments,
-  CreateCurrencyDto,
-  UpdateCurrencyDto
+  CreatePaymentsDto,
+  UpdatePaymentsDto
 > {
   @Inject(PROGRAMS_PROVIDER) programs: BaseRepo<Programs>;
   constructor(private readonly paymentsService: PaymentsService) {
     super(paymentsService);
   }
   @Post()
-  async post(@Body() createDto: CreateCurrencyDto) {
+  async post(@Body() createDto: CreatePaymentsDto) {
     return await this.create(createDto);
   }
 
@@ -38,7 +38,7 @@ export class PaymentsController extends BaseController<
   }
 
   @Put(':id')
-  async edit(@Param('id') id: string, @Body() updateDto: UpdateCurrencyDto) {
+  async edit(@Param('id') id: string, @Body() updateDto: UpdatePaymentsDto) {
     return await this.update(id, updateDto);
   }
 
