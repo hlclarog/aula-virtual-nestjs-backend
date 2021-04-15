@@ -72,7 +72,7 @@ export class ProgramFeeSchedulesService extends BaseService<
     programId: number,
     currencyId: number,
     date: string,
-  ): Promise<any> {
+  ): Promise<ProgramFeeSchedules> {
     return this.repository
       .createQueryBuilder('program_fee_schedules')
       .select([

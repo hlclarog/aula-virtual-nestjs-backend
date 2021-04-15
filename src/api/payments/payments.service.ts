@@ -19,6 +19,7 @@ import { AwsService } from '../../aws/aws.service';
 import * as shortid from 'shortid';
 import { PROGRAM_USERS_PROVIDER } from '../program_users/program_users.dto';
 import { ProgramUsers } from '../program_users/program_users.entity';
+import { ProgramFeeSchedulesService } from '../program_fee_schedules/program_fee_schedules.service';
 
 @Injectable()
 export class PaymentsService extends BaseService<
@@ -31,11 +32,28 @@ export class PaymentsService extends BaseService<
   @Inject(PROGRAMS_PROVIDER) programs: BaseRepo<Programs>;
   @Inject(PROGRAM_USERS_PROVIDER) programUsers: BaseRepo<ProgramUsers>;
 
-  constructor(private awsService: AwsService) {
+  constructor(
+    private readonly awsService: AwsService,
+    private readonly programFeeSchedulesService: ProgramFeeSchedulesService,
+  ) {
     super();
   }
 
   async externalCollection(input: AddExternalCollection) {
+    const program = await this.programs.findOne({
+      where: { id: input.program_id },
+      relations: ['program_courses'],
+    });
+
+    const credits: number[] = program.program_courses.map((f) => f.credits);
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+    const programFeeSchedules = await this.programFeeSchedulesService.amountToPay(
+      program.id,
+      input.currency_type_id,
+      input.transaction_date,
+    );
+
     const paymentData: Partial<Payments> = {
       payment_state_id: PAYMENT_STATUS_ENUM.APPROVED,
       collection_type_id: COLLECTION_TYPES_ENUM.EXTERNAL,
@@ -46,7 +64,11 @@ export class PaymentsService extends BaseService<
       transaction_date: input.transaction_date ?? null, // Genero el Recibo para pagar => transaction_date
       paid_date: input.paid_date ?? null, // Pague Al día siguiente en Baloto => paid_date
       processed_date: input.processed_date ?? null, // Payu es notificado por Baloto al tercer día => processed_date
-      quantity: input.quantity,
+      quantity:
+        (programFeeSchedules.program.by_credit
+          ? Number(programFeeSchedules.program_val) * input.credits
+          : Number(programFeeSchedules.program_val)) +
+        Number(programFeeSchedules.inscription_val),
       description: input.description ?? null,
       bank: input.bank ?? null,
       snapshot: input.snapshot ?? null,
@@ -59,14 +81,6 @@ export class PaymentsService extends BaseService<
       );
     }
     const paymentsSave = await this.repository.save(paymentData);
-
-    const program = await this.programs.findOne({
-      where: { id: input.program_id },
-      relations: ['program_courses'],
-    });
-
-    const credits: number[] = program.program_courses.map((f) => f.credits);
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
     const programPaymentData: Partial<ProgramPayment> = {
       program_id: input.program_id,

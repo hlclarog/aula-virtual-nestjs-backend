@@ -46,7 +46,7 @@ export class AddExternalCollection {
   @ApiProperty({ required: false }) @IsString() @IsOptional() readonly transaction_date?: string;
   @ApiProperty({ required: false }) @IsString() @IsOptional() readonly paid_date?: string;
   @ApiProperty({ required: false }) @IsString() @IsOptional() readonly processed_date?: string;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly quantity: number;
+  @ApiProperty({ required: false }) @IsNumber() @IsOptional() readonly quantity?: number;
   @ApiProperty({ required: false }) @IsString() @IsOptional() readonly description?: string;
   @ApiProperty({ required: false }) @IsString() @IsOptional() readonly bank?: string;
   @ApiProperty({ required: false }) @IsString() @IsOptional() readonly snapshot?: string;
