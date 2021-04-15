@@ -60,6 +60,8 @@ export class PaymentsController extends BaseController<
         if (input.credits < 0 && input.credits > credits.reduce(reducer)) {
           return { message: `credits don't Match` };
         }
+      } else {
+        input.credits = credits.reduce(reducer);
       }
       const response = await this.paymentsService.externalCollection(input);
       return { data: response };

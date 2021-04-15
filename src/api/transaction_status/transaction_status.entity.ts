@@ -14,10 +14,4 @@ export class TransactionStatus extends Base {
     (programCourses) => programCourses.transaction_status,
   )
   program_courses: ProgramCourses[];
-
-  @OneToMany(
-    () => ProgramUsers,
-    (programUsers) => programUsers.transaction_status,
-  )
-  program_users: ProgramUsers[];
 }

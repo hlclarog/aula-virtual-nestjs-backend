@@ -28,11 +28,6 @@ export class createProgramUsersTable1611027848040
             type: 'int',
           },
           {
-            name: 'transaction_status_id',
-            type: 'int',
-            isNullable: true,
-          },
-          {
             name: 'enrollment_status_id',
             type: 'int',
             isNullable: true,
@@ -53,25 +48,8 @@ export class createProgramUsersTable1611027848040
             isNullable: true,
           },
           {
-            name: 'ref_transaction',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'paid_value',
-            type: 'decimal',
-            default: 0.0,
-            precision: 10,
-            scale: 2,
-          },
-          {
-            name: 'private_inscription',
-            type: 'bool',
-            default: false,
-          },
-          {
             name: 'certificate_file',
-            type: 'varchar',
+            type: 'text',
             isNullable: true,
           },
           {
@@ -122,11 +100,6 @@ export class createProgramUsersTable1611027848040
         columnNames: ['user_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'users',
-      }),
-      new TableForeignKey({
-        columnNames: ['transaction_status_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'transaction_status',
       }),
       new TableForeignKey({
         columnNames: ['enrollment_status_id'],
