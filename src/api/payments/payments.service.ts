@@ -20,6 +20,8 @@ import * as shortid from 'shortid';
 import { PROGRAM_USERS_PROVIDER } from '../program_users/program_users.dto';
 import { ProgramUsers } from '../program_users/program_users.entity';
 import { ProgramFeeSchedulesService } from '../program_fee_schedules/program_fee_schedules.service';
+import { ProgramUsersService } from '../program_users/program_users.service';
+import { ENROLLMENT_STATUS_ENUM } from '../enrollment-status/enrollment-status.dto';
 
 @Injectable()
 export class PaymentsService extends BaseService<
@@ -35,6 +37,7 @@ export class PaymentsService extends BaseService<
   constructor(
     private readonly awsService: AwsService,
     private readonly programFeeSchedulesService: ProgramFeeSchedulesService,
+    private readonly programUsersService: ProgramUsersService,
   ) {
     super();
   }
@@ -66,18 +69,15 @@ export class PaymentsService extends BaseService<
     };
     const paymentsSave = await this.addPayment(paymentData);
 
-    return await this.addProgramPayment(input, paymentsSave);
+    await this.addProgramPayment(input, paymentsSave);
 
-    // // TODO definir valores para adicionar registro program users
-    // const programUsers: Partial<ProgramUsers> = {
-    //   program_id: program.id,
-    //   user_id: input.user_id,
-    //   enrollment_status_id: 1,
-    //   enrollment_type_id: 1,
-    //   transaction_status_id: 1,
-    // };
-    //
-    // return await this.programUsers.save(programUsers);
+    const programUserData: Partial<ProgramUsers> = {
+      program_id: input.program_id,
+      user_id: input.user_id,
+      enrollment_status_id: ENROLLMENT_STATUS_ENUM.REGISTERED,
+    };
+
+    return await this.programUsersService.addEnrollment(programUserData);
   }
 
   async addPayment(paymentData: Partial<Payments>) {

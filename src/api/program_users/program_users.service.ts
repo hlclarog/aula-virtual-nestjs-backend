@@ -41,4 +41,8 @@ export class ProgramUsersService extends BaseService<
       .where('program_users.program_id = :id', { id })
       .getMany();
   }
+
+  async addEnrollment(programUserData: Partial<ProgramUsers>) {
+    return await this.repository.save(programUserData);
+  }
 }
