@@ -16,7 +16,6 @@ import {
 import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
 import { getActualDate } from './../../utils/date';
 import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
-import { COURSES_PERMISSIONS } from '../courses/courses.dto';
 
 @ControllerApi({ name: 'lessons' })
 export class LessonsController extends BaseController<
@@ -110,20 +109,9 @@ export class LessonsController extends BaseController<
 
   @Get('copy/search/:name')
   async searchLessonsCopyDto(@Param('name') name: string) {
-    let all = false;
-    try {
-      await this.authorizationsUserService.accesAction(
-        [COURSES_PERMISSIONS.MANAGER],
-        this.infoUser.id,
-      );
-      all = true;
-    } catch (error) {
-      all = false;
-    }
     const result = await this.lessonsService.searchLessonsCopy(
       name,
       this.infoUser.id,
-      all,
     );
     return { data: result };
   }
