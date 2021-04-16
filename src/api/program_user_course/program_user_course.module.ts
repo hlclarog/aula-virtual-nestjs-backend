@@ -19,5 +19,6 @@ import { ProgramUserCourse } from './program_user_course.entity';
     },
     ProgramUserCourseService,
   ],
+  exports: [PROGRAM_USER_COURSE_PROVIDER, ProgramUserCourseService],
 })
 export class ProgramUserCourseModule {}

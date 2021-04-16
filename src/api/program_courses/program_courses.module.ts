@@ -17,5 +17,6 @@ import { ProgramCourses } from './program_courses.entity';
     },
     ProgramCoursesService,
   ],
+  exports: [PROGRAM_COURSES_PROVIDER, ProgramCoursesService],
 })
 export class ProgramCoursesModule {}

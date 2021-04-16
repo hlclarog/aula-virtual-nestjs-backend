@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { EnrollmentCourseUsersDto } from '../course-users/course-users.dto';
 
 export const PROGRAM_USERS_PROVIDER = 'PROGRAM_USERS_REPOSITORY';
 export const PROGRAM_USERS_ENTITY = 'program_users';
@@ -45,6 +46,11 @@ export class CreateProgramUsersDto extends CreateBaseDto {
   @IsBoolean()
   @IsOptional()
   readonly downloaded?: boolean;
+}
+
+export class EnrollmentProgramUsersDto {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
 }
 
 export class UpdateProgramUsersDto extends UpdateBaseDto {

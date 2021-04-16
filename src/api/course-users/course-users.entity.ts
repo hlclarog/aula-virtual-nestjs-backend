@@ -55,6 +55,6 @@ export class CourseUsers extends Base {
   @Column({ type: 'integer', default: 0 }) score: number;
   @Column({ type: 'bool', default: false }) downloaded: boolean;
 
-  @OneToMany(() => ProgramUserCourse, (programUserCourse) => programUserCourse.program_user_id)
-  program_user: ProgramUserCourse[];
+  @OneToMany(() => ProgramUserCourse, (programUserCourse) => programUserCourse.course_users)
+  program_user_course: ProgramUserCourse[];
 }

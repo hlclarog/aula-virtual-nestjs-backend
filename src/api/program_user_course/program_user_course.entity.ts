@@ -6,14 +6,14 @@ import { CourseUsers } from '../course-users/course-users.entity';
 
 @Entity({ name: PROGRAM_USER_COURSE_ENTITY })
 export class ProgramUserCourse extends Base {
-  @ManyToOne(() => ProgramUsers, (programUsers) => programUsers.program_user)
-  @JoinColumn({ name: 'program_user_id' }) programUsers: ProgramUsers;
-  @RelationId((program_user_course: ProgramUserCourse) => program_user_course.programUsers)
+  @ManyToOne(() => ProgramUsers, (programUsers) => programUsers.program_user_course)
+  @JoinColumn({ name: 'program_user_id' }) program_users: ProgramUsers;
+  @RelationId((program_user_course: ProgramUserCourse) => program_user_course.program_users)
   @Column({ type: 'int' }) program_user_id: number;
 
-  @ManyToOne(() => CourseUsers, (courseUsers) => courseUsers.program_user)
-  @JoinColumn({ name: 'course_user_id' }) courseUsers: CourseUsers;
-  @RelationId((program_user_course: ProgramUserCourse) => program_user_course.courseUsers)
+  @ManyToOne(() => CourseUsers, (courseUsers) => courseUsers.program_user_course)
+  @JoinColumn({ name: 'course_user_id' }) course_users: CourseUsers;
+  @RelationId((program_user_course: ProgramUserCourse) => program_user_course.course_users)
   @Column({ type: 'int' }) course_user_id: number;
 
   @Column({ type: 'int', nullable: true }) credits?: number;

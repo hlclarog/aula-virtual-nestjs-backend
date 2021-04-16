@@ -89,3 +89,10 @@ export class UpdateCourseUsersDto extends UpdateBaseDto {
   @IsOptional()
   readonly downloaded?: boolean;
 }
+
+export class EnrollmentCourseUsersDto {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_user_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
+}

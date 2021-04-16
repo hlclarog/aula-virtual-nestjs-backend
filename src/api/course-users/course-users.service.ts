@@ -5,6 +5,7 @@ import { BaseRepo } from '../../base/base.repository';
 import {
   COURSE_USERS_PROVIDER,
   CreateCourseUsersDto,
+  EnrollmentCourseUsersDto,
   UpdateCourseUsersDto,
 } from './course-users.dto';
 import {
@@ -22,6 +23,12 @@ import { TenancyConfigService } from '../tenancy_config/tenancy_config.service';
 import { ActivityTryUsersService } from '../activity_try_users/activity_try_users.service';
 import { LessonScormIntentsService } from '../lesson_scorm_intents/lesson_scorm_intents.service';
 import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
+import { ProgramCourses } from '../program_courses/program_courses.entity';
+import { ENROLLMENT_STATUS_ENUM } from '../enrollment-status/enrollment-status.dto';
+import { PROGRAM_USER_COURSE_PROVIDER } from '../program_user_course/program_user_course.dto';
+import { ProgramUserCourse } from '../program_user_course/program_user_course.entity';
+import { PROGRAM_COURSES_PROVIDER } from '../program_courses/program_courses.dto';
+import { ProgramUsers } from '../program_users/program_users.entity';
 
 @Injectable()
 export class CourseUsersService extends BaseService<
@@ -30,7 +37,9 @@ export class CourseUsersService extends BaseService<
   UpdateCourseUsersDto
 > {
   @Inject(COURSE_USERS_PROVIDER) repository: BaseRepo<CourseUsers>;
-
+  @Inject(PROGRAM_COURSES_PROVIDER) programCourses: BaseRepo<ProgramCourses>;
+  @Inject(PROGRAM_USER_COURSE_PROVIDER)
+  programUserCourse: BaseRepo<ProgramUserCourse>;
   constructor(
     @Inject(INFO_TENANCY_PROVIDER) private tenancy: InfoTenancyDomain,
     private tenancyConfigService: TenancyConfigService,
@@ -186,5 +195,80 @@ export class CourseUsersService extends BaseService<
     }
 
     return { unroll: true };
+  }
+
+  async addEnrollment(courseUsersDto: EnrollmentCourseUsersDto) {
+    const courseUser: CreateCourseUsersDto = {
+      course_id: courseUsersDto.course_id,
+      user_id: courseUsersDto.user_id,
+      enrollment_status_id: ENROLLMENT_STATUS_ENUM.REGISTERED,
+    };
+
+    const courseUsersFound = await this.repository
+      .createQueryBuilder()
+      .where('user_id = :user_id AND course_id = :course_id', {
+        user_id: courseUsersDto.user_id,
+        course_id: courseUsersDto.course_id,
+      })
+      .withDeleted()
+      .getCount();
+    if (courseUsersFound) {
+      await this.repository
+        .createQueryBuilder()
+        .update()
+        .set({ deleted_at: null })
+        .where('user_id = :user_id AND course_id = :course_id', {
+          user_id: courseUsersDto.user_id,
+          course_id: courseUsersDto.course_id,
+        })
+        .execute();
+    } else {
+      await this.repository
+        .createQueryBuilder()
+        .insert()
+        .into(CourseUsers)
+        .values(courseUser)
+        .execute();
+    }
+
+    const courseUserSave = await this.repository
+      .createQueryBuilder()
+      .where('user_id = :user_id AND course_id = :course_id', {
+        user_id: courseUsersDto.user_id,
+        course_id: courseUsersDto.course_id,
+      })
+      .getOne();
+
+    const programCoursesResult = await this.programCourses
+      .createQueryBuilder('program_courses')
+      .select(['program_courses.credits'])
+      .where(
+        'program_courses.course_id = :course_id AND program_courses.program_id = :program_id',
+        {
+          course_id: courseUsersDto.course_id,
+          program_id: courseUsersDto.program_id,
+        },
+      )
+      .getOne();
+
+    const programUserCourseFound = await this.programUserCourse
+      .createQueryBuilder()
+      .where(
+        'program_user_id = :program_user_id AND course_user_id = :course_user_id',
+        {
+          program_user_id: courseUsersDto.program_user_id,
+          course_user_id: courseUserSave.id,
+        },
+      )
+      .withDeleted()
+      .getCount();
+    if (!programUserCourseFound) {
+      const programUserCourseData: Partial<ProgramUserCourse> = {
+        program_user_id: courseUsersDto.program_user_id,
+        course_user_id: courseUserSave.id,
+        credits: programCoursesResult.credits,
+      };
+      return await this.programUserCourse.save(programUserCourseData);
+    }
   }
 }

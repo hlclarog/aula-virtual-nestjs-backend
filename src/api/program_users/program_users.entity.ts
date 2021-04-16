@@ -8,6 +8,7 @@ import { Programs } from '../programs/programs.entity';
 import { TransactionStatus } from '../transaction_status/transaction_status.entity';
 import { ProgramPayment } from '../program_payment/program_payment.entity';
 import { ProgramUserCourse } from '../program_user_course/program_user_course.entity';
+import { Payments } from '../payments/payments.entity';
 
 @Entity(PROGRAM_USERS_ENTITY)
 export class ProgramUsers extends Base {
@@ -53,6 +54,6 @@ export class ProgramUsers extends Base {
   @Column({ type: 'bool', default: false }) favorite: boolean;
   @Column({ type: 'bool', default: false }) downloaded: boolean;
 
-  @OneToMany(() => ProgramUserCourse, (programUserCourse) => programUserCourse.program_user_id)
-  program_user: ProgramUserCourse[];
+  @OneToMany(() => ProgramUserCourse, (programUserCourse) => programUserCourse.program_users)
+  program_user_course: ProgramUserCourse[];
 }
