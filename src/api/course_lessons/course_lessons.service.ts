@@ -8,6 +8,7 @@ import {
 import { CourseLessons } from './course_lessons.entity';
 import { BaseRepo } from '../../base/base.repository';
 import { AwsService } from './../../aws/aws.service';
+import { CourseUnitsService } from '../course_units/course_units.service';
 
 @Injectable()
 export class CourseLessonsService extends BaseService<
@@ -58,6 +59,18 @@ export class CourseLessonsService extends BaseService<
     return await this.repository.find({
       where: { course_id: id },
     });
+  }
+
+  async findMaxOrderToUnit(course_unit_id: number) {
+    const result: any = await this.repository
+      .createQueryBuilder('course_lesson')
+      .select('coalesce(MAX(course_lesson.order),0)', 'order')
+      .where('course_lesson.course_unit_id = :course_unit_id', {
+        course_unit_id,
+      })
+      .getRawOne();
+    const order = result.order ? Number(result.order) : 0;
+    return order;
   }
 
   async changeOrder(data: {

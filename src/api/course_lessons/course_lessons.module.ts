@@ -6,9 +6,10 @@ import { Connection } from 'typeorm';
 import { CourseLessons } from './course_lessons.entity';
 import { CourseLessonsService } from './course_lessons.service';
 import { AwsModule } from './../../aws/aws.module';
+import { CourseUnitsModule } from '../course_units/course_units.module';
 
 @Module({
-  imports: [AwsModule],
+  imports: [AwsModule, CourseUnitsModule],
   controllers: [CourseLessonsController],
   providers: [
     {
