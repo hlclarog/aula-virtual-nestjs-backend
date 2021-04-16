@@ -5,12 +5,12 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class createLessonActivitiesTable1611723767778
+export class createProgramUsersCourseTable1618470611707
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'lesson_activities',
+        name: 'program_users_course',
         columns: [
           {
             name: 'id',
@@ -19,28 +19,22 @@ export class createLessonActivitiesTable1611723767778
             isGenerated: true,
           },
           {
-            name: 'description',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'lesson_id',
+            name: 'program_user_id',
             type: 'int',
           },
           {
-            name: 'activity_type_id',
+            name: 'course_user_id',
             type: 'int',
           },
           {
-            name: 'detail_id',
+            name: 'credits',
             type: 'int',
             isNullable: true,
           },
           {
-            name: 'visible',
+            name: 'homologue',
             type: 'bool',
-            default: true,
-            isNullable: true,
+            default: false,
           },
           {
             name: 'active',
@@ -65,21 +59,21 @@ export class createLessonActivitiesTable1611723767778
         ],
       }),
     );
-    await queryRunner.createForeignKeys('lesson_activities', [
+    await queryRunner.createForeignKeys('program_users_course', [
       new TableForeignKey({
-        columnNames: ['lesson_id'],
+        columnNames: ['program_user_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'lessons',
+        referencedTableName: 'program_users',
       }),
       new TableForeignKey({
-        columnNames: ['activity_type_id'],
+        columnNames: ['course_user_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'public.activity_types',
+        referencedTableName: 'course_users',
       }),
     ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('lesson_activities');
+    await queryRunner.dropTable('program_users_course');
   }
 }

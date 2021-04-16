@@ -43,24 +43,11 @@ export class ProgramUsers extends Base {
   @Column({ type: 'integer' })
   enrollment_type_id: number;
 
-  @ManyToOne(
-    () => TransactionStatus,
-    (transactionStatus) => transactionStatus.program_users,
-  )
-  @JoinColumn({ name: 'transaction_status_id' })
-  transaction_status: TransactionStatus;
-  @RelationId((programUsers: ProgramUsers) => programUsers.transaction_status)
-  @Column({ type: 'integer' })
-  transaction_status_id: number;
-
   @Column({ type: 'date', nullable: true }) begin_date: string;
   @Column({ type: 'date', nullable: true }) end_date: string;
-  @Column({ type: 'varchar', nullable: true }) ref_transaction: string;
   @Column({ type: 'varchar', nullable: true }) certificate_file: string;
   @Column({ type: 'varchar', nullable: true })
   certificate_code_validation: string;
-  @Column({ type: 'bool', default: false }) private_inscription: boolean;
   @Column({ type: 'bool', default: false }) favorite: boolean;
   @Column({ type: 'bool', default: false }) downloaded: boolean;
-  @Column({ type: 'decimal', nullable: true, default: 0.0 }) paid_value: number;
 }

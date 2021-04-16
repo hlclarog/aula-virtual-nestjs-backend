@@ -16,10 +16,6 @@ export class CreateProgramUsersDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly transaction_status_id?: number;
-  @ApiProperty({ required: false })
-  @IsNumber()
-  @IsOptional()
   readonly enrollment_status_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
@@ -36,10 +32,6 @@ export class CreateProgramUsersDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly ref_transaction?: string;
-  @ApiProperty({ required: false })
-  @IsString()
-  @IsOptional()
   readonly certificate_file?: string;
   @ApiProperty({ required: false })
   @IsString()
@@ -48,19 +40,11 @@ export class CreateProgramUsersDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsBoolean()
   @IsOptional()
-  readonly private_inscription?: boolean;
-  @ApiProperty({ required: false })
-  @IsBoolean()
-  @IsOptional()
   readonly favorite?: boolean;
   @ApiProperty({ required: false })
   @IsBoolean()
   @IsOptional()
   readonly downloaded?: boolean;
-  @ApiProperty({ required: false })
-  @IsNumber()
-  @IsOptional()
-  readonly paid_value?: number;
 }
 
 export class UpdateProgramUsersDto extends UpdateBaseDto {
@@ -75,10 +59,6 @@ export class UpdateProgramUsersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly transaction_status_id?: number;
-  @ApiProperty({ required: false })
-  @IsNumber()
-  @IsOptional()
   readonly enrollment_status_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
@@ -95,19 +75,11 @@ export class UpdateProgramUsersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly ref_transaction?: string;
-  @ApiProperty({ required: false })
-  @IsString()
-  @IsOptional()
   readonly certificate_file?: string;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
   readonly certificate_code_validation?: string;
-  @ApiProperty({ required: false })
-  @IsString()
-  @IsOptional()
-  readonly private_inscription?: boolean;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

@@ -23,6 +23,7 @@ import { MultipleOptionAnswersModule } from '../multiple_option_answers/multiple
 import { RelateElementAnswersModule } from '../relate_element_answers/relate_element_answers.module';
 import { SortItemAnswersModule } from '../sort_item_answers/sort_item_answers.module';
 import { CourseLessonsModule } from '../course_lessons/course_lessons.module';
+import { UsersOrganizationsModule } from '../users_organizations/users_organizations.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { CourseLessonsModule } from '../course_lessons/course_lessons.module';
     ActivityCompleteTextsModule,
     ActivityIdentifyWordsModule,
     CourseLessonsModule,
+    UsersOrganizationsModule,
   ],
   controllers: [LessonsController],
   providers: [

@@ -395,8 +395,8 @@ export class CoursesService extends BaseService<
       .leftJoinAndSelect('course_unit.course_lessons', 'course_lesson')
       .leftJoinAndSelect('course_lesson.lesson', 'lesson')
       .where('course.id = :id', { id })
-      .orderBy('course_lesson.order', 'ASC')
-      .addOrderBy('course_unit.order', 'ASC')
+      .orderBy('course_unit.order', 'ASC')
+      .addOrderBy('course_lesson.order', 'ASC')
       .getOneOrFail();
     const dataprogress = await this.lessonsService.findProgessByCourse(
       [id],

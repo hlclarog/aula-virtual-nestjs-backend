@@ -4,6 +4,9 @@ import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export const ENROLLMENT_STATUS_PROVIDER = 'ENROLLMENT_STATUS_REPOSITORY';
 export const ENROLLMENT_STATUS_ENTITY = 'enrollment_status';
+export enum ENROLLMENT_STATUS_ENUM {
+  REGISTERED = 1,
+}
 export class CreateEnrollmentStatusDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
 }

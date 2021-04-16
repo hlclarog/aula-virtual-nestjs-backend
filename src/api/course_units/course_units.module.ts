@@ -17,5 +17,6 @@ import { CourseUnitsService } from './course_units.service';
     },
     CourseUnitsService,
   ],
+  exports: [COURSE_UNITS_PROVIDER, CourseUnitsService],
 })
 export class CourseUnitsModule {}

@@ -5,12 +5,12 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class createLessonActivitiesTable1611723767778
+export class createUsersOrganizationsTable1618454254623
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'lesson_activities',
+        name: 'users_organizations',
         columns: [
           {
             name: 'id',
@@ -19,28 +19,12 @@ export class createLessonActivitiesTable1611723767778
             isGenerated: true,
           },
           {
-            name: 'description',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'lesson_id',
+            name: 'user_id',
             type: 'int',
           },
           {
-            name: 'activity_type_id',
+            name: 'organization_id',
             type: 'int',
-          },
-          {
-            name: 'detail_id',
-            type: 'int',
-            isNullable: true,
-          },
-          {
-            name: 'visible',
-            type: 'bool',
-            default: true,
-            isNullable: true,
           },
           {
             name: 'active',
@@ -64,22 +48,29 @@ export class createLessonActivitiesTable1611723767778
           },
         ],
       }),
+      true,
     );
-    await queryRunner.createForeignKeys('lesson_activities', [
+
+    await queryRunner.createForeignKey(
+      'users_organizations',
       new TableForeignKey({
-        columnNames: ['lesson_id'],
+        columnNames: ['organization_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'lessons',
+        referencedTableName: 'organizations',
       }),
+    );
+
+    await queryRunner.createForeignKey(
+      'users_organizations',
       new TableForeignKey({
-        columnNames: ['activity_type_id'],
+        columnNames: ['user_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'public.activity_types',
+        referencedTableName: 'users',
       }),
-    ]);
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('lesson_activities');
+    await queryRunner.dropTable('users_organizations');
   }
 }

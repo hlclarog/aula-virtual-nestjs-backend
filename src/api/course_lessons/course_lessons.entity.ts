@@ -11,13 +11,10 @@ import { Base } from '../../base/base.entity';
 import { Courses } from '../courses/courses.entity';
 import { Lessons } from '../lessons/lessons.entity';
 import { CourseUnits } from '../course_units/course_units.entity';
-import { LessonDetails } from '../lesson_details/lesson_details.entity';
-import { LessonScorms } from '../lesson_scorms/lesson_scorms.entity';
-import { LessonScormIntents } from '../lesson_scorm_intents/lesson_scorm_intents.entity';
-import { LessonActivities } from '../lesson_activities/lesson_activities.entity';
 import { LessonTryUsers } from '../lesson_try_users/lesson_try_users.entity';
 import { LessonComments } from '../lesson_comments/lesson_comments.entity';
 import { PointsUserLog } from '../points_user_log/points_user_log.entity';
+import { LessonScormIntents } from '../lesson_scorm_intents/lesson_scorm_intents.entity';
 
 @Entity(COURSE_LESSONS_ENTITY)
 export class CourseLessons extends Base {
@@ -45,24 +42,10 @@ export class CourseLessons extends Base {
   @Column({ type: 'int', nullable: true }) order: number;
 
   @OneToMany(
-    () => LessonDetails,
-    (lesson_detail) => lesson_detail.course_lesson,
-  )
-  lesson_details: LessonDetails[];
-
-  @OneToMany(() => LessonScorms, (lesson_scorm) => lesson_scorm.course_lesson)
-  lesson_scorms: LessonScorms[];
-
-  @OneToMany(
     () => LessonScormIntents,
     (lesson_scorm_intent) => lesson_scorm_intent.course_lesson,
   )
   lesson_scorm_intents: LessonScormIntents[];
-  @OneToMany(
-    () => LessonActivities,
-    (lesson_activities) => lesson_activities.course_lesson,
-  )
-  lesson_activities: LessonActivities[];
 
   @OneToMany(
     () => LessonTryUsers,

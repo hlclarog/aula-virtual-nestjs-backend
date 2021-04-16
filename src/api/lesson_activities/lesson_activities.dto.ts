@@ -16,7 +16,7 @@ export class CreateLessonActivitiesDto extends CreateBaseDto {
   @IsString()
   @IsOptional()
   readonly description?: string;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_lesson_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly activity_type_id: number;
   @ApiProperty({ required: false })
   @IsNumber()
@@ -36,7 +36,7 @@ export class UpdateLessonActivitiesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly course_lesson_id?: number;
+  readonly lesson_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()

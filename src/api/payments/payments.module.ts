@@ -8,9 +8,19 @@ import { Connection } from 'typeorm';
 import { Payments } from './payments.entity';
 import { ProgramPaymentModule } from '../program_payment/program_payment.module';
 import { ProgramsModule } from '../programs/programs.module';
+import { AwsModule } from '../../aws/aws.module';
+import { ProgramUsersModule } from '../program_users/program_users.module';
+import { ProgramFeeSchedulesModule } from '../program_fee_schedules/program_fee_schedules.module';
 
 @Module({
-  imports: [InstanceProcessModule, ProgramPaymentModule, ProgramsModule],
+  imports: [
+    InstanceProcessModule,
+    ProgramPaymentModule,
+    ProgramsModule,
+    AwsModule,
+    ProgramUsersModule,
+    ProgramFeeSchedulesModule,
+  ],
   controllers: [PaymentsController],
   providers: [
     {

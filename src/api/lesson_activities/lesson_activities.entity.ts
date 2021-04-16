@@ -11,7 +11,7 @@ import { LESSON_ACTIVITIES_ENTITY } from './lesson_activities.dto';
 import { ActivityTypes } from '../activity_types/activity_types.entity';
 import { ActivityTryUsers } from '../activity_try_users/activity_try_users.entity';
 import { PointsUserLog } from '../points_user_log/points_user_log.entity';
-import { CourseLessons } from '../course_lessons/course_lessons.entity';
+import { Lessons } from '../lessons/lessons.entity';
 
 @Entity(LESSON_ACTIVITIES_ENTITY)
 export class LessonActivities extends Base {
@@ -24,17 +24,12 @@ export class LessonActivities extends Base {
   @Column('int')
   detail_id: number;
 
-  @ManyToOne(
-    () => CourseLessons,
-    (course_lesson) => course_lesson.lesson_activities,
-  )
-  @JoinColumn({ name: 'course_lesson_id' })
-  course_lesson: CourseLessons;
-  @RelationId(
-    (lessonActivities: LessonActivities) => lessonActivities.course_lesson,
-  )
+  @ManyToOne(() => Lessons, (lesson) => lesson.lesson_activities)
+  @JoinColumn({ name: 'lesson_id' })
+  lesson: Lessons;
+  @RelationId((lessonActivities: LessonActivities) => lessonActivities.lesson)
   @Column('integer')
-  course_lesson_id: number;
+  lesson_id: number;
 
   @ManyToOne(
     () => ActivityTypes,

@@ -12,6 +12,9 @@ import { LessonTypes } from '../lesson_types/lesson_types.entity';
 import { CourseLessons } from '../course_lessons/course_lessons.entity';
 import { LessonPermissionTypes } from '../lesson_permission_types/lesson_permission_types.entity';
 import { Users } from '../acl/users/users.entity';
+import { LessonDetails } from '../lesson_details/lesson_details.entity';
+import { LessonScorms } from '../lesson_scorms/lesson_scorms.entity';
+import { LessonActivities } from '../lesson_activities/lesson_activities.entity';
 
 @Entity(COURSE_UNITS_ENTITY)
 export class Lessons extends Base {
@@ -50,4 +53,16 @@ export class Lessons extends Base {
 
   @OneToMany(() => CourseLessons, (course_lesson) => course_lesson.lesson)
   course_lessons: CourseLessons[];
+
+  @OneToMany(() => LessonDetails, (lesson_detail) => lesson_detail.lesson)
+  lesson_details: LessonDetails[];
+
+  @OneToMany(() => LessonScorms, (lesson_scorm) => lesson_scorm.lesson)
+  lesson_scorms: LessonScorms[];
+
+  @OneToMany(
+    () => LessonActivities,
+    (lesson_activities) => lesson_activities.lesson,
+  )
+  lesson_activities: LessonActivities[];
 }

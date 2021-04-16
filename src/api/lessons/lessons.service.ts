@@ -47,6 +47,9 @@ import { LESSON_SCORMS_PROVIDER } from '../lesson_scorms/lesson_scorms.dto';
 import { LESSON_SCORM_RESOURCES_PROVIDER } from '../lesson_scorm_resources/lesson_scorm_resources.dto';
 import { LESSON_ACTIVITIES_PROVIDER } from '../lesson_activities/lesson_activities.dto';
 import { CourseLessonsService } from '../course_lessons/course_lessons.service';
+import { CourseLessons } from '../course_lessons/course_lessons.entity';
+import { TypesLessonPermissions } from '../lesson_permission_types/lesson_permission_types.dto';
+import { UsersOrganizationsService } from '../users_organizations/users_organizations.service';
 
 @Injectable()
 export class LessonsService extends BaseService<
@@ -78,6 +81,7 @@ export class LessonsService extends BaseService<
     private activityIdentifyWordsService: ActivityIdentifyWordsService,
     private activityCompleteTextsService: ActivityCompleteTextsService,
     private courseLessonsService: CourseLessonsService,
+    private usersOrganizationsService: UsersOrganizationsService,
   ) {
     super();
   }
@@ -96,7 +100,31 @@ export class LessonsService extends BaseService<
   ): Promise<Lessons> {
     const lesson: any = await this.repository
       .createQueryBuilder('lesson')
-      .innerJoin('lesson.course_lessons', 'course_lesson')
+      .select([
+        'course_lesson.id',
+        'course_lesson.course_id',
+        'course_lesson.lesson_id',
+        'lesson.id',
+        'lesson.active',
+        'lesson.lesson_type_id',
+        'lesson.lesson_permission_type_id',
+        'lesson.user_id',
+        'lesson.name',
+        'lesson.description',
+        'lesson.video_url',
+        'lesson.content',
+        'lesson.min_progress',
+        'lesson.duration',
+        'lesson.suggested_weeks',
+        'lesson.visible',
+      ])
+      .innerJoinAndMapOne(
+        'lesson.course_lessons',
+        CourseLessons,
+        'course_lesson',
+        'course_lesson.id = :course_lesson_id',
+        { course_lesson_id },
+      )
       .where('course_lesson.id = :course_lesson_id', { course_lesson_id })
       .getOneOrFail();
     if (lesson.video_url) {
@@ -120,12 +148,13 @@ export class LessonsService extends BaseService<
     delete data.order;
     const lesson = await this.repository.save(data);
     if (createDto.course_id && createDto.course_unit_id) {
-      await this.courseLessonsService.create({
+      const course_lesson = await this.courseLessonsService.create({
         lesson_id: lesson.id,
         course_id: createDto.course_id,
         course_unit_id: createDto.course_unit_id,
         order: createDto.order,
       });
+      lesson['course_lesson'] = course_lesson;
     }
     return lesson;
   }
@@ -199,7 +228,7 @@ export class LessonsService extends BaseService<
           'lesson_try_user.user_id = :user_id',
           { user_id },
         )
-        .leftJoin('course_lesson.lesson_activities', 'lesson_activity')
+        .leftJoin('lesson.lesson_activities', 'lesson_activity')
         .leftJoin(
           'lesson_activity.activity_try_users',
           'activity_try_user',
@@ -244,8 +273,12 @@ export class LessonsService extends BaseService<
                 break;
               case 2:
                 let activities_finalized = 0;
-                for (let j = 0; j < element.lesson_activities.length; j++) {
-                  const lesson_activity = element.lesson_activities[j];
+                for (
+                  let j = 0;
+                  j < element.lesson.lesson_activities.length;
+                  j++
+                ) {
+                  const lesson_activity = element.lesson.lesson_activities[j];
                   if (lesson_activity.activity_try_users.length > 0) {
                     for (
                       let k = 0;
@@ -261,7 +294,8 @@ export class LessonsService extends BaseService<
                   }
                 }
                 const progress_in_lesson =
-                  (activities_finalized / element.lesson_activities.length) *
+                  (activities_finalized /
+                    element.lesson.lesson_activities.length) *
                   100;
                 const progress_in_course = progress_in_lesson * element['part'];
                 element['progress_lesson'] = progress_in_lesson
@@ -305,7 +339,14 @@ export class LessonsService extends BaseService<
     return progress;
   }
 
-  async searchLessonsCopy(name: string, user_id: number, all: boolean) {
+  async searchLessonsCopy(name: string, user_id: number) {
+    const organizations = (
+      await this.usersOrganizationsService.findByUser(user_id)
+    ).map((o) => o.organization_id);
+    const organizationsList =
+      organizations.length > 0 ? organizations.join() : [0].join();
+
+    console.log(organizationsList);
     const courses: Courses[] =
       name.length > 4
         ? await this.repositoryCourses
@@ -321,14 +362,27 @@ export class LessonsService extends BaseService<
               'lesson.id',
               'lesson.name',
               'lesson.description',
+              'lesson.lesson_permission_type_id',
             ])
             .leftJoin('course.course_units', 'course_unit')
             .leftJoin('course_unit.course_lessons', 'course_lesson')
             .leftJoin('course_lesson.lesson', 'lesson')
+            .leftJoin('lesson.user', 'user')
+            .leftJoin('user.users_organizations', 'users_organizations')
             .where(
-              `course.user_id = ${
-                all ? 'course.user_id' : user_id
-              } and LOWER(course.name) LIKE '%${name.toLowerCase()}%'`,
+              `
+                LOWER(course.name) LIKE '%${name.toLowerCase()}%' 
+                AND (
+                  lesson.lesson_permission_type_id = ${
+                    TypesLessonPermissions.PUBLIC
+                  } OR (
+                    lesson.lesson_permission_type_id = ${
+                      TypesLessonPermissions.ORGANIZATION
+                    } AND 
+                    users_organizations.organization_id in (${organizationsList})
+                  )
+                )
+              `,
             )
             .getMany()
         : [];
@@ -336,266 +390,279 @@ export class LessonsService extends BaseService<
   }
 
   async copyLessons(data: CopyLessonsDto) {
-    // const lessons: Lessons[] = await this.repository
-    //   .createQueryBuilder('lesson')
-    //   .select([
-    //     'lesson.id',
-    //     'lesson.lesson_type_id',
-    //     'lesson.course_unit_id',
-    //     'lesson.name',
-    //     'lesson.description',
-    //     'lesson.video_url',
-    //     'lesson.content',
-    //     'lesson.min_progress',
-    //     'lesson.order',
-    //     'lesson.duration',
-    //     'lesson.suggested_weeks',
-    //     'lesson.visible',
-    //     'lesson_detail.id',
-    //     'lesson_detail.content_type_id',
-    //     'lesson_detail.content',
-    //     'lesson_detail.description',
-    //     'lesson_detail.order',
-    //     'lesson_activity.id',
-    //     'lesson_activity.description',
-    //     'lesson_activity.visible',
-    //     'lesson_activity.detail_id',
-    //     'lesson_activity.activity_type_id',
-    //     'lesson_scorm.id',
-    //     'lesson_scorm.content',
-    //     'lesson_scorm.identifier',
-    //     'lesson_scorm.title',
-    //     'lesson_scorm_resource.id',
-    //     'lesson_scorm_resource.index',
-    //     'lesson_scorm_resource.identifier',
-    //   ])
-    //   .leftJoin('lesson.lesson_details', 'lesson_detail')
-    //   .leftJoin('lesson.lesson_activities', 'lesson_activity')
-    //   .leftJoin('lesson.lesson_scorms', 'lesson_scorm')
-    //   .leftJoin('lesson_scorm.lesson_scorm_resources', 'lesson_scorm_resource')
-    //   .where('lesson.id IN (:lessons_id)', {
-    //     lessons_id: data.lessons_id.join(),
-    //   })
-    //   .getMany();
-    // for (let i = 0; i < lessons.length; i++) {
-    //   const lesson = lessons[i];
-    //   const lesson_new = await this.create({
-    //     lesson_type_id: lesson.lesson_type_id,
-    //     course_unit_id: data.course_unit_id,
-    //     name: lesson.name,
-    //     description: lesson.description,
-    //     video_url: lesson.video_url,
-    //     content: lesson.content,
-    //     min_progress: lesson.min_progress,
-    //     duration: lesson.duration,
-    //     suggested_weeks: lesson.suggested_weeks,
-    //     visible: lesson.visible,
-    //   });
-    //   lesson_new.lesson_details = [];
-    //   lesson_new.lesson_activities = [];
-    //   switch (lesson.lesson_type_id) {
-    //     case TypesLesson.TEORIC || TypesLesson.FORUM:
-    //       for (let j = 0; j < lesson.lesson_details.length; j++) {
-    //         const lesson_detail = lesson.lesson_details[j];
-    //         const lesson_detail_copy: LessonDetails = Object.assign(
-    //           {},
-    //           lesson_detail,
-    //         );
-    //         delete lesson_detail_copy.id;
-    //         lesson_detail_copy.lesson_id = lesson_new.id;
-    //         const lesson_detail_new = await this.lessonDetailsService.create(
-    //           lesson_detail_copy,
-    //         );
-    //         lesson_new.lesson_details.push(lesson_detail_new);
-    //       }
-    //       break;
-    //     case TypesLesson.PRACTICE || TypesLesson.QUIZ:
-    //       for (let k = 0; k < lesson.lesson_activities.length; k++) {
-    //         const lesson_activity = lesson.lesson_activities[k];
-    //         const lesson_activity_copy: LessonActivities = Object.assign(
-    //           {},
-    //           lesson_activity,
-    //         );
-    //         switch (lesson_activity.activity_type_id) {
-    //           case EnumActivityType.MultipleOptions:
-    //             const activity_multiple: ActivityMultipleOptions = await this.activityMultipleOptionsService.getByDetailId(
-    //               lesson_activity.detail_id,
-    //             );
-    //             const activity_multiple_copy: ActivityMultipleOptions = Object.assign(
-    //               {},
-    //               activity_multiple,
-    //             );
-    //             delete activity_multiple_copy.id;
-    //             delete activity_multiple_copy.multiple_option_answers;
-    //             const activity_multiple_new = await this.activityMultipleOptionsService.create(
-    //               activity_multiple_copy,
-    //             );
-    //             activity_multiple_new.multiple_option_answers = [];
-    //             for (
-    //               let q = 0;
-    //               q < activity_multiple.multiple_option_answers.length;
-    //               q++
-    //             ) {
-    //               const answer = activity_multiple.multiple_option_answers[q];
-    //               const answer_copy: MultipleOptionAnswers = Object.assign(
-    //                 {},
-    //                 answer,
-    //               );
-    //               delete answer_copy.id;
-    //               answer_copy.activity_multiple_option_id =
-    //                 activity_multiple_new.id;
-    //               const answer_new = await this.multipleOptionAnswersService.create(
-    //                 answer_copy,
-    //               );
-    //               activity_multiple_new.multiple_option_answers.push(
-    //                 answer_new,
-    //               );
-    //             }
-    //             lesson_activity_copy.detail_id = activity_multiple_new.id;
-    //             break;
-    //           case EnumActivityType.SortItems:
-    //             const activity_sort: ActivitySortItems = await this.activitySortItemsService.getByDetailId(
-    //               lesson_activity.detail_id,
-    //             );
-    //             const activity_sort_copy: ActivitySortItems = Object.assign(
-    //               {},
-    //               activity_sort,
-    //             );
-    //             delete activity_sort_copy.id;
-    //             delete activity_sort_copy.sort_item_answers;
-    //             const activity_sort_new = await this.activitySortItemsService.create(
-    //               activity_sort_copy,
-    //             );
-    //             activity_sort_new.sort_item_answers = [];
-    //             for (
-    //               let q = 0;
-    //               q < activity_sort.sort_item_answers.length;
-    //               q++
-    //             ) {
-    //               const answer = activity_sort.sort_item_answers[q];
-    //               const answer_copy: SortItemAnswers = Object.assign(
-    //                 {},
-    //                 answer,
-    //               );
-    //               delete answer_copy.id;
-    //               answer_copy.activity_sort_item_id = activity_sort_new.id;
-    //               const answer_new = await this.sortItemAnswersService.create(
-    //                 answer_copy,
-    //               );
-    //               activity_sort_new.sort_item_answers.push(answer_new);
-    //             }
-    //             lesson_activity_copy.detail_id = activity_sort_new.id;
-    //             break;
-    //           case EnumActivityType.RelateElements:
-    //             const activity_relate: ActivityRelateElements = await this.activityRelateElementsService.getByDetailId(
-    //               lesson_activity.detail_id,
-    //             );
-    //             const activity_relate_copy: ActivityRelateElements = Object.assign(
-    //               {},
-    //               activity_relate,
-    //             );
-    //             delete activity_relate_copy.id;
-    //             delete activity_relate_copy.relate_element_answers;
-    //             const activity_relate_new = await this.activityRelateElementsService.create(
-    //               activity_relate_copy,
-    //             );
-    //             activity_relate_new.relate_element_answers = [];
-    //             for (
-    //               let q = 0;
-    //               q < activity_relate.relate_element_answers.length;
-    //               q++
-    //             ) {
-    //               const answer = activity_relate.relate_element_answers[q];
-    //               const answer_copy: RelateElementAnswers = Object.assign(
-    //                 {},
-    //                 answer,
-    //               );
-    //               delete answer_copy.id;
-    //               answer_copy.activity_relate_element_id =
-    //                 activity_relate_new.id;
-    //               const answer_new = await this.relateElementAnswersService.create(
-    //                 answer_copy,
-    //               );
-    //               activity_relate_new.relate_element_answers.push(answer_new);
-    //             }
-    //             lesson_activity_copy.detail_id = activity_relate_new.id;
-    //             break;
-    //           case EnumActivityType.IdentifyWord:
-    //             const activity_identify: ActivityIdentifyWords = await this.activityIdentifyWordsService.getByDetailId(
-    //               lesson_activity.detail_id,
-    //             );
-    //             const activity_identify_copy: ActivityIdentifyWords = Object.assign(
-    //               {},
-    //               activity_identify,
-    //             );
-    //             delete activity_identify_copy.id;
-    //             const activity_identify_new = await this.activityIdentifyWordsService.create(
-    //               activity_identify_copy,
-    //             );
-    //             lesson_activity_copy.detail_id = activity_identify_new.id;
-    //             break;
-    //           case EnumActivityType.CompleteText:
-    //             const activity_complete: ActivityCompleteTexts = await this.activityCompleteTextsService.getByDetailId(
-    //               lesson_activity.detail_id,
-    //             );
-    //             const activity_complete_copy: ActivityCompleteTexts = Object.assign(
-    //               {},
-    //               activity_complete,
-    //             );
-    //             delete activity_complete_copy.id;
-    //             const activity_complete_new = await this.activityCompleteTextsService.create(
-    //               activity_complete_copy,
-    //             );
-    //             lesson_activity_copy.detail_id = activity_complete_new.id;
-    //             break;
-    //         }
-    //         delete lesson_activity_copy.id;
-    //         lesson_activity_copy.lesson_id = lesson_new.id;
-    //         const lesson_activity_new = await this.repositoryLessonActivity.save(
-    //           lesson_activity_copy,
-    //         );
-    //         lesson_new.lesson_activities.push(lesson_activity_new);
-    //       }
-    //       break;
-    //     case TypesLesson.SCORM:
-    //       for (let l = 0; l < lesson.lesson_scorms.length; l++) {
-    //         const lesson_scorm = lesson.lesson_scorms[l];
-    //         const lesson_scorm_copy: LessonScorms = Object.assign(
-    //           {},
-    //           lesson_scorm,
-    //         );
-    //         delete lesson_scorm_copy.id;
-    //         delete lesson_scorm_copy.lesson_scorm_resources;
-    //         lesson_scorm_copy.lesson_id = lesson_new.id;
-    //         const lesson_scorm_new = await this.repositoryScorms.save(
-    //           lesson_scorm_copy,
-    //         );
-    //         lesson_scorm_new.lesson_scorm_resources = [];
-    //         for (
-    //           let m = 0;
-    //           m < lesson_scorm.lesson_scorm_resources.length;
-    //           m++
-    //         ) {
-    //           const lesson_scorm_resource =
-    //             lesson_scorm.lesson_scorm_resources[m];
-    //           const lesson_scorm_resource_copy: LessonScormResources = Object.assign(
-    //             {},
-    //             lesson_scorm_resource,
-    //           );
-    //           delete lesson_scorm_resource_copy.id;
-    //           lesson_scorm_resource_copy.lesson_scorm_id = lesson_scorm_new.id;
-    //           const lesson_scorm_resource_new = await this.lessonScormResourcesService.create(
-    //             lesson_scorm_resource_copy,
-    //           );
-    //           lesson_scorm_new.lesson_scorm_resources.push(
-    //             lesson_scorm_resource_new,
-    //           );
-    //         }
-    //         lesson_new.lesson_activities.push(lesson_scorm_new);
-    //       }
-    //       break;
-    //   }
-    // }
+    const lessons: Lessons[] = await this.repository
+      .createQueryBuilder('lesson')
+      .select([
+        'lesson.id',
+        'lesson.lesson_type_id',
+        'lesson.lesson_permission_type_id',
+        'lesson.user_id',
+        'lesson.name',
+        'lesson.description',
+        'lesson.video_url',
+        'lesson.content',
+        'lesson.min_progress',
+        'lesson.order',
+        'lesson.duration',
+        'lesson.suggested_weeks',
+        'lesson.visible',
+        'lesson_detail.id',
+        'lesson_detail.content_type_id',
+        'lesson_detail.content',
+        'lesson_detail.description',
+        'lesson_detail.order',
+        'lesson_activity.id',
+        'lesson_activity.description',
+        'lesson_activity.visible',
+        'lesson_activity.detail_id',
+        'lesson_activity.activity_type_id',
+        'lesson_scorm.id',
+        'lesson_scorm.content',
+        'lesson_scorm.identifier',
+        'lesson_scorm.title',
+        'lesson_scorm_resource.id',
+        'lesson_scorm_resource.index',
+        'lesson_scorm_resource.identifier',
+      ])
+      .leftJoin('lesson.lesson_details', 'lesson_detail')
+      .leftJoin('lesson.lesson_activities', 'lesson_activity')
+      .leftJoin('lesson.lesson_scorms', 'lesson_scorm')
+      .leftJoin('lesson_scorm.lesson_scorm_resources', 'lesson_scorm_resource')
+      .where('lesson.id IN (:lessons_id)', {
+        lessons_id: data.lessons_id.join(),
+      })
+      .getMany();
+
+    for (let i = 0; i < lessons.length; i++) {
+      const lesson = lessons[i];
+      const lesson_new = await this.create({
+        lesson_type_id: lesson.lesson_type_id,
+        lesson_permission_type_id: lesson.lesson_permission_type_id,
+        user_id: lesson.user_id,
+        name: lesson.name,
+        description: lesson.description,
+        video_url: lesson.video_url,
+        content: lesson.content,
+        min_progress: lesson.min_progress,
+        duration: lesson.duration,
+        suggested_weeks: lesson.suggested_weeks,
+        visible: lesson.visible,
+      });
+      const orderNew =
+        (await this.courseLessonsService.findMaxOrderToUnit(
+          data.course_unit_id,
+        )) + 1;
+      await this.courseLessonsService.create({
+        lesson_id: lesson_new.id,
+        course_id: data.course_id,
+        course_unit_id: data.course_unit_id,
+        order: orderNew,
+      });
+      lesson_new.lesson_details = [];
+      lesson_new.lesson_activities = [];
+      switch (lesson.lesson_type_id) {
+        case TypesLesson.TEORIC || TypesLesson.FORUM:
+          for (let j = 0; j < lesson.lesson_details.length; j++) {
+            const lesson_detail = lesson.lesson_details[j];
+            const lesson_detail_copy: LessonDetails = Object.assign(
+              {},
+              lesson_detail,
+            );
+            delete lesson_detail_copy.id;
+            lesson_detail_copy.lesson_id = lesson_new.id;
+            const lesson_detail_new = await this.lessonDetailsService.create(
+              lesson_detail_copy,
+            );
+            lesson_new.lesson_details.push(lesson_detail_new);
+          }
+          break;
+        case TypesLesson.PRACTICE || TypesLesson.QUIZ:
+          for (let k = 0; k < lesson.lesson_activities.length; k++) {
+            const lesson_activity = lesson.lesson_activities[k];
+            const lesson_activity_copy: LessonActivities = Object.assign(
+              {},
+              lesson_activity,
+            );
+            switch (lesson_activity.activity_type_id) {
+              case EnumActivityType.MultipleOptions:
+                const activity_multiple: ActivityMultipleOptions = await this.activityMultipleOptionsService.getByDetailId(
+                  lesson_activity.detail_id,
+                );
+                const activity_multiple_copy: ActivityMultipleOptions = Object.assign(
+                  {},
+                  activity_multiple,
+                );
+                delete activity_multiple_copy.id;
+                delete activity_multiple_copy.multiple_option_answers;
+                const activity_multiple_new = await this.activityMultipleOptionsService.create(
+                  activity_multiple_copy,
+                );
+                activity_multiple_new.multiple_option_answers = [];
+                for (
+                  let q = 0;
+                  q < activity_multiple.multiple_option_answers.length;
+                  q++
+                ) {
+                  const answer = activity_multiple.multiple_option_answers[q];
+                  const answer_copy: MultipleOptionAnswers = Object.assign(
+                    {},
+                    answer,
+                  );
+                  delete answer_copy.id;
+                  answer_copy.activity_multiple_option_id =
+                    activity_multiple_new.id;
+                  const answer_new = await this.multipleOptionAnswersService.create(
+                    answer_copy,
+                  );
+                  activity_multiple_new.multiple_option_answers.push(
+                    answer_new,
+                  );
+                }
+                lesson_activity_copy.detail_id = activity_multiple_new.id;
+                break;
+              case EnumActivityType.SortItems:
+                const activity_sort: ActivitySortItems = await this.activitySortItemsService.getByDetailId(
+                  lesson_activity.detail_id,
+                );
+                const activity_sort_copy: ActivitySortItems = Object.assign(
+                  {},
+                  activity_sort,
+                );
+                delete activity_sort_copy.id;
+                delete activity_sort_copy.sort_item_answers;
+                const activity_sort_new = await this.activitySortItemsService.create(
+                  activity_sort_copy,
+                );
+                activity_sort_new.sort_item_answers = [];
+                for (
+                  let q = 0;
+                  q < activity_sort.sort_item_answers.length;
+                  q++
+                ) {
+                  const answer = activity_sort.sort_item_answers[q];
+                  const answer_copy: SortItemAnswers = Object.assign(
+                    {},
+                    answer,
+                  );
+                  delete answer_copy.id;
+                  answer_copy.activity_sort_item_id = activity_sort_new.id;
+                  const answer_new = await this.sortItemAnswersService.create(
+                    answer_copy,
+                  );
+                  activity_sort_new.sort_item_answers.push(answer_new);
+                }
+                lesson_activity_copy.detail_id = activity_sort_new.id;
+                break;
+              case EnumActivityType.RelateElements:
+                const activity_relate: ActivityRelateElements = await this.activityRelateElementsService.getByDetailId(
+                  lesson_activity.detail_id,
+                );
+                const activity_relate_copy: ActivityRelateElements = Object.assign(
+                  {},
+                  activity_relate,
+                );
+                delete activity_relate_copy.id;
+                delete activity_relate_copy.relate_element_answers;
+                const activity_relate_new = await this.activityRelateElementsService.create(
+                  activity_relate_copy,
+                );
+                activity_relate_new.relate_element_answers = [];
+                for (
+                  let q = 0;
+                  q < activity_relate.relate_element_answers.length;
+                  q++
+                ) {
+                  const answer = activity_relate.relate_element_answers[q];
+                  const answer_copy: RelateElementAnswers = Object.assign(
+                    {},
+                    answer,
+                  );
+                  delete answer_copy.id;
+                  answer_copy.activity_relate_element_id =
+                    activity_relate_new.id;
+                  const answer_new = await this.relateElementAnswersService.create(
+                    answer_copy,
+                  );
+                  activity_relate_new.relate_element_answers.push(answer_new);
+                }
+                lesson_activity_copy.detail_id = activity_relate_new.id;
+                break;
+              case EnumActivityType.IdentifyWord:
+                const activity_identify: ActivityIdentifyWords = await this.activityIdentifyWordsService.getByDetailId(
+                  lesson_activity.detail_id,
+                );
+                const activity_identify_copy: ActivityIdentifyWords = Object.assign(
+                  {},
+                  activity_identify,
+                );
+                delete activity_identify_copy.id;
+                const activity_identify_new = await this.activityIdentifyWordsService.create(
+                  activity_identify_copy,
+                );
+                lesson_activity_copy.detail_id = activity_identify_new.id;
+                break;
+              case EnumActivityType.CompleteText:
+                const activity_complete: ActivityCompleteTexts = await this.activityCompleteTextsService.getByDetailId(
+                  lesson_activity.detail_id,
+                );
+                const activity_complete_copy: ActivityCompleteTexts = Object.assign(
+                  {},
+                  activity_complete,
+                );
+                delete activity_complete_copy.id;
+                const activity_complete_new = await this.activityCompleteTextsService.create(
+                  activity_complete_copy,
+                );
+                lesson_activity_copy.detail_id = activity_complete_new.id;
+                break;
+            }
+            delete lesson_activity_copy.id;
+            lesson_activity_copy.lesson_id = lesson_new.id;
+            const lesson_activity_new = await this.repositoryLessonActivity.save(
+              lesson_activity_copy,
+            );
+            lesson_new.lesson_activities.push(lesson_activity_new);
+          }
+          break;
+        case TypesLesson.SCORM:
+          for (let l = 0; l < lesson.lesson_scorms.length; l++) {
+            const lesson_scorm = lesson.lesson_scorms[l];
+            const lesson_scorm_copy: LessonScorms = Object.assign(
+              {},
+              lesson_scorm,
+            );
+            delete lesson_scorm_copy.id;
+            delete lesson_scorm_copy.lesson_scorm_resources;
+            lesson_scorm_copy.lesson_id = lesson_new.id;
+            const lesson_scorm_new = await this.repositoryScorms.save(
+              lesson_scorm_copy,
+            );
+            lesson_scorm_new.lesson_scorm_resources = [];
+            for (
+              let m = 0;
+              m < lesson_scorm.lesson_scorm_resources.length;
+              m++
+            ) {
+              const lesson_scorm_resource =
+                lesson_scorm.lesson_scorm_resources[m];
+              const lesson_scorm_resource_copy: LessonScormResources = Object.assign(
+                {},
+                lesson_scorm_resource,
+              );
+              delete lesson_scorm_resource_copy.id;
+              lesson_scorm_resource_copy.lesson_scorm_id = lesson_scorm_new.id;
+              const lesson_scorm_resource_new = await this.lessonScormResourcesService.create(
+                lesson_scorm_resource_copy,
+              );
+              lesson_scorm_new.lesson_scorm_resources.push(
+                lesson_scorm_resource_new,
+              );
+            }
+            lesson_new.lesson_activities.push(lesson_scorm_new);
+          }
+          break;
+      }
+    }
     return { copy: true, data };
   }
 }

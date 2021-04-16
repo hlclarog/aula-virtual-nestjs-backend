@@ -6,6 +6,7 @@ export const ACTIVITY_TRIES_PROVIDER = 'ACTIVITY_TRIES_REPOSITORY';
 export const ACTIVITY_TRIES_ENTITY = 'activity_tries';
 
 export class CreateIntentUserDto extends CreateBaseDto {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_lesson_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly lesson_activity_id: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly answer: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly date: string;

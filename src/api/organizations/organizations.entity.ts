@@ -5,6 +5,8 @@ import { Programs } from '../programs/programs.entity';
 import { Courses } from '../courses/courses.entity';
 import { CourseCommissionOrganizations } from '../course_comission_organizations/course_commission_organizations.entity';
 import { ProgramCommissionOrganizations } from '../program_comission_organizations/program_commission_organizations.entity';
+import { Payments } from '../payments/payments.entity';
+import { UsersOrganizations } from '../users_organizations/users_organizations.entity';
 
 @Entity({ name: ORGANIZATIONS_ENTITY })
 export class Organizations extends Base {
@@ -46,4 +48,13 @@ export class Organizations extends Base {
     (programCommissionOrganizations) => programCommissionOrganizations.program,
   )
   program_commission_organizations: ProgramCommissionOrganizations[];
+
+  @OneToMany(() => Payments, (payments) => payments.payment_state)
+  payments: Payments[];
+
+  @OneToMany(
+    () => UsersOrganizations,
+    (courseOrganization) => courseOrganization.organization,
+  )
+  users_organizations: UsersOrganizations[];
 }

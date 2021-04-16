@@ -7,10 +7,10 @@ export enum COLLECTION_TYPES_ENUM {
   INTERNAL = 1,
   EXTERNAL = 2,
 }
-export class CreateCurrencyDto extends CreateBaseDto {
+export class CreateCollectionTypesDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
 }
-export class UpdateCurrencyDto extends UpdateBaseDto {
+export class UpdateCollectionTypesDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

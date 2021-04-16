@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
-  CreateCurrencyDto,
+  CreateProgramPaymentDto,
   PROGRAM_PAYMENT_PROVIDER,
-  UpdateCurrencyDto,
+  UpdateProgramPaymentDto,
 } from './program_payment.dto';
 import { BaseService } from '../../base/base.service';
 import { ProgramPayment } from './program_payment.entity';
@@ -11,8 +11,8 @@ import { BaseRepo } from '../../base/base.repository';
 @Injectable()
 export class ProgramPaymentService extends BaseService<
   ProgramPayment,
-  CreateCurrencyDto,
-  UpdateCurrencyDto
+  CreateProgramPaymentDto,
+  UpdateProgramPaymentDto
 > {
   @Inject(PROGRAM_PAYMENT_PROVIDER) repository: BaseRepo<ProgramPayment>;
 }

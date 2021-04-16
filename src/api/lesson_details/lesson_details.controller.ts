@@ -42,9 +42,9 @@ export class LessonDetailsController extends BaseController<
     return await this.findOne(id);
   }
 
-  @Get('course_lesson/:id')
-  async getByCourseLession(@Param('id') id: number) {
-    const result = await this.lesson_detailsService.getByCourseLesson(id);
+  @Get('lesson/:id')
+  async getByLesson(@Param('id') id: number) {
+    const result = await this.lesson_detailsService.getByLesson(id);
     return {
       data: result,
     };

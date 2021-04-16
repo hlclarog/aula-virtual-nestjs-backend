@@ -17,5 +17,6 @@ import { ProgramFeeSchedules } from './program_fee_schedules.entity';
     },
     ProgramFeeSchedulesService,
   ],
+  exports: [ProgramFeeSchedulesService],
 })
 export class ProgramFeeSchedulesModule {}

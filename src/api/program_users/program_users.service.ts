@@ -25,16 +25,12 @@ export class ProgramUsersService extends BaseService<
         'program_users.user_id',
         'program_users.enrollment_status_id',
         'program_users.enrollment_type_id',
-        'program_users.transaction_status_id',
         'program_users.begin_date',
         'program_users.end_date',
-        'program_users.ref_transaction',
         'program_users.certificate_file',
         'program_users.certificate_code_validation',
-        'program_users.private_inscription',
         'program_users.favorite',
         'program_users.downloaded',
-        'program_users.paid_value',
         'program_users.active',
         'user.id',
         'user.name',
@@ -44,5 +40,9 @@ export class ProgramUsersService extends BaseService<
       .leftJoin('program_users.user', 'user')
       .where('program_users.program_id = :id', { id })
       .getMany();
+  }
+
+  async addEnrollment(programUserData: Partial<ProgramUsers>) {
+    return await this.repository.save(programUserData);
   }
 }

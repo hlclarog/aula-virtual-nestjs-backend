@@ -8,10 +8,10 @@ export enum PAYMENT_STATUS_ENUM {
   REJECTED = 2,
   PENDING = 3,
 }
-export class CreateCurrencyDto extends CreateBaseDto {
+export class CreatePaymentStatusDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
 }
-export class UpdateCurrencyDto extends UpdateBaseDto {
+export class UpdatePaymentStatusDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

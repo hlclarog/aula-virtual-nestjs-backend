@@ -27,12 +27,12 @@ export class LessonScormsService extends BaseService<
     super();
   }
 
-  async getByCourseLesson(id: number): Promise<any> {
+  async getByLesson(id: number): Promise<any> {
     const data = await this.repository
       .createQueryBuilder('lesson_scorm')
       .select([
         'lesson_scorm.id',
-        'lesson_scorm.course_lesson_id',
+        'lesson_scorm.lesson_id',
         'lesson_scorm.content',
         'lesson_scorm.identifier',
         'lesson_scorm.title',
@@ -40,7 +40,7 @@ export class LessonScormsService extends BaseService<
         'lesson_scorm_resource.identifier',
       ])
       .leftJoin('lesson_scorm.lesson_scorm_resources', 'lesson_scorm_resource')
-      .where('lesson_scorm.course_lesson_id = :id', { id: id })
+      .where('lesson_scorm.lesson_id = :id', { id: id })
       .getMany();
 
     for (let i = 0; i < data.length; i++) {

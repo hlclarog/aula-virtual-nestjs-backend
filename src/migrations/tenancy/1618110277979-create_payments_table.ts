@@ -4,6 +4,7 @@ import {
   Table,
   TableForeignKey,
 } from 'typeorm';
+import { ORGANIZATIONS_ENTITY } from '../../api/organizations/organizations.dto';
 
 export class createPaymentsTable1618110277979 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -28,6 +29,16 @@ export class createPaymentsTable1618110277979 implements MigrationInterface {
           {
             name: 'currency_type_id',
             type: 'int',
+          },
+          {
+            name: 'organization_id',
+            type: 'int',
+            isNullable: true,
+          },
+          {
+            name: 'collection_file',
+            type: 'text',
+            isNullable: true,
           },
           {
             name: 'transaction_code',
@@ -116,6 +127,11 @@ export class createPaymentsTable1618110277979 implements MigrationInterface {
         columnNames: ['currency_type_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'currencies',
+      }),
+      new TableForeignKey({
+        columnNames: ['organization_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: ORGANIZATIONS_ENTITY,
       }),
     ]);
   }
