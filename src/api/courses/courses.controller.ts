@@ -18,6 +18,7 @@ import {
 import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
 import { CourseUsersService } from '../course-users/course-users.service';
 import { InterestAreasService } from '../interest_areas/interest_areas.service';
+import { EnrollmentCourseUsersDto } from '../course-users/course-users.dto';
 
 @ControllerApi({ name: 'courses' })
 export class CoursesController extends BaseController<
@@ -218,5 +219,13 @@ export class CoursesController extends BaseController<
   ) {
     updateDto.user_id = this.infoUser.id;
     return await this.update(id, updateDto);
+  }
+
+  @Post('enrollment/course_user')
+  async addEnrollment(@Body() input: EnrollmentCourseUsersDto) {
+    const result = await this.courseUsersService.addEnrollment(input);
+    return {
+      data: result,
+    };
   }
 }

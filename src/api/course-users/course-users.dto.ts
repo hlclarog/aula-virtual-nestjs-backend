@@ -32,10 +32,6 @@ export class CreateCourseUsersDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly ref_transaction?: string;
-  @ApiProperty({ required: false })
-  @IsString()
-  @IsOptional()
   readonly certificate_file?: string;
   @ApiProperty({ required: false })
   @IsString()
@@ -44,30 +40,22 @@ export class CreateCourseUsersDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly private_inscription?: boolean;
-  @ApiProperty({ required: false })
-  @IsString()
-  @IsOptional()
   readonly favorite?: boolean;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
   readonly downloaded?: boolean;
-  @ApiProperty({ required: false })
-  @IsNumber()
-  @IsOptional()
-  readonly paid_value?: number;
 }
 
 export class UpdateCourseUsersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly course_id?: number;
+  readonly course_id: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly user_id?: number;
+  readonly user_id: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
@@ -87,10 +75,6 @@ export class UpdateCourseUsersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly ref_transaction?: string;
-  @ApiProperty({ required: false })
-  @IsString()
-  @IsOptional()
   readonly certificate_file?: string;
   @ApiProperty({ required: false })
   @IsString()
@@ -99,17 +83,16 @@ export class UpdateCourseUsersDto extends UpdateBaseDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly private_inscription?: boolean;
-  @ApiProperty({ required: false })
-  @IsString()
-  @IsOptional()
   readonly favorite?: boolean;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
   readonly downloaded?: boolean;
-  @ApiProperty({ required: false })
-  @IsNumber()
-  @IsOptional()
-  readonly paid_value?: number;
+}
+
+export class EnrollmentCourseUsersDto {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_user_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
 }

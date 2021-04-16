@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, RelationId } from 'typeorm';
 import { PROGRAM_USERS_ENTITY } from './program_users.dto';
 import { Base } from '../../base/base.entity';
 import { Users } from '../acl/users/users.entity';
@@ -6,6 +6,9 @@ import { EnrollmentStatus } from '../enrollment-status/enrollment-status.entity'
 import { EnrollmentTypes } from '../enrollment-types/enrollment-types.entity';
 import { Programs } from '../programs/programs.entity';
 import { TransactionStatus } from '../transaction_status/transaction_status.entity';
+import { ProgramPayment } from '../program_payment/program_payment.entity';
+import { ProgramUserCourse } from '../program_user_course/program_user_course.entity';
+import { Payments } from '../payments/payments.entity';
 
 @Entity(PROGRAM_USERS_ENTITY)
 export class ProgramUsers extends Base {
@@ -50,4 +53,7 @@ export class ProgramUsers extends Base {
   certificate_code_validation: string;
   @Column({ type: 'bool', default: false }) favorite: boolean;
   @Column({ type: 'bool', default: false }) downloaded: boolean;
+
+  @OneToMany(() => ProgramUserCourse, (programUserCourse) => programUserCourse.program_users)
+  program_user_course: ProgramUserCourse[];
 }

@@ -11,6 +11,8 @@ import { TenancyConfigModule } from '../tenancy_config/tenancy_config.module';
 import { ActivityTryUsersModule } from '../activity_try_users/activity_try_users.module';
 import { LessonScormIntentsModule } from '../lesson_scorm_intents/lesson_scorm_intents.module';
 import { LessonTryUsersModule } from '../lesson_try_users/lesson_try_users.module';
+import { ProgramUserCourseModule } from '../program_user_course/program_user_course.module';
+import { ProgramCoursesModule } from '../program_courses/program_courses.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { LessonTryUsersModule } from '../lesson_try_users/lesson_try_users.modul
     ActivityTryUsersModule,
     LessonScormIntentsModule,
     LessonTryUsersModule,
+    ProgramUserCourseModule,
+    ProgramCoursesModule,
   ],
   controllers: [CourseUsersController],
   providers: [
