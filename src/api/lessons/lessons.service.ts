@@ -118,13 +118,7 @@ export class LessonsService extends BaseService<
         'lesson.suggested_weeks',
         'lesson.visible',
       ])
-      .innerJoinAndMapOne(
-        'lesson.course_lessons',
-        CourseLessons,
-        'course_lesson',
-        'course_lesson.id = :course_lesson_id',
-        { course_lesson_id },
-      )
+      .innerJoin('lesson.course_lessons', 'course_lesson')
       .where('course_lesson.id = :course_lesson_id', { course_lesson_id })
       .getOneOrFail();
     if (lesson.video_url) {
