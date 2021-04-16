@@ -17,7 +17,7 @@ import { PROGRAMS_PROVIDER } from '../programs/programs.dto';
 import { typeFilesAwsNames } from '../../aws/aws.dto';
 import { AwsService } from '../../aws/aws.service';
 import * as shortid from 'shortid';
-import { PROGRAM_USERS_PROVIDER } from '../program_users/program_users.dto';
+import { EnrollmentProgramUsersDto, PROGRAM_USERS_PROVIDER } from '../program_users/program_users.dto';
 import { ProgramUsers } from '../program_users/program_users.entity';
 import { ProgramFeeSchedulesService } from '../program_fee_schedules/program_fee_schedules.service';
 import { ProgramUsersService } from '../program_users/program_users.service';
@@ -71,7 +71,7 @@ export class PaymentsService extends BaseService<
 
     await this.addProgramPayment(input, paymentsSave);
 
-    const programUserData: Partial<ProgramUsers> = {
+    const programUserData: EnrollmentProgramUsersDto = {
       program_id: input.program_id,
       user_id: input.user_id,
       enrollment_status_id: ENROLLMENT_STATUS_ENUM.REGISTERED,

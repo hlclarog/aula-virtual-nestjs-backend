@@ -51,6 +51,7 @@ export class CreateProgramUsersDto extends CreateBaseDto {
 export class EnrollmentProgramUsersDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
+  @ApiProperty({ required: false }) @IsNumber() @IsOptional() readonly enrollment_status_id: number;
 }
 
 export class UpdateProgramUsersDto extends UpdateBaseDto {
