@@ -21,6 +21,7 @@ import {
   InfoTenancyDomain,
 } from './../../../utils/providers/info-tenancy.module';
 import { PointsUserLogService } from './../../points_user_log/points_user_log.service';
+import { UsersOrganizationsService } from './../../users_organizations/users_organizations.service';
 
 @Injectable()
 export class UsersService extends BaseService<
@@ -38,6 +39,7 @@ export class UsersService extends BaseService<
     private tenancyConfigService: TenancyConfigService,
     private pointsUserLogService: PointsUserLogService,
     private awsService: AwsService,
+    private usersOrganizationsService: UsersOrganizationsService,
   ) {
     super();
   }
@@ -84,6 +86,12 @@ export class UsersService extends BaseService<
         createDto.rol_default,
       );
     }
+    if (createDto.users_organizations) {
+      await this.usersOrganizationsService.set(
+        dataNew.id,
+        createDto.users_organizations,
+      );
+    }
     return dataNew;
   }
 
@@ -99,6 +107,12 @@ export class UsersService extends BaseService<
         id,
         updateDto.users_roles,
         updateDto.rol_default,
+      );
+    }
+    if (updateDto.users_organizations) {
+      await this.usersOrganizationsService.set(
+        id,
+        updateDto.users_organizations,
       );
     }
     return await this.repository.update(id, data);

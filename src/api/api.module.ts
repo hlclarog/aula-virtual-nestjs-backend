@@ -86,6 +86,7 @@ import { CollectionTypesModule } from './collection_types/collection_types.modul
 import { PaymentStatusModule } from './payment_status/payment_status.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ProgramPaymentModule } from './program_payment/program_payment.module';
+import { UsersOrganizationsModule } from './users_organizations/users_organizations.module';
 
 @Module({
   imports: [
@@ -176,6 +177,7 @@ import { ProgramPaymentModule } from './program_payment/program_payment.module';
     PaymentStatusModule,
     PaymentsModule,
     ProgramPaymentModule,
+    UsersOrganizationsModule,
   ],
   controllers: [],
   providers: [],

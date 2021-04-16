@@ -104,6 +104,7 @@ export class UpdateLessonsDto extends UpdateBaseDto {
 }
 
 export class CopyLessonsDto {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_unit_id: number;
   @ApiProperty({
     type: 'number',
