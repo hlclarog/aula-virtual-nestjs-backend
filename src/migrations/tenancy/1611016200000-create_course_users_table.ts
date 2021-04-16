@@ -27,11 +27,6 @@ export class createCourseUsersTable1611016200000 implements MigrationInterface {
             type: 'int',
           },
           {
-            name: 'transaction_status_id',
-            type: 'int',
-            isNullable: true,
-          },
-          {
             name: 'enrollment_status_id',
             type: 'int',
             isNullable: true,
@@ -52,33 +47,13 @@ export class createCourseUsersTable1611016200000 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'ref_transaction',
-            type: 'varchar',
+            name: 'score',
+            type: 'int',
             isNullable: true,
           },
           {
             name: 'certificate_file',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'certificate_code_validation',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'private_inscription',
-            type: 'bool',
-            default: false,
-          },
-          {
-            name: 'favorite',
-            type: 'bool',
-            default: false,
-          },
-          {
-            name: 'score',
-            type: 'int',
+            type: 'text',
             isNullable: true,
           },
           {
@@ -87,33 +62,14 @@ export class createCourseUsersTable1611016200000 implements MigrationInterface {
             default: false,
           },
           {
-            name: 'val_course',
-            type: 'decimal',
+            name: 'certificate_code_validation',
+            type: 'varchar',
             isNullable: true,
-            default: 0.0,
-            precision: 18,
-            scale: 2,
           },
           {
-            name: 'val_certificate',
-            type: 'decimal',
-            isNullable: true,
-            default: 0.0,
-            precision: 18,
-            scale: 2,
-          },
-          {
-            name: 'paid_value',
-            type: 'decimal',
-            isNullable: true,
-            default: 0.0,
-            precision: 18,
-            scale: 2,
-          },
-          {
-            name: 'state',
-            type: 'integer',
-            default: 1,
+            name: 'favorite',
+            type: 'bool',
+            default: false,
           },
           {
             name: 'active',
@@ -148,11 +104,6 @@ export class createCourseUsersTable1611016200000 implements MigrationInterface {
         columnNames: ['user_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'users',
-      }),
-      new TableForeignKey({
-        columnNames: ['transaction_status_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'transaction_status',
       }),
       new TableForeignKey({
         columnNames: ['enrollment_status_id'],
