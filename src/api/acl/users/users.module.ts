@@ -10,6 +10,7 @@ import { UsersRolesModule } from '../users_roles/users_roles.module';
 import { AwsModule } from './../../../aws/aws.module';
 import { TenancyConfigModule } from './../../tenancy_config/tenancy_config.module';
 import { PointsUserLogModule } from './../../points_user_log/points_user_log.module';
+import { UsersOrganizationsModule } from './../../users_organizations/users_organizations.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PointsUserLogModule } from './../../points_user_log/points_user_log.mod
     UsersRolesModule,
     AwsModule,
     PointsUserLogModule,
+    UsersOrganizationsModule,
   ],
   controllers: [UsersController],
   providers: [

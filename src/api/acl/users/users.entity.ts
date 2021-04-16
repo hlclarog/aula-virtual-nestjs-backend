@@ -22,7 +22,7 @@ import { Languages } from './../../languages/languages.entity';
 import { PointsUserLog } from './../../points_user_log/points_user_log.entity';
 import { Lessons } from './../../lessons/lessons.entity';
 import { ProgramPayment } from '../../program_payment/program_payment.entity';
-import { UserOrganizations } from 'src/api/user_organizations/user_organizations.entity';
+import { UsersOrganizations } from 'src/api/users_organizations/users_organizations.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -166,8 +166,8 @@ export class Users extends Base {
   program_payment: ProgramPayment[];
 
   @OneToMany(
-    () => UserOrganizations,
+    () => UsersOrganizations,
     (courseOrganization) => courseOrganization.user,
   )
-  user_organizations: UserOrganizations[];
+  users_organizations: UsersOrganizations[];
 }

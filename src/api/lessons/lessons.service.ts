@@ -49,6 +49,7 @@ import { LESSON_ACTIVITIES_PROVIDER } from '../lesson_activities/lesson_activiti
 import { CourseLessonsService } from '../course_lessons/course_lessons.service';
 import { CourseLessons } from '../course_lessons/course_lessons.entity';
 import { TypesLessonPermissions } from '../lesson_permission_types/lesson_permission_types.dto';
+import { UsersOrganizationsService } from '../users_organizations/users_organizations.service';
 
 @Injectable()
 export class LessonsService extends BaseService<
@@ -80,6 +81,7 @@ export class LessonsService extends BaseService<
     private activityIdentifyWordsService: ActivityIdentifyWordsService,
     private activityCompleteTextsService: ActivityCompleteTextsService,
     private courseLessonsService: CourseLessonsService,
+    private usersOrganizationsService: UsersOrganizationsService,
   ) {
     super();
   }
@@ -338,6 +340,13 @@ export class LessonsService extends BaseService<
   }
 
   async searchLessonsCopy(name: string, user_id: number) {
+    const organizations = (
+      await this.usersOrganizationsService.findByUser(user_id)
+    ).map((o) => o.organization_id);
+    const organizationsList =
+      organizations.length > 0 ? organizations.join() : [0].join();
+
+    console.log(organizationsList);
     const courses: Courses[] =
       name.length > 4
         ? await this.repositoryCourses
@@ -358,12 +367,21 @@ export class LessonsService extends BaseService<
             .leftJoin('course.course_units', 'course_unit')
             .leftJoin('course_unit.course_lessons', 'course_lesson')
             .leftJoin('course_lesson.lesson', 'lesson')
+            .leftJoin('lesson.user', 'user')
+            .leftJoin('user.users_organizations', 'users_organizations')
             .where(
               `
                 LOWER(course.name) LIKE '%${name.toLowerCase()}%' 
-                AND (lesson.lesson_permission_type_id = ${
-                  TypesLessonPermissions.PUBLIC
-                })
+                AND (
+                  lesson.lesson_permission_type_id = ${
+                    TypesLessonPermissions.PUBLIC
+                  } OR (
+                    lesson.lesson_permission_type_id = ${
+                      TypesLessonPermissions.ORGANIZATION
+                    } AND 
+                    users_organizations.organization_id in (${organizationsList})
+                  )
+                )
               `,
             )
             .getMany()

@@ -5,12 +5,12 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class createUserOrganizationsTable1618454254623
+export class createUsersOrganizationsTable1618454254623
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'user_organizations',
+        name: 'users_organizations',
         columns: [
           {
             name: 'id',
@@ -52,7 +52,7 @@ export class createUserOrganizationsTable1618454254623
     );
 
     await queryRunner.createForeignKey(
-      'user_organizations',
+      'users_organizations',
       new TableForeignKey({
         columnNames: ['organization_id'],
         referencedColumnNames: ['id'],
@@ -61,7 +61,7 @@ export class createUserOrganizationsTable1618454254623
     );
 
     await queryRunner.createForeignKey(
-      'user_organizations',
+      'users_organizations',
       new TableForeignKey({
         columnNames: ['user_id'],
         referencedColumnNames: ['id'],
@@ -71,6 +71,6 @@ export class createUserOrganizationsTable1618454254623
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('user_organizations');
+    await queryRunner.dropTable('users_organizations');
   }
 }
