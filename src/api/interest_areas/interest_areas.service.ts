@@ -11,13 +11,16 @@ import { AwsService } from '../../aws/aws.service';
 import { CoursesService } from '../courses/courses.service';
 import { timeConvert } from '../../utils/helper';
 import { LessonsService } from '../lessons/lessons.service';
+import { AST } from 'eslint';
+import Program = AST.Program;
+import { Programs } from '../programs/programs.entity';
 
 @Injectable()
 export class InterestAreasService extends BaseService<
   InterestAreas,
   CreateInterestAreasDto,
   UpdateInterestAreasDto
-> {
+  > {
   constructor(
     private awsService: AwsService,
     private coursesService: CoursesService,
@@ -293,12 +296,15 @@ export class InterestAreasService extends BaseService<
           .getMany();
         break;
     }
-    let programs_ids = [];
-    list.map((i) => {
-      programs_ids = programs_ids.concat(
-        i.program_interest_areas.map((j) => String(j.program_id)),
-      );
+
+    list.map((item) => {
+      item.program_interest_areas.map(async (item2) => {
+        item2.program.picture = await this.awsService.getFile(
+          item2.program.picture,
+        );
+      });
     });
+
     return list;
   }
 }
