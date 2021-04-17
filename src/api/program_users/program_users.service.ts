@@ -11,6 +11,7 @@ import { PROGRAMS_PROVIDER } from '../programs/programs.dto';
 import { Programs } from '../programs/programs.entity';
 import { CourseUsersService } from '../course-users/course-users.service';
 import { EnrollmentCourseUsersDto } from '../course-users/course-users.dto';
+import { ENROLLMENT_STATUS_ENUM } from '../enrollment-status/enrollment-status.dto';
 
 @Injectable()
 export class ProgramUsersService extends BaseService<
@@ -53,6 +54,9 @@ export class ProgramUsersService extends BaseService<
   }
 
   async addEnrollment(programUserData: EnrollmentProgramUsersDto) {
+    if (programUserData.enrollment_status_id) {
+      programUserData.enrollment_status_id = ENROLLMENT_STATUS_ENUM.REGISTERED;
+    }
     const programUsersFound = await this.repository
       .createQueryBuilder()
       .where('user_id = :user_id AND program_id = :program_id', {

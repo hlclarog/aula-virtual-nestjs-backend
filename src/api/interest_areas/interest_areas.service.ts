@@ -52,7 +52,6 @@ export class InterestAreasService extends BaseService<
             'student.id',
             'student.name',
             'fee.course_val',
-            'fee.certificate_val',
             'currency.id',
             'currency.description',
             'currency.code',
@@ -103,7 +102,7 @@ export class InterestAreasService extends BaseService<
             'user.id',
             'user.name',
             'fee.course_val',
-            'fee.certificate_val',
+            // 'fee.certificate_val',
             'currency.id',
             'currency.description',
             'currency.code',
@@ -153,7 +152,6 @@ export class InterestAreasService extends BaseService<
             'user.id',
             'user.name',
             'fee.course_val',
-            'fee.certificate_val',
             'currency.id',
             'currency.description',
             'currency.code',
@@ -233,8 +231,6 @@ export class InterestAreasService extends BaseService<
             delete course_area.course.course_fee_schedules;
             course_area.course_val =
               prices?.length > 0 ? Number(prices[0].course_val) : null;
-            course_area.certificate_val =
-              prices?.length > 0 ? Number(prices[0].certificate_val) : null;
             let suma = info_sum
               .map((i) => i.course_id)
               .indexOf(course_area.course_id);
@@ -266,7 +262,6 @@ export class InterestAreasService extends BaseService<
             'student.id',
             'student.name',
             'fee.program_val',
-            'fee.certificate_val',
             'currency.id',
             'currency.description',
             'currency.code',
