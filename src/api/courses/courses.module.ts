@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CoursesController } from './courses.controller';
 import { InstanceProcessModule } from '../../queues/instance_process/instance_process.module';
@@ -20,7 +20,7 @@ import { UsersRolesModule } from '../acl/users_roles/users_roles.module';
     CourseUsersModule,
     CourseInterestAreasModule,
     InterestAreasModule,
-    forwardRef(() => LessonsModule),
+    LessonsModule,
     AwsModule,
     UsersRolesModule,
   ],

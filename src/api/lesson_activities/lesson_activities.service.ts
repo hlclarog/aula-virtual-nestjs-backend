@@ -51,7 +51,7 @@ export class LessonActivitiesService extends BaseService<
 
   async findOne(id: number): Promise<LessonActivities> {
     return this.repository.findOneOrFail(id, {
-      relations: ['lesson', 'lesson.course_unit'],
+      relations: ['lesson'],
     });
   }
 
