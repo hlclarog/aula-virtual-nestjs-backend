@@ -90,8 +90,12 @@ export class ProgramsService extends BaseService<
     }
     // Get Amount to pay today
 
-    program['price'] = await this.programFeeSchedule
+    const feeScheduleToday = await this.programFeeSchedule
         .amountToPay(program.id, 1, new Date(Date.now()).toLocaleDateString('zh-Hans-CN'))
+
+    program['price_val'] = feeScheduleToday.program_val;
+    program['inscription_val'] = feeScheduleToday.inscription_val;
+
     return program;
   }
 
