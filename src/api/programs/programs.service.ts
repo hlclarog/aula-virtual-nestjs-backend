@@ -95,7 +95,7 @@ export class ProgramsService extends BaseService<
 
     program['price_val'] = feeScheduleToday.program_val;
     program['inscription_val'] = feeScheduleToday.inscription_val;
-    program['currency_name'] = feeScheduleToday.currency.code;
+
 
     return program;
   }
