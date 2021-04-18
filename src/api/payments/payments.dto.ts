@@ -55,8 +55,3 @@ export class AddExternalCollectionDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() credits: number;
 }
-
-export class AvailableCreditsDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
-}
