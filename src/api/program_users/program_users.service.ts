@@ -3,7 +3,8 @@ import { BaseService } from '../../base/base.service';
 import { ProgramUsers } from './program_users.entity';
 import { BaseRepo } from '../../base/base.repository';
 import {
-  CreateProgramUsersDto, EnrollmentProgramUsersDto,
+  CreateProgramUsersDto,
+  EnrollmentProgramUsersDto,
   PROGRAM_USERS_PROVIDER,
   UpdateProgramUsersDto,
 } from './program_users.dto';
@@ -21,7 +22,6 @@ export class ProgramUsersService extends BaseService<
 > {
   @Inject(PROGRAM_USERS_PROVIDER) repository: BaseRepo<ProgramUsers>;
   @Inject(PROGRAMS_PROVIDER) programs: BaseRepo<Programs>;
-
 
   constructor(private readonly courseUsersService: CourseUsersService) {
     super();
@@ -54,7 +54,7 @@ export class ProgramUsersService extends BaseService<
   }
 
   async addEnrollment(programUserData: EnrollmentProgramUsersDto) {
-    if (programUserData.enrollment_status_id) {
+    if (!programUserData.enrollment_status_id) {
       programUserData.enrollment_status_id = ENROLLMENT_STATUS_ENUM.REGISTERED;
     }
     const programUsersFound = await this.repository
