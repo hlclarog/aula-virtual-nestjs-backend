@@ -4,10 +4,10 @@ import { ProgramUsers } from './program_users.entity';
 import { ProgramUsersService } from './program_users.service';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import {
-  CreateProgramUsersDto, EnrollmentProgramUsersDto,
+  CreateProgramUsersDto,
+  EnrollmentProgramUsersDto,
   UpdateProgramUsersDto,
 } from './program_users.dto';
-import { EnrollmentCourseUsersDto } from '../course-users/course-users.dto';
 
 @ControllerApi({ name: 'program_users' })
 export class ProgramUsersController extends BaseController<
