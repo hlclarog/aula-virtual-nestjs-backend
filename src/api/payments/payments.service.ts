@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
-  AddExternalCollection,
+  AddExternalCollectionDto,
   CreatePaymentsDto,
   PAYMENTS_PROVIDER,
   UpdatePaymentsDto,
@@ -17,7 +17,10 @@ import { PROGRAMS_PROVIDER } from '../programs/programs.dto';
 import { typeFilesAwsNames } from '../../aws/aws.dto';
 import { AwsService } from '../../aws/aws.service';
 import * as shortid from 'shortid';
-import { EnrollmentProgramUsersDto, PROGRAM_USERS_PROVIDER } from '../program_users/program_users.dto';
+import {
+  EnrollmentProgramUsersDto,
+  PROGRAM_USERS_PROVIDER,
+} from '../program_users/program_users.dto';
 import { ProgramUsers } from '../program_users/program_users.entity';
 import { ProgramFeeSchedulesService } from '../program_fee_schedules/program_fee_schedules.service';
 import { ProgramUsersService } from '../program_users/program_users.service';
@@ -42,7 +45,7 @@ export class PaymentsService extends BaseService<
     super();
   }
 
-  async externalCollection(input: AddExternalCollection) {
+  async externalCollection(input: AddExternalCollectionDto) {
     const programFeeSchedules = await this.programFeeSchedulesService.amountToPay(
       input.program_id,
       input.currency_type_id,
@@ -91,7 +94,7 @@ export class PaymentsService extends BaseService<
   }
 
   async addProgramPayment(
-    input: AddExternalCollection,
+    input: AddExternalCollectionDto,
     paymentsSave: Partial<Payments>,
   ) {
     const programPaymentData: Partial<ProgramPayment> = {
