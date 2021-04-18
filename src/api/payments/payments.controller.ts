@@ -3,7 +3,7 @@ import { PaymentsService } from './payments.service';
 import { BaseController } from '../../base/base.controller';
 import { Payments } from './payments.entity';
 import {
-  AddExternalCollection,
+  AddExternalCollectionDto,
   CreatePaymentsDto,
   UpdatePaymentsDto,
 } from './payments.dto';
@@ -48,7 +48,7 @@ export class PaymentsController extends BaseController<
   }
 
   @Post('/external/collection')
-  async externalCollection(@Body() input: AddExternalCollection) {
+  async externalCollection(@Body() input: AddExternalCollectionDto) {
     const program = await this.programs.findOne({
       where: { id: input.program_id },
       relations: ['program_courses'],
