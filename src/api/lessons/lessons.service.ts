@@ -16,15 +16,11 @@ import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.serv
 import { COURSES_PROVIDER } from '../courses/courses.dto';
 import { Courses } from '../courses/courses.entity';
 import { LessonDetailsService } from '../lesson_details/lesson_details.service';
-import {
-  EnumActivityType,
-  LessonActivitiesService,
-} from '../lesson_activities/lesson_activities.service';
+import { EnumActivityType } from '../lesson_activities/lesson_activities.service';
 import { LessonActivities } from '../lesson_activities/lesson_activities.entity';
 import { LessonDetails } from '../lesson_details/lesson_details.entity';
 import { TypesLesson } from '../lesson_types/lesson_types.dto';
 import { LessonScorms } from '../lesson_scorms/lesson_scorms.entity';
-import { LessonScormsService } from '../lesson_scorms/lesson_scorms.service';
 import { LessonScormResources } from '../lesson_scorm_resources/lesson_scorm_resources.entity';
 import { LessonScormResourcesService } from '../lesson_scorm_resources/lesson_scorm_resources.service';
 import { ActivityMultipleOptionsService } from '../activity_multiple_options/activity_multiple_options.service';
@@ -47,9 +43,10 @@ import { LESSON_SCORMS_PROVIDER } from '../lesson_scorms/lesson_scorms.dto';
 import { LESSON_SCORM_RESOURCES_PROVIDER } from '../lesson_scorm_resources/lesson_scorm_resources.dto';
 import { LESSON_ACTIVITIES_PROVIDER } from '../lesson_activities/lesson_activities.dto';
 import { CourseLessonsService } from '../course_lessons/course_lessons.service';
-import { CourseLessons } from '../course_lessons/course_lessons.entity';
 import { TypesLessonPermissions } from '../lesson_permission_types/lesson_permission_types.dto';
 import { UsersOrganizationsService } from '../users_organizations/users_organizations.service';
+import { COURSE_LESSONS_PROVIDER } from '../course_lessons/course_lessons.dto';
+import { CourseLessons } from '../course_lessons/course_lessons.entity';
 
 @Injectable()
 export class LessonsService extends BaseService<
@@ -64,13 +61,13 @@ export class LessonsService extends BaseService<
   repositoryScormsResources: BaseRepo<LessonScormResources>;
   @Inject(LESSON_ACTIVITIES_PROVIDER)
   repositoryLessonActivity: BaseRepo<LessonActivities>;
+  @Inject(COURSE_LESSONS_PROVIDER)
+  repositoryCourseLessons: BaseRepo<CourseLessons>;
 
   constructor(
     private awsService: AwsService,
     private lessonTryUsersService: LessonTryUsersService,
     private lessonDetailsService: LessonDetailsService,
-    private lessonActivitiesService: LessonActivitiesService,
-    private lessonScormsService: LessonScormsService,
     private lessonScormResourcesService: LessonScormResourcesService,
     private activityMultipleOptionsService: ActivityMultipleOptionsService,
     private multipleOptionAnswersService: MultipleOptionAnswersService,
@@ -333,14 +330,12 @@ export class LessonsService extends BaseService<
     return progress;
   }
 
-  async searchLessonsCopy(name: string, user_id: number) {
+  async searchLessonsForCoursesToCopy(name: string, user_id: number) {
     const organizations = (
       await this.usersOrganizationsService.findByUser(user_id)
     ).map((o) => o.organization_id);
     const organizationsList =
       organizations.length > 0 ? organizations.join() : [0].join();
-
-    console.log(organizationsList);
     const courses: Courses[] =
       name.length > 4
         ? await this.repositoryCourses
@@ -374,13 +369,69 @@ export class LessonsService extends BaseService<
                       TypesLessonPermissions.ORGANIZATION
                     } AND 
                     users_organizations.organization_id in (${organizationsList})
+                  ) OR (
+                    lesson.lesson_permission_type_id = ${
+                      TypesLessonPermissions.PRIVATE
+                    } AND 
+                    lesson.user_id = :user_id
                   )
                 )
               `,
+              { user_id },
             )
             .getMany()
         : [];
     return courses;
+  }
+
+  async searchLessonsToCopy(name: string, user_id: number) {
+    const organizations = (
+      await this.usersOrganizationsService.findByUser(user_id)
+    ).map((o) => o.organization_id);
+    const organizationsList =
+      organizations.length > 0 ? organizations.join() : [0].join();
+    const lessons: Lessons[] =
+      name.length > 4
+        ? await this.repository
+            .createQueryBuilder('lesson')
+            .select([
+              'lesson.id',
+              'lesson.name',
+              'lesson.description',
+              'lesson.lesson_permission_type_id',
+              'course_lesson.course_id',
+              'course.id',
+              'course.name',
+              'course.description',
+            ])
+            .leftJoin('lesson.user', 'user')
+            .leftJoin('user.users_organizations', 'users_organizations')
+            .leftJoin('lesson.course_lessons', 'course_lesson')
+            .leftJoin('course_lesson.course', 'course')
+            .where(
+              `
+                LOWER(lesson.name) LIKE '%${name.toLowerCase()}%' 
+                AND (
+                  lesson.lesson_permission_type_id = ${
+                    TypesLessonPermissions.PUBLIC
+                  } OR (
+                    lesson.lesson_permission_type_id = ${
+                      TypesLessonPermissions.ORGANIZATION
+                    } AND 
+                    users_organizations.organization_id in (${organizationsList})
+                  ) OR (
+                    lesson.lesson_permission_type_id = ${
+                      TypesLessonPermissions.PRIVATE
+                    } AND 
+                    lesson.user_id = :user_id
+                  )
+                )
+              `,
+              { user_id },
+            )
+            .getMany()
+        : [];
+    return lessons;
   }
 
   async copyLessons(data: CopyLessonsDto) {
@@ -658,5 +709,27 @@ export class LessonsService extends BaseService<
       }
     }
     return { copy: true, data };
+  }
+
+  async reuseLessons(data: CopyLessonsDto) {
+    let orderNew = await this.courseLessonsService.findMaxOrderToUnit(
+      data.course_unit_id,
+    );
+    const reuses = [];
+    for (let i = 0; i < data.lessons_id.length; i++) {
+      const element = data.lessons_id[i];
+      orderNew++;
+      reuses.push({
+        lesson_id: element,
+        course_unit_id: data.course_unit_id,
+        course_id: data.course_id,
+        order: orderNew,
+        active: true,
+      });
+    }
+    if (reuses.length > 0) {
+      await this.repositoryCourseLessons.save(reuses);
+    }
+    return { reuse: true, data };
   }
 }

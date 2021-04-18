@@ -8,7 +8,6 @@ import {
 import { CourseLessons } from './course_lessons.entity';
 import { BaseRepo } from '../../base/base.repository';
 import { AwsService } from './../../aws/aws.service';
-import { CourseUnitsService } from '../course_units/course_units.service';
 
 @Injectable()
 export class CourseLessonsService extends BaseService<

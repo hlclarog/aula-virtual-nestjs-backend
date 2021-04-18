@@ -49,7 +49,7 @@
                     document.getElementById('channel').disabled = true;
                     document.getElementById('token').disabled = true;
                     document.getElementById('connectSocket').disabled = true;
-                    const pc = '{{host}}/' + url;
+                    const pc = 'ws://ws.omarenco.com/' + url;
                     const socket = io(pc, {
                         transports: ['websocket'],
                         query: { 

@@ -107,18 +107,38 @@ export class LessonsController extends BaseController<
     return { data: result.length > 0 ? result[0] : {} };
   }
 
-  @Get('copy/search/:name')
-  async searchLessonsCopyDto(@Param('name') name: string) {
-    const result = await this.lessonsService.searchLessonsCopy(
-      name,
-      this.infoUser.id,
-    );
+  @Get('copy/search/:type/:name')
+  async searchLessonsCopyDto(
+    @Param('type') type: string,
+    @Param('name') name: string,
+  ) {
+    let result = [];
+    switch (type) {
+      case 'courses':
+        result = await this.lessonsService.searchLessonsForCoursesToCopy(
+          name,
+          this.infoUser.id,
+        );
+        break;
+      case 'lessons':
+        result = await this.lessonsService.searchLessonsToCopy(
+          name,
+          this.infoUser.id,
+        );
+        break;
+    }
     return { data: result };
   }
 
   @Post('copy')
   async copyLessonsDto(@Body() body: CopyLessonsDto) {
     const result = await this.lessonsService.copyLessons(body);
+    return { data: result };
+  }
+
+  @Post('reuse')
+  async reuseLessonsDto(@Body() body: CopyLessonsDto) {
+    const result = await this.lessonsService.reuseLessons(body);
     return { data: result };
   }
 }
