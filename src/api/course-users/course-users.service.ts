@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { BaseService } from '../../base/base.service';
 import { CourseUsers } from './course-users.entity';
 import { BaseRepo } from '../../base/base.repository';
@@ -29,6 +29,7 @@ import { PROGRAM_USER_COURSE_PROVIDER } from '../program_user_course/program_use
 import { ProgramUserCourse } from '../program_user_course/program_user_course.entity';
 import { PROGRAM_COURSES_PROVIDER } from '../program_courses/program_courses.dto';
 import { ProgramUsers } from '../program_users/program_users.entity';
+import { ProgramUserCourseService } from '../program_user_course/program_user_course.service';
 
 @Injectable()
 export class CourseUsersService extends BaseService<
@@ -48,6 +49,7 @@ export class CourseUsersService extends BaseService<
     private activityTryUsersService: ActivityTryUsersService,
     private lessonScormIntentsService: LessonScormIntentsService,
     private lessonTryUsersService: LessonTryUsersService,
+    private readonly programUserCourseService: ProgramUserCourseService,
   ) {
     super();
   }
@@ -198,77 +200,87 @@ export class CourseUsersService extends BaseService<
   }
 
   async addEnrollment(courseUsersDto: EnrollmentCourseUsersDto) {
-    const courseUser: CreateCourseUsersDto = {
-      course_id: courseUsersDto.course_id,
-      user_id: courseUsersDto.user_id,
-      enrollment_status_id: ENROLLMENT_STATUS_ENUM.REGISTERED,
-    };
-
-    const courseUsersFound = await this.repository
-      .createQueryBuilder()
-      .where('user_id = :user_id AND course_id = :course_id', {
+    const availableCredits = await this.programUserCourseService.availableCredits(
+      {
+        program_id: courseUsersDto.program_id,
         user_id: courseUsersDto.user_id,
+      },
+    );
+    if (availableCredits > 0) {
+      const courseUser: CreateCourseUsersDto = {
         course_id: courseUsersDto.course_id,
-      })
-      .withDeleted()
-      .getCount();
-    if (courseUsersFound) {
-      await this.repository
+        user_id: courseUsersDto.user_id,
+        enrollment_status_id: ENROLLMENT_STATUS_ENUM.REGISTERED,
+      };
+
+      const courseUsersFound = await this.repository
         .createQueryBuilder()
-        .update()
-        .set({ deleted_at: null })
         .where('user_id = :user_id AND course_id = :course_id', {
           user_id: courseUsersDto.user_id,
           course_id: courseUsersDto.course_id,
         })
-        .execute();
-    } else {
-      await this.repository
+        .withDeleted()
+        .getCount();
+      if (courseUsersFound) {
+        await this.repository
+          .createQueryBuilder()
+          .update()
+          .set({ deleted_at: null })
+          .where('user_id = :user_id AND course_id = :course_id', {
+            user_id: courseUsersDto.user_id,
+            course_id: courseUsersDto.course_id,
+          })
+          .execute();
+      } else {
+        await this.repository
+          .createQueryBuilder()
+          .insert()
+          .into(CourseUsers)
+          .values(courseUser)
+          .execute();
+      }
+
+      const courseUserSave = await this.repository
         .createQueryBuilder()
-        .insert()
-        .into(CourseUsers)
-        .values(courseUser)
-        .execute();
-    }
-
-    const courseUserSave = await this.repository
-      .createQueryBuilder()
-      .where('user_id = :user_id AND course_id = :course_id', {
-        user_id: courseUsersDto.user_id,
-        course_id: courseUsersDto.course_id,
-      })
-      .getOne();
-
-    const programCoursesResult = await this.programCourses
-      .createQueryBuilder('program_courses')
-      .select(['program_courses.credits'])
-      .where(
-        'program_courses.course_id = :course_id AND program_courses.program_id = :program_id',
-        {
+        .where('user_id = :user_id AND course_id = :course_id', {
+          user_id: courseUsersDto.user_id,
           course_id: courseUsersDto.course_id,
-          program_id: courseUsersDto.program_id,
-        },
-      )
-      .getOne();
+        })
+        .getOne();
 
-    const programUserCourseFound = await this.programUserCourse
-      .createQueryBuilder()
-      .where(
-        'program_user_id = :program_user_id AND course_user_id = :course_user_id',
-        {
+      const programCoursesResult = await this.programCourses
+        .createQueryBuilder('program_courses')
+        .select(['program_courses.credits'])
+        .where(
+          'program_courses.course_id = :course_id AND program_courses.program_id = :program_id',
+          {
+            course_id: courseUsersDto.course_id,
+            program_id: courseUsersDto.program_id,
+          },
+        )
+        .getOne();
+
+      const programUserCourseFound = await this.programUserCourse
+        .createQueryBuilder()
+        .where(
+          'program_user_id = :program_user_id AND course_user_id = :course_user_id',
+          {
+            program_user_id: courseUsersDto.program_user_id,
+            course_user_id: courseUserSave.id,
+          },
+        )
+        .withDeleted()
+        .getCount();
+      if (!programUserCourseFound) {
+        const programUserCourseData: Partial<ProgramUserCourse> = {
           program_user_id: courseUsersDto.program_user_id,
           course_user_id: courseUserSave.id,
-        },
-      )
-      .withDeleted()
-      .getCount();
-    if (!programUserCourseFound) {
-      const programUserCourseData: Partial<ProgramUserCourse> = {
-        program_user_id: courseUsersDto.program_user_id,
-        course_user_id: courseUserSave.id,
-        credits: programCoursesResult.credits,
-      };
-      return await this.programUserCourse.save(programUserCourseData);
+          credits: programCoursesResult.credits,
+        };
+        return await this.programUserCourse.save(programUserCourseData);
+      }
+    } else {
+      throw new ForbiddenException({ message: 'You have no credits available' });
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { BaseService } from '../../base/base.service';
 import { ProgramUsers } from './program_users.entity';
 import { BaseRepo } from '../../base/base.repository';
@@ -13,6 +13,7 @@ import { Programs } from '../programs/programs.entity';
 import { CourseUsersService } from '../course-users/course-users.service';
 import { EnrollmentCourseUsersDto } from '../course-users/course-users.dto';
 import { ENROLLMENT_STATUS_ENUM } from '../enrollment-status/enrollment-status.dto';
+import { ProgramUserCourseService } from '../program_user_course/program_user_course.service';
 
 @Injectable()
 export class ProgramUsersService extends BaseService<
@@ -23,7 +24,10 @@ export class ProgramUsersService extends BaseService<
   @Inject(PROGRAM_USERS_PROVIDER) repository: BaseRepo<ProgramUsers>;
   @Inject(PROGRAMS_PROVIDER) programs: BaseRepo<Programs>;
 
-  constructor(private readonly courseUsersService: CourseUsersService) {
+  constructor(
+    private readonly courseUsersService: CourseUsersService,
+    private readonly programUserCourseService: ProgramUserCourseService,
+  ) {
     super();
   }
 
@@ -54,51 +58,64 @@ export class ProgramUsersService extends BaseService<
   }
 
   async addEnrollment(programUserData: EnrollmentProgramUsersDto) {
-    if (!programUserData.enrollment_status_id) {
-      programUserData.enrollment_status_id = ENROLLMENT_STATUS_ENUM.REGISTERED;
-    }
-    const programUsersFound = await this.repository
-      .createQueryBuilder()
-      .where('user_id = :user_id AND program_id = :program_id', {
-        user_id: programUserData.user_id,
+    const availableCredits = await this.programUserCourseService.availableCredits(
+      {
         program_id: programUserData.program_id,
-      })
-      .withDeleted()
-      .getCount();
-    if (programUsersFound) {
-      await this.repository
+        user_id: programUserData.user_id,
+      },
+    );
+    if (availableCredits > 0) {
+      if (!programUserData.enrollment_status_id) {
+        programUserData.enrollment_status_id =
+          ENROLLMENT_STATUS_ENUM.REGISTERED;
+      }
+      const programUsersFound = await this.repository
         .createQueryBuilder()
-        .update()
-        .set({ deleted_at: null })
         .where('user_id = :user_id AND program_id = :program_id', {
           user_id: programUserData.user_id,
           program_id: programUserData.program_id,
         })
-        .execute();
+        .withDeleted()
+        .getCount();
+      if (programUsersFound) {
+        await this.repository
+          .createQueryBuilder()
+          .update()
+          .set({ deleted_at: null })
+          .where('user_id = :user_id AND program_id = :program_id', {
+            user_id: programUserData.user_id,
+            program_id: programUserData.program_id,
+          })
+          .execute();
+      } else {
+        await this.repository
+          .createQueryBuilder()
+          .insert()
+          .into(ProgramUsers)
+          .values(programUserData)
+          .execute();
+      }
+
+      const programUsersResult = await this.repository
+        .createQueryBuilder('program_users')
+        .where(
+          'program_users.user_id = :user_id AND program_users.program_id = :program_id',
+          {
+            user_id: programUserData.user_id,
+            program_id: programUserData.program_id,
+          },
+        )
+        .leftJoinAndSelect('program_users.program', 'program')
+        .leftJoinAndSelect('program.program_courses', 'program_courses')
+        .getOne();
+
+      if (!programUsersResult.program.by_credit) {
+        await this.addCourseUser(programUsersResult);
+      }
     } else {
-      await this.repository
-        .createQueryBuilder()
-        .insert()
-        .into(ProgramUsers)
-        .values(programUserData)
-        .execute();
-    }
-
-    const programUsersResult = await this.repository
-      .createQueryBuilder('program_users')
-      .where(
-        'program_users.user_id = :user_id AND program_users.program_id = :program_id',
-        {
-          user_id: programUserData.user_id,
-          program_id: programUserData.program_id,
-        },
-      )
-      .leftJoinAndSelect('program_users.program', 'program')
-      .leftJoinAndSelect('program.program_courses', 'program_courses')
-      .getOne();
-
-    if (!programUsersResult.program.by_credit) {
-      await this.addCourseUser(programUsersResult);
+      throw new ForbiddenException({
+        message: 'You have no credits available',
+      });
     }
   }
 

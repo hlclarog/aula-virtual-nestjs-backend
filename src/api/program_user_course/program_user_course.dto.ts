@@ -16,3 +16,8 @@ export class UpdateProgramUserCourseDto extends UpdateBaseDto {
   @ApiProperty({ required: false }) @IsNumber() @IsOptional() readonly credits?: number;
   @ApiProperty({ required: false }) @IsBoolean() @IsOptional() readonly homologue?: boolean;
 }
+
+export class AvailableCreditsDto {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
+}

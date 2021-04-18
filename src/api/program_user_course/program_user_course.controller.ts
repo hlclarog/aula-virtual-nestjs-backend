@@ -3,6 +3,7 @@ import { ProgramUserCourseService } from './program_user_course.service';
 import { BaseController } from '../../base/base.controller';
 import { ProgramUserCourse } from './program_user_course.entity';
 import {
+  AvailableCreditsDto,
   CreateProgramUserCourseDto,
   UpdateProgramUserCourseDto,
 } from './program_user_course.dto';
@@ -45,5 +46,11 @@ export class ProgramUserCourseController extends BaseController<
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.remove(id);
+  }
+
+  @Post('/validate/available_credits')
+  async availableCredits(@Body() input: AvailableCreditsDto) {
+    const response = await this.program_user_courseService.availableCredits(input);
+    return { data: response };
   }
 }

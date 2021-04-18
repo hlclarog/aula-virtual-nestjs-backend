@@ -6,9 +6,10 @@ import { PROGRAM_USER_COURSE_PROVIDER } from './program_user_course.dto';
 import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { Connection } from 'typeorm';
 import { ProgramUserCourse } from './program_user_course.entity';
+import { ProgramPaymentModule } from '../program_payment/program_payment.module';
 
 @Module({
-  imports: [InstanceProcessModule],
+  imports: [InstanceProcessModule, ProgramPaymentModule],
   controllers: [ProgramUserCourseController],
   providers: [
     {

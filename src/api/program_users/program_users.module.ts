@@ -7,9 +7,10 @@ import { ProgramUsers } from './program_users.entity';
 import { DATABASE_TENANCY_PROVIDER } from '../../database/database.dto';
 import { ProgramsModule } from '../programs/programs.module';
 import { CourseUsersModule } from '../course-users/course-users.module';
+import { ProgramUserCourseModule } from '../program_user_course/program_user_course.module';
 
 @Module({
-  imports: [ProgramsModule, CourseUsersModule],
+  imports: [ProgramsModule, CourseUsersModule, ProgramUserCourseModule],
   controllers: [ProgramUsersController],
   providers: [
     {
