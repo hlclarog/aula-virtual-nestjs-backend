@@ -37,7 +37,7 @@ export class UpdatePaymentsDto extends UpdateBaseDto {
   @ApiProperty({ required: false }) @IsString() @IsOptional() readonly snapshot?: string;
 }
 
-export class AddExternalCollection {
+export class AddExternalCollectionDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly currency_type_id: number;
   @ApiProperty({ required: false }) @IsString() @IsOptional() readonly collection_file?: string;
   @ApiProperty({ required: false }) @IsNumber() @IsOptional() readonly organization_id?: number;
@@ -54,4 +54,9 @@ export class AddExternalCollection {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() credits: number;
+}
+
+export class AvailableCreditsDto {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
 }
