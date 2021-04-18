@@ -7,14 +7,19 @@ import {
 import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
 import { ProgramCourses } from './program_courses.entity';
+import { AwsService } from '../../aws/aws.service';
 
 @Injectable()
 export class ProgramCoursesService extends BaseService<
   ProgramCourses,
   CreateProgramCoursesDto,
   UpdateProgramCoursesDto
-> {
+  > {
   @Inject(PROGRAM_COURSES_PROVIDER) repository: BaseRepo<ProgramCourses>;
+
+  constructor(protected awsService: AwsService) {
+    super();
+  }
 
   async findOne(id: number): Promise<ProgramCourses> {
     return this.repository
@@ -40,7 +45,7 @@ export class ProgramCoursesService extends BaseService<
   }
 
   async findByProgram(id: number): Promise<ProgramCourses[]> {
-    return this.repository
+    const result = await this.repository
       .createQueryBuilder('program_courses')
       .select([
         'program_courses.id',
@@ -54,11 +59,16 @@ export class ProgramCoursesService extends BaseService<
         'program_courses.end_date',
         'course.id',
         'course.name',
+        'course.picture',
         'course.description',
         'course.active',
       ])
       .leftJoin('program_courses.course', 'course')
       .where('program_courses.program_id = :id', { id })
       .getMany();
+    result.map(async (item) => {
+      item.course.picture = await this.awsService.getFile(item.course.picture);
+    });
+    return result;
   }
 }
