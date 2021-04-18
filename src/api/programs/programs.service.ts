@@ -12,18 +12,45 @@ import { ProgramInterestAreasService } from '../program_interest_areas/program_i
 import { AwsService } from '../../aws/aws.service';
 import { typeFilesAwsNames } from '../../aws/aws.dto';
 import * as shortid from 'shortid';
+import { ProgramFeeSchedulesService } from '../program_fee_schedules/program_fee_schedules.service';
 
 @Injectable()
 export class ProgramsService extends BaseService<
   Programs,
   CreateProgramsDto,
   UpdateProgramsDto
-> {
+  > {
   @Inject(PROGRAMS_PROVIDER) repository: BaseRepo<Programs>;
+
+  private selectedRow = [
+    'program.id',
+    'program_type_id',
+    'program_status_id',
+    'organization_id',
+    'program.name',
+    'program.description',
+    'program.shortname',
+    'program.picture',
+    'program.video_url',
+    'program.duration',
+    'program.email_to',
+    'program.active',
+    'program.certifiable',
+    'program.requirements',
+    'program.certifiable_number',
+    'program.by_credit',
+    'program_types.id',
+    'program_types.description',
+    'program_status.id',
+    'program_status.description',
+    'organizations.id',
+    'organizations.name',
+  ]
 
   constructor(
     private programInterestAreasService: ProgramInterestAreasService,
     private awsService: AwsService,
+    private programFeeSchedule: ProgramFeeSchedulesService
   ) {
     super();
   }
@@ -31,30 +58,7 @@ export class ProgramsService extends BaseService<
   async find() {
     return await this.repository
       .createQueryBuilder('program')
-      .select([
-        'program.id',
-        'program_type_id',
-        'program_status_id',
-        'organization_id',
-        'program.name',
-        'program.description',
-        'program.shortname',
-        'program.picture',
-        'program.video_url',
-        'program.duration',
-        'program.email_to',
-        'program.active',
-        'program.certifiable',
-        'program.requirements',
-        'program.certifiable_number',
-        'program.by_credit',
-        'program_types.id',
-        'program_types.description',
-        'program_status.id',
-        'program_status.description',
-        'organizations.id',
-        'organizations.name',
-      ])
+      .select(this.selectedRow)
       .leftJoin('program.program_type', 'program_types')
       .leftJoin('program.program_status', 'program_status')
       .leftJoin('program.organization', 'organizations')
@@ -68,6 +72,8 @@ export class ProgramsService extends BaseService<
   }
 
   async findOne(id: number): Promise<Programs> {
+    // const x = this.repository.createQueryBuilder('program').
+    //   select();
     const program = await this.repository.findOneOrFail(id, {
       relations: [
         'program_type',
@@ -82,6 +88,10 @@ export class ProgramsService extends BaseService<
     if (program.video_url) {
       program.video_url = await this.awsService.getFile(program.video_url);
     }
+    // Get Amount to pay today
+
+    program['price'] = await this.programFeeSchedule
+        .amountToPay(program.id, 1, new Date(Date.now()).toLocaleDateString('zh-Hans-CN'))
     return program;
   }
 

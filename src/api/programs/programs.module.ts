@@ -9,6 +9,8 @@ import { Programs } from './programs.entity';
 import { ProgramInterestAreasModule } from '../program_interest_areas/program_interest_areas.module';
 import { AwsModule } from '../../aws/aws.module';
 import { InterestAreasModule } from '../interest_areas/interest_areas.module';
+import { ProgramFeeSchedulesService } from '../program_fee_schedules/program_fee_schedules.service';
+import { ProgramFeeSchedulesModule } from '../program_fee_schedules/program_fee_schedules.module';
 
 @Module({
   imports: [
@@ -16,6 +18,7 @@ import { InterestAreasModule } from '../interest_areas/interest_areas.module';
     ProgramInterestAreasModule,
     AwsModule,
     InterestAreasModule,
+    ProgramFeeSchedulesModule,
   ],
   controllers: [ProgramsController],
   providers: [
