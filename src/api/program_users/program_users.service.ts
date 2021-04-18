@@ -23,7 +23,24 @@ export class ProgramUsersService extends BaseService<
 > {
   @Inject(PROGRAM_USERS_PROVIDER) repository: BaseRepo<ProgramUsers>;
   @Inject(PROGRAMS_PROVIDER) programs: BaseRepo<Programs>;
-
+  private fieldSelected = [
+    'program_users.id',
+    'program_users.program_id',
+    'program_users.user_id',
+    'program_users.enrollment_status_id',
+    'program_users.enrollment_type_id',
+    'program_users.begin_date',
+    'program_users.end_date',
+    'program_users.certificate_file',
+    'program_users.certificate_code_validation',
+    'program_users.favorite',
+    'program_users.downloaded',
+    'program_users.active',
+    'user.id',
+    'user.name',
+    'user.email',
+    'user.active',
+  ]
   constructor(
     private readonly courseUsersService: CourseUsersService,
     private readonly programUserCourseService: ProgramUserCourseService,
@@ -34,24 +51,7 @@ export class ProgramUsersService extends BaseService<
   async findByProgram(id: number): Promise<ProgramUsers[]> {
     return this.repository
       .createQueryBuilder('program_users')
-      .select([
-        'program_users.id',
-        'program_users.program_id',
-        'program_users.user_id',
-        'program_users.enrollment_status_id',
-        'program_users.enrollment_type_id',
-        'program_users.begin_date',
-        'program_users.end_date',
-        'program_users.certificate_file',
-        'program_users.certificate_code_validation',
-        'program_users.favorite',
-        'program_users.downloaded',
-        'program_users.active',
-        'user.id',
-        'user.name',
-        'user.email',
-        'user.active',
-      ])
+      .select(this.fieldSelected)
       .leftJoin('program_users.user', 'user')
       .where('program_users.program_id = :id', { id })
       .getMany();
@@ -129,5 +129,24 @@ export class ProgramUsersService extends BaseService<
       };
       await this.courseUsersService.addEnrollment(courseUsersDto);
     });
+  }
+  async getProgramUsersByUser(
+    programId: number,
+    userId: number,
+  ): Promise<ProgramUsers[]> {
+    return await this.repository
+      .createQueryBuilder('program_users')
+      .select([
+        'program_users.id',
+        'program_users.program_id',
+        'program_users.user_id',
+        'program_users.enrollment_status_id',
+        'program_users.enrollment_type_id',
+        'program_users.begin_date',
+        'program_users.end_date',
+      ])
+      .where('program_id = :program', { program: programId })
+      .andWhere('user_id = :user', { user: userId })
+      .getMany();
   }
 }

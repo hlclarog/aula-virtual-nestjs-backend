@@ -1,4 +1,4 @@
-import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Delete, Get, Inject, Param, Post, Put } from '@nestjs/common';
 import { BaseController } from '../../base/base.controller';
 import { ProgramUsers } from './program_users.entity';
 import { ProgramUsersService } from './program_users.service';
@@ -8,6 +8,7 @@ import {
   EnrollmentProgramUsersDto,
   UpdateProgramUsersDto,
 } from './program_users.dto';
+import { INFO_USER_PROVIDER, InfoUserProvider } from '../../utils/providers/info-user.module';
 
 @ControllerApi({ name: 'program_users' })
 export class ProgramUsersController extends BaseController<
@@ -15,7 +16,10 @@ export class ProgramUsersController extends BaseController<
   CreateProgramUsersDto,
   UpdateProgramUsersDto
 > {
-  constructor(private readonly programUsersService: ProgramUsersService) {
+  constructor(
+    private readonly programUsersService: ProgramUsersService,
+    @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
+  ) {
     super(programUsersService);
   }
 
@@ -50,6 +54,15 @@ export class ProgramUsersController extends BaseController<
   @Get('program/:id')
   async getByProgram(@Param('id') id: number) {
     const result = await this.programUsersService.findByProgram(id);
+    return { data: result };
+  }
+
+  @Get('check_my_user/:id')
+  async getCheckMyUser(@Param('id') id: number) {
+    const result = await this.programUsersService.getProgramUsersByUser(
+      id,
+      this.infoUser.id,
+    );
     return { data: result };
   }
 
