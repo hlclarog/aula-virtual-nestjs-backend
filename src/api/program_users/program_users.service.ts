@@ -152,9 +152,14 @@ export class ProgramUsersService extends BaseService<
     const availableCredits = new AvailableCreditsDto();
     availableCredits.program_id = programId;
     availableCredits.user_id = userId;
-    result[
-      'available_credits'
-    ] = await this.programUserCourseService.availableCredits(availableCredits);
+    if (result) {
+      result[
+        'available_credits'
+      ] = await this.programUserCourseService.availableCredits(
+        availableCredits,
+      );
+    }
+
     return result;
   }
 }
