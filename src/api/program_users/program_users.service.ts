@@ -14,13 +14,14 @@ import { CourseUsersService } from '../course-users/course-users.service';
 import { EnrollmentCourseUsersDto } from '../course-users/course-users.dto';
 import { ENROLLMENT_STATUS_ENUM } from '../enrollment-status/enrollment-status.dto';
 import { ProgramUserCourseService } from '../program_user_course/program_user_course.service';
+import { AvailableCreditsDto } from '../program_user_course/program_user_course.dto';
 
 @Injectable()
 export class ProgramUsersService extends BaseService<
   ProgramUsers,
   CreateProgramUsersDto,
   UpdateProgramUsersDto
-> {
+  > {
   @Inject(PROGRAM_USERS_PROVIDER) repository: BaseRepo<ProgramUsers>;
   @Inject(PROGRAMS_PROVIDER) programs: BaseRepo<Programs>;
   private fieldSelected = [
@@ -133,8 +134,8 @@ export class ProgramUsersService extends BaseService<
   async getProgramUsersByUser(
     programId: number,
     userId: number,
-  ): Promise<ProgramUsers[]> {
-    return await this.repository
+  ): Promise<ProgramUsers> {
+    const result = await this.repository
       .createQueryBuilder('program_users')
       .select([
         'program_users.id',
@@ -147,6 +148,18 @@ export class ProgramUsersService extends BaseService<
       ])
       .where('program_id = :program', { program: programId })
       .andWhere('user_id = :user', { user: userId })
-      .getMany();
+      .getOne();
+    const availableCredits = new AvailableCreditsDto();
+    availableCredits.program_id = programId;
+    availableCredits.user_id = userId;
+    if (result) {
+      result[
+        'available_credits'
+      ] = await this.programUserCourseService.availableCredits(
+        availableCredits,
+      );
+    }
+
+    return result;
   }
 }
