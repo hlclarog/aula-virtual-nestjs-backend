@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SHA512, HmacSHA1 } from 'crypto-js';
+import { HmacSHA1, MD5, SHA512 } from 'crypto-js';
 
 @Injectable()
 export class CryptoService {
@@ -10,5 +10,8 @@ export class CryptoService {
   public hashSecret(password: string, key: string) {
     const hashDigest = HmacSHA1(password, key).toString();
     return hashDigest;
+  }
+  public hashSignature(string) {
+    return MD5(string).toString();
   }
 }

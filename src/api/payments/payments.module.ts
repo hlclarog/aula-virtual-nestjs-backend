@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { PaymentsController } from './payments.controller';
 import { InstanceProcessModule } from '../../queues/instance_process/instance_process.module';
@@ -11,6 +11,7 @@ import { ProgramsModule } from '../programs/programs.module';
 import { AwsModule } from '../../aws/aws.module';
 import { ProgramUsersModule } from '../program_users/program_users.module';
 import { ProgramFeeSchedulesModule } from '../program_fee_schedules/program_fee_schedules.module';
+import { CryptoService } from '../../utils/services/crypto.service';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ProgramFeeSchedulesModule } from '../program_fee_schedules/program_fee_
     AwsModule,
     ProgramUsersModule,
     ProgramFeeSchedulesModule,
+    HttpModule,
   ],
   controllers: [PaymentsController],
   providers: [
@@ -30,6 +32,7 @@ import { ProgramFeeSchedulesModule } from '../program_fee_schedules/program_fee_
         connection.getRepository(Payments),
     },
     PaymentsService,
+    CryptoService,
   ],
 })
 export class PaymentsModule {}

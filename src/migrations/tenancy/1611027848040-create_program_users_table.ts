@@ -40,7 +40,7 @@ export class createProgramUsersTable1611027848040
           {
             name: 'begin_date',
             type: 'date',
-            isNullable: true,
+            default: 'now()',
           },
           {
             name: 'end_date',

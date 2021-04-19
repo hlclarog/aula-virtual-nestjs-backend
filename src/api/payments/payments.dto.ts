@@ -55,3 +55,22 @@ export class AddExternalCollectionDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() credits: number;
 }
+
+export class InternalCollectionStudentDto {
+  @ApiProperty({ required: false }) @IsString() @IsOptional() readonly collection_file?: string;
+  @ApiProperty({ required: false }) @IsNumber() @IsOptional() readonly organization_id?: number;
+  @ApiProperty({ required: false }) @IsString() @IsOptional() readonly transaction_reference?: string;
+  @ApiProperty({ required: false }) @IsString() @IsOptional() readonly transaction_code?: string;
+  @ApiProperty({ required: false }) @IsString() @IsOptional() readonly transaction_date?: string;
+  @ApiProperty({ required: false }) @IsString() @IsOptional() readonly paid_date?: string;
+  @ApiProperty({ required: false }) @IsString() @IsOptional() readonly processed_date?: string;
+  @ApiProperty({ required: false }) @IsNumber() @IsOptional() readonly quantity?: number;
+  @ApiProperty({ required: false }) @IsString() @IsOptional() readonly description?: string;
+  @ApiProperty({ required: false }) @IsString() @IsOptional() readonly bank?: string;
+  @ApiProperty({ required: false }) @IsString() @IsOptional() readonly snapshot?: string;
+  @ApiProperty({ required: false }) @IsNumber() @IsOptional() user_id?: number;
+
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly currency_type_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() credits: number;
+}

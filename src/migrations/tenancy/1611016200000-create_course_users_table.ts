@@ -39,7 +39,7 @@ export class createCourseUsersTable1611016200000 implements MigrationInterface {
           {
             name: 'begin_date',
             type: 'date',
-            isNullable: true,
+            default: 'now()',
           },
           {
             name: 'end_date',
