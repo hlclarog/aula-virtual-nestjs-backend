@@ -155,10 +155,14 @@ export class PaymentsService extends BaseService<
       currency: 'COP',
       signature: this.cryptoService.hashSignature(
         '4Vj8eK4rloUd272L48hsrarnUA' +
+          '~' +
           '508029' +
+          '~' +
           'REF-PROGRAM' +
           paymentsSave.id +
+          '~' +
           Number(paymentsSave.quantity) +
+          '~' +
           'COP',
       ),
       test: 1,
