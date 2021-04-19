@@ -18,6 +18,6 @@ export class UpdateProgramUserCourseDto extends UpdateBaseDto {
 }
 
 export class AvailableCreditsDto {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() user_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() program_id: number;
 }

@@ -50,7 +50,9 @@ export class ProgramUserCourseController extends BaseController<
 
   @Post('/validate/available_credits')
   async availableCredits(@Body() input: AvailableCreditsDto) {
-    const response = await this.program_user_courseService.availableCredits(input);
+    const response = await this.program_user_courseService.availableCredits(
+      input,
+    );
     return { data: response };
   }
 }
