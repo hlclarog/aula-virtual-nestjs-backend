@@ -3,6 +3,7 @@ import { CoursesService } from './courses.service';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { BaseController } from '../../base/base.controller';
 import {
+  CopyCourseDto,
   COURSES_PERMISSIONS,
   CreateCourseByTeacherDto,
   CreateCourseDto,
@@ -224,6 +225,15 @@ export class CoursesController extends BaseController<
   @Post('enrollment/course_user')
   async addEnrollment(@Body() input: EnrollmentCourseUsersDto) {
     const result = await this.courseUsersService.addEnrollment(input);
+    return {
+      data: result,
+    };
+  }
+
+  @Post('copy')
+  async copyCourse(@Body() data: CopyCourseDto) {
+    data.user_id = this.infoUser.id;
+    const result = await this.coursesService.copyCourse(data);
     return {
       data: result,
     };

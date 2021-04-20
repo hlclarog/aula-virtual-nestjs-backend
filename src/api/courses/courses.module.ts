@@ -13,6 +13,9 @@ import { CourseUsersModule } from '../course-users/course-users.module';
 import { InterestAreasModule } from '../interest_areas/interest_areas.module';
 import { LessonsModule } from '../lessons/lessons.module';
 import { UsersRolesModule } from '../acl/users_roles/users_roles.module';
+import { CourseUnitsModule } from '../course_units/course_units.module';
+import { CourseCompetencesModule } from '../course_competences/course_competences.module';
+import { CourseCommissionOrganizationsModule } from '../course_comission_organizations/course_commission_organizations.module';
 
 @Module({
   imports: [
@@ -23,6 +26,9 @@ import { UsersRolesModule } from '../acl/users_roles/users_roles.module';
     LessonsModule,
     AwsModule,
     UsersRolesModule,
+    CourseUnitsModule,
+    CourseCompetencesModule,
+    CourseCommissionOrganizationsModule,
   ],
   controllers: [CoursesController],
   providers: [
