@@ -6,9 +6,10 @@ import { Connection } from 'typeorm';
 import { PROGRAM_COURSES_PROVIDER } from './program_courses.dto';
 import { ProgramCourses } from './program_courses.entity';
 import { AwsModule } from '../../aws/aws.module';
+import { ProgramUserCourseModule } from '../program_user_course/program_user_course.module';
 
 @Module({
-  imports: [AwsModule],
+  imports: [AwsModule, ProgramUserCourseModule],
   controllers: [ProgramCoursesController],
   providers: [
     {

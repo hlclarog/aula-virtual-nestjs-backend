@@ -61,4 +61,29 @@ export class ProgramUserCourseService extends BaseService<
       programUserCourseCredits.reduce(reducer)
     );
   }
+
+  async getProgramUser(programId: number, userId: number) {
+    return await this.repository
+      .createQueryBuilder('program_users_course')
+      .select([
+        'program_users_course.id',
+        'program_users.id',
+        'program_users.user_id',
+        'program_users.program_id',
+        'course_users.begin_date',
+        'course_users.end_date',
+        'course_users.certificate_file',
+        'course_users.downloaded',
+        'course_users.id',
+        'course_users.user_id',
+        'course_users.course_id',
+        'course_users.enrollment_status_id',
+      ])
+      .leftJoin('program_users_course.program_users', 'program_users')
+      .leftJoin('program_users_course.course_users', 'course_users')
+      .where('program_users.program_id=:program_id', { program_id: programId })
+      .andWhere('course_users.user_id=:user_id', { user_id: userId })
+      .andWhere('course_users.enrollment_status_id=1')
+      .getMany();
+  }
 }

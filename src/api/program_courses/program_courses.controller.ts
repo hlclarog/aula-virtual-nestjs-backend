@@ -1,4 +1,4 @@
-import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Delete, Get, Inject, Param, Post, Put } from '@nestjs/common';
 import { ProgramCoursesService } from './program_courses.service';
 import {
   CreateProgramCoursesDto,
@@ -7,6 +7,7 @@ import {
 import { BaseController } from '../../base/base.controller';
 import { ProgramCourses } from './program_courses.entity';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
+import { INFO_USER_PROVIDER, InfoUserProvider } from '../../utils/providers/info-user.module';
 
 @ControllerApi({ name: 'program_courses' })
 export class ProgramCoursesController extends BaseController<
@@ -14,7 +15,10 @@ export class ProgramCoursesController extends BaseController<
   CreateProgramCoursesDto,
   UpdateProgramCoursesDto
 > {
-  constructor(private program_coursesService: ProgramCoursesService) {
+  constructor(
+    protected program_coursesService: ProgramCoursesService,
+    @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
+  ) {
     super(program_coursesService);
   }
 
@@ -49,6 +53,14 @@ export class ProgramCoursesController extends BaseController<
   @Get('program/:id')
   async getByProgram(@Param('id') id: number) {
     const result = await this.program_coursesService.findByProgram(id);
+    return { data: result };
+  }
+  @Get('user_program/:id')
+  async userProgram(@Param('id') id: number) {
+    const result = await this.program_coursesService.findByProgram(
+      id,
+      this.infoUser.id
+    );
     return { data: result };
   }
 }
