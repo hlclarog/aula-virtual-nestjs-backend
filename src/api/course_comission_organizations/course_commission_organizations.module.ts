@@ -17,5 +17,9 @@ import { CourseCommissionOrganizations } from './course_commission_organizations
     },
     CourseCommissionOrganizationsService,
   ],
+  exports: [
+    COURSE_COMMISSION_ORGANIZATIONS_PROVIDER,
+    CourseCommissionOrganizationsService,
+  ],
 })
 export class CourseCommissionOrganizationsModule {}

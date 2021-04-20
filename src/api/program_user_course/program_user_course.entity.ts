@@ -12,7 +12,7 @@ export class ProgramUserCourse extends Base {
   @Column({ type: 'int' }) program_user_id: number;
 
   @ManyToOne(() => CourseUsers, (courseUsers) => courseUsers.program_user_course)
-  @JoinColumn({ name: 'course_user_id' }) course_users: CourseUsers;
+  @JoinColumn({ name: 'course_user_id'}) course_users: CourseUsers;
   @RelationId((program_user_course: ProgramUserCourse) => program_user_course.course_users)
   @Column({ type: 'int' }) course_user_id: number;
 

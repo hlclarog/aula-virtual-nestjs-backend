@@ -55,4 +55,13 @@ export class ProgramUserCourseController extends BaseController<
     );
     return { data: response };
   }
+
+  @Get('program/:program_id/user/:user_id')
+  async getProgramUserCourse(@Param('program_id') program_id: number, @Param('user_id') user_id: number) {
+    const response = await this.program_user_courseService.getProgramUser(
+      program_id,
+      user_id,
+    );
+    return { data: response };
+  }
 }

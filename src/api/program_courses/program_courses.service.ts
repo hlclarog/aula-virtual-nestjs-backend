@@ -8,6 +8,7 @@ import { BaseService } from '../../base/base.service';
 import { BaseRepo } from '../../base/base.repository';
 import { ProgramCourses } from './program_courses.entity';
 import { AwsService } from '../../aws/aws.service';
+import { ProgramUserCourseService } from '../program_user_course/program_user_course.service';
 
 @Injectable()
 export class ProgramCoursesService extends BaseService<
@@ -17,7 +18,10 @@ export class ProgramCoursesService extends BaseService<
   > {
   @Inject(PROGRAM_COURSES_PROVIDER) repository: BaseRepo<ProgramCourses>;
 
-  constructor(protected awsService: AwsService) {
+  constructor(
+    protected awsService: AwsService,
+    protected programUserCourseService: ProgramUserCourseService,
+  ) {
     super();
   }
 
@@ -44,7 +48,7 @@ export class ProgramCoursesService extends BaseService<
       .getOneOrFail();
   }
 
-  async findByProgram(id: number): Promise<ProgramCourses[]> {
+  async findByProgram(id: number, userId?: number): Promise<ProgramCourses[]> {
     const result = await this.repository
       .createQueryBuilder('program_courses')
       .select([
@@ -66,9 +70,17 @@ export class ProgramCoursesService extends BaseService<
       .leftJoin('program_courses.course', 'course')
       .where('program_courses.program_id = :id', { id })
       .getMany();
+    let enroll = [];
+    if (userId) {
+      enroll = await this.programUserCourseService.getProgramUser(id, userId);
+    }
     result.map(async (item) => {
       item.course.picture = await this.awsService.getFile(item.course.picture);
+      item['enrollment'] = await enroll.filter(
+        (word) => word.course_users.course_id == item.course_id,
+      );
     });
+
     return result;
   }
 }

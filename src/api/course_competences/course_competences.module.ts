@@ -17,5 +17,6 @@ import { CourseCompetencesService } from './course_competences.service';
     },
     CourseCompetencesService,
   ],
+  exports: [COURSE_COMPETENCES_PROVIDER, CourseCompetencesService],
 })
 export class CourseCompetencesModule {}
