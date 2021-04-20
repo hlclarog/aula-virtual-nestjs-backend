@@ -177,3 +177,8 @@ export class UnSubscribeCourseStudentDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly end_date: string;
 }
+
+export class CopyCourseDto {
+  user_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
+}

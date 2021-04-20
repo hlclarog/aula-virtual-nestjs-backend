@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseService } from '../../base/base.service';
 import {
+  CopyCourseDto,
   COURSES_PROVIDER,
   CreateCourseDto,
   UpdateCourseDto,
@@ -16,6 +17,13 @@ import * as shortid from 'shortid';
 import { generate } from '../../utils/random';
 import { timeConvert } from './../../utils/helper';
 import { LessonsService } from '../lessons/lessons.service';
+import { COURSE_UNITS_PROVIDER } from '../lessons/lessons.dto';
+import { CourseCompetences } from '../course_competences/course_competences.entity';
+import { COURSE_COMPETENCES_PROVIDER } from '../course_competences/course_competences.dto';
+import { CourseInterestAreas } from '../course_interest_areas/course_interest_areas.entity';
+import { COURSE_INTEREST_AREAS_PROVIDER } from '../course_interest_areas/course_interest_areas.dto';
+import { COURSE_COMMISSION_ORGANIZATIONS_PROVIDER } from '../course_comission_organizations/course_commission_organizations.dto';
+import { CourseCommissionOrganizations } from '../course_comission_organizations/course_commission_organizations.entity';
 
 @Injectable()
 export class CoursesService extends BaseService<
@@ -24,6 +32,13 @@ export class CoursesService extends BaseService<
   UpdateCourseDto
 > {
   @Inject(COURSES_PROVIDER) repository: BaseRepo<Courses>;
+  @Inject(COURSE_UNITS_PROVIDER) repositoryCourseUnits: BaseRepo<CourseUnits>;
+  @Inject(COURSE_COMPETENCES_PROVIDER)
+  repositoryCourseCompetences: BaseRepo<CourseCompetences>;
+  @Inject(COURSE_INTEREST_AREAS_PROVIDER)
+  repositoryCourseInterestAreas: BaseRepo<CourseInterestAreas>;
+  @Inject(COURSE_COMMISSION_ORGANIZATIONS_PROVIDER)
+  repositoryCourseComissionOrganizations: BaseRepo<CourseInterestAreas>;
 
   constructor(
     private courseInterestAreasService: CourseInterestAreasService,
@@ -445,5 +460,91 @@ export class CoursesService extends BaseService<
   generateCode() {
     const code = generate(6);
     return code;
+  }
+
+  async copyCourse(data: CopyCourseDto) {
+    const course = await this.repository.findOne(data.course_id, {
+      relations: [
+        'course_units',
+        'course_units.course_lessons',
+        'course_interest_areas',
+        'course_competences',
+      ],
+    });
+    const course_units: CourseUnits[] = Object.assign([], course.course_units);
+    const dataCourseNew = Object.assign({}, course);
+
+    delete dataCourseNew.id;
+    delete dataCourseNew.course_units;
+    delete dataCourseNew.course_interest_areas;
+    delete dataCourseNew.course_competences;
+    dataCourseNew.user_id = data.user_id;
+    dataCourseNew.code = this.generateCode();
+    const courseNew = await this.repository.save(dataCourseNew);
+
+    if (course.course_units) {
+      for (let i = 0; i < course_units.length; i++) {
+        const element = course_units[i];
+        const dataUnitNew = Object.assign({}, element);
+        if (element.course_lessons) {
+          const lessonsUnit = element.course_lessons.map((c) => c.lesson_id);
+          delete dataUnitNew.id;
+          delete dataUnitNew.course_lessons;
+          dataUnitNew.course_id = courseNew.id;
+          const unitNew = await this.repositoryCourseUnits.save(dataUnitNew);
+          if (lessonsUnit.length > 0) {
+            await this.lessonsService.copyLessons({
+              course_id: courseNew.id,
+              course_unit_id: unitNew.id,
+              lessons_id: lessonsUnit,
+            });
+          }
+        }
+      }
+    }
+
+    if (course.course_competences) {
+      const courseCompetences: CourseCompetences[] = Object.assign(
+        [],
+        course.course_competences.map((cc) => {
+          return {
+            course_id: courseNew.id,
+            competence_id: cc.competence_id,
+          };
+        }),
+      );
+      await this.repositoryCourseCompetences.save(courseCompetences);
+    }
+
+    if (course.course_interest_areas) {
+      const courseInterestAreas: CourseInterestAreas[] = Object.assign(
+        [],
+        course.course_interest_areas.map((cia) => {
+          return {
+            course_id: courseNew.id,
+            interest_area_id: cia.interest_area_id,
+          };
+        }),
+      );
+      await this.repositoryCourseInterestAreas.save(courseInterestAreas);
+    }
+
+    if (course.course_commission_organizations) {
+      const courseCommissionOrganizations: CourseCommissionOrganizations[] = Object.assign(
+        [],
+        course.course_commission_organizations.map((cco) => {
+          return {
+            course_id: courseNew.id,
+            organization_id: cco.organization_id,
+            percentage: cco.percentage,
+          };
+        }),
+      );
+      await this.repositoryCourseComissionOrganizations.save(
+        courseCommissionOrganizations,
+      );
+    }
+
+    return courseNew;
   }
 }
