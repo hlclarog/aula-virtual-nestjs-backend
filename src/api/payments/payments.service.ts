@@ -31,6 +31,7 @@ import {
   InfoUserProvider,
 } from '../../utils/providers/info-user.module';
 import { CryptoService } from '../../utils/services/crypto.service';
+import { generate } from '../../utils/random';
 
 @Injectable()
 export class PaymentsService extends BaseService<
@@ -133,7 +134,7 @@ export class PaymentsService extends BaseService<
         Number(programFeeSchedules.inscription_val),
       currency_type_id: input.currency_type_id,
       organization_id: input.organization_id ?? null,
-      transaction_reference: input.transaction_reference ?? null,
+      transaction_reference: 'REFERENT-PROGRAM-' + this.generateCode(),
       transaction_code: input.transaction_code ?? null,
       transaction_date: input.transaction_date ?? null, // Genero el Recibo para pagar => transaction_date
       paid_date: input.paid_date ?? null, // Pague Al día siguiente en Baloto => paid_date
@@ -148,7 +149,7 @@ export class PaymentsService extends BaseService<
       merchantId: '508029',
       accountId: '512321',
       description: paymentsSave.description,
-      referenceCode: 'REF-PROGRAM' + paymentsSave.id,
+      referenceCode: paymentsSave.transaction_reference,
       amount: paymentsSave.quantity,
       tax: 0,
       taxReturnBase: 0,
@@ -158,8 +159,7 @@ export class PaymentsService extends BaseService<
           '~' +
           '508029' +
           '~' +
-          'REF-PROGRAM' +
-          paymentsSave.id +
+          paymentsSave.transaction_reference +
           '~' +
           Number(paymentsSave.quantity) +
           '~' +
@@ -167,6 +167,11 @@ export class PaymentsService extends BaseService<
       ),
       test: 1,
       buyerEmail: this.infoUser.email,
+      apiPayu: 'https://sandbox.checkout.payulatam.com/ppp-web-gateway-payu/',
+      responseUrl:
+        'http://localhost:3000/payment/web_checkout/payu/cua/response',
+      confirmationUrl:
+        'http://localhost:3000/payment/web_checkout/payu/cua/confirmation',
     };
   }
 
@@ -176,5 +181,9 @@ export class PaymentsService extends BaseService<
       input.currency_type_id,
       input.transaction_date,
     );
+  }
+
+  generateCode() {
+    return generate(5);
   }
 }

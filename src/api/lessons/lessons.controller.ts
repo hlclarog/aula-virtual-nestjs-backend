@@ -4,6 +4,7 @@ import { Lessons } from './lessons.entity';
 import {
   CopyLessonsDto,
   CreateLessonsDto,
+  GetProgressCourseStudent,
   LESSON_PERMISSIONS,
   UpdateLessonsDto,
 } from './lessons.dto';
@@ -83,6 +84,15 @@ export class LessonsController extends BaseController<
     const result = await this.lessonsService.findProgessByCourse(
       [id],
       this.infoUser.id,
+    );
+    return { data: result };
+  }
+
+  @Post('progress/course')
+  async findProgessByCourseManual(@Body() info: GetProgressCourseStudent) {
+    const result = await this.lessonsService.findProgessByCourse(
+      [info.course_id],
+      info.student_id,
     );
     return { data: result };
   }

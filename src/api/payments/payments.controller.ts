@@ -1,13 +1,4 @@
-import {
-  Get,
-  Post,
-  Body,
-  Put,
-  Param,
-  Delete,
-  Inject,
-  HttpService,
-} from '@nestjs/common';
+import { Get, Post, Body, Put, Param, Delete, Inject } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { BaseController } from '../../base/base.controller';
 import { Payments } from './payments.entity';
@@ -29,10 +20,7 @@ export class PaymentsController extends BaseController<
   UpdatePaymentsDto
 > {
   @Inject(PROGRAMS_PROVIDER) programs: BaseRepo<Programs>;
-  constructor(
-    private readonly paymentsService: PaymentsService,
-    private readonly httpService: HttpService,
-  ) {
+  constructor(private readonly paymentsService: PaymentsService) {
     super(paymentsService);
   }
   @Post()
@@ -89,15 +77,5 @@ export class PaymentsController extends BaseController<
       input,
     );
     return { data: response };
-  }
-
-  @Get('checkout/payu')
-  async payu() {
-    return { data: 'checkout/payu' };
-  }
-
-  @Post('checkout/payu/confirmation')
-  async payuConfirmation(@Body() input) {
-    return { data: input };
   }
 }

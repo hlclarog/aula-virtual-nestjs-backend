@@ -51,4 +51,12 @@ export class LessonActivitiesController extends BaseController<
     const result = await this.lesson_activitiesService.findAllByLesson(id);
     return { data: result };
   }
+
+  @Get('statistics_intents/:course_id')
+  async getStatisticsIntents(@Param('course_id') course_id: number) {
+    const result = await this.lesson_activitiesService.findStatisticsIntents(
+      course_id,
+    );
+    return { data: result };
+  }
 }

@@ -96,3 +96,15 @@ export class EnrollmentCourseUsersDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly user_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
 }
+
+export class GetProgressStudentsDto {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly begin_date?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly end_date?: string;
+}

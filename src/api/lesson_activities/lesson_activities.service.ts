@@ -277,4 +277,26 @@ export class LessonActivitiesService extends BaseService<
 
     return resultLessonActivities;
   }
+
+  async findStatisticsIntents(course_id: number) {
+    return await this.repository
+      .createQueryBuilder('lesson_activity')
+      .select([
+        'lesson_activity.id',
+        'lesson_activity.activity_type_id',
+        'activity_type.id',
+        'activity_type.description',
+        'lesson.id',
+        'lesson.name',
+        'lesson.description',
+      ])
+      .innerJoin('lesson_activity.lesson', 'lesson')
+      .innerJoin('lesson_activity.activity_type', 'activity_type')
+      .innerJoin('lesson.course_lessons', 'course_lesson')
+      .innerJoin('course_lesson.course', 'course')
+      .where(`course_lesson.course_id = :course_id`, { course_id })
+      .orderBy('lesson.name', 'ASC')
+      .addOrderBy('activity_type.description', 'ASC')
+      .getMany();
+  }
 }

@@ -106,6 +106,71 @@ export class LessonCommentsService extends BaseService<
     return data;
   }
 
+  async getByCourse(course_id: number, teacher_id: number): Promise<any> {
+    const data = await this.repository
+      .createQueryBuilder('lesson_comments')
+      .select([
+        'lesson_comments.id',
+        'lesson_comments.course_lesson_id',
+        'lesson_comments.user_id',
+        'lesson_comments.comment_answer_id',
+        'lesson_comments.comment',
+        'lesson_comments.content_type',
+        'lesson_comments.content',
+        'lesson_comments.date',
+        'user.id',
+        'user.name',
+        'user.picture',
+        'reactions.id',
+        'reactions.user_id',
+        'reactions.reaction_type',
+        'answer.id',
+        'answer.course_lesson_id',
+        'answer.user_id',
+        'answer.comment',
+        'answer.content_type',
+        'answer.content',
+        'answer.date',
+        'answer_user.id',
+        'answer_user.name',
+        'answer_user.picture',
+        'course_lesson.id',
+        'course_lesson.lesson_id',
+        'lesson.id',
+        'lesson.name',
+        'lesson.description',
+      ])
+      .leftJoin('lesson_comments.course_lesson', 'course_lesson')
+      .leftJoin('lesson_comments.lesson_comment_reactions', 'reactions')
+      .leftJoin('lesson_comments.comment_answer', 'answer')
+      .leftJoin('answer.user', 'answer_user')
+      .leftJoin('lesson_comments.user', 'user')
+      .leftJoin('course_lesson.lesson', 'lesson')
+      .where('course_lesson.course_id = :course_id', { course_id })
+      .orderBy('lesson_comments.id', 'ASC')
+      .getMany();
+    for (let i = 0; i < data.length; i++) {
+      const item: any = data[i];
+      if (item.content_type == LESSON_CONTENT_TYPES.IMAGE && item.content) {
+        const content = item.content;
+        item.content = await this.awsService.getFile(content);
+      }
+      if (item.user.picture) {
+        item.user.picture = await this.awsService.getFile(item.user.picture);
+      }
+      item.me_like = false;
+      if (item.lesson_comment_reactions) {
+        for (let j = 0; j < item.lesson_comment_reactions.length; j++) {
+          const element = item.lesson_comment_reactions[j];
+          if (element.user_id == teacher_id) {
+            item.me_like = true;
+          }
+        }
+      }
+    }
+    return data;
+  }
+
   async getByCourseLessonForStudent(
     course_lesson_id: number,
     student_id: number,

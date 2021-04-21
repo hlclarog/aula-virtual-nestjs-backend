@@ -139,3 +139,8 @@ export class FindLessonForStudentDto {
   readonly course_id?: number;
   user_id: number;
 }
+
+export class GetProgressCourseStudent {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly student_id: number;
+}
