@@ -98,6 +98,18 @@ export class UpdateLessonsDto extends UpdateBaseDto {
   @IsOptional()
   readonly suggested_weeks?: number;
   @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly max_due_date?: string;
+  @ApiProperty({ required: false })
+  @IsBoolean()
+  @IsOptional()
+  readonly delivery_late?: boolean;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly date_type_id?: number;
+  @ApiProperty({ required: false })
   @IsBoolean()
   @IsOptional()
   readonly visible?: boolean;

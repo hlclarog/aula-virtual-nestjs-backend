@@ -68,6 +68,22 @@ export class createLessonsTable1611376024663 implements MigrationInterface {
             type: 'int',
           },
           {
+            name: 'max_due_date',
+            type: 'timestamp',
+            isNullable: true,
+
+          },
+          {
+            name: 'delivery_late',
+            type: 'boolean',
+            isNullable: true,
+          },
+          {
+            name: 'date_type_id',
+            type: 'int',
+            isNullable: true,
+          },
+          {
             name: 'visible',
             type: 'boolean',
             default: true,

@@ -3,14 +3,14 @@ import {
   QueryRunner,
   Table,
   TableForeignKey,
+  TableUnique,
 } from 'typeorm';
 
-export class createProgramUsersCourseTable1618470611707
-  implements MigrationInterface {
+export class courseTeachersTable1618959463488 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'program_users_course',
+        name: 'course_teachers',
         columns: [
           {
             name: 'id',
@@ -19,22 +19,12 @@ export class createProgramUsersCourseTable1618470611707
             isGenerated: true,
           },
           {
-            name: 'program_user_id',
+            name: 'course_id',
             type: 'int',
           },
           {
-            name: 'course_user_id',
+            name: 'user_id',
             type: 'int',
-          },
-          {
-            name: 'credits',
-            type: 'int',
-            isNullable: true,
-          },
-          {
-            name: 'homologue',
-            type: 'bool',
-            default: false,
           },
           {
             name: 'active',
@@ -59,23 +49,28 @@ export class createProgramUsersCourseTable1618470611707
         ],
       }),
     );
-    await queryRunner.createForeignKeys(' ', [
+    await queryRunner.createForeignKeys('course_teachers', [
       new TableForeignKey({
-        columnNames: ['program_user_id'],
+        columnNames: ['course_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'program_users',
+        referencedTableName: 'courses',
       }),
       new TableForeignKey({
-        columnNames: ['course_user_id'],
+        columnNames: ['user_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'course_users',
+        referencedTableName: 'users',
       }),
     ]);
-
-
+    await queryRunner.createUniqueConstraint(
+      'course_teachers',
+      new TableUnique({
+        name: 'UNIQUE_course_teacher_course_id_user_id',
+        columnNames: ['course_id', 'user_id'],
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('program_users_course');
+    await queryRunner.dropTable('course_teachers');
   }
 }
