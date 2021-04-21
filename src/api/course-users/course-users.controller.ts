@@ -3,7 +3,11 @@ import { BaseController } from '../../base/base.controller';
 import { CourseUsers } from './course-users.entity';
 import { CourseUsersService } from './course-users.service';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
-import { CreateCourseUsersDto, UpdateCourseUsersDto } from './course-users.dto';
+import {
+  CreateCourseUsersDto,
+  GetProgressStudentsDto,
+  UpdateCourseUsersDto,
+} from './course-users.dto';
 import {
   INFO_USER_PROVIDER,
   InfoUserProvider,
@@ -74,6 +78,14 @@ export class CourseUsersController extends BaseController<
   @Get('course/:id')
   async getByCourse(@Param('id') id: number) {
     const result = await this.courseUsersService.findByCourse(id);
+    return { data: result };
+  }
+
+  @Post('course_progress')
+  async getProgressAllStudentByCourse(@Body() data: GetProgressStudentsDto) {
+    const result = await this.courseUsersService.progressAllStudentByCourse(
+      data,
+    );
     return { data: result };
   }
 }

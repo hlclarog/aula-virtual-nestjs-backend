@@ -6,6 +6,7 @@ import {
   COURSE_USERS_PROVIDER,
   CreateCourseUsersDto,
   EnrollmentCourseUsersDto,
+  GetProgressStudentsDto,
   UpdateCourseUsersDto,
 } from './course-users.dto';
 import {
@@ -28,7 +29,6 @@ import { ENROLLMENT_STATUS_ENUM } from '../enrollment-status/enrollment-status.d
 import { PROGRAM_USER_COURSE_PROVIDER } from '../program_user_course/program_user_course.dto';
 import { ProgramUserCourse } from '../program_user_course/program_user_course.entity';
 import { PROGRAM_COURSES_PROVIDER } from '../program_courses/program_courses.dto';
-import { ProgramUsers } from '../program_users/program_users.entity';
 import { ProgramUserCourseService } from '../program_user_course/program_user_course.service';
 
 @Injectable()
@@ -280,7 +280,57 @@ export class CourseUsersService extends BaseService<
         return await this.programUserCourse.save(programUserCourseData);
       }
     } else {
-      throw new ForbiddenException({ message: 'You have no credits available' });
+      throw new ForbiddenException({
+        message: 'You have no credits available',
+      });
     }
+  }
+
+  async progressAllStudentByCourse(data: GetProgressStudentsDto) {
+    const result = await this.repository
+      .createQueryBuilder('course_user')
+      .select([
+        'course_user.course_id',
+        'course_user.user_id',
+        'course_user.begin_date',
+        'course_user.end_date',
+        'course_user.score',
+        'course_user.active',
+        'user.id',
+        'user.name',
+        'user.lastname',
+        'user.last_login',
+      ])
+      .leftJoin('course_user.user', 'user')
+      .where(
+        ` course_user.course_id = :id and 
+          course_user.begin_date BETWEEN COALESCE(:begin, course_user.begin_date) AND COALESCE(:end, course_user.begin_date)
+        `,
+        { id: data.course_id, begin: data.begin_date, end: data.end_date },
+      )
+      .getMany();
+    for (let i = 0; i < result.length; i++) {
+      const element = result[i];
+      const dataprogress = await this.lessonsService.findProgessByCourse(
+        [data.course_id],
+        element.user_id,
+      );
+      const lessons_progress = {};
+      let progress = 0;
+      if (dataprogress.length > 0) {
+        progress = dataprogress[0]['progress'];
+        for (let j = 0; j < dataprogress[0].course_units.length; j++) {
+          const unit = dataprogress[0].course_units[j];
+          for (let k = 0; k < unit.course_lessons.length; k++) {
+            const course_lesson = unit.course_lessons[k];
+            lessons_progress[course_lesson.lesson.description] =
+              course_lesson['progress_lesson'];
+          }
+        }
+      }
+      element['progress'] = progress;
+      element['lessons_progress'] = lessons_progress;
+    }
+    return result;
   }
 }

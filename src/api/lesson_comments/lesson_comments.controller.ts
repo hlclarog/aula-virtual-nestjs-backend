@@ -49,6 +49,17 @@ export class LessonCommentsController extends BaseController<
     };
   }
 
+  @Get('course/:id')
+  async getByCourse(@Param('id') id: number) {
+    const result = await this.lesson_commentsService.getByCourse(
+      id,
+      this.infoUser.id,
+    );
+    return {
+      data: result,
+    };
+  }
+
   @Get('lesson_student/:id')
   async getByCourseLessonForStudent(@Param('id') id: number) {
     const result = await this.lesson_commentsService.getByCourseLessonForStudent(
