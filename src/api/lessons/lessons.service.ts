@@ -114,6 +114,9 @@ export class LessonsService extends BaseService<
         'lesson.duration',
         'lesson.suggested_weeks',
         'lesson.visible',
+        'lesson.max_due_date',
+        'lesson.delivery_late',
+        'lesson.date_type_id',
       ])
       .innerJoin('lesson.course_lessons', 'course_lesson')
       .where('course_lesson.id = :course_lesson_id', { course_lesson_id })
@@ -189,6 +192,9 @@ export class LessonsService extends BaseService<
           'lesson.duration',
           'lesson.suggested_weeks',
           'lesson.visible',
+          'lesson.max_due_date',
+          'lesson.delivery_late',
+          'lesson.date_type_id',
         ])
         .innerJoin('lesson.course_lessons', 'course_lesson')
         .where('lesson.id=:id', { id: id })
@@ -237,6 +243,9 @@ export class LessonsService extends BaseService<
           'lesson.description',
           'lesson.min_progress',
           'lesson.duration',
+          'lesson.max_due_date',
+          'lesson.delivery_late',
+          'lesson.date_type_id',
           'lesson.lesson_type_id',
           'lesson_type.id',
           'lesson_type.description',
@@ -247,6 +256,7 @@ export class LessonsService extends BaseService<
           'activity_try.id',
           'activity_try.passed',
           'activity_try.date',
+
         ])
         .leftJoin('course.course_units', 'course_unit')
         .leftJoin('course_unit.course_lessons', 'course_lesson')
@@ -490,6 +500,9 @@ export class LessonsService extends BaseService<
         'lesson.duration',
         'lesson.suggested_weeks',
         'lesson.visible',
+        'lesson.max_due_date',
+        'lesson.delivery_late',
+        'lesson.date_type_id',
         'lesson_detail.id',
         'lesson_detail.content_type_id',
         'lesson_detail.content',
