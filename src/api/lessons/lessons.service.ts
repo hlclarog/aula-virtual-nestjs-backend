@@ -150,7 +150,7 @@ export class LessonsService extends BaseService<
     return lesson;
   }
 
-  async update(id: number, updateDto: UpdateLessonsDto): Promise<UpdateResult> {
+  async update(id: number, updateDto: UpdateLessonsDto): Promise<any> {
     const data: any = Object.assign({}, updateDto);
     delete data.course_id;
     delete data.course_unit_id;
@@ -168,8 +168,33 @@ export class LessonsService extends BaseService<
       updateDto.course_lesson_id.toString(),
       course_lesson,
     );
-
-    return await this.repository.update(id, data);
+    const result = await this.repository.update(id, data);
+    if (result?.affected > 0) {
+      return this.repository
+        .createQueryBuilder('lesson')
+        .select([
+          'course_lesson.id',
+          'course_lesson.course_id',
+          'course_lesson.lesson_id',
+          'lesson.id',
+          'lesson.active',
+          'lesson.lesson_type_id',
+          'lesson.lesson_permission_type_id',
+          'lesson.user_id',
+          'lesson.name',
+          'lesson.description',
+          'lesson.video_url',
+          'lesson.content',
+          'lesson.min_progress',
+          'lesson.duration',
+          'lesson.suggested_weeks',
+          'lesson.visible',
+        ])
+        .innerJoin('lesson.course_lessons', 'course_lesson')
+        .where('lesson.id=:id', { id: id })
+        .getOne();
+    }
+    return result;
   }
 
   async setVideo(file) {

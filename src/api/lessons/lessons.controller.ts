@@ -64,8 +64,9 @@ export class LessonsController extends BaseController<
   }
 
   @Put(':id')
-  async edit(@Param('id') id: string, @Body() updateDto: UpdateLessonsDto) {
-    return await this.update(id, updateDto);
+  async edit(@Param('id') id: number, @Body() updateDto: UpdateLessonsDto) {
+    const result = await this.lessonsService.update(id, updateDto);
+    return { data: result };
   }
 
   @Delete(':id')
