@@ -30,6 +30,7 @@ import { PROGRAM_USER_COURSE_PROVIDER } from '../program_user_course/program_use
 import { ProgramUserCourse } from '../program_user_course/program_user_course.entity';
 import { PROGRAM_COURSES_PROVIDER } from '../program_courses/program_courses.dto';
 import { ProgramUserCourseService } from '../program_user_course/program_user_course.service';
+import { TypesLesson } from '../lesson_types/lesson_types.dto';
 
 @Injectable()
 export class CourseUsersService extends BaseService<
@@ -323,8 +324,13 @@ export class CourseUsersService extends BaseService<
           const unit = dataprogress[0].course_units[j];
           for (let k = 0; k < unit.course_lessons.length; k++) {
             const course_lesson = unit.course_lessons[k];
-            lessons_progress[course_lesson.lesson.description] =
-              course_lesson['progress_lesson'];
+            if (
+              course_lesson.lesson.lesson_type_id == TypesLesson.QUIZ ||
+              course_lesson.lesson.lesson_type_id == TypesLesson.DELIVERABLE
+            ) {
+              lessons_progress[course_lesson.lesson.description] =
+                course_lesson['progress_lesson'];
+            }
           }
         }
       }
