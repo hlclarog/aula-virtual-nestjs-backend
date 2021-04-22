@@ -45,6 +45,19 @@ export class CreateLessonsDto extends CreateBaseDto {
   @IsBoolean()
   @IsOptional()
   readonly visible?: boolean;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly max_due_date?: string;
+  @ApiProperty({ required: false })
+  @IsBoolean()
+  @IsOptional()
+  readonly delivery_late?: boolean;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly date_type_id?: number;
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
