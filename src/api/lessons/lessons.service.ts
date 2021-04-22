@@ -45,7 +45,7 @@ import { LESSON_ACTIVITIES_PROVIDER } from '../lesson_activities/lesson_activiti
 import { CourseLessonsService } from '../course_lessons/course_lessons.service';
 import { TypesLessonPermissions } from '../lesson_permission_types/lesson_permission_types.dto';
 import { UsersOrganizationsService } from '../users_organizations/users_organizations.service';
-import { COURSE_LESSONS_PROVIDER } from '../course_lessons/course_lessons.dto';
+import { COURSE_LESSONS_PROVIDER, UpdateCourseLessonsDto } from '../course_lessons/course_lessons.dto';
 import { CourseLessons } from '../course_lessons/course_lessons.entity';
 
 @Injectable()
@@ -152,9 +152,23 @@ export class LessonsService extends BaseService<
 
   async update(id: number, updateDto: UpdateLessonsDto): Promise<UpdateResult> {
     const data: any = Object.assign({}, updateDto);
+    delete data.course_id;
+    delete data.course_unit_id;
+    delete data.course_lesson_id;
+    delete data.order;
     if (updateDto.video_url) {
       data.video_url = await this.setVideo(updateDto.video_url);
     }
+    const course_lesson: UpdateCourseLessonsDto = {
+      course_id: updateDto.course_id,
+      course_unit_id: updateDto.course_unit_id,
+      lesson_id: id,
+    };
+    await this.courseLessonsService.updateRow(
+      updateDto.course_lesson_id.toString(),
+      course_lesson,
+    );
+
     return await this.repository.update(id, data);
   }
 

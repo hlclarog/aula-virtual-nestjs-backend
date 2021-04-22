@@ -50,6 +50,9 @@ export class Lessons extends Base {
   @Column({ type: 'int' }) duration: number;
   @Column({ type: 'int' }) suggested_weeks: number;
   @Column({ type: 'boolean', default: true, nullable: true }) visible: boolean;
+  @Column({ type: 'boolean', default: false, nullable: true }) delivery_late: boolean;
+  @Column({ type: 'int', nullable: true }) date_type_id: number;
+  @Column({ type: 'varchar', nullable: true }) max_due_date: string;
 
   @OneToMany(() => CourseLessons, (course_lesson) => course_lesson.lesson)
   course_lessons: CourseLessons[];

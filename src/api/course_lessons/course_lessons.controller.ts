@@ -38,7 +38,7 @@ export class CourseLessonsController extends BaseController<
     @Param('id') id: string,
     @Body() updateDto: UpdateCourseLessonsDto,
   ) {
-    return await this.update(id, updateDto);
+    return await this.courseLessonsService.updateRow(id, updateDto);
   }
 
   @Delete(':id')

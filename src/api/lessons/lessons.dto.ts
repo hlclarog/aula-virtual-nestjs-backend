@@ -113,6 +113,19 @@ export class UpdateLessonsDto extends UpdateBaseDto {
   @IsBoolean()
   @IsOptional()
   readonly visible?: boolean;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  course_id?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  course_unit_id?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  course_lesson_id?: number;
+
 }
 
 export class CopyLessonsDto {

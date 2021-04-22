@@ -111,4 +111,11 @@ export class CourseLessonsService extends BaseService<
       })
       .execute();
   }
+
+  async updateRow(
+    id: string,
+    courseLessonsDto: UpdateCourseLessonsDto,
+  ): Promise<any> {
+    return await this.repository.update(id, courseLessonsDto);
+  }
 }
