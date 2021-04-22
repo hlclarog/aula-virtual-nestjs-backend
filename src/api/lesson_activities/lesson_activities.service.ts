@@ -279,7 +279,7 @@ export class LessonActivitiesService extends BaseService<
   }
 
   async findStatisticsIntents(course_id: number) {
-    return await this.repository
+    const result = await this.repository
       .createQueryBuilder('lesson_activity')
       .select([
         'lesson_activity.id',
@@ -290,13 +290,45 @@ export class LessonActivitiesService extends BaseService<
         'lesson.name',
         'lesson.description',
       ])
+      .addSelect('COUNT(activity_try.id)', 'intents_success')
+      .addSelect('COUNT(activity_try_fail.id)', 'intents_failed')
       .innerJoin('lesson_activity.lesson', 'lesson')
       .innerJoin('lesson_activity.activity_type', 'activity_type')
       .innerJoin('lesson.course_lessons', 'course_lesson')
       .innerJoin('course_lesson.course', 'course')
+      .leftJoin('lesson_activity.activity_try_users', 'activity_try_user')
+      .leftJoin(
+        'activity_try_user.activity_tries',
+        'activity_try',
+        'activity_try.passed = true and activity_try.activity_try_user_id = activity_try_user.id',
+      )
+      .leftJoin(
+        'activity_try_user.activity_tries',
+        'activity_try_fail',
+        'activity_try_fail.passed = false and activity_try_fail.activity_try_user_id = activity_try_user.id',
+      )
       .where(`course_lesson.course_id = :course_id`, { course_id })
       .orderBy('lesson.name', 'ASC')
       .addOrderBy('activity_type.description', 'ASC')
-      .getMany();
+      .groupBy('lesson_activity.id')
+      .addGroupBy('lesson_activity.activity_type_id')
+      .addGroupBy('activity_type.id')
+      .addGroupBy('activity_type.description')
+      .addGroupBy('lesson.id')
+      .addGroupBy('lesson.name')
+      .addGroupBy('lesson.description')
+      .getRawMany();
+
+    for (let i = 0; i < result.length; i++) {
+      const element = result[i];
+      element.intents_success = Number(element.intents_success);
+      element.intents_failed = Number(element.intents_failed);
+      element.intents_total = element.intents_success + element.intents_failed;
+      element.percentage_failed =
+        (element.intents_total > 0
+          ? Math.round(element.intents_failed / element.intents_total)
+          : 1) * 100;
+    }
+    return result;
   }
 }
