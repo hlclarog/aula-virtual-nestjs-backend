@@ -128,6 +128,7 @@ export class LessonsService extends BaseService<
       user_id,
       course_lesson_id,
     );
+    // lesson.lesson_id = await lesson.course_lessons.find((item) => (item.id = course_lesson_id))?.lesson_id;
     lesson.intent = intent;
     return lesson;
   }
