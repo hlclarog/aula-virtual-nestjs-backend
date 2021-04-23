@@ -16,6 +16,7 @@ import { UsersRolesModule } from '../acl/users_roles/users_roles.module';
 import { CourseUnitsModule } from '../course_units/course_units.module';
 import { CourseCompetencesModule } from '../course_competences/course_competences.module';
 import { CourseCommissionOrganizationsModule } from '../course_comission_organizations/course_commission_organizations.module';
+import { CourseTeachersModule } from '../course_teachers/course_teachers.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { CourseCommissionOrganizationsModule } from '../course_comission_organiz
     CourseUnitsModule,
     CourseCompetencesModule,
     CourseCommissionOrganizationsModule,
+    CourseTeachersModule,
   ],
   controllers: [CoursesController],
   providers: [

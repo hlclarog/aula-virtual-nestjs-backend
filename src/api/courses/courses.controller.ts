@@ -4,7 +4,6 @@ import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { BaseController } from '../../base/base.controller';
 import {
   CopyCourseDto,
-  COURSES_PERMISSIONS,
   CreateCourseByTeacherDto,
   CreateCourseDto,
   SubscribeCourseStudentDto,
@@ -16,7 +15,6 @@ import {
   INFO_USER_PROVIDER,
   InfoUserProvider,
 } from '../../utils/providers/info-user.module';
-import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
 import { CourseUsersService } from '../course-users/course-users.service';
 import { InterestAreasService } from '../interest_areas/interest_areas.service';
 import { EnrollmentCourseUsersDto } from '../course-users/course-users.dto';
@@ -31,7 +29,6 @@ export class CoursesController extends BaseController<
     private readonly coursesService: CoursesService,
     private readonly courseUsersService: CourseUsersService,
     private readonly interestAreasService: InterestAreasService,
-    private authorizationsUserService: AuthorizationsUserService,
     @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
   ) {
     super(coursesService);
@@ -99,11 +96,11 @@ export class CoursesController extends BaseController<
     return { data: result };
   }
 
-  @Get('details/:id')
-  async findDetailsCourse(@Param('id') id: number) {
+  @Get('details/:course_id')
+  async findDetailsCourse(@Param('course_id') course_id: number) {
     const result = await this.coursesService.findAllCatalog(
       this.infoUser.id,
-      id,
+      course_id,
     );
     return {
       data: result,
@@ -152,11 +149,7 @@ export class CoursesController extends BaseController<
 
   @Put(':id')
   async edit(@Param('id') id: string, @Body() updateDto: UpdateCourseDto) {
-    const user = (await this.coursesService.findOne(Number(id))).user_id;
-    await this.authorizationsUserService.accesActionUserMatch(
-      [COURSES_PERMISSIONS.MANAGER],
-      user,
-    );
+    await this.coursesService.validOwner(id, 7);
     return await this.update(id, updateDto);
   }
 

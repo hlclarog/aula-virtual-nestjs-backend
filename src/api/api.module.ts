@@ -87,6 +87,7 @@ import { PaymentStatusModule } from './payment_status/payment_status.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ProgramPaymentModule } from './program_payment/program_payment.module';
 import { UsersOrganizationsModule } from './users_organizations/users_organizations.module';
+import { CourseTeachersModule } from './course_teachers/course_teachers.module';
 
 @Module({
   imports: [
@@ -178,6 +179,7 @@ import { UsersOrganizationsModule } from './users_organizations/users_organizati
     PaymentsModule,
     ProgramPaymentModule,
     UsersOrganizationsModule,
+    CourseTeachersModule,
   ],
   controllers: [],
   providers: [],
