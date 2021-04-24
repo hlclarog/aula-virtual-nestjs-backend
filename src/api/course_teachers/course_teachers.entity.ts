@@ -14,7 +14,9 @@ export class CourseTeachers extends Base {
   @Column({ type: 'integer' })
   course_id: number;
 
-  @ManyToOne(() => Users, (users) => users.course_teachers)
+  @ManyToOne(() => Users, (users) => users.course_teachers, {
+    eager: true,
+  })
   @JoinColumn({ name: 'user_id' })
   user: Users;
 
