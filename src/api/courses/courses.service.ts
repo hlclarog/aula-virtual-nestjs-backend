@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { BaseService } from '../../base/base.service';
 import {
   CopyCourseDto,
@@ -17,13 +17,18 @@ import * as shortid from 'shortid';
 import { generate } from '../../utils/random';
 import { timeConvert } from './../../utils/helper';
 import { LessonsService } from '../lessons/lessons.service';
-import { COURSE_UNITS_PROVIDER } from '../lessons/lessons.dto';
+import {
+  COURSE_UNITS_PROVIDER,
+  LESSON_PERMISSIONS,
+} from '../lessons/lessons.dto';
 import { CourseCompetences } from '../course_competences/course_competences.entity';
 import { COURSE_COMPETENCES_PROVIDER } from '../course_competences/course_competences.dto';
 import { CourseInterestAreas } from '../course_interest_areas/course_interest_areas.entity';
 import { COURSE_INTEREST_AREAS_PROVIDER } from '../course_interest_areas/course_interest_areas.dto';
 import { COURSE_COMMISSION_ORGANIZATIONS_PROVIDER } from '../course_comission_organizations/course_commission_organizations.dto';
 import { CourseCommissionOrganizations } from '../course_comission_organizations/course_commission_organizations.entity';
+import { CourseTeachersService } from '../course_teachers/course_teachers.service';
+import { AuthorizationsUserService } from './../../utils/services/authorizations-user.service';
 
 @Injectable()
 export class CoursesService extends BaseService<
@@ -42,8 +47,10 @@ export class CoursesService extends BaseService<
 
   constructor(
     private courseInterestAreasService: CourseInterestAreasService,
+    private courseTeachersService: CourseTeachersService,
     private lessonsService: LessonsService,
     private awsService: AwsService,
+    private authorizationsUserService: AuthorizationsUserService,
   ) {
     super();
   }
@@ -195,6 +202,7 @@ export class CoursesService extends BaseService<
         'user',
         'course_competences',
         'course_competences.competence',
+        'course_teachers',
       ],
     });
     if (course.picture) {
@@ -302,6 +310,7 @@ export class CoursesService extends BaseService<
   async create(createDto: CreateCourseDto) {
     const data: any = Object.assign({}, createDto);
     delete data.interest_areas;
+    delete data.teachers;
     if (createDto.picture) {
       data.picture = await this.setPicture(createDto.picture);
     }
@@ -315,12 +324,16 @@ export class CoursesService extends BaseService<
         createDto.interest_areas,
       );
     }
+    if (createDto.teachers) {
+      await this.courseTeachersService.set(dataNew.id, createDto.teachers);
+    }
     return dataNew;
   }
 
   async update(id: number, updateDto: UpdateCourseDto): Promise<UpdateResult> {
     const data: any = Object.assign({}, updateDto);
     delete data.interest_areas;
+    delete data.teachers;
     if (updateDto.picture) {
       data.picture = await this.setPicture(updateDto.picture);
     } else {
@@ -334,6 +347,9 @@ export class CoursesService extends BaseService<
     if (updateDto.interest_areas) {
       await this.courseInterestAreasService.set(id, updateDto.interest_areas);
     }
+    if (updateDto.teachers) {
+      await this.courseTeachersService.set(id, updateDto.teachers);
+    }
     return await this.repository.update(id, data);
   }
 
@@ -346,20 +362,35 @@ export class CoursesService extends BaseService<
     return result.Key;
   }
 
-  async findByTeacher(id: number): Promise<Courses[]> {
-    const courses = await this.repository.find({
-      where: { user_id: id },
-      relations: [
-        'user',
-        'organization',
-        'course_status',
-        'course_fee_schedules',
-        'course_users',
-        'program_courses',
-        'course_interest_areas',
-        'course_competences',
-      ],
-    });
+  async findByTeacher(user_id: number): Promise<Courses[]> {
+    const courses = await this.repository
+      .createQueryBuilder('course')
+      .select([
+        'course.id',
+        'course.code',
+        'course.name',
+        'course.description',
+        'course.picture',
+        'course.picture_banner',
+        'course.short_name',
+        'course.free',
+        'course.certifiable',
+        'course.user_id',
+        'course.organization_id',
+        'course.course_status_id',
+        'user.id',
+        'user.name',
+        'user.lastname',
+        'course_status.id',
+        'course_status.description',
+      ])
+      .leftJoin('course.user', 'user')
+      .leftJoin('course.course_status', 'course_status')
+      .leftJoin('course.course_teachers', 'course_teacher')
+      .where('course.user_id = :user_id or course_teacher.user_id = :user_id', {
+        user_id,
+      })
+      .getMany();
     for (let i = 0; i < courses.length; i++) {
       const course = courses[i];
       if (course.picture) {
@@ -546,5 +577,31 @@ export class CoursesService extends BaseService<
     }
 
     return courseNew;
+  }
+
+  async validOwner(course_id, user_id) {
+    const course = await this.findOne(Number(course_id));
+    let ownerCourse = false;
+    if (course.course_teachers) {
+      for (let i = 0; i < course.course_teachers.length; i++) {
+        const course_teacher = course.course_teachers[i];
+        if (course_teacher.user_id == user_id) {
+          ownerCourse = true;
+        }
+      }
+    }
+    if (course.user_id == user_id) {
+      ownerCourse = true;
+    }
+    const match = await this.authorizationsUserService.validAction(
+      [LESSON_PERMISSIONS.GET_ALL_PROGRESS],
+      user_id,
+    );
+    if (match) {
+      ownerCourse = true;
+    }
+    if (!ownerCourse) {
+      throw new ForbiddenException();
+    }
   }
 }

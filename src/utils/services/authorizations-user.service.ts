@@ -14,12 +14,12 @@ export class AuthorizationsUserService {
     requiredPermissions: string[],
     idUserPermitted: number,
   ) {
-    const match = this.accesAction(requiredPermissions, this.infoUser.id);
+    const match = await this.validAction(requiredPermissions, this.infoUser.id);
     if (!match && idUserPermitted != this.infoUser.id) {
       throw new ForbiddenException();
     }
   }
-  public async accesAction(
+  public async validAction(
     requiredPermissions: string[],
     idUserPermitted: number,
   ) {
@@ -46,6 +46,13 @@ export class AuthorizationsUserService {
       }
       i++;
     }
+    return match;
+  }
+  public async accesAction(
+    requiredPermissions: string[],
+    idUserPermitted: number,
+  ) {
+    const match = await this.validAction(requiredPermissions, idUserPermitted);
     if (!match) {
       throw new ForbiddenException();
     }

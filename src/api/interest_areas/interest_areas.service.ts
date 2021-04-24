@@ -11,16 +11,13 @@ import { AwsService } from '../../aws/aws.service';
 import { CoursesService } from '../courses/courses.service';
 import { timeConvert } from '../../utils/helper';
 import { LessonsService } from '../lessons/lessons.service';
-import { AST } from 'eslint';
-import Program = AST.Program;
-import { Programs } from '../programs/programs.entity';
 
 @Injectable()
 export class InterestAreasService extends BaseService<
   InterestAreas,
   CreateInterestAreasDto,
   UpdateInterestAreasDto
-  > {
+> {
   constructor(
     private awsService: AwsService,
     private coursesService: CoursesService,
@@ -176,7 +173,13 @@ export class InterestAreasService extends BaseService<
           .leftJoin('course.organization', 'organization')
           .leftJoin('course.course_status', 'course_status')
           .leftJoin('course.course_competences', 'course_competences')
-          .where('course.user_id = :user_id', { user_id })
+          .leftJoin('course.course_teachers', 'course_teacher')
+          .where(
+            'course.user_id = :user_id or course_teacher.user_id = :user_id',
+            {
+              user_id,
+            },
+          )
           .getMany();
         break;
     }

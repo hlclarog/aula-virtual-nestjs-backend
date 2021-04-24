@@ -50,6 +50,15 @@ export class CreateCourseDto extends CreateBaseDto {
   @IsArray()
   @IsOptional()
   interest_areas?: number[];
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
+  @IsArray()
+  @IsOptional()
+  teachers?: number[];
 }
 
 export class CreateCourseByTeacherDto extends CreateBaseDto {
@@ -104,6 +113,15 @@ export class CreateCourseByTeacherDto extends CreateBaseDto {
   @IsNumber()
   @IsOptional()
   readonly parent_id?: number;
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
+  @IsArray()
+  @IsOptional()
+  teachers?: number[];
 }
 
 export class UpdateCourseDto extends UpdateBaseDto {
@@ -164,6 +182,15 @@ export class UpdateCourseDto extends UpdateBaseDto {
   @IsArray()
   @IsOptional()
   interest_areas?: number[];
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
+  @IsArray()
+  @IsOptional()
+  teachers?: number[];
 }
 
 export class SubscribeCourseStudentDto {

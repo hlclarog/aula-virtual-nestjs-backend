@@ -20,6 +20,7 @@ import { CourseCommissionOrganizations } from '../course_comission_organizations
 import { CourseUnits } from '../course_units/course_units.entity';
 import { PointsUserLog } from '../points_user_log/points_user_log.entity';
 import { CourseLessons } from '../course_lessons/course_lessons.entity';
+import { CourseTeachers } from '../course_teachers/course_teachers.entity';
 
 @Entity({ name: COURSE_ENTITY })
 export class Courses extends Base {
@@ -99,4 +100,7 @@ export class Courses extends Base {
   // }
 
   @Column({ type: 'integer' }) parent_id: boolean;
+
+  @OneToMany(() => CourseTeachers, (courseUsers) => courseUsers.course)
+  course_teachers: CourseTeachers[];
 }
