@@ -149,7 +149,7 @@ export class CoursesController extends BaseController<
 
   @Put(':id')
   async edit(@Param('id') id: string, @Body() updateDto: UpdateCourseDto) {
-    await this.coursesService.validOwner(id, 7);
+    await this.coursesService.validOwner(id, this.infoUser.id);
     return await this.update(id, updateDto);
   }
 
