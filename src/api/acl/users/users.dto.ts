@@ -221,6 +221,6 @@ export class UpdateUsersDto extends UpdateBaseDto {
 }
 
 export class searchByRol {
-  @ApiProperty() @IsNumber() @IsNotEmpty() readonly idRol: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() @IsOptional() readonly idRol: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly text: string;
 }

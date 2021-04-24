@@ -68,6 +68,16 @@ export class UsersController extends BaseController<
     };
   }
 
+  @Post('search/teacher')
+  async searchTeacher(@Body() body: searchByRol) {
+    const result = await this.usersService.searchByRol(2, body.text);
+    return {
+      data: result,
+    };
+  }
+
+
+
   @Get('profile/info')
   async profile() {
     const config = await this.tenancyConfigService.findOne(this.tenancy.id);
