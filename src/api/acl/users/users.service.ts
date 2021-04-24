@@ -164,7 +164,7 @@ export class UsersService extends BaseService<
   }
 
   async searchByRol(idRol: number, text: string): Promise<any> {
-    return await this.repository
+    const result = await this.repository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.users_roles', 'users_roles')
       .leftJoinAndSelect('users_roles.rol', 'rol')
@@ -181,6 +181,10 @@ export class UsersService extends BaseService<
         },
       )
       .getMany();
+    await result.map((item) => {
+      item['fullname'] = item.name + ' ' + item.lastname;
+    });
+    return result;
   }
 
   async getPowerBar(user_id: number) {

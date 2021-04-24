@@ -76,8 +76,6 @@ export class UsersController extends BaseController<
     };
   }
 
-
-
   @Get('profile/info')
   async profile() {
     const config = await this.tenancyConfigService.findOne(this.tenancy.id);
