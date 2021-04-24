@@ -11,7 +11,6 @@ import { BaseRepo } from '../../base/base.repository';
 import { AwsService } from '../../aws/aws.service';
 import { typeFilesAwsNames } from '../../aws/aws.dto';
 import * as shortid from 'shortid';
-import { UpdateResult } from 'typeorm';
 import { LessonTryUsersService } from '../lesson_try_users/lesson_try_users.service';
 import { COURSES_PROVIDER } from '../courses/courses.dto';
 import { Courses } from '../courses/courses.entity';
@@ -45,7 +44,10 @@ import { LESSON_ACTIVITIES_PROVIDER } from '../lesson_activities/lesson_activiti
 import { CourseLessonsService } from '../course_lessons/course_lessons.service';
 import { TypesLessonPermissions } from '../lesson_permission_types/lesson_permission_types.dto';
 import { UsersOrganizationsService } from '../users_organizations/users_organizations.service';
-import { COURSE_LESSONS_PROVIDER, UpdateCourseLessonsDto } from '../course_lessons/course_lessons.dto';
+import {
+  COURSE_LESSONS_PROVIDER,
+  UpdateCourseLessonsDto,
+} from '../course_lessons/course_lessons.dto';
 import { CourseLessons } from '../course_lessons/course_lessons.entity';
 
 @Injectable()
@@ -257,7 +259,16 @@ export class LessonsService extends BaseService<
           'activity_try.id',
           'activity_try.passed',
           'activity_try.date',
-
+          'course_user.course_id',
+          'course_user.user_id',
+          'course_user.begin_date',
+          'course_user.end_date',
+          'course_user.score',
+          'course_user.active',
+          'user.id',
+          'user.name',
+          'user.lastname',
+          'user.last_login',
         ])
         .leftJoin('course.course_units', 'course_unit')
         .leftJoin('course_unit.course_lessons', 'course_lesson')
@@ -281,6 +292,13 @@ export class LessonsService extends BaseService<
           'activity_try',
           'activity_try.passed = true',
         )
+        .leftJoin(
+          'course.course_users',
+          'course_user',
+          'course_user.user_id = :user_id',
+          { user_id },
+        )
+        .leftJoin('course_user.user', 'user')
         .where(`course.id in (${courses_id.join()})`)
         .getMany();
       for (let q = 0; q < metadata.length; q++) {
