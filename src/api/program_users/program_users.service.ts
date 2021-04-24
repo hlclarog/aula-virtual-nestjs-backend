@@ -21,7 +21,7 @@ export class ProgramUsersService extends BaseService<
   ProgramUsers,
   CreateProgramUsersDto,
   UpdateProgramUsersDto
-  > {
+> {
   @Inject(PROGRAM_USERS_PROVIDER) repository: BaseRepo<ProgramUsers>;
   @Inject(PROGRAMS_PROVIDER) programs: BaseRepo<Programs>;
   private fieldSelected = [
@@ -41,7 +41,7 @@ export class ProgramUsersService extends BaseService<
     'user.name',
     'user.email',
     'user.active',
-  ]
+  ];
   constructor(
     private readonly courseUsersService: CourseUsersService,
     private readonly programUserCourseService: ProgramUserCourseService,

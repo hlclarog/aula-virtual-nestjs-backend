@@ -8,7 +8,10 @@ import {
   EnrollmentProgramUsersDto,
   UpdateProgramUsersDto,
 } from './program_users.dto';
-import { INFO_USER_PROVIDER, InfoUserProvider } from '../../utils/providers/info-user.module';
+import {
+  INFO_USER_PROVIDER,
+  InfoUserProvider,
+} from '../../utils/providers/info-user.module';
 
 @ControllerApi({ name: 'program_users' })
 export class ProgramUsersController extends BaseController<
