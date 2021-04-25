@@ -84,4 +84,23 @@ export class CourseFeeScheduleService extends BaseService<
       .where('fee.course_id = :id', { id })
       .getMany();
   }
+  async amountToPay(courseId: number, currencyId: number, date: string) {
+    return this.repository
+      .createQueryBuilder('course_fee_schedules')
+      .select([
+        'course_fee_schedules.id',
+        'course_fee_schedules.course_id',
+        'course_fee_schedules.course_val',
+        'course_fee_schedules.certificate_val',
+      ])
+      .where('course_fee_schedules.course_id=:courseId', { courseId: courseId })
+      .andWhere('course_fee_schedules.currency_id=:currencyId', {
+        currencyId: currencyId,
+      })
+      .andWhere(
+        ':date between course_fee_schedules.begin and course_fee_schedules.end',
+        { date: date },
+      )
+      .getOne();
+  }
 }

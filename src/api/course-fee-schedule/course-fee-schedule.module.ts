@@ -17,5 +17,6 @@ import { CourseFeeSchedules } from './course-fee-schedule.entity';
     },
     CourseFeeScheduleService,
   ],
+  exports: [CourseFeeScheduleService],
 })
 export class CourseFeeScheduleModule {}

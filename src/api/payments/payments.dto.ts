@@ -74,3 +74,12 @@ export class InternalCollectionStudentDto {
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly program_id: number;
   @ApiProperty() @IsNumber() @IsNotEmpty() credits: number;
 }
+
+export class InternalCollectionCourseStudent {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly course_id: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly currency_id: number;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  transaction_date?: string;
+}

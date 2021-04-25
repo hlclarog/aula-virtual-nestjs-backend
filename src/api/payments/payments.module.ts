@@ -12,6 +12,8 @@ import { AwsModule } from '../../aws/aws.module';
 import { ProgramUsersModule } from '../program_users/program_users.module';
 import { ProgramFeeSchedulesModule } from '../program_fee_schedules/program_fee_schedules.module';
 import { CryptoService } from '../../utils/services/crypto.service';
+import { CourseFeeScheduleService } from '../course-fee-schedule/course-fee-schedule.service';
+import { CourseFeeScheduleModule } from '../course-fee-schedule/course-fee-schedule.module';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { CryptoService } from '../../utils/services/crypto.service';
     ProgramUsersModule,
     ProgramFeeSchedulesModule,
     HttpModule,
+    CourseFeeScheduleModule,
   ],
   controllers: [PaymentsController],
   providers: [

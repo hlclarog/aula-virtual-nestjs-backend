@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
   AddExternalCollectionDto,
-  CreatePaymentsDto,
+  CreatePaymentsDto, InternalCollectionCourseStudent,
   InternalCollectionStudentDto,
   PAYMENTS_PROVIDER,
   UpdatePaymentsDto,
@@ -31,7 +31,8 @@ import {
   InfoUserProvider,
 } from '../../utils/providers/info-user.module';
 import { CryptoService } from '../../utils/services/crypto.service';
-import { generate } from '../../utils/random';
+import { generate, generateCourseCode } from '../../utils/random';
+import { CourseFeeScheduleService } from '../course-fee-schedule/course-fee-schedule.service';
 
 @Injectable()
 export class PaymentsService extends BaseService<
@@ -48,6 +49,7 @@ export class PaymentsService extends BaseService<
   constructor(
     private readonly awsService: AwsService,
     private readonly programFeeSchedulesService: ProgramFeeSchedulesService,
+    private readonly courseFeeSchedulesService: CourseFeeScheduleService,
     private readonly programUsersService: ProgramUsersService,
     private readonly cryptoService: CryptoService,
   ) {
@@ -121,6 +123,31 @@ export class PaymentsService extends BaseService<
     return result.Key;
   }
 
+  async paymentGenerationCourse(
+    userId: number,
+    input: InternalCollectionCourseStudent,
+    type: number,
+  ) {
+    const courseFeeSchedule = await this.courseFeeSchedulesService.amountToPay(
+      input.course_id,
+      input.currency_id,
+      input.transaction_date,
+    );
+    const paymentData: Partial<Payments> = {
+      payment_state_id: PAYMENT_STATUS_ENUM.PENDING,
+      collection_type_id: COLLECTION_TYPES_ENUM.INTERNAL,
+      quantity: Number(
+        type == 1
+          ? courseFeeSchedule.course_val
+          : courseFeeSchedule.certificate_val,
+      ),
+      currency_type_id: input.currency_id,
+      transaction_reference: generateCourseCode(type),
+    };
+    const paymentsSave = await this.addPayment(paymentData);
+    return paymentsSave;
+  }
+
   async internalCollectionStudent(input: InternalCollectionStudentDto) {
     input.user_id = this.infoUser.id;
     const programFeeSchedules = await this.getProgramFeeSchedules(input);
@@ -134,7 +161,7 @@ export class PaymentsService extends BaseService<
         Number(programFeeSchedules.inscription_val),
       currency_type_id: input.currency_type_id,
       organization_id: input.organization_id ?? null,
-      transaction_reference: 'REFERENT-PROGRAM-' + this.generateCode(),
+      transaction_reference: 'PROGRAM-' + this.generateCode(),
       transaction_code: input.transaction_code ?? null,
       transaction_date: input.transaction_date ?? null, // Genero el Recibo para pagar => transaction_date
       paid_date: input.paid_date ?? null, // Pague Al día siguiente en Baloto => paid_date
