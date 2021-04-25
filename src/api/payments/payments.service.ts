@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
   AddExternalCollectionDto,
-  CreatePaymentsDto, InternalCollectionCourseStudent,
+  CreatePaymentsDto,
+  InternalCollectionCourseStudent,
   InternalCollectionStudentDto,
   PAYMENTS_PROVIDER,
   UpdatePaymentsDto,
@@ -101,7 +102,6 @@ export class PaymentsService extends BaseService<
       );
     }
     return await this.repository.save(paymentData);
-
   }
 
   async addProgramPayment(
@@ -124,7 +124,7 @@ export class PaymentsService extends BaseService<
     const coursePaymentData: Partial<CoursePayments> = {
       course_id: input.course_id,
       user_id: input.user_id,
-      payment_id: paymentSave.id
+      payment_id: paymentSave.id,
     };
     return await this.coursePayment.save(coursePaymentData);
   }
@@ -160,8 +160,7 @@ export class PaymentsService extends BaseService<
     };
     const paymentsSave = await this.addPayment(paymentData);
     await this.addCourseToPayment(input, paymentsSave);
-
-    return paymentsSave;
+    return this.getCheckoutData(paymentsSave);
   }
 
   async internalCollectionStudent(input: InternalCollectionStudentDto) {
@@ -188,12 +187,16 @@ export class PaymentsService extends BaseService<
     };
     const paymentsSave = await this.addPayment(paymentData);
     await this.addProgramPayment(input, paymentsSave);
+    return this.getCheckoutData(paymentsSave);
+  }
+
+  async getCheckoutData(payment: Payments) {
     return {
       merchantId: '508029',
       accountId: '512321',
-      description: paymentsSave.description,
-      referenceCode: paymentsSave.transaction_reference,
-      amount: paymentsSave.quantity,
+      description: payment.description,
+      referenceCode: payment.transaction_reference,
+      amount: payment.quantity,
       tax: 0,
       taxReturnBase: 0,
       currency: 'COP',
@@ -202,9 +205,9 @@ export class PaymentsService extends BaseService<
           '~' +
           '508029' +
           '~' +
-          paymentsSave.transaction_reference +
+          payment.transaction_reference +
           '~' +
-          Number(paymentsSave.quantity) +
+          Number(payment.quantity) +
           '~' +
           'COP',
       ),
