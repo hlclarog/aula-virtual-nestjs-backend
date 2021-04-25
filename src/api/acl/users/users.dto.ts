@@ -71,6 +71,26 @@ export class CreateUsersDto extends CreateBaseDto {
   @IsArray()
   @IsOptional()
   users_organizations?: number[];
+
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
+  @IsArray()
+  @IsOptional()
+  users_competences?: number[];
+
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
+  @IsArray()
+  @IsOptional()
+  users_position_goals?: number[];
 }
 
 export class UpdateUsersDto extends UpdateBaseDto {
@@ -108,6 +128,26 @@ export class UpdateUsersDto extends UpdateBaseDto {
   @IsArray()
   @IsOptional()
   users_organizations?: number[];
+
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
+  @IsArray()
+  @IsOptional()
+  users_competences?: number[];
+
+  @ApiProperty({
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+    required: false,
+  })
+  @IsArray()
+  @IsOptional()
+  users_position_goals?: number[];
 
   @ApiProperty({ required: false })
   @IsNumber()

@@ -88,6 +88,11 @@ import { PaymentsModule } from './payments/payments.module';
 import { ProgramPaymentModule } from './program_payment/program_payment.module';
 import { UsersOrganizationsModule } from './users_organizations/users_organizations.module';
 import { CourseTeachersModule } from './course_teachers/course_teachers.module';
+import { DependenciesModule } from './dependencies/dependencies.module';
+import { PositionsModule } from './positions/positions.module';
+import { UsersCompetencesModule } from './users_competences/users_competences.module';
+import { PositionCompetencesModule } from './position_competences/position_competences.module';
+import { UsersPositionGoalsModule } from './users_position_goals/users_position_goals.module';
 
 @Module({
   imports: [
@@ -180,6 +185,11 @@ import { CourseTeachersModule } from './course_teachers/course_teachers.module';
     ProgramPaymentModule,
     UsersOrganizationsModule,
     CourseTeachersModule,
+    DependenciesModule,
+    PositionsModule,
+    UsersCompetencesModule,
+    PositionCompetencesModule,
+    UsersPositionGoalsModule,
   ],
   controllers: [],
   providers: [],

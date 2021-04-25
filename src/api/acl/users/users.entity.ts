@@ -24,6 +24,8 @@ import { Lessons } from './../../lessons/lessons.entity';
 import { ProgramPayment } from '../../program_payment/program_payment.entity';
 import { UsersOrganizations } from './../../users_organizations/users_organizations.entity';
 import { CourseTeachers } from './../../course_teachers/course_teachers.entity';
+import { UsersCompetences } from './../../users_competences/users_competences.entity';
+import { UsersPositionGoals } from './../../users_position_goals/users_position_goals.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -174,4 +176,16 @@ export class Users extends Base {
 
   @OneToMany(() => CourseTeachers, (courseUsers) => courseUsers.user)
   course_teachers: CourseTeachers[];
+
+  @OneToMany(
+    () => UsersCompetences,
+    (usersCompetences) => usersCompetences.user,
+  )
+  users_competences: UsersCompetences[];
+
+  @OneToMany(
+    () => UsersPositionGoals,
+    (usersCompetences) => usersCompetences.user,
+  )
+  users_position_goals: UsersPositionGoals[];
 }

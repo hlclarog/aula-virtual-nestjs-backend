@@ -22,6 +22,8 @@ import {
 } from './../../../utils/providers/info-tenancy.module';
 import { PointsUserLogService } from './../../points_user_log/points_user_log.service';
 import { UsersOrganizationsService } from './../../users_organizations/users_organizations.service';
+import { UsersCompetencesService } from './../../users_competences/users_competences.service';
+import { UsersPositionGoalsService } from './../../users_position_goals/users_position_goals.service';
 
 @Injectable()
 export class UsersService extends BaseService<
@@ -40,6 +42,8 @@ export class UsersService extends BaseService<
     private pointsUserLogService: PointsUserLogService,
     private awsService: AwsService,
     private usersOrganizationsService: UsersOrganizationsService,
+    private usersCompetencesService: UsersCompetencesService,
+    private usersPositionGoalsService: UsersPositionGoalsService,
   ) {
     super();
   }
@@ -75,6 +79,9 @@ export class UsersService extends BaseService<
     data.password = this.cryptoService.hashPassword(data.password);
     delete data.users_roles;
     delete data.rol_default;
+    delete data.users_organizations;
+    delete data.users_competences;
+    delete data.users_position_goals;
     if (createDto.theme_id) {
       data.theme_id = configTenancy.theme_id;
     }
@@ -92,6 +99,18 @@ export class UsersService extends BaseService<
         createDto.users_organizations,
       );
     }
+    if (createDto.users_competences) {
+      await this.usersCompetencesService.set(
+        dataNew.id,
+        createDto.users_competences,
+      );
+    }
+    if (createDto.users_position_goals) {
+      await this.usersPositionGoalsService.set(
+        dataNew.id,
+        createDto.users_position_goals,
+      );
+    }
     return dataNew;
   }
 
@@ -99,6 +118,9 @@ export class UsersService extends BaseService<
     const data: any = Object.assign({}, updateDto);
     delete data.users_roles;
     delete data.rol_default;
+    delete data.users_organizations;
+    delete data.users_competences;
+    delete data.users_position_goals;
     if (updateDto.picture) {
       data.picture = await this.setAvatar(updateDto.picture);
     }
@@ -113,6 +135,15 @@ export class UsersService extends BaseService<
       await this.usersOrganizationsService.set(
         id,
         updateDto.users_organizations,
+      );
+    }
+    if (updateDto.users_competences) {
+      await this.usersCompetencesService.set(id, updateDto.users_competences);
+    }
+    if (updateDto.users_position_goals) {
+      await this.usersPositionGoalsService.set(
+        id,
+        updateDto.users_position_goals,
       );
     }
     return await this.repository.update(id, data);

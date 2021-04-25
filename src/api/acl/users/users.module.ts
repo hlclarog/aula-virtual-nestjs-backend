@@ -11,6 +11,8 @@ import { AwsModule } from './../../../aws/aws.module';
 import { TenancyConfigModule } from './../../tenancy_config/tenancy_config.module';
 import { PointsUserLogModule } from './../../points_user_log/points_user_log.module';
 import { UsersOrganizationsModule } from './../../users_organizations/users_organizations.module';
+import { UsersCompetencesModule } from './../../users_competences/users_competences.module';
+import { UsersPositionGoalsModule } from './../../users_position_goals/users_position_goals.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { UsersOrganizationsModule } from './../../users_organizations/users_orga
     AwsModule,
     PointsUserLogModule,
     UsersOrganizationsModule,
+    UsersCompetencesModule,
+    UsersPositionGoalsModule,
   ],
   controllers: [UsersController],
   providers: [
