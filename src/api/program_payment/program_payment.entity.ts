@@ -8,19 +8,25 @@ import { Payments } from '../payments/payments.entity';
 @Entity({ name: PROGRAM_PAYMENT_ENTITY })
 export class ProgramPayment extends Base {
   @ManyToOne(() => Programs, (programs) => programs.program_payment)
-  @JoinColumn({ name: 'program_id' }) programs: Programs;
+  @JoinColumn({ name: 'program_id' })
+  programs: Programs;
   @RelationId((program_payment: ProgramPayment) => program_payment.programs)
-  @Column({ type: 'int' }) program_id: number;
+  @Column({ type: 'int' })
+  program_id: number;
 
   @ManyToOne(() => Users, (users) => users.program_payment)
-  @JoinColumn({ name: 'user_id' }) users: Users;
+  @JoinColumn({ name: 'user_id' })
+  users: Users;
   @RelationId((program_payment: ProgramPayment) => program_payment.users)
-  @Column({ type: 'int' }) user_id: number;
+  @Column({ type: 'int' })
+  user_id: number;
 
   @ManyToOne(() => Payments, (payments) => payments.program_payment)
-  @JoinColumn({ name: 'payment_id' }) payments: Payments;
+  @JoinColumn({ name: 'payment_id' })
+  payments: Payments;
   @RelationId((program_payment: ProgramPayment) => program_payment.payments)
-  @Column({ type: 'int' }) payment_id: number;
+  @Column({ type: 'int' })
+  payment_id: number;
 
   @Column({ type: 'int', nullable: true }) credits?: number;
   @Column({ type: 'varchar', nullable: true }) description: string;

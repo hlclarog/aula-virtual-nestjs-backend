@@ -106,9 +106,9 @@ export class PaymentsController extends BaseController<
     input.transaction_date = new Date(Date.now()).toLocaleDateString(
       'zh-Hans-CN',
     );
+    input.user_id = this.infoUser.id;
 
     const response = await this.paymentsService.paymentGenerationCourse(
-      this.infoUser.id,
       input,
       type,
     );

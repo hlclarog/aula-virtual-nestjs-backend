@@ -6,6 +6,7 @@ import { CollectionTypes } from '../collection_types/collection_types.entity';
 import { Currencies } from '../currencies/currency.entity';
 import { ProgramPayment } from '../program_payment/program_payment.entity';
 import { Organizations } from '../organizations/organizations.entity';
+import { CoursePayments } from '../course_payments/course_payments.entity';
 
 @Entity({ name: PAYMENTS_ENTITY })
 export class Payments extends Base {
@@ -42,4 +43,6 @@ export class Payments extends Base {
 
   @OneToMany(() => ProgramPayment, (program_payment) => program_payment.programs)
   program_payment: ProgramPayment[];
+  @OneToMany(() => CoursePayments, (course_payments) => course_payments.courses)
+  course_payments: CoursePayments[];
 }

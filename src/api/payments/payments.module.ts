@@ -14,11 +14,13 @@ import { ProgramFeeSchedulesModule } from '../program_fee_schedules/program_fee_
 import { CryptoService } from '../../utils/services/crypto.service';
 import { CourseFeeScheduleService } from '../course-fee-schedule/course-fee-schedule.service';
 import { CourseFeeScheduleModule } from '../course-fee-schedule/course-fee-schedule.module';
+import { CoursePaymentsModule } from '../course_payments/course_payments.module';
 
 @Module({
   imports: [
     InstanceProcessModule,
     ProgramPaymentModule,
+    CoursePaymentsModule,
     ProgramsModule,
     AwsModule,
     ProgramUsersModule,

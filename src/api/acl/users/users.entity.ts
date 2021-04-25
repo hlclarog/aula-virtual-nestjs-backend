@@ -24,6 +24,7 @@ import { Lessons } from './../../lessons/lessons.entity';
 import { ProgramPayment } from '../../program_payment/program_payment.entity';
 import { UsersOrganizations } from './../../users_organizations/users_organizations.entity';
 import { CourseTeachers } from './../../course_teachers/course_teachers.entity';
+import { CoursePayments } from '../../course_payments/course_payments.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -165,6 +166,9 @@ export class Users extends Base {
     (program_payment) => program_payment.programs,
   )
   program_payment: ProgramPayment[];
+
+  @OneToMany(() => CoursePayments, (course_payments) => course_payments.courses)
+  course_payments: CoursePayments[];
 
   @OneToMany(
     () => UsersOrganizations,

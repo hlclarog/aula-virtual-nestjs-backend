@@ -82,4 +82,6 @@ export class InternalCollectionCourseStudent {
   @IsString()
   @IsOptional()
   transaction_date?: string;
+  @IsOptional()
+  user_id?: number;
 }

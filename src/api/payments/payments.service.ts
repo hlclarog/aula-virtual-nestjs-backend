@@ -33,6 +33,8 @@ import {
 import { CryptoService } from '../../utils/services/crypto.service';
 import { generate, generateCourseCode } from '../../utils/random';
 import { CourseFeeScheduleService } from '../course-fee-schedule/course-fee-schedule.service';
+import { CoursePayments } from '../course_payments/course_payments.entity';
+import { COURSE_PAYMENTS_PROVIDER } from '../course_payments/course_payments.dto';
 
 @Injectable()
 export class PaymentsService extends BaseService<
@@ -42,6 +44,7 @@ export class PaymentsService extends BaseService<
 > {
   @Inject(PAYMENTS_PROVIDER) repository: BaseRepo<Payments>;
   @Inject(PROGRAM_PAYMENT_PROVIDER) programPayment: BaseRepo<ProgramPayment>;
+  @Inject(COURSE_PAYMENTS_PROVIDER) coursePayment: BaseRepo<CoursePayments>;
   @Inject(PROGRAMS_PROVIDER) programs: BaseRepo<Programs>;
   @Inject(PROGRAM_USERS_PROVIDER) programUsers: BaseRepo<ProgramUsers>;
   @Inject(INFO_USER_PROVIDER) infoUser: InfoUserProvider;
@@ -98,6 +101,7 @@ export class PaymentsService extends BaseService<
       );
     }
     return await this.repository.save(paymentData);
+
   }
 
   async addProgramPayment(
@@ -113,6 +117,17 @@ export class PaymentsService extends BaseService<
     };
     return await this.programPayment.save(programPaymentData);
   }
+  async addCourseToPayment(
+    input: Partial<InternalCollectionCourseStudent>,
+    paymentSave: Partial<Payments>,
+  ) {
+    const coursePaymentData: Partial<CoursePayments> = {
+      course_id: input.course_id,
+      user_id: input.user_id,
+      payment_id: paymentSave.id
+    };
+    return await this.coursePayment.save(coursePaymentData);
+  }
 
   async setFile(file, type) {
     const result = await this.awsService.saveFile({
@@ -124,7 +139,6 @@ export class PaymentsService extends BaseService<
   }
 
   async paymentGenerationCourse(
-    userId: number,
     input: InternalCollectionCourseStudent,
     type: number,
   ) {
@@ -145,6 +159,8 @@ export class PaymentsService extends BaseService<
       transaction_reference: generateCourseCode(type),
     };
     const paymentsSave = await this.addPayment(paymentData);
+    await this.addCourseToPayment(input, paymentsSave);
+
     return paymentsSave;
   }
 

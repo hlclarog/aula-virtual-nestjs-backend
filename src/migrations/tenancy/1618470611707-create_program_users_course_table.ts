@@ -59,7 +59,7 @@ export class createProgramUsersCourseTable1618470611707
         ],
       }),
     );
-    await queryRunner.createForeignKeys(' ', [
+    await queryRunner.createForeignKeys('program_users_course', [
       new TableForeignKey({
         columnNames: ['program_user_id'],
         referencedColumnNames: ['id'],
