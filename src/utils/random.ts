@@ -8,3 +8,15 @@ export function generate(length) {
   }
   return result;
 }
+export function generateCourseCode(type: number) {
+  let result = '';
+  switch (type) {
+    case 1:
+      result = 'COURSE-' + generate(5);
+      break;
+    case 2:
+      result = 'CERTIFICATE-' + generate(5);
+      break;
+  }
+  return result;
+}

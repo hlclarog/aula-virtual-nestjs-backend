@@ -5,6 +5,7 @@ import { Payments } from './payments.entity';
 import {
   AddExternalCollectionDto,
   CreatePaymentsDto,
+  InternalCollectionCourseStudent,
   InternalCollectionStudentDto,
   UpdatePaymentsDto,
 } from './payments.dto';
@@ -12,6 +13,10 @@ import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import { PROGRAMS_PROVIDER } from '../programs/programs.dto';
 import { BaseRepo } from '../../base/base.repository';
 import { Programs } from '../programs/programs.entity';
+import {
+  INFO_USER_PROVIDER,
+  InfoUserProvider,
+} from '../../utils/providers/info-user.module';
 
 @ControllerApi({ name: 'payments' })
 export class PaymentsController extends BaseController<
@@ -20,7 +25,10 @@ export class PaymentsController extends BaseController<
   UpdatePaymentsDto
 > {
   @Inject(PROGRAMS_PROVIDER) programs: BaseRepo<Programs>;
-  constructor(private readonly paymentsService: PaymentsService) {
+  constructor(
+    private readonly paymentsService: PaymentsService,
+    @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
+  ) {
     super(paymentsService);
   }
   @Post()
@@ -77,5 +85,33 @@ export class PaymentsController extends BaseController<
       input,
     );
     return { data: response };
+  }
+
+  @Post('course/collection/student')
+  async internalCollectionCourseStudent(
+    @Body() input: InternalCollectionCourseStudent,
+  ) {
+    return { data: await this.filterToCollectionStudent(input, 1) };
+  }
+  @Post('certificate/collection/student')
+  async internalCollectionCertificateStudent(
+    @Body() input: InternalCollectionCourseStudent,
+  ) {
+    return { data: await this.filterToCollectionStudent(input, 2) };
+  }
+  async filterToCollectionStudent(
+    input: InternalCollectionCourseStudent,
+    type: number,
+  ) {
+    input.transaction_date = new Date(Date.now()).toLocaleDateString(
+      'zh-Hans-CN',
+    );
+    input.user_id = this.infoUser.id;
+
+    const response = await this.paymentsService.paymentGenerationCourse(
+      input,
+      type,
+    );
+    return response;
   }
 }

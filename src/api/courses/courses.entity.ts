@@ -21,6 +21,7 @@ import { CourseUnits } from '../course_units/course_units.entity';
 import { PointsUserLog } from '../points_user_log/points_user_log.entity';
 import { CourseLessons } from '../course_lessons/course_lessons.entity';
 import { CourseTeachers } from '../course_teachers/course_teachers.entity';
+import { CoursePayments } from '../course_payments/course_payments.entity';
 
 @Entity({ name: COURSE_ENTITY })
 export class Courses extends Base {
@@ -103,4 +104,6 @@ export class Courses extends Base {
 
   @OneToMany(() => CourseTeachers, (courseUsers) => courseUsers.course)
   course_teachers: CourseTeachers[];
+  @OneToMany(() => CoursePayments, (course_payments) => course_payments.courses)
+  course_payment: CoursePayments[];
 }

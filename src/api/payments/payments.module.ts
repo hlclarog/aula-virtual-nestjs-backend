@@ -12,16 +12,21 @@ import { AwsModule } from '../../aws/aws.module';
 import { ProgramUsersModule } from '../program_users/program_users.module';
 import { ProgramFeeSchedulesModule } from '../program_fee_schedules/program_fee_schedules.module';
 import { CryptoService } from '../../utils/services/crypto.service';
+import { CourseFeeScheduleService } from '../course-fee-schedule/course-fee-schedule.service';
+import { CourseFeeScheduleModule } from '../course-fee-schedule/course-fee-schedule.module';
+import { CoursePaymentsModule } from '../course_payments/course_payments.module';
 
 @Module({
   imports: [
     InstanceProcessModule,
     ProgramPaymentModule,
+    CoursePaymentsModule,
     ProgramsModule,
     AwsModule,
     ProgramUsersModule,
     ProgramFeeSchedulesModule,
     HttpModule,
+    CourseFeeScheduleModule,
   ],
   controllers: [PaymentsController],
   providers: [

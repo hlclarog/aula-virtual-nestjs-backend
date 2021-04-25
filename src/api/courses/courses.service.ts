@@ -303,6 +303,8 @@ export class CoursesService extends BaseService<
       let suma = info_sum.map((i) => i.course_id).indexOf(course.id);
       suma = suma >= 0 ? info_sum[suma].duration : 0;
       course.duration = `${timeConvert(suma)}`;
+      course.currency_id =
+        prices?.length > 0 ? Number(prices[0].currency_id) : null;
     }
     return course;
   }
