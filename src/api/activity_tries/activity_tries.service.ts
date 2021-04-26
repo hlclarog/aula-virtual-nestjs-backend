@@ -157,7 +157,7 @@ export class ActivityTriesService extends BaseService<
           this.infoUser.id,
           TypesReasonsPoints.ACTIVITY_END,
           course_lesson.course_id,
-          lesson_activity.lesson_id,
+          createDto.course_lesson_id,
           createDto.lesson_activity_id,
         );
       } else {
