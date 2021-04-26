@@ -328,7 +328,7 @@ export class CourseUsersService extends BaseService<
               course_lesson.lesson.lesson_type_id == TypesLesson.QUIZ ||
               course_lesson.lesson.lesson_type_id == TypesLesson.DELIVERABLE
             ) {
-              lessons_progress[course_lesson.lesson.description] =
+              lessons_progress[course_lesson.lesson.name] =
                 course_lesson['progress_lesson'];
             }
           }
