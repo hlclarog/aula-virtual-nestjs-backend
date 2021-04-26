@@ -327,7 +327,7 @@ export class LessonActivitiesService extends BaseService<
       element.percentage_failed =
         (element.intents_total > 0
           ? Math.round(element.intents_failed / element.intents_total)
-          : 1) * 100;
+          : 0) * 100;
     }
     return result;
   }
