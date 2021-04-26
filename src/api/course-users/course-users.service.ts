@@ -316,6 +316,7 @@ export class CourseUsersService extends BaseService<
         [data.course_id],
         element.user_id,
       );
+      const lessons = [];
       const lessons_progress = {};
       let progress = 0;
       if (dataprogress.length > 0) {
@@ -330,12 +331,18 @@ export class CourseUsersService extends BaseService<
             ) {
               lessons_progress[course_lesson.lesson.name] =
                 course_lesson['progress_lesson'];
+              lessons.push({
+                type: course_lesson.lesson.lesson_type.description,
+                name: course_lesson.lesson.name,
+                progress: course_lesson['progress_lesson'],
+              });
             }
           }
         }
       }
       element['progress'] = progress;
       element['lessons_progress'] = lessons_progress;
+      element['lessons'] = lessons;
     }
     return result;
   }
