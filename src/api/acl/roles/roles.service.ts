@@ -55,6 +55,7 @@ export class RolesService extends BaseService<
     const permissions = await this.permissionService.findForTenancy();
     result?.roles_permissions.map((item) => {
       permissions.map((permission) => {
+
       })
     });
 
