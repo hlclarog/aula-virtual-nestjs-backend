@@ -1,7 +1,7 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 
 import { PaymentService } from './payment.service';
-import { IPayuResponse } from './payment.dto';
+import { IpayuConfirmation, IPayuResponse } from './payment.dto';
 
 @Controller('payment')
 export class PaymentController {
@@ -12,14 +12,12 @@ export class PaymentController {
     @Query() input: IPayuResponse,
     @Param('subDomain') subDomain: string,
   ) {
-    console.log('***************** response *****************');
-    console.log(input);
     await this.paymentService.payuResponse(input, subDomain);
   }
 
-  @Get('web_checkout/payu/:subDomain/confirmation')
-  async payuConfirmation(@Query() input) {
-    console.log('***************** confirmation*****************');
-    console.log(input);
+  @Post('web_checkout/payu/:subDomain/confirmation')
+  async payuConfirmation(@Body() input: IpayuConfirmation, @Param('subDomain') subDomain: string ) {
+    const result = await this.paymentService.payuConfirmation(input, subDomain);
+    return { data: result };
   }
 }

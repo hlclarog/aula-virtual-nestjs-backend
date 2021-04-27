@@ -11,10 +11,13 @@ export enum PAYMENT_STATUS_ENUM {
 }
 export enum TRANSACTION_STATE_ENUM {
   APPROVED = '4',
+  EXPIRED = '5',
   REJECTED = '6',
   PENDING = '7',
   ERROR = '104',
 }
+
+
 export class CreatePaymentStatusDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
 }

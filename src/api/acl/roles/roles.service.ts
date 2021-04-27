@@ -20,6 +20,7 @@ import { Permissions } from '../permissions/permissions.entity';
 import { TENANCY_MODULES_PROVIDER } from './../../tenancy_modules/tenancy_modules.dto';
 import { TenancyModules } from './../../tenancy_modules/tenancy_modules.entity';
 import { MODULES_PROVIDER } from '../modules/modules.dto';
+import { PermissionsService } from '../permissions/permissions.service';
 
 @Injectable()
 export class RolesService extends BaseService<
@@ -35,6 +36,7 @@ export class RolesService extends BaseService<
 
   constructor(
     private rolesPermissionsService: RolesPermissionsService,
+    private permissionService: PermissionsService,
     @Inject(INFO_USER_PROVIDER) private infoUser: InfoUserProvider,
   ) {
     super();
@@ -46,10 +48,17 @@ export class RolesService extends BaseService<
     });
   }
 
-  async findOne(id: number): Promise<Roles> {
-    return this.repository.findOneOrFail(id, {
+  async findOne(id: number) {
+    const result = await this.repository.findOneOrFail(id, {
       relations: ['roles_permissions'],
     });
+    const permissions = await this.permissionService.findForTenancy();
+    result?.roles_permissions.map((item) => {
+      permissions.map((permission) => {
+      })
+    });
+
+    return result;
   }
 
   async create(createDto: CreateRolesDto) {

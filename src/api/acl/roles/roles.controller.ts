@@ -4,6 +4,7 @@ import { CreateRolesDto, UpdateRolesDto } from './roles.dto';
 import { BaseController } from '../../../base/base.controller';
 import { Roles } from './roles.entity';
 import { ControllerApi } from '../../../utils/decorators/controllers.decorator';
+import { PermissionsService } from '../permissions/permissions.service';
 
 @ControllerApi({ name: 'roles' })
 export class RolesController extends BaseController<
@@ -11,7 +12,10 @@ export class RolesController extends BaseController<
   CreateRolesDto,
   UpdateRolesDto
 > {
-  constructor(private rolesService: RolesService) {
+  constructor(
+    private rolesService: RolesService,
+    private permissionsService: PermissionsService,
+  ) {
     super(rolesService);
   }
 
@@ -26,8 +30,8 @@ export class RolesController extends BaseController<
   }
 
   @Get(':id')
-  async find(@Param('id') id: string) {
-    return await this.findOne(id);
+  async find(@Param('id') id: number) {
+    return this.rolesService.findOne(id);
   }
 
   @Put(':id')
