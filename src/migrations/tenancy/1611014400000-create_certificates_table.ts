@@ -1,12 +1,16 @@
-import { ORGANIZATIONS_ENTITY } from './../../api/organizations/organizations.dto';
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
-export class createOrganizationsTable1609908270572
+export class createCertificatesTable1611014400000
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: ORGANIZATIONS_ENTITY,
+        name: 'certificates',
         columns: [
           {
             name: 'id',
@@ -15,31 +19,23 @@ export class createOrganizationsTable1609908270572
             isGenerated: true,
           },
           {
-            name: 'name',
+            name: 'organization_certificate_id',
+            type: 'int',
+          },
+          {
+            name: 'reference_type',
             type: 'varchar',
           },
           {
-            name: 'short_name',
+            name: 'reference_id',
+            type: 'int',
+          },
+          {
+            name: 'certification_validate_code',
             type: 'varchar',
           },
           {
-            name: 'description',
-            type: 'varchar',
-          },
-          {
-            name: 'code',
-            type: 'varchar',
-          },
-          {
-            name: 'primary_color',
-            type: 'varchar',
-          },
-          {
-            name: 'secondary_color',
-            type: 'varchar',
-          },
-          {
-            name: 'tertiary_color',
+            name: 'link',
             type: 'varchar',
           },
           {
@@ -64,11 +60,17 @@ export class createOrganizationsTable1609908270572
           },
         ],
       }),
-      true,
     );
+    await queryRunner.createForeignKeys('certificates', [
+      new TableForeignKey({
+        columnNames: ['organization_certificate_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'organizations_certificates',
+      }),
+    ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('organizations');
+    await queryRunner.dropTable('certificates');
   }
 }

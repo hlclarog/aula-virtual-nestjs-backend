@@ -68,6 +68,11 @@ export class createProgramUsersTable1611027848040
             default: false,
           },
           {
+            name: 'certificate_id',
+            type: 'int',
+            isNullable: true,
+          },
+          {
             name: 'active',
             type: 'bool',
             default: true,
@@ -110,6 +115,11 @@ export class createProgramUsersTable1611027848040
         columnNames: ['enrollment_type_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'enrollment_types',
+      }),
+      new TableForeignKey({
+        columnNames: ['certificate_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'certificates',
       }),
     ]);
     await queryRunner.createUniqueConstraint(

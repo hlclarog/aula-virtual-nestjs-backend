@@ -7,6 +7,7 @@ import { CourseCommissionOrganizations } from '../course_comission_organizations
 import { ProgramCommissionOrganizations } from '../program_comission_organizations/program_commission_organizations.entity';
 import { Payments } from '../payments/payments.entity';
 import { UsersOrganizations } from '../users_organizations/users_organizations.entity';
+import { OrganizationsCertificates } from '../organizations_certificates/organizations_certificates.entity';
 
 @Entity({ name: ORGANIZATIONS_ENTITY })
 export class Organizations extends Base {
@@ -57,4 +58,10 @@ export class Organizations extends Base {
     (courseOrganization) => courseOrganization.organization,
   )
   users_organizations: UsersOrganizations[];
+
+  @OneToMany(
+    () => OrganizationsCertificates,
+    (organizationsCertificates) => organizationsCertificates.organization,
+  )
+  organizations_certficates: OrganizationsCertificates[];
 }

@@ -19,7 +19,7 @@ export class ProgramsService extends BaseService<
   Programs,
   CreateProgramsDto,
   UpdateProgramsDto
-  > {
+> {
   @Inject(PROGRAMS_PROVIDER) repository: BaseRepo<Programs>;
 
   private selectedRow = [
@@ -45,12 +45,12 @@ export class ProgramsService extends BaseService<
     'program_status.description',
     'organizations.id',
     'organizations.name',
-  ]
+  ];
 
   constructor(
     private programInterestAreasService: ProgramInterestAreasService,
     private awsService: AwsService,
-    private programFeeSchedule: ProgramFeeSchedulesService
+    private programFeeSchedule: ProgramFeeSchedulesService,
   ) {
     super();
   }
@@ -90,12 +90,14 @@ export class ProgramsService extends BaseService<
     }
     // Get Amount to pay today
 
-    const feeScheduleToday = await this.programFeeSchedule
-        .amountToPay(program.id, 1, new Date(Date.now()).toLocaleDateString('zh-Hans-CN'))
+    const feeScheduleToday = await this.programFeeSchedule.amountToPay(
+      program.id,
+      1,
+      new Date(Date.now()).toLocaleDateString('zh-Hans-CN'),
+    );
 
     program['price_val'] = feeScheduleToday.program_val;
     program['inscription_val'] = feeScheduleToday.inscription_val;
-
 
     return program;
   }

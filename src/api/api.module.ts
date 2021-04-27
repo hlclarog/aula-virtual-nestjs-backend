@@ -93,6 +93,8 @@ import { PositionsModule } from './positions/positions.module';
 import { UsersCompetencesModule } from './users_competences/users_competences.module';
 import { PositionCompetencesModule } from './position_competences/position_competences.module';
 import { UsersPositionGoalsModule } from './users_position_goals/users_position_goals.module';
+import { OrganizationsCertificatesModule } from './organizations_certificates/organizations_certificates.module';
+import { CertificatesModule } from './certificates/certificates.module';
 
 @Module({
   imports: [
@@ -190,6 +192,8 @@ import { UsersPositionGoalsModule } from './users_position_goals/users_position_
     UsersCompetencesModule,
     PositionCompetencesModule,
     UsersPositionGoalsModule,
+    CertificatesModule,
+    OrganizationsCertificatesModule,
   ],
   controllers: [],
   providers: [],

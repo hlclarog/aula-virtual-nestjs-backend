@@ -7,7 +7,10 @@ import {
 import { BaseController } from '../../base/base.controller';
 import { ProgramCourses } from './program_courses.entity';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
-import { INFO_USER_PROVIDER, InfoUserProvider } from '../../utils/providers/info-user.module';
+import {
+  INFO_USER_PROVIDER,
+  InfoUserProvider,
+} from '../../utils/providers/info-user.module';
 
 @ControllerApi({ name: 'program_courses' })
 export class ProgramCoursesController extends BaseController<
@@ -59,7 +62,7 @@ export class ProgramCoursesController extends BaseController<
   async userProgram(@Param('id') id: number) {
     const result = await this.program_coursesService.findByProgram(
       id,
-      this.infoUser.id
+      this.infoUser.id,
     );
     return { data: result };
   }
