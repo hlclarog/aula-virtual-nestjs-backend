@@ -19,6 +19,8 @@ export enum typeFilesAwsNames {
   tenancy_pictures = 'tenancy/pictures',
   payments_collection = 'payments/collection',
   organizations_certificates_resources = 'organizations/resources',
+  courses_certificates = 'courses/certificates',
+  programs_certificates = 'programs/certificates',
 }
 
 export type typeFileAwsTypes =
@@ -38,7 +40,9 @@ export type typeFileAwsTypes =
   | typeFilesAwsNames.lesson_comments_files
   | typeFilesAwsNames.tenancy_pictures
   | typeFilesAwsNames.payments_collection
-  | typeFilesAwsNames.organizations_certificates_resources;
+  | typeFilesAwsNames.organizations_certificates_resources
+  | typeFilesAwsNames.courses_certificates
+  | typeFilesAwsNames.programs_certificates;
 
 export interface SaveFileAws {
   file: string;

@@ -20,6 +20,13 @@ import {
 import { ProgramsService } from '../programs/programs.service';
 import { ProgramCoursesService } from '../program_courses/program_courses.service';
 import { Courses } from '../courses/courses.entity';
+import { generateFile } from './../../utils/pdfmake/pdfmake.generator';
+import { AwsService } from './../../aws/aws.service';
+import { typeFilesAwsNames } from './../../aws/aws.dto';
+import * as shortid from 'shortid';
+import { UsersService } from '../acl/users/users.service';
+import { ProgramUsersService } from '../program_users/program_users.service';
+import { CourseUsersService } from '../course-users/course-users.service';
 
 @Injectable()
 export class CertificatesService extends BaseService<
@@ -35,16 +42,31 @@ export class CertificatesService extends BaseService<
     private lessonsService: LessonsService,
     private programsService: ProgramsService,
     private programCoursesService: ProgramCoursesService,
+    private awsService: AwsService,
+    private usersService: UsersService,
+    private programUsersService: ProgramUsersService,
+    private courseUsersService: CourseUsersService,
   ) {
     super();
+  }
+
+  async findOne(id) {
+    const result = await this.repository.findOneOrFail(id);
+    if (result.link) {
+      result.link = await this.awsService.getFile(result.link);
+    }
+    return result;
   }
 
   async generate(createDto: CreateCertificatesDto) {
     const cerficiateResources = await this.organizationsCertificatesService.findSelected(
       createDto.organization_id,
     );
+    const userData = await this.usersService.findOne(this.infoUser.id);
     let dataProgress: Courses[];
     let validToGenerate = false;
+    let originFolderCertificate = null;
+    let dataContentPdf = {};
     switch (createDto.reference_type) {
       case TypesCertificates.COURSE:
         dataProgress = await this.lessonsService.findProgessByCourse(
@@ -53,6 +75,13 @@ export class CertificatesService extends BaseService<
         );
         if (dataProgress[0]['progress'] == 100) {
           validToGenerate = true;
+          originFolderCertificate = typeFilesAwsNames.courses_certificates;
+          dataContentPdf = {
+            content: [
+              `Felicidades ${userData.name} ${userData.lastname}`,
+              `Mediante la presente se le certfica que cumplio con lo necesario para obtener su certficado en ${dataProgress[0].name}`,
+            ],
+          };
         }
         break;
       case TypesCertificates.PROGRAM:
@@ -74,18 +103,48 @@ export class CertificatesService extends BaseService<
           : 0;
         if (Number(courses_finlaized) >= Number(certifiable_number)) {
           validToGenerate = true;
+          originFolderCertificate = typeFilesAwsNames.programs_certificates;
+          dataContentPdf = {
+            content: [
+              `Felicidades ${userData.name} ${userData.lastname}`,
+              `Mediante la presente se le certfica que cumplio con lo necesario para obtener su certficado en ${dataProgram.name}`,
+            ],
+          };
         }
         break;
     }
     if (validToGenerate) {
-      const link = null;
+      const certificatePdf = await generateFile(dataContentPdf, {});
+      const filePdfAws = await this.saveCertificate(
+        certificatePdf,
+        originFolderCertificate,
+      );
       const result = await this.repository.save({
         organization_certificate_id: cerficiateResources.id,
         reference_type: createDto.reference_type,
         reference_id: createDto.reference_id,
         certification_validate_code: createDto.certification_validate_code,
-        link,
+        link: filePdfAws,
       });
+      switch (createDto.reference_type) {
+        case TypesCertificates.COURSE:
+          await this.courseUsersService.setCertficate(
+            this.infoUser.id,
+            createDto.reference_id,
+            result.id,
+          );
+          break;
+        case TypesCertificates.PROGRAM:
+          await this.programUsersService.setCertficate(
+            this.infoUser.id,
+            createDto.reference_id,
+            result.id,
+          );
+          break;
+      }
+      if (result.link) {
+        result.link = await this.awsService.getFile(result.link);
+      }
       return result;
     } else {
       switch (createDto.reference_type) {
@@ -97,5 +156,14 @@ export class CertificatesService extends BaseService<
           break;
       }
     }
+  }
+
+  async saveCertificate(file, type) {
+    const result = await this.awsService.saveFile({
+      file,
+      name: shortid.generate(),
+      type,
+    });
+    return result.Key;
   }
 }

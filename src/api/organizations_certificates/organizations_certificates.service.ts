@@ -1,4 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import {
   CreateOrganizationsCertificatesDto,
   UpdateOrganizationsCertificatesDto,
@@ -49,12 +53,18 @@ export class OrganizationsCertificatesService extends BaseService<
   }
 
   async findSelected(organization_id: number) {
-    const result = await this.repository.findOneOrFail({
-      where: {
-        organization_id,
-        select: true,
-      },
-    });
+    const result = await this.repository
+      .findOneOrFail({
+        where: {
+          organization_id,
+          selected: true,
+        },
+      })
+      .catch(() => {
+        throw new InternalServerErrorException(
+          'NOT FOUND RESOURCES TO CERTIFICATE',
+        );
+      });
     const dataCertficate = await this.repository.findOne(result.id);
     return dataCertficate;
   }

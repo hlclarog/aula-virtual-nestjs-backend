@@ -162,4 +162,15 @@ export class ProgramUsersService extends BaseService<
 
     return result;
   }
+
+  async setCertficate(
+    user_id: number,
+    program_id: number,
+    certificate_id: number,
+  ) {
+    return await this.repository.update(
+      { user_id, program_id },
+      { certificate_id },
+    );
+  }
 }

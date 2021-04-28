@@ -11,7 +11,7 @@ import { Certificates } from '../certificates/certificates.entity';
 import { Organizations } from '../organizations/organizations.entity';
 import { ORGANIZATIONS_CERTIFICATES_ENTITY } from './organizations_certificates.dto';
 
-@Entity({ name: ORGANIZATIONS_CERTIFICATES_ENTITY, schema: 'public' })
+@Entity({ name: ORGANIZATIONS_CERTIFICATES_ENTITY })
 export class OrganizationsCertificates extends Base {
   @ManyToOne(
     () => Organizations,

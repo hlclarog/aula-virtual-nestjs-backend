@@ -9,13 +9,23 @@ import { OrganizationsCertificatesModule } from '../organizations_certificates/o
 import { LessonsModule } from '../lessons/lessons.module';
 import { ProgramsModule } from '../programs/programs.module';
 import { ProgramCoursesModule } from '../program_courses/program_courses.module';
+import { AwsModule } from './../../aws/aws.module';
+import { UsersModule } from '../acl/users/users.module';
+import { CoursesModule } from '../courses/courses.module';
+import { ProgramUsersModule } from '../program_users/program_users.module';
+import { CourseUsersModule } from '../course-users/course-users.module';
 
 @Module({
   imports: [
+    AwsModule,
     OrganizationsCertificatesModule,
     LessonsModule,
+    CoursesModule,
+    CourseUsersModule,
     ProgramsModule,
     ProgramCoursesModule,
+    ProgramUsersModule,
+    UsersModule,
   ],
   controllers: [CertificatesController],
   providers: [

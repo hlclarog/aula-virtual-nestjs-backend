@@ -346,4 +346,15 @@ export class CourseUsersService extends BaseService<
     }
     return result;
   }
+
+  async setCertficate(
+    user_id: number,
+    course_id: number,
+    certificate_id: number,
+  ) {
+    return await this.repository.update(
+      { user_id, course_id },
+      { certificate_id },
+    );
+  }
 }

@@ -20,11 +20,6 @@ export class OrganizationsCertificatesController extends BaseController<
     super(organizations_certificatesService);
   }
 
-  @Post()
-  async post(@Body() createDto: CreateOrganizationsCertificatesDto) {
-    return await this.create(createDto);
-  }
-
   @Get()
   async fetchAll() {
     return await this.findAll();
@@ -33,6 +28,11 @@ export class OrganizationsCertificatesController extends BaseController<
   @Get(':id')
   async find(@Param('id') id: string) {
     return await this.findOne(id);
+  }
+
+  @Post()
+  async post(@Body() createDto: CreateOrganizationsCertificatesDto) {
+    return await this.create(createDto);
   }
 
   @Put(':id')
