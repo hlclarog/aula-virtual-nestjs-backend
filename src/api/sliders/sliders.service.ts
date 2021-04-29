@@ -9,7 +9,7 @@ import { BaseRepo } from '../../base/base.repository';
 import { Sliders } from './sliders.entity';
 import { AwsService } from '../../aws/aws.service';
 import { durationFilesUrl, typeFilesAwsNames } from '../../aws/aws.dto';
-import shortid from 'shortid';
+import * as shortid from 'shortid';
 import { UpdateResult } from 'typeorm';
 
 @Injectable()
