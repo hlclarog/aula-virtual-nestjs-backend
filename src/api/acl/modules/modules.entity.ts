@@ -1,9 +1,10 @@
-import { PlanModules } from './../../plan_modules/plan_modules.entity';
-import { TenancyModules } from './../../tenancy_modules/tenancy_modules.entity';
+import { PlanModules } from '../../plan_modules/plan_modules.entity';
+import { TenancyModules } from '../../tenancy_modules/tenancy_modules.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   RelationId,
   Tree,
@@ -13,6 +14,7 @@ import {
 import { Base } from '../../../base/base.entity';
 import { Permissions } from '../permissions/permissions.entity';
 import { MODULES_ENTITY } from './modules.dto';
+import { Banners } from '../../banners/banners.entity';
 
 @Entity({ name: MODULES_ENTITY, schema: 'public' })
 @Tree('materialized-path')
@@ -60,4 +62,11 @@ export class Modules extends Base {
   @RelationId((module: Modules) => module.parent)
   @Column({ type: 'integer' })
   parent_id: number;
+
+  @ManyToOne(() => Banners, (banners) => banners.modules)
+  @JoinColumn({ name: 'banner_id' })
+  banners: Banners;
+  @RelationId((modules: Modules) => modules.banners)
+  @Column({ type: 'int' })
+  banner_id: number;
 }
