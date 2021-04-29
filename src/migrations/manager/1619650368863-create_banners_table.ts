@@ -1,4 +1,10 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableColumn,
+  TableForeignKey,
+} from 'typeorm';
 
 export class createBannersTable1619650368863 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -40,6 +46,23 @@ export class createBannersTable1619650368863 implements MigrationInterface {
         ],
       }),
       true,
+    );
+
+    await queryRunner.addColumns('modules', [
+      new TableColumn({
+        name: 'banner_id',
+        type: 'int',
+        isNullable: true,
+      }),
+    ]);
+
+    await queryRunner.createForeignKey(
+      'modules',
+      new TableForeignKey({
+        columnNames: ['banner_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'public.banners',
+      }),
     );
   }
 

@@ -14,8 +14,7 @@ import { AwsModule } from '../../aws/aws.module';
     {
       provide: SLIDERS_PROVIDER,
       inject: [DATABASE_MANAGER_PROVIDER],
-      useFactory: (connection: Connection) =>
-        connection.getRepository(Sliders),
+      useFactory: (connection: Connection) => connection.getRepository(Sliders),
     },
     SlidersService,
   ],

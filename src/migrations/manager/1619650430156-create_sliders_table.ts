@@ -71,7 +71,7 @@ export class createSlidersTable1619650430156 implements MigrationInterface {
       new TableForeignKey({
         columnNames: ['banner_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'banners',
+        referencedTableName: 'public.banners',
       }),
     );
   }
