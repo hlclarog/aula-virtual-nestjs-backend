@@ -38,4 +38,9 @@ export class PositionsService extends BaseService<
     }
     return await this.repository.update(id, data);
   }
+  async getPosition(positionId: number): Promise<any> {
+    return this.repository.findOneOrFail(positionId, {
+      relations: ['position_competences'],
+    });
+  }
 }
