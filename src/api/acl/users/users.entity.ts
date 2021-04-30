@@ -81,6 +81,9 @@ export class Users extends Base {
   state: string;
 
   @Column({ type: 'text' })
+  city: string;
+
+  @Column({ type: 'text' })
   address: string;
 
   @Column({ type: 'text' })

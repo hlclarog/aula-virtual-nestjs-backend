@@ -27,6 +27,8 @@ import * as shortid from 'shortid';
 import { UsersService } from '../acl/users/users.service';
 import { ProgramUsersService } from '../program_users/program_users.service';
 import { CourseUsersService } from '../course-users/course-users.service';
+import { getActualDateFormat } from './../../utils/date';
+import { timeConvert } from './../../utils/helper';
 
 @Injectable()
 export class CertificatesService extends BaseService<
@@ -66,7 +68,15 @@ export class CertificatesService extends BaseService<
     let dataProgress: Courses[];
     let validToGenerate = false;
     let originFolderCertificate = null;
-    let dataContentPdf = {};
+    let dataContentPdf: any = {
+      pageSize: 'LETTER',
+      pageOrientation: 'landscape',
+      pageMargins: [0, 0, 0, 0],
+      defaultStyle: {
+        fontSize: 15,
+        lineHeight: 1.3,
+      },
+    };
     switch (createDto.reference_type) {
       case TypesCertificates.COURSE:
         dataProgress = await this.lessonsService.findProgessByCourse(
@@ -77,9 +87,53 @@ export class CertificatesService extends BaseService<
           validToGenerate = true;
           originFolderCertificate = typeFilesAwsNames.courses_certificates;
           dataContentPdf = {
+            ...dataContentPdf,
+            background: {
+              image: cerficiateResources.background,
+              width: 792,
+              height: 612,
+            },
             content: [
-              `Felicidades ${userData.name} ${userData.lastname}`,
-              `Mediante la presente se le certfica que cumplio con lo necesario para obtener su certficado en ${dataProgress[0].name}`,
+              {
+                margin: [0, 210, 0, 0],
+                text: `Confiere el presente certficado a:`,
+                alignment: 'center',
+              },
+              {
+                text: `${userData.name} ${userData.lastname}`,
+                bold: true,
+                fontSize: 30,
+                alignment: 'center',
+              },
+              {
+                text: `Identificado con ${userData['identification_type'].description}`,
+                alignment: 'center',
+              },
+              {
+                text: `No. ${userData.identification}`,
+                alignment: 'center',
+              },
+              {
+                margin: [0, 20, 0, 0],
+                text: `Por su aprobacion del curso`,
+                alignment: 'center',
+              },
+              {
+                text: `${dataProgress[0].name}`,
+                bold: true,
+                fontSize: 18,
+                alignment: 'center',
+              },
+              {
+                text: `${userData.city}, ${getActualDateFormat()}`,
+                alignment: 'center',
+              },
+              {
+                text: `Con una intensidad horaria de ${timeConvert(
+                  dataProgress[0]['duration'],
+                )}`,
+                alignment: 'center',
+              },
             ],
           };
         }
@@ -105,9 +159,55 @@ export class CertificatesService extends BaseService<
           validToGenerate = true;
           originFolderCertificate = typeFilesAwsNames.programs_certificates;
           dataContentPdf = {
+            ...dataContentPdf,
+            background: {
+              image: cerficiateResources.background,
+              width: 792,
+              height: 612,
+            },
             content: [
-              `Felicidades ${userData.name} ${userData.lastname}`,
-              `Mediante la presente se le certfica que cumplio con lo necesario para obtener su certficado en ${dataProgram.name}`,
+              {
+                margin: [0, 210, 0, 0],
+                text: `Confiere el presente certficado a:`,
+                alignment: 'center',
+              },
+              {
+                text: `${userData.name} ${userData.lastname}`,
+                bold: true,
+                fontSize: 30,
+                alignment: 'center',
+              },
+              {
+                text: `Identificado con cédula`,
+                alignment: 'center',
+              },
+              {
+                text: `No. ${userData.identification}`,
+                alignment: 'center',
+              },
+              {
+                margin: [0, 20, 0, 0],
+                text: `Por su aprobacion del programa`,
+                alignment: 'center',
+              },
+              {
+                text: `${dataProgram.name}`,
+                bold: true,
+                fontSize: 18,
+                alignment: 'center',
+              },
+              {
+                text: `Barranquilla, ${getActualDateFormat()}`,
+                alignment: 'center',
+              },
+              {
+                text: `Con una intensidad horaria de ${timeConvert(
+                  dataProgress
+                    .map((c) => c['duration'])
+                    .reduce((a, b) => a + b),
+                )}`,
+                alignment: 'center',
+              },
             ],
           };
         }
@@ -145,7 +245,7 @@ export class CertificatesService extends BaseService<
       if (result.link) {
         result.link = await this.awsService.getFile(result.link);
       }
-      return result;
+      return { data: certificatePdf };
     } else {
       switch (createDto.reference_type) {
         case TypesCertificates.COURSE:

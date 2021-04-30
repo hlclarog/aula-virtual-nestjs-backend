@@ -65,8 +65,17 @@ export class OrganizationsCertificatesService extends BaseService<
           'NOT FOUND RESOURCES TO CERTIFICATE',
         );
       });
-    const dataCertficate = await this.repository.findOne(result.id);
-    return dataCertficate;
+    if (result.background) {
+      result.background = await this.awsService.getFileBase64(
+        result.background,
+      );
+    }
+    if (result.background_demo) {
+      result.background_demo = await this.awsService.getFileBase64(
+        result.background_demo,
+      );
+    }
+    return result;
   }
 
   async create(createDto: CreateOrganizationsCertificatesDto) {

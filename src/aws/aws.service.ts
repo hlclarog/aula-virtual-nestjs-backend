@@ -8,7 +8,11 @@ import {
   INFO_TENANCY_PROVIDER,
 } from './../utils/providers/info-tenancy.module';
 import { durationFilesUrl, S3_PROVIDER, SaveFileAws } from './aws.dto';
-import { extractDatab64, verifyIfBase64 } from './../utils/base64';
+import {
+  base64MimeType,
+  extractDatab64,
+  verifyIfBase64,
+} from './../utils/base64';
 import { ConfigService } from './../config/config.service';
 import * as AWS from 'aws-sdk';
 import * as parser from 'xml2json';
@@ -58,7 +62,7 @@ export class AwsService {
   }
 
   async saveZipScormContent({ file, name, type }: SaveFileAws): Promise<any> {
-    return await new Promise(async (resolve, reject) => {
+    return await new Promise(async (resolve) => {
       const verify = verifyIfBase64(file);
       if (verify) {
         const dataFile = await extractDatab64(file);
@@ -133,6 +137,27 @@ export class AwsService {
     });
   }
 
+  async getFileBase64(myKey): Promise<string> {
+    return await new Promise((resolve) => {
+      const myBucket = this.configService.getAwsBucket();
+      this.aws_s3.getObject(
+        {
+          Bucket: myBucket,
+          Key: myKey,
+        },
+        async (err, data) => {
+          if (err) {
+            console.log(err);
+          } else {
+            const attachment = data.Body.toString('base64');
+            const mimeType = await base64MimeType(attachment);
+            resolve(`data:${mimeType.mime};base64,${attachment}`);
+          }
+        },
+      );
+    });
+  }
+
   async getMetadata(myKey): Promise<any> {
     return await new Promise(async (resolve) => {
       const myBucket = this.configService.getAwsBucket();
@@ -151,7 +176,7 @@ export class AwsService {
     });
   }
 
-  async getScorm(myKey): Promise<string> {
+  async getScorm(): Promise<string> {
     return await new Promise((resolve, reject) => {
       const myBucket = this.configService.getAwsBucket();
       // const signedUrlExpireSeconds = durationFilesUrl.img_user;
