@@ -7,6 +7,8 @@ import {
 import { BaseService } from '../../../base/base.service';
 import { BaseRepo } from '../../../base/base.repository';
 import { Modules } from './modules.entity';
+import { durationFilesUrl } from '../../../aws/aws.dto';
+import { AwsService } from '../../../aws/aws.service';
 
 @Injectable()
 export class ModulesService extends BaseService<
@@ -16,7 +18,7 @@ export class ModulesService extends BaseService<
 > {
   @Inject(MODULES_PROVIDER) repository: BaseRepo<Modules>;
 
-  constructor() {
+  constructor(private readonly awsService: AwsService) {
     super();
   }
 
@@ -44,5 +46,26 @@ export class ModulesService extends BaseService<
         qb.where('permissions.deleted_at is null', {});
       },
     });
+  }
+
+  async getBannerByModule(id: number): Promise<Modules> {
+    const result: Modules = await this.repository
+      .createQueryBuilder('modules')
+      .select(['modules.id', 'banners.description', 'sliders'])
+      .where('modules.id = :id', { id })
+      .leftJoinAndSelect('modules.banners', 'banners')
+      .leftJoinAndSelect('banners.sliders', 'sliders')
+      .getOne();
+
+    result.banners.sliders.map(async (slider) => {
+      if (slider.image) {
+        slider.image = await this.awsService.getFile(
+          slider.image,
+          durationFilesUrl.images_tenancy,
+        );
+      }
+    });
+
+    return result;
   }
 }
