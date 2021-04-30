@@ -19,3 +19,9 @@ export class CreateCertificatesDto extends CreateBaseDto {
   @IsNotEmpty()
   readonly certification_validate_code: string;
 }
+
+export class CreateCertificatesDemoDto extends CreateBaseDto {
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly organization_id: number;
+  @ApiProperty() @IsString() @IsNotEmpty() readonly reference_type: string;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly reference_id: number;
+}

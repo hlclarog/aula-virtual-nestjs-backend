@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import {
+  CreateCertificatesDemoDto,
   CreateCertificatesDto,
   ORGANIZATIONS_PROVIDER,
   TypesCertificates,
@@ -21,6 +22,7 @@ import { ProgramsService } from '../programs/programs.service';
 import { ProgramCoursesService } from '../program_courses/program_courses.service';
 import { Courses } from '../courses/courses.entity';
 import { generateFile } from './../../utils/pdfmake/pdfmake.generator';
+import { generateFile as generateFileFromHtml } from './../../utils/pdfhtml/pdfhtml.generator';
 import { AwsService } from './../../aws/aws.service';
 import { typeFilesAwsNames } from './../../aws/aws.dto';
 import * as shortid from 'shortid';
@@ -245,7 +247,7 @@ export class CertificatesService extends BaseService<
       if (result.link) {
         result.link = await this.awsService.getFile(result.link);
       }
-      return { data: certificatePdf };
+      return { data: result };
     } else {
       switch (createDto.reference_type) {
         case TypesCertificates.COURSE:
@@ -256,6 +258,76 @@ export class CertificatesService extends BaseService<
           break;
       }
     }
+  }
+
+  async generateDemo(createDto: CreateCertificatesDemoDto) {
+    const cerficiateResources = await this.organizationsCertificatesService.findSelected(
+      createDto.organization_id,
+    );
+    const userData = await this.usersService.findOne(this.infoUser.id);
+    let dataProgress: Courses[];
+    const options: any = {
+      width: '792px',
+      height: '612px',
+      margin: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+      },
+      printBackground: true,
+    };
+    const setContent = (content) => {
+      return {
+        content: `
+          <body style="margin: 0">
+            <div style="
+              background-image: url('${cerficiateResources.background_demo}');
+              width: 792px;height: 612px;
+              margin: 0px;
+              background-repeat: no-repeat;
+              background-size: 792px 612px;
+              position: relative;
+            ">
+            <div style="
+              margin: 0;
+              width: 100%;
+              position: absolute;
+              top: 50%;
+              -ms-transform: translateY(-50%);
+              transform: translateY(-50%);">
+                ${cerficiateResources.content}
+              </div>
+            </div>
+          </body>
+        `,
+      };
+    };
+    let content = null;
+    switch (createDto.reference_type) {
+      case TypesCertificates.COURSE:
+        dataProgress = await this.lessonsService.findProgessByCourse(
+          [createDto.reference_id],
+          this.infoUser.id,
+        );
+        content = setContent('<h1>Welcome to html-pdf-node</h1>');
+        break;
+      case TypesCertificates.PROGRAM:
+        const dataProgramCourses = await this.programCoursesService.findByProgram(
+          createDto.reference_id,
+        );
+        dataProgress = await this.lessonsService.findProgessByCourse(
+          dataProgramCourses.map((r) => r.course_id),
+          this.infoUser.id,
+        );
+        const dataProgram = await this.programsService.findOne(
+          createDto.reference_id,
+        );
+        content = setContent('<h1>Welcome to html-pdf-node</h1>');
+        break;
+    }
+    const certificatePdf = await generateFileFromHtml(content, options);
+    return { data: certificatePdf };
   }
 
   async saveCertificate(file, type) {

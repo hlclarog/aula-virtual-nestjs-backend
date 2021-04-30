@@ -47,6 +47,7 @@
     "crypto-js": "^4.0.0",
     "file-type": "^16.2.0",
     "hbs": "^4.1.1",
+    "html-pdf-node": "^1.0.7",
     "module": "^1.2.5",
     "moment": "^2.29.1",
     "mongo": "^0.1.0",
