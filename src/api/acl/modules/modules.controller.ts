@@ -42,6 +42,7 @@ export class ModulesController extends BaseController<
 
   @Get('banner/:id')
   async getBannerByModule(@Param('id') id: number) {
-    return await this.modulesService.getBannerByModule(id);
+    const data = await this.modulesService.getBannerByModule(id);
+    return { data };
   }
 }

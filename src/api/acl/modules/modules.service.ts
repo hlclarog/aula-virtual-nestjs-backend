@@ -55,16 +55,18 @@ export class ModulesService extends BaseService<
       .where('modules.id = :id', { id })
       .leftJoinAndSelect('modules.banners', 'banners')
       .leftJoinAndSelect('banners.sliders', 'sliders')
-      .getOne();
+      .getOneOrFail();
 
-    result.banners.sliders.map(async (slider) => {
-      if (slider.image) {
-        slider.image = await this.awsService.getFile(
-          slider.image,
-          durationFilesUrl.images_tenancy,
-        );
-      }
-    });
+    if (result?.banners?.sliders) {
+      result.banners.sliders.map(async (slider) => {
+        if (slider.image) {
+          slider.image = await this.awsService.getFile(
+            slider.image,
+            durationFilesUrl.images_tenancy,
+          );
+        }
+      });
+    }
 
     return result;
   }
