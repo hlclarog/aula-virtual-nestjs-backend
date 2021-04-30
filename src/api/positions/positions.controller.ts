@@ -28,7 +28,8 @@ export class PositionsController extends BaseController<
   @Get(':id')
   async find(@Param('id') id: number) {
     // return await this.findOne(id);
-    return await this.positionsService.getPosition(id);
+    const result = await this.positionsService.getPosition(id);
+    return { data: result};
   }
 
   @Put(':id')
