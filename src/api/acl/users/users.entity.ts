@@ -27,7 +27,7 @@ import { CourseTeachers } from './../../course_teachers/course_teachers.entity';
 import { UsersCompetences } from './../../users_competences/users_competences.entity';
 import { UsersPositionGoals } from './../../users_position_goals/users_position_goals.entity';
 import { CoursePayments } from '../../course_payments/course_payments.entity';
-import { IdentificationTypes } from 'src/api/identification_types/identification_types.entity';
+import { IdentificationTypes } from './../../identification_types/identification_types.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {

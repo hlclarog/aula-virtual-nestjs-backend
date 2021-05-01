@@ -25,3 +25,15 @@ export class CreateCertificatesDemoDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly reference_type: string;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly reference_id: number;
 }
+
+export interface HandleDataCertificate {
+  STUDENT_IDENTIFICATION?: string;
+  STUDENT_NAME?: string;
+  CERTIFICATE_TITLE?: string;
+  CERTIFICATE_TYPE?: string;
+  DATE?: string;
+  CITY?: string;
+  DURATION?: string;
+  SIGN_TEXT?: string;
+  SIGN_PICTURE?: string;
+}

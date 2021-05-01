@@ -21,7 +21,6 @@ import {
 import { ProgramsService } from '../programs/programs.service';
 import { ProgramCoursesService } from '../program_courses/program_courses.service';
 import { Courses } from '../courses/courses.entity';
-import { generateFile } from './../../utils/pdfmake/pdfmake.generator';
 import { generateFile as generateFileFromHtml } from './../../utils/pdfhtml/pdfhtml.generator';
 import { AwsService } from './../../aws/aws.service';
 import { typeFilesAwsNames } from './../../aws/aws.dto';
@@ -31,6 +30,9 @@ import { ProgramUsersService } from '../program_users/program_users.service';
 import { CourseUsersService } from '../course-users/course-users.service';
 import { getActualDateFormat } from './../../utils/date';
 import { timeConvert } from './../../utils/helper';
+import { generateContent } from './certificates.generate_pdf';
+import { Users } from '../acl/users/users.entity';
+import { OrganizationsCertificates } from '../organizations_certificates/organizations_certificates.entity';
 
 @Injectable()
 export class CertificatesService extends BaseService<
@@ -63,166 +65,24 @@ export class CertificatesService extends BaseService<
   }
 
   async generate(createDto: CreateCertificatesDto) {
-    const cerficiateResources = await this.organizationsCertificatesService.findSelected(
+    const certificateResources = await this.organizationsCertificatesService.findSelected(
       createDto.organization_id,
     );
     const userData = await this.usersService.findOne(this.infoUser.id);
-    let dataProgress: Courses[];
-    let validToGenerate = false;
-    let originFolderCertificate = null;
-    let dataContentPdf: any = {
-      pageSize: 'LETTER',
-      pageOrientation: 'landscape',
-      pageMargins: [0, 0, 0, 0],
-      defaultStyle: {
-        fontSize: 15,
-        lineHeight: 1.3,
-      },
-    };
-    switch (createDto.reference_type) {
-      case TypesCertificates.COURSE:
-        dataProgress = await this.lessonsService.findProgessByCourse(
-          [createDto.reference_id],
-          this.infoUser.id,
-        );
-        if (dataProgress[0]['progress'] == 100) {
-          validToGenerate = true;
-          originFolderCertificate = typeFilesAwsNames.courses_certificates;
-          dataContentPdf = {
-            ...dataContentPdf,
-            background: {
-              image: cerficiateResources.background,
-              width: 792,
-              height: 612,
-            },
-            content: [
-              {
-                margin: [0, 210, 0, 0],
-                text: `Confiere el presente certficado a:`,
-                alignment: 'center',
-              },
-              {
-                text: `${userData.name} ${userData.lastname}`,
-                bold: true,
-                fontSize: 30,
-                alignment: 'center',
-              },
-              {
-                text: `Identificado con ${userData['identification_type'].description}`,
-                alignment: 'center',
-              },
-              {
-                text: `No. ${userData.identification}`,
-                alignment: 'center',
-              },
-              {
-                margin: [0, 20, 0, 0],
-                text: `Por su aprobacion del curso`,
-                alignment: 'center',
-              },
-              {
-                text: `${dataProgress[0].name}`,
-                bold: true,
-                fontSize: 18,
-                alignment: 'center',
-              },
-              {
-                text: `${userData.city}, ${getActualDateFormat()}`,
-                alignment: 'center',
-              },
-              {
-                text: `Con una intensidad horaria de ${timeConvert(
-                  dataProgress[0]['duration'],
-                )}`,
-                alignment: 'center',
-              },
-            ],
-          };
-        }
-        break;
-      case TypesCertificates.PROGRAM:
-        const dataProgram = await this.programsService.findOne(
-          createDto.reference_id,
-        );
-        const dataProgramCourses = await this.programCoursesService.findByProgram(
-          createDto.reference_id,
-        );
-        dataProgress = await this.lessonsService.findProgessByCourse(
-          dataProgramCourses.map((r) => r.course_id),
-          this.infoUser.id,
-        );
-        const courses_finlaized = dataProgress.filter(
-          (d) => d['progress'] == 100,
-        ).length;
-        const certifiable_number = dataProgram.certifiable_number
-          ? dataProgram.certifiable_number
-          : 0;
-        if (Number(courses_finlaized) >= Number(certifiable_number)) {
-          validToGenerate = true;
-          originFolderCertificate = typeFilesAwsNames.programs_certificates;
-          dataContentPdf = {
-            ...dataContentPdf,
-            background: {
-              image: cerficiateResources.background,
-              width: 792,
-              height: 612,
-            },
-            content: [
-              {
-                margin: [0, 210, 0, 0],
-                text: `Confiere el presente certficado a:`,
-                alignment: 'center',
-              },
-              {
-                text: `${userData.name} ${userData.lastname}`,
-                bold: true,
-                fontSize: 30,
-                alignment: 'center',
-              },
-              {
-                text: `Identificado con cédula`,
-                alignment: 'center',
-              },
-              {
-                text: `No. ${userData.identification}`,
-                alignment: 'center',
-              },
-              {
-                margin: [0, 20, 0, 0],
-                text: `Por su aprobacion del programa`,
-                alignment: 'center',
-              },
-              {
-                text: `${dataProgram.name}`,
-                bold: true,
-                fontSize: 18,
-                alignment: 'center',
-              },
-              {
-                text: `Barranquilla, ${getActualDateFormat()}`,
-                alignment: 'center',
-              },
-              {
-                text: `Con una intensidad horaria de ${timeConvert(
-                  dataProgress
-                    .map((c) => c['duration'])
-                    .reduce((a, b) => a + b),
-                )}`,
-                alignment: 'center',
-              },
-            ],
-          };
-        }
-        break;
-    }
-    if (validToGenerate) {
-      const certificatePdf = await generateFile(dataContentPdf, {});
+    const dataCertificate = await this.createCertificate(
+      createDto.reference_id,
+      createDto.reference_type,
+      certificateResources,
+      userData,
+      false,
+    );
+    if (dataCertificate.validToGenerate) {
       const filePdfAws = await this.saveCertificate(
-        certificatePdf,
-        originFolderCertificate,
+        dataCertificate.dataPdf,
+        dataCertificate.originFolderCertificate,
       );
       const result = await this.repository.save({
-        organization_certificate_id: cerficiateResources.id,
+        organization_certificate_id: certificateResources.id,
         reference_type: createDto.reference_type,
         reference_id: createDto.reference_id,
         certification_validate_code: createDto.certification_validate_code,
@@ -261,73 +121,108 @@ export class CertificatesService extends BaseService<
   }
 
   async generateDemo(createDto: CreateCertificatesDemoDto) {
-    const cerficiateResources = await this.organizationsCertificatesService.findSelected(
+    const certificateResources = await this.organizationsCertificatesService.findSelected(
       createDto.organization_id,
     );
     const userData = await this.usersService.findOne(this.infoUser.id);
+    const result = await this.createCertificate(
+      createDto.reference_id,
+      createDto.reference_type,
+      certificateResources,
+      userData,
+      true,
+    );
+    return result;
+  }
+
+  async createCertificate(
+    reference_id: number,
+    reference_type: string,
+    certificateResources: OrganizationsCertificates,
+    userData: Users,
+    demo: boolean,
+  ) {
     let dataProgress: Courses[];
-    const options: any = {
-      width: '792px',
-      height: '612px',
-      margin: {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-      },
-      printBackground: true,
-    };
-    const setContent = (content) => {
-      return {
-        content: `
-          <body style="margin: 0">
-            <div style="
-              background-image: url('${cerficiateResources.background_demo}');
-              width: 792px;height: 612px;
-              margin: 0px;
-              background-repeat: no-repeat;
-              background-size: 792px 612px;
-              position: relative;
-            ">
-            <div style="
-              margin: 0;
-              width: 100%;
-              position: absolute;
-              top: 50%;
-              -ms-transform: translateY(-50%);
-              transform: translateY(-50%);">
-                ${cerficiateResources.content}
-              </div>
-            </div>
-          </body>
-        `,
-      };
-    };
-    let content = null;
-    switch (createDto.reference_type) {
+    let dataFormat = null;
+    let validToGenerate = false;
+    let originFolderCertificate = '';
+    switch (reference_type) {
       case TypesCertificates.COURSE:
         dataProgress = await this.lessonsService.findProgessByCourse(
-          [createDto.reference_id],
+          [reference_id],
           this.infoUser.id,
         );
-        content = setContent('<h1>Welcome to html-pdf-node</h1>');
+        dataFormat = generateContent(
+          certificateResources.content,
+          demo
+            ? certificateResources.background_demo
+            : certificateResources.background,
+          {
+            STUDENT_IDENTIFICATION: userData.identification,
+            STUDENT_NAME: `${userData.name} ${userData.lastname}`,
+            CERTIFICATE_TITLE: dataProgress[0].name,
+            CERTIFICATE_TYPE: 'curso',
+            DATE: getActualDateFormat(),
+            CITY: userData.city,
+            DURATION: timeConvert(dataProgress[0]['duration']),
+            SIGN_PICTURE: certificateResources.sign_picture,
+            SIGN_TEXT: certificateResources.sign_text,
+          },
+        );
+        if (dataProgress[0]['progress'] == 100) {
+          validToGenerate = true;
+          originFolderCertificate = typeFilesAwsNames.courses_certificates;
+        }
         break;
       case TypesCertificates.PROGRAM:
         const dataProgramCourses = await this.programCoursesService.findByProgram(
-          createDto.reference_id,
+          reference_id,
         );
         dataProgress = await this.lessonsService.findProgessByCourse(
           dataProgramCourses.map((r) => r.course_id),
           this.infoUser.id,
         );
-        const dataProgram = await this.programsService.findOne(
-          createDto.reference_id,
+        const dataProgram = await this.programsService.findOne(reference_id);
+        const courses_finlaized = dataProgress.filter(
+          (d) => d['progress'] == 100,
+        ).length;
+        const certifiable_number = dataProgram.certifiable_number
+          ? dataProgram.certifiable_number
+          : 0;
+        if (Number(courses_finlaized) >= Number(certifiable_number)) {
+          validToGenerate = true;
+          originFolderCertificate = typeFilesAwsNames.programs_certificates;
+        }
+        dataFormat = generateContent(
+          certificateResources.content,
+          demo
+            ? certificateResources.background_demo
+            : certificateResources.background,
+          {
+            STUDENT_IDENTIFICATION: userData.identification,
+            STUDENT_NAME: `${userData.name} ${userData.lastname}`,
+            CERTIFICATE_TITLE: dataProgram.name,
+            CERTIFICATE_TYPE: 'programa',
+            DATE: getActualDateFormat(),
+            CITY: userData.city,
+            DURATION: timeConvert(
+              dataProgress.map((c) => c['duration']).reduce((a, b) => a + b),
+            ),
+            SIGN_PICTURE: certificateResources.sign_picture,
+            SIGN_TEXT: certificateResources.sign_text,
+          },
         );
-        content = setContent('<h1>Welcome to html-pdf-node</h1>');
         break;
     }
-    const certificatePdf = await generateFileFromHtml(content, options);
-    return { data: certificatePdf };
+    const certificatePdf = await generateFileFromHtml(
+      dataFormat.content,
+      dataFormat.options,
+    );
+    return {
+      dataPdf: certificatePdf,
+      validToGenerate,
+      originFolderCertificate,
+    };
   }
 
   async saveCertificate(file, type) {

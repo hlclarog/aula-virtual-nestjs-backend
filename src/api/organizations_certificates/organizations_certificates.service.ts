@@ -38,16 +38,8 @@ export class OrganizationsCertificatesService extends BaseService<
         result.background_demo,
       );
     }
-    if (result.sign_text) {
-      result.sign_text = await this.awsService.getFile(result.sign_text);
-    }
     if (result.sign_picture) {
       result.sign_picture = await this.awsService.getFile(result.sign_picture);
-    }
-    if (result.sign_position) {
-      result.sign_position = await this.awsService.getFile(
-        result.sign_position,
-      );
     }
     return result;
   }
@@ -75,6 +67,11 @@ export class OrganizationsCertificatesService extends BaseService<
         result.background_demo,
       );
     }
+    if (result.sign_picture) {
+      result.sign_picture = await this.awsService.getFileBase64(
+        result.sign_picture,
+      );
+    }
     return result;
   }
 
@@ -86,14 +83,8 @@ export class OrganizationsCertificatesService extends BaseService<
     if (createDto.background_demo) {
       data.background_demo = await this.setFile(createDto.background_demo);
     }
-    if (createDto.sign_text) {
-      data.sign_text = await this.setFile(createDto.sign_text);
-    }
     if (createDto.sign_picture) {
       data.sign_picture = await this.setFile(createDto.sign_picture);
-    }
-    if (createDto.sign_position) {
-      data.sign_position = await this.setFile(createDto.sign_position);
     }
     const result = await this.repository.save(data);
     return result;
@@ -107,14 +98,8 @@ export class OrganizationsCertificatesService extends BaseService<
     if (updateDto.background_demo) {
       data.background_demo = await this.setFile(updateDto.background_demo);
     }
-    if (updateDto.sign_text) {
-      data.sign_text = await this.setFile(updateDto.sign_text);
-    }
     if (updateDto.sign_picture) {
       data.sign_picture = await this.setFile(updateDto.sign_picture);
-    }
-    if (updateDto.sign_position) {
-      data.sign_position = await this.setFile(updateDto.sign_position);
     }
     const result = await this.repository.update(id, data);
     return result;
