@@ -11,7 +11,7 @@ export class PositionsController extends BaseController<
   CreatePositionsDto,
   UpdatePositionsDto
 > {
-  constructor(positionsService: PositionsService) {
+  constructor(private positionsService: PositionsService) {
     super(positionsService);
   }
 
@@ -26,8 +26,10 @@ export class PositionsController extends BaseController<
   }
 
   @Get(':id')
-  async find(@Param('id') id: string) {
-    return await this.findOne(id);
+  async find(@Param('id') id: number) {
+    // return await this.findOne(id);
+    const result = await this.positionsService.getPosition(id);
+    return { data: result};
   }
 
   @Put(':id')

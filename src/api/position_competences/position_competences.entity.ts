@@ -15,7 +15,11 @@ export class PositionCompetences extends Base {
   @Column('integer')
   position_id: number;
 
-  @ManyToOne(() => Competence, (competence) => competence.position_competences)
+  @ManyToOne(
+    () => Competence,
+    (competence) => competence.position_competences,
+    { eager: true },
+  )
   @JoinColumn({ name: 'competence_id' })
   competence: Competence;
   @RelationId(

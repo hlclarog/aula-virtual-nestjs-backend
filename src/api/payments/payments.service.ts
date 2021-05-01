@@ -156,7 +156,11 @@ export class PaymentsService extends BaseService<
           : courseFeeSchedule.certificate_val,
       ),
       currency_type_id: input.currency_id,
-      transaction_reference: generateCourseCode(type),
+      transaction_reference: generateCourseCode(
+        type,
+        input.user_id,
+        input.course_id,
+      ),
     };
     const paymentsSave = await this.addPayment(paymentData);
     await this.addCourseToPayment(input, paymentsSave);
@@ -215,9 +219,9 @@ export class PaymentsService extends BaseService<
       buyerEmail: this.infoUser.email,
       apiPayu: 'https://sandbox.checkout.payulatam.com/ppp-web-gateway-payu/',
       responseUrl:
-        'http://localhost:3000/payment/web_checkout/payu/cua/response',
+        'https://apidev.omarenco.com/payment/web_checkout/payu/cua/response',
       confirmationUrl:
-        'http://localhost:3000/payment/web_checkout/payu/cua/confirmation',
+        'https://apidev.omarenco.com/payment/web_checkout/payu/cua/confirmation',
     };
   }
 

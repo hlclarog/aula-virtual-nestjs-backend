@@ -11,7 +11,7 @@ export class ModulesController extends BaseController<
   CreateModulesDto,
   UpdateModulesDto
 > {
-  constructor(modulesService: ModulesService) {
+  constructor(private modulesService: ModulesService) {
     super(modulesService);
   }
 
@@ -38,5 +38,11 @@ export class ModulesController extends BaseController<
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.remove(id);
+  }
+
+  @Get('banner/:id')
+  async getBannerByModule(@Param('id') id: number) {
+    const data = await this.modulesService.getBannerByModule(id);
+    return { data };
   }
 }
