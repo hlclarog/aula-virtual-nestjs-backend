@@ -156,7 +156,11 @@ export class PaymentsService extends BaseService<
           : courseFeeSchedule.certificate_val,
       ),
       currency_type_id: input.currency_id,
-      transaction_reference: generateCourseCode(type),
+      transaction_reference: generateCourseCode(
+        type,
+        input.user_id,
+        input.course_id,
+      ),
     };
     const paymentsSave = await this.addPayment(paymentData);
     await this.addCourseToPayment(input, paymentsSave);
