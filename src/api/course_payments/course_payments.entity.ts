@@ -10,10 +10,12 @@ export class CoursePayments extends Base {
   @ManyToOne(() => Courses, (courses) => courses.course_payment)
   @JoinColumn({ name: 'course_id' })
   courses: Courses;
+
   @RelationId((course_payments: CoursePayments) => course_payments.courses)
   @Column({ type: 'int' })
   course_id: number;
 
+  // Relation
   @OneToOne(() => Payments, (payments) => payments.course_payment)
   @JoinColumn({ name: 'payment_id' })
   payments: Payments;
@@ -21,6 +23,7 @@ export class CoursePayments extends Base {
   @Column({ type: 'int' })
   payment_id: number;
 
+  // end relation
   @ManyToOne(() => Users, (users: Users) => users.course_payments)
   @JoinColumn({ name: 'user_id' })
   users: Users;

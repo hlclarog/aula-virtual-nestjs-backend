@@ -11,24 +11,36 @@ import { CoursePayments } from '../course_payments/course_payments.entity';
 @Entity({ name: PAYMENTS_ENTITY })
 export class Payments extends Base {
   @ManyToOne(() => PaymentStatus, (payment_status) => payment_status.payments)
-  @JoinColumn({ name: 'payment_state_id' }) payment_state: PaymentStatus;
+  @JoinColumn({ name: 'payment_state_id' })
+  payment_state: PaymentStatus;
   @RelationId((payments: Payments) => payments.payment_state)
-  @Column({ type: 'int' }) payment_state_id: number;
+  @RelationId((payments: Payments) => payments.course_payment)
+  @Column({ type: 'int' })
+  payment_state_id: number;
 
-  @ManyToOne(() => CollectionTypes, (collection_types) => collection_types.payments)
-  @JoinColumn({ name: 'collection_type_id' }) collection_type: CollectionTypes;
+  @ManyToOne(
+    () => CollectionTypes,
+    (collection_types) => collection_types.payments,
+  )
+  @JoinColumn({ name: 'collection_type_id' })
+  collection_type: CollectionTypes;
   @RelationId((payments: Payments) => payments.collection_type)
-  @Column({ type: 'int' }) collection_type_id: number;
+  @Column({ type: 'int' })
+  collection_type_id: number;
 
   @ManyToOne(() => Currencies, (currencies) => currencies.payments)
-  @JoinColumn({ name: 'currency_type_id' }) currency_type: Currencies;
+  @JoinColumn({ name: 'currency_type_id' })
+  currency_type: Currencies;
   @RelationId((payments: Payments) => payments.currency_type)
-  @Column({ type: 'int' }) currency_type_id: number;
+  @Column({ type: 'int' })
+  currency_type_id: number;
 
   @ManyToOne(() => Organizations, (organizations) => organizations.payments)
-  @JoinColumn({ name: 'organization_id' }) organization: Organizations;
+  @JoinColumn({ name: 'organization_id' })
+  organization: Organizations;
   @RelationId((payments: Payments) => payments.organization)
-  @Column({ type: 'int' }) organization_id: number;
+  @Column({ type: 'int' })
+  organization_id: number;
 
   @Column({ type: 'text', nullable: true }) collection_file: string;
   @Column({ type: 'varchar', nullable: true }) transaction_code: string;
@@ -47,9 +59,11 @@ export class Payments extends Base {
     { eager: true },
   )
   program_payment: ProgramPayment[];
+
+
   @OneToOne(
     () => CoursePayments,
-    (course_payments) => course_payments.courses,
+    (course_payments) => course_payments.payments,
     { eager: true },
   )
   course_payment: CoursePayments;

@@ -94,9 +94,14 @@ export class PaymentService {
 
   async payuConfirmation(input: IpayuConfirmation, subDomain: string) {
     const con = await this.createConnection(subDomain);
-    const pay: Payments = await con
+    const pay: Payments = await
+      con
       .getRepository(Payments)
-      .findOne({ transaction_reference: input.reference_sale });
+      .findOne({
+      transaction_reference: input.reference_sale,
+    });
+
+    console.log(pay);
 
     con.getRepository(Payments).update(pay.id, {
       payment_state_id: this.getPaymentResponse(input.state_pol),
@@ -106,8 +111,13 @@ export class PaymentService {
     });
     if (input.state_pol === '4') {
       const references_code = pay.transaction_reference.split('-');
+
+      console.log('Ahora Estamos Ingresando =>', references_code);
+
       switch (references_code[0]) {
         case 'COURSE':
+          console.log('Ingresó a Enrolar al usuario=> ');
+          console.log(pay);
           this.createEnrollmentToCourse(con, pay);
           break;
         case 'CERTIFICATE':
@@ -116,8 +126,8 @@ export class PaymentService {
     }
   }
 
-  createEnrollmentToCourse(con: any, pay: Payments) {
-    con
+  async createEnrollmentToCourse(con: any, pay: Payments) {
+    const result = await con
       .createQueryBuilder()
       .insert()
       .into(CourseUsers)
@@ -133,6 +143,7 @@ export class PaymentService {
         },
       ])
       .execute();
+    console.log('Respuesta de Insercion de Query', result);
   }
   generateCertificate() {}
 }
