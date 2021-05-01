@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, RelationId } from 'typeorm';
 import { COURSE_PAYMENTS_ENTITY } from './course_payments.dto';
 import { Base } from '../../base/base.entity';
 import { Courses } from '../courses/courses.entity';
@@ -14,7 +14,7 @@ export class CoursePayments extends Base {
   @Column({ type: 'int' })
   course_id: number;
 
-  @ManyToOne(() => Payments, (Payments) => Payments.course_payments)
+  @OneToOne(() => Payments, (payments) => payments.course_payment)
   @JoinColumn({ name: 'payment_id' })
   payments: Payments;
   @RelationId((course_payment: CoursePayments) => course_payment.payments)

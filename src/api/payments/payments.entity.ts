@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, RelationId } from 'typeorm';
 import { PAYMENTS_ENTITY } from './payments.dto';
 import { Base } from '../../base/base.entity';
 import { PaymentStatus } from '../payment_status/payment_status.entity';
@@ -41,8 +41,16 @@ export class Payments extends Base {
   @Column({ type: 'date', nullable: true }) paid_date: string; // Pague Al día siguiente en Baloto => paid_date
   @Column({ type: 'date', nullable: true }) processed_date: string; // Payu es notificado por Baloto al tercer día => processed_date
 
-  @OneToMany(() => ProgramPayment, (program_payment) => program_payment.programs)
+  @OneToMany(
+    () => ProgramPayment,
+    (program_payment) => program_payment.programs,
+    { eager: true },
+  )
   program_payment: ProgramPayment[];
-  @OneToMany(() => CoursePayments, (course_payments) => course_payments.courses)
-  course_payments: CoursePayments[];
+  @OneToOne(
+    () => CoursePayments,
+    (course_payments) => course_payments.courses,
+    { eager: true },
+  )
+  course_payment: CoursePayments;
 }

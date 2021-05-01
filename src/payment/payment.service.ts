@@ -9,6 +9,9 @@ import {
   PAYMENT_STATUS_ENUM,
   TRANSACTION_STATE_ENUM,
 } from '../api/payment_status/payment_status.dto';
+import { CoursePayments } from '../api/course_payments/course_payments.entity';
+import { CourseUsers } from '../api/course-users/course-users.entity';
+import { ENROLLMENT_TYPE } from '../api/enrollment-types/enrollment-types.dto';
 
 @Injectable()
 export class PaymentService {
@@ -91,15 +94,45 @@ export class PaymentService {
 
   async payuConfirmation(input: IpayuConfirmation, subDomain: string) {
     const con = await this.createConnection(subDomain);
-    const pay = await con
+    const pay: Payments = await con
       .getRepository(Payments)
       .findOne({ transaction_reference: input.reference_sale });
 
-    return await con.getRepository(Payments).update(pay.id, {
+    con.getRepository(Payments).update(pay.id, {
       payment_state_id: this.getPaymentResponse(input.state_pol),
       processed_date: input.date,
       transaction_code: input.transaction_id,
       snapshot: JSON.stringify(input),
     });
+    if (input.state_pol === '4') {
+      const references_code = pay.transaction_reference.split('-');
+      switch (references_code[0]) {
+        case 'COURSE':
+          this.createEnrollmentToCourse(con, pay);
+          break;
+        case 'CERTIFICATE':
+          break;
+      }
+    }
   }
+
+  createEnrollmentToCourse(con: any, pay: Payments) {
+    con
+      .createQueryBuilder()
+      .insert()
+      .into(CourseUsers)
+      .values([
+        {
+          course_id: pay.course_payment.course_id,
+          user_id: pay.course_payment.user_id,
+          enrollment_status_id: 1,
+          enrollment_type_id: ENROLLMENT_TYPE.CURSO,
+          begin_date: new Date(Date.now()).toLocaleDateString(
+            'zh-Hans-CN',
+          )
+        },
+      ])
+      .execute();
+  }
+  generateCertificate() {}
 }
