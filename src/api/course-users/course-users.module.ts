@@ -13,6 +13,7 @@ import { LessonScormIntentsModule } from '../lesson_scorm_intents/lesson_scorm_i
 import { LessonTryUsersModule } from '../lesson_try_users/lesson_try_users.module';
 import { ProgramUserCourseModule } from '../program_user_course/program_user_course.module';
 import { ProgramCoursesModule } from '../program_courses/program_courses.module';
+import { AwsModule } from './../../aws/aws.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ProgramCoursesModule } from '../program_courses/program_courses.module'
     LessonTryUsersModule,
     ProgramUserCourseModule,
     ProgramCoursesModule,
+    AwsModule,
   ],
   controllers: [CourseUsersController],
   providers: [
