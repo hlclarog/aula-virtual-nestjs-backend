@@ -19,7 +19,7 @@ export class ProgramsService extends BaseService<
   Programs,
   CreateProgramsDto,
   UpdateProgramsDto
-> {
+  > {
   @Inject(PROGRAMS_PROVIDER) repository: BaseRepo<Programs>;
 
   private selectedRow = [
@@ -95,9 +95,11 @@ export class ProgramsService extends BaseService<
       1,
       new Date(Date.now()).toLocaleDateString('zh-Hans-CN'),
     );
-
-    program['price_val'] = feeScheduleToday.program_val;
-    program['inscription_val'] = feeScheduleToday.inscription_val;
+    console.log(feeScheduleToday);
+    program['price_val'] = (feeScheduleToday == undefined) ? undefined : feeScheduleToday.program_val;
+    program['inscription_val'] = (feeScheduleToday == undefined)
+      ? undefined
+      : feeScheduleToday.inscription_val;
 
     return program;
   }
