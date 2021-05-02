@@ -87,6 +87,7 @@ export class CoursesService extends BaseService<
     let list = [];
     let result = await this.repository
       .createQueryBuilder('course')
+      .where('course.course_status_id=1 AND course.active=true')
       .leftJoinAndSelect(
         'course.course_users',
         'course_user',
@@ -269,7 +270,7 @@ export class CoursesService extends BaseService<
         '(now() BETWEEN fee.begin AND fee.end) AND fee.course_id = course.id',
       )
       .leftJoin('course_user.user', 'student')
-      .where('course.id = :id', { id })
+      .where('course.id = :id AND course.active=true', { id })
       .getOne();
     if (course.picture) {
       course.picture = await this.awsService.getFile(course.picture);

@@ -39,6 +39,7 @@ export class InterestAreasService extends BaseService<
             'course_interest_area.course_id',
             'course.id',
             'course.name',
+            'course.course_status_id',
             'course.code',
             'course.description',
             'course.picture',
@@ -82,6 +83,7 @@ export class InterestAreasService extends BaseService<
           )
           .leftJoin('fee.currency', 'currency')
           .leftJoin('course_user.user', 'student')
+          .where('course.course_status_id=1')
           .getMany();
         break;
       case 'student':
