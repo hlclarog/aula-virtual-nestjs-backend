@@ -31,6 +31,8 @@ import { ProgramUserCourse } from '../program_user_course/program_user_course.en
 import { PROGRAM_COURSES_PROVIDER } from '../program_courses/program_courses.dto';
 import { ProgramUserCourseService } from '../program_user_course/program_user_course.service';
 import { TypesLesson } from '../lesson_types/lesson_types.dto';
+import { AwsService } from './../../aws/aws.service';
+import { durationFilesUrl } from './../../aws/aws.dto';
 
 @Injectable()
 export class CourseUsersService extends BaseService<
@@ -51,6 +53,7 @@ export class CourseUsersService extends BaseService<
     private lessonScormIntentsService: LessonScormIntentsService,
     private lessonTryUsersService: LessonTryUsersService,
     private readonly programUserCourseService: ProgramUserCourseService,
+    private awsService: AwsService,
   ) {
     super();
   }
@@ -356,5 +359,35 @@ export class CourseUsersService extends BaseService<
       { user_id, course_id },
       { certificate_id },
     );
+  }
+
+  async rankingStudents(course_id: number) {
+    const result = await this.repository
+      .createQueryBuilder('course_user')
+      .select([
+        'course_user.id',
+        'user.id',
+        'user.identification',
+        'user.name',
+        'user.lastname',
+        'user.points',
+        'user.picture',
+        'user.email',
+      ])
+      .leftJoin('course_user.user', 'user')
+      .where('course_user.course_id = :course_id', { course_id })
+      .orderBy('user.points', 'DESC')
+      .limit(10)
+      .getMany();
+    for (let i = 0; i < result.length; i++) {
+      const user = result[i].user;
+      if (user.picture) {
+        user.picture = await this.awsService.getFile(
+          user.picture,
+          durationFilesUrl.img_user,
+        );
+      }
+    }
+    return result;
   }
 }
