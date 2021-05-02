@@ -92,4 +92,12 @@ export class UsersController extends BaseController<
   async editProfile(@Body() updateDto: UpdateUsersDto) {
     return await this.update(this.infoUser.id.toString(), updateDto);
   }
+
+  @Get('ranking/global')
+  async ranking() {
+    const result = await this.usersService.rankingStudents();
+    return {
+      data: { result },
+    };
+  }
 }

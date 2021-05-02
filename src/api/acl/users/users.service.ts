@@ -241,4 +241,31 @@ export class UsersService extends BaseService<
     bar_power = bar_power > 100 ? 100 : bar_power < 0 ? 0 : bar_power;
     return bar_power;
   }
+
+  async rankingStudents() {
+    const result = await this.repository
+      .createQueryBuilder('user')
+      .select([
+        'user.id',
+        'user.identification',
+        'user.name',
+        'user.lastname',
+        'user.points',
+        'user.picture',
+        'user.email',
+      ])
+      .orderBy('user.points', 'DESC')
+      .limit(10)
+      .getMany();
+    for (let i = 0; i < result.length; i++) {
+      const user = result[i];
+      if (user.picture) {
+        user.picture = await this.awsService.getFile(
+          user.picture,
+          durationFilesUrl.img_user,
+        );
+      }
+    }
+    return result;
+  }
 }

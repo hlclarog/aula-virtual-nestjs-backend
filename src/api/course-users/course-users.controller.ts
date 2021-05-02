@@ -88,4 +88,12 @@ export class CourseUsersController extends BaseController<
     );
     return { data: result };
   }
+
+  @Get('ranking/course/:course_id')
+  async ranking(@Param('course_id') course_id: number) {
+    const result = await this.courseUsersService.rankingStudents(course_id);
+    return {
+      data: { result },
+    };
+  }
 }
