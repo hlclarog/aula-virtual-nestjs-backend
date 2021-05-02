@@ -278,7 +278,14 @@ export class InterestAreasService extends BaseService<
             'interest_areas.program_interest_areas',
             'program_interest_area',
           )
-          .leftJoin('program_interest_area.program', 'program')
+          .leftJoin(
+            'program_interest_area.program',
+            'program',
+            'program.program_status_id=:status AND program.active=true',
+            {
+              status: 1,
+            },
+          )
           .leftJoin('program.organization', 'organization')
           .leftJoin('program.program_status', 'program_status')
           .leftJoin(

@@ -96,10 +96,12 @@ export class ProgramsService extends BaseService<
       new Date(Date.now()).toLocaleDateString('zh-Hans-CN'),
     );
     console.log(feeScheduleToday);
-    program['price_val'] = (feeScheduleToday == undefined) ? undefined : feeScheduleToday.program_val;
-    program['inscription_val'] = (feeScheduleToday == undefined)
-      ? undefined
-      : feeScheduleToday.inscription_val;
+    program['price_val'] =
+      feeScheduleToday == undefined ? undefined : feeScheduleToday.program_val;
+    program['inscription_val'] =
+      feeScheduleToday == undefined
+        ? undefined
+        : feeScheduleToday.inscription_val;
 
     return program;
   }
