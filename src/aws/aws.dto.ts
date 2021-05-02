@@ -18,6 +18,9 @@ export enum typeFilesAwsNames {
   lesson_comments_files = 'lesson_comments_files',
   tenancy_pictures = 'tenancy/pictures',
   payments_collection = 'payments/collection',
+  organizations_certificates_resources = 'organizations/resources',
+  courses_certificates = 'courses/certificates',
+  programs_certificates = 'programs/certificates',
   banners_sliders = 'banners/sliders',
 }
 
@@ -38,6 +41,9 @@ export type typeFileAwsTypes =
   | typeFilesAwsNames.lesson_comments_files
   | typeFilesAwsNames.tenancy_pictures
   | typeFilesAwsNames.payments_collection
+  | typeFilesAwsNames.organizations_certificates_resources
+  | typeFilesAwsNames.courses_certificates
+  | typeFilesAwsNames.programs_certificates
   | typeFilesAwsNames.banners_sliders;
 
 export interface SaveFileAws {

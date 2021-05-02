@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Base } from '../../base/base.entity';
+import { Users } from '../acl/users/users.entity';
 import { Clients } from '../clients/clients.entity';
 import { IDENTIFICATION_TYPES_ENTITY } from './identification_types.dto';
 
@@ -9,4 +10,6 @@ export class IdentificationTypes extends Base {
   description: string;
   @OneToMany(() => Clients, (clients) => clients.identification_type)
   clients: Clients[];
+  @OneToMany(() => Users, (user) => user.identification_type)
+  users: Users[];
 }

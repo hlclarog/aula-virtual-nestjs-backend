@@ -72,6 +72,11 @@ export class createCourseUsersTable1611016200000 implements MigrationInterface {
             default: false,
           },
           {
+            name: 'certificate_id',
+            type: 'int',
+            isNullable: true,
+          },
+          {
             name: 'active',
             type: 'bool',
             default: true,
@@ -114,6 +119,11 @@ export class createCourseUsersTable1611016200000 implements MigrationInterface {
         columnNames: ['enrollment_type_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'enrollment_types',
+      }),
+      new TableForeignKey({
+        columnNames: ['certificate_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'certificates',
       }),
     ]);
 

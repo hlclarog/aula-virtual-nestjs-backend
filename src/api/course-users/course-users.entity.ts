@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  RelationId,
+} from 'typeorm';
 import { COURSE_USERS_ENTITY } from './course-users.dto';
 import { Base } from '../../base/base.entity';
 import { Users } from '../acl/users/users.entity';
@@ -6,6 +13,7 @@ import { EnrollmentStatus } from '../enrollment-status/enrollment-status.entity'
 import { EnrollmentTypes } from '../enrollment-types/enrollment-types.entity';
 import { Courses } from '../courses/courses.entity';
 import { ProgramUserCourse } from '../program_user_course/program_user_course.entity';
+import { Certificates } from '../certificates/certificates.entity';
 
 @Entity(COURSE_USERS_ENTITY)
 export class CourseUsers extends Base {
@@ -50,11 +58,23 @@ export class CourseUsers extends Base {
   @Column({ type: 'date', nullable: true }) begin_date: string;
   @Column({ type: 'date', nullable: true }) end_date: string;
   @Column({ type: 'varchar', nullable: true }) certificate_file: string;
-  @Column({ type: 'varchar', nullable: true }) certificate_code_validation: string;
+  @Column({ type: 'varchar', nullable: true })
+  certificate_code_validation: string;
   @Column({ type: 'bool', default: false }) favorite: boolean;
   @Column({ type: 'integer', default: 0 }) score: number;
   @Column({ type: 'bool', default: false }) downloaded: boolean;
 
-  @OneToMany(() => ProgramUserCourse, (programUserCourse) => programUserCourse.course_users)
+  @OneToMany(
+    () => ProgramUserCourse,
+    (programUserCourse) => programUserCourse.course_users,
+  )
   program_user_course: ProgramUserCourse[];
+
+  @ManyToOne(() => Certificates, (certificates) => certificates.courses_users)
+  @JoinColumn({ name: 'certificate_id' })
+  certificate: Certificates;
+
+  @RelationId((courseUsers: CourseUsers) => courseUsers.certificate)
+  @Column({ type: 'integer' })
+  certificate_id: number;
 }

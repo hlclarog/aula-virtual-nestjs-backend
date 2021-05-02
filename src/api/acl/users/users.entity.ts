@@ -27,6 +27,7 @@ import { CourseTeachers } from './../../course_teachers/course_teachers.entity';
 import { UsersCompetences } from './../../users_competences/users_competences.entity';
 import { UsersPositionGoals } from './../../users_position_goals/users_position_goals.entity';
 import { CoursePayments } from '../../course_payments/course_payments.entity';
+import { IdentificationTypes } from './../../identification_types/identification_types.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -81,12 +82,23 @@ export class Users extends Base {
   state: string;
 
   @Column({ type: 'text' })
+  city: string;
+
+  @Column({ type: 'text' })
   address: string;
 
   @Column({ type: 'text' })
   zipcode: string;
 
-  @Column({ type: 'text' })
+  @ManyToOne(
+    () => IdentificationTypes,
+    (identification_type) => identification_type.users,
+  )
+  @JoinColumn({ name: 'identification_type_id' })
+  identification_type: IdentificationTypes;
+
+  @RelationId((user: Users) => user.identification_type)
+  @Column({ type: 'integer' })
   identification_type_id: number;
 
   @Column({ type: 'text' })

@@ -16,9 +16,11 @@ export class ProgramCourses extends Base {
   course_id: number;
 
   @ManyToOne(() => Programs, (programs) => programs.program_courses)
-  @JoinColumn({ name: 'program_id' }) program: Programs;
+  @JoinColumn({ name: 'program_id' })
+  program: Programs;
   @RelationId((programCourses: ProgramCourses) => programCourses.program)
-  @Column({ type: 'integer' }) program_id: number;
+  @Column({ type: 'integer' })
+  program_id: number;
 
   @ManyToOne(
     () => ProgramCoursesStatus,

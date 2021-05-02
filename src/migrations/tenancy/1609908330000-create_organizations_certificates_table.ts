@@ -1,12 +1,16 @@
-import { ORGANIZATIONS_ENTITY } from './../../api/organizations/organizations.dto';
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
-export class createOrganizationsTable1609908270572
+export class createOrganizationsCertificatesTable1609908330000
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: ORGANIZATIONS_ENTITY,
+        name: 'organizations_certificates',
         columns: [
           {
             name: 'id',
@@ -15,32 +19,43 @@ export class createOrganizationsTable1609908270572
             isGenerated: true,
           },
           {
-            name: 'name',
-            type: 'varchar',
+            name: 'organization_id',
+            type: 'int',
           },
           {
-            name: 'short_name',
+            name: 'background',
             type: 'varchar',
+            isNullable: true,
           },
           {
-            name: 'description',
+            name: 'background_demo',
             type: 'varchar',
+            isNullable: true,
           },
           {
-            name: 'code',
+            name: 'content',
             type: 'varchar',
+            isNullable: true,
           },
           {
-            name: 'primary_color',
+            name: 'sign_text',
             type: 'varchar',
+            isNullable: true,
           },
           {
-            name: 'secondary_color',
+            name: 'sign_picture',
             type: 'varchar',
+            isNullable: true,
           },
           {
-            name: 'tertiary_color',
+            name: 'sign_position',
             type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'selected',
+            type: 'boolean',
+            default: false,
           },
           {
             name: 'active',
@@ -64,11 +79,17 @@ export class createOrganizationsTable1609908270572
           },
         ],
       }),
-      true,
     );
+    await queryRunner.createForeignKeys('organizations_certificates', [
+      new TableForeignKey({
+        columnNames: ['organization_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'organizations',
+      }),
+    ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('organizations');
+    await queryRunner.dropTable('organizations_certificates');
   }
 }
