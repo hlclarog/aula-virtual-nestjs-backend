@@ -28,6 +28,7 @@ import { UsersCompetences } from './../../users_competences/users_competences.en
 import { UsersPositionGoals } from './../../users_position_goals/users_position_goals.entity';
 import { CoursePayments } from '../../course_payments/course_payments.entity';
 import { IdentificationTypes } from './../../identification_types/identification_types.entity';
+import { CourseNotes } from './../../course_notes/course_notes.entity';
 
 @Entity(USERS_ENTITY)
 export class Users extends Base {
@@ -204,4 +205,6 @@ export class Users extends Base {
     (usersCompetences) => usersCompetences.user,
   )
   users_position_goals: UsersPositionGoals[];
+  @OneToMany(() => CourseNotes, (courseNotes) => courseNotes.user)
+  course_notes: CourseNotes[];
 }
