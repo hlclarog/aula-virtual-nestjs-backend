@@ -100,9 +100,6 @@ export class PaymentService {
       .findOne({
       transaction_reference: input.reference_sale,
     });
-
-    console.log(pay);
-
     con.getRepository(Payments).update(pay.id, {
       payment_state_id: this.getPaymentResponse(input.state_pol),
       processed_date: input.date,
@@ -111,13 +108,8 @@ export class PaymentService {
     });
     if (input.state_pol === '4') {
       const references_code = pay.transaction_reference.split('-');
-
-      console.log('Ahora Estamos Ingresando =>', references_code);
-
       switch (references_code[0]) {
         case 'COURSE':
-          console.log('Ingresó a Enrolar al usuario=> ');
-          console.log(pay);
           this.createEnrollmentToCourse(con, pay);
           break;
         case 'CERTIFICATE':
@@ -143,7 +135,6 @@ export class PaymentService {
         },
       ])
       .execute();
-    console.log('Respuesta de Insercion de Query', result);
   }
   generateCertificate() {}
 }

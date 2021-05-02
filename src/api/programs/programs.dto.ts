@@ -18,8 +18,8 @@ export class CreateProgramsDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly name: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly shortname: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly picture: string;
-  @ApiProperty() @IsString() @IsNotEmpty() readonly video_url: string;
+  @ApiProperty() @IsString() @IsOptional() readonly picture: string;
+  @ApiProperty() @IsString() @IsOptional() readonly video_url: string;
   @ApiProperty() @IsNumber() @IsNotEmpty() readonly duration: number;
   @ApiProperty() @IsString() @IsNotEmpty() readonly email_to: string;
   @ApiProperty() @IsBoolean() @IsNotEmpty() readonly certifiable: boolean;
