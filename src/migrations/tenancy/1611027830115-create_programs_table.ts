@@ -45,10 +45,12 @@ export class createProgramsTable1611027830115 implements MigrationInterface {
           {
             name: 'picture',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'video_url',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'duration',
