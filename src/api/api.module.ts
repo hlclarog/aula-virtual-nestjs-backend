@@ -95,6 +95,7 @@ import { PositionCompetencesModule } from './position_competences/position_compe
 import { UsersPositionGoalsModule } from './users_position_goals/users_position_goals.module';
 import { OrganizationsCertificatesModule } from './organizations_certificates/organizations_certificates.module';
 import { CertificatesModule } from './certificates/certificates.module';
+import { CourseNotesModule } from './course_notes/course_notes.module';
 
 @Module({
   imports: [
@@ -194,6 +195,7 @@ import { CertificatesModule } from './certificates/certificates.module';
     UsersPositionGoalsModule,
     CertificatesModule,
     OrganizationsCertificatesModule,
+    CourseNotesModule,
   ],
   controllers: [],
   providers: [],
