@@ -135,6 +135,8 @@ export class PaymentService {
         },
       ])
       .execute();
+
+    // EJECUTAR JOB PARA ENVIAR NOTIFICACION DE MATRICULA
   }
   generateCertificate() {}
 }

@@ -13,13 +13,14 @@ import { AwsService } from '../../aws/aws.service';
 import { typeFilesAwsNames } from '../../aws/aws.dto';
 import * as shortid from 'shortid';
 import { ProgramFeeSchedulesService } from '../program_fee_schedules/program_fee_schedules.service';
+import { ProgramCoursesService } from '../program_courses/program_courses.service';
 
 @Injectable()
 export class ProgramsService extends BaseService<
   Programs,
   CreateProgramsDto,
   UpdateProgramsDto
-  > {
+> {
   @Inject(PROGRAMS_PROVIDER) repository: BaseRepo<Programs>;
 
   private selectedRow = [
@@ -51,6 +52,7 @@ export class ProgramsService extends BaseService<
     private programInterestAreasService: ProgramInterestAreasService,
     private awsService: AwsService,
     private programFeeSchedule: ProgramFeeSchedulesService,
+    private programCoursesService: ProgramCoursesService,
   ) {
     super();
   }
@@ -95,13 +97,13 @@ export class ProgramsService extends BaseService<
       1,
       new Date(Date.now()).toLocaleDateString('zh-Hans-CN'),
     );
-    console.log(feeScheduleToday);
     program['price_val'] =
-      feeScheduleToday == undefined ? undefined : feeScheduleToday.program_val;
+      feeScheduleToday == undefined ? null : feeScheduleToday.program_val;
     program['inscription_val'] =
-      feeScheduleToday == undefined
-        ? undefined
-        : feeScheduleToday.inscription_val;
+      feeScheduleToday == undefined ? null : feeScheduleToday.inscription_val;
+    program['credits'] = (
+      await this.programCoursesService.getCreditsByProgram(id)
+    ).credits;
 
     return program;
   }

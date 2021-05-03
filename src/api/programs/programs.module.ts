@@ -11,6 +11,7 @@ import { AwsModule } from '../../aws/aws.module';
 import { InterestAreasModule } from '../interest_areas/interest_areas.module';
 import { ProgramFeeSchedulesService } from '../program_fee_schedules/program_fee_schedules.service';
 import { ProgramFeeSchedulesModule } from '../program_fee_schedules/program_fee_schedules.module';
+import { ProgramCoursesModule } from '../program_courses/program_courses.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ProgramFeeSchedulesModule } from '../program_fee_schedules/program_fee_
     AwsModule,
     InterestAreasModule,
     ProgramFeeSchedulesModule,
+    ProgramCoursesModule,
   ],
   controllers: [ProgramsController],
   providers: [

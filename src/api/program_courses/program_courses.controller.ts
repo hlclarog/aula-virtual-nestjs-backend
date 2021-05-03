@@ -58,6 +58,13 @@ export class ProgramCoursesController extends BaseController<
     const result = await this.program_coursesService.findByProgram(id);
     return { data: result };
   }
+
+  @Get('credits/:id')
+  async getCreditsByProgram(@Param('id') id: number) {
+    const result = await this.program_coursesService.getCreditsByProgram(id);
+    return { data: result };
+  }
+
   @Get('user_program/:id')
   async userProgram(@Param('id') id: number) {
     const result = await this.program_coursesService.findByProgram(

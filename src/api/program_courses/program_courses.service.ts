@@ -83,4 +83,12 @@ export class ProgramCoursesService extends BaseService<
 
     return result;
   }
+  async getCreditsByProgram(id: number) {
+    const result = await this.repository
+      .createQueryBuilder('program_courses')
+      .select('SUM(program_courses.credits)', 'credits')
+      .where('program_courses.program_id = :id', { id: id })
+      .getRawOne();
+    return result;
+  }
 }
