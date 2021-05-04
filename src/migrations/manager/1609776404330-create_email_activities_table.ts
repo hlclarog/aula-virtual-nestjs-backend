@@ -23,6 +23,16 @@ export class createEmailActivitiesTable1609776404330
             isNullable: true,
           },
           {
+            name: 'default_subject',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'default_body',
+            type: 'text',
+            isNullable: true,
+          },
+          {
             name: 'active',
             type: 'bool',
             default: true,

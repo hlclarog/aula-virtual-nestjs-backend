@@ -32,4 +32,7 @@ export class EmailTemplates extends Base {
     (email_template_activity) => email_template_activity.email_template,
   )
   email_activities_template: EmailActivitiesTemplate[];
+
+  @Column('boolean', { default: false })
+  active: boolean;
 }

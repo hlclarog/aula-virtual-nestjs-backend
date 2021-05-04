@@ -26,6 +26,9 @@ export class EmailTemplatesService extends BaseService<
   }
 
   async create(createDto: CreateEmailTemplatesDto) {
+    if (createDto.active) {
+      await this.resetDefaultTemplate(createDto.language_id);
+    }
     const dataSave = await this.repository.save(createDto);
     const emailActivitiesAll = await this.emailActivities.findAll();
     await this.emailActivitiesTemplateService.createGroup(
@@ -33,6 +36,20 @@ export class EmailTemplatesService extends BaseService<
       emailActivitiesAll,
     );
     return dataSave;
+  }
+
+  async update(id: number, updateDto: UpdateEmailTemplatesDto) {
+    if (updateDto.active) {
+      await this.resetDefaultTemplate(updateDto.language_id);
+    }
+    return await this.repository.update(id, updateDto);
+  }
+
+  async resetDefaultTemplate(language_id: number) {
+    await this.repository.update(
+      { active: true, language_id },
+      { active: false },
+    );
   }
 
   async findOne(id: number) {

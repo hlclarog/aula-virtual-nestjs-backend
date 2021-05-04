@@ -31,6 +31,9 @@ export class EmailActivitiesTemplateService extends BaseService<
       return {
         email_template_id: emailTemplate.id,
         email_activity_id: emailActivity.id,
+        subject: emailActivity.default_subject,
+        body: emailActivity.default_body,
+        observations: emailActivity.observations,
       };
     });
 
