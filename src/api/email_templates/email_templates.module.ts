@@ -7,9 +7,14 @@ import { EMAIL_TEMPLATES_PROVIDER } from './email_templates.dto';
 import { EmailTemplates } from './email_templates.entity';
 import { EmailActivitiesTemplateModule } from '../email_activities_template/email_activities_template.module';
 import { EmailActivitiesModule } from '../email_activities/email_activities.module';
+import { TenancyConfigModule } from '../tenancy_config/tenancy_config.module';
 
 @Module({
-  imports: [EmailActivitiesTemplateModule, EmailActivitiesModule],
+  imports: [
+    EmailActivitiesTemplateModule,
+    EmailActivitiesModule,
+    TenancyConfigModule,
+  ],
   controllers: [EmailTemplatesController],
   providers: [
     {

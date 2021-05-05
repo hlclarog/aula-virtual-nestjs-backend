@@ -1,6 +1,15 @@
-import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  RelationId,
+} from 'typeorm';
 import { Base } from '../../base/base.entity';
+import { EmailActivitiesTemplate } from '../email_activities_template/email_activities_template.entity';
 import { Tenancies } from '../tenancies/tenancies.entity';
+import { TenancyConfig } from '../tenancy_config/tenancy_config.entity';
 import { TENANCY_EMAILS_ENTITY } from './tenancy_emails.dto';
 
 @Entity({ name: TENANCY_EMAILS_ENTITY, schema: 'public' })
@@ -33,4 +42,16 @@ export class TenancyEmails extends Base {
   @RelationId((tenancy_emails: TenancyEmails) => tenancy_emails.tenancy)
   @Column({ type: 'integer' })
   tenancy_id: number;
+
+  @OneToMany(
+    () => TenancyConfig,
+    (tenancy_config) => tenancy_config.tenancy_email_default,
+  )
+  tenancy_config: TenancyConfig[];
+
+  @OneToMany(
+    () => EmailActivitiesTemplate,
+    (template) => template.tenancy_email,
+  )
+  email_activities_template: EmailActivitiesTemplate[];
 }
