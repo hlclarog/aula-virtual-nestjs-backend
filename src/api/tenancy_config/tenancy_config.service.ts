@@ -23,6 +23,8 @@ export class TenancyConfigService {
         'config.tenancy_id',
         'config.theme_id',
         'config.rol_default_id',
+        'config.language_id',
+        'config.tenancy_email_default_id',
         'config.title',
         'config.web_client_oauth',
         'config.short_name',

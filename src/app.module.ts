@@ -27,6 +27,7 @@ import { AwsProviderModule } from './aws/providers/aws.provider';
 import { PaymentModule } from './payment/payment.module';
 import { BannersModule } from './api/banners/banners.module';
 import { SlidersModule } from './api/sliders/sliders.module';
+import { EmailModule } from './email/email.module';
 // import { Auth2ConfigModule } from './oauth2/oauth2-provider';
 
 const FOLDER_ENV = join(__dirname, '..', 'env');
@@ -50,6 +51,7 @@ const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
     PaymentModule,
     BannersModule,
     SlidersModule,
+    EmailModule,
     // Auth2ConfigModule.forRoot(),
   ],
   controllers: [AppController],

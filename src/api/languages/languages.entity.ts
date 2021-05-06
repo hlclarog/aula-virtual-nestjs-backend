@@ -2,6 +2,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Users } from '../acl/users/users.entity';
 import { EmailTemplates } from '../email_templates/email_templates.entity';
+import { TenancyConfig } from '../tenancy_config/tenancy_config.entity';
 import { TenancyLanguages } from '../tenancy_languages/tenancy_languages.entity';
 import { LANGUAGES_ENTITY } from './languages.dto';
 
@@ -24,4 +25,7 @@ export class Languages extends Base {
 
   @OneToMany(() => Users, (user) => user.language)
   users: Users[];
+
+  @OneToMany(() => TenancyConfig, (tenancy) => tenancy.language)
+  tenancies_config: TenancyConfig[];
 }

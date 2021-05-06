@@ -42,6 +42,10 @@ export class createEmailActivitiesTemplateTable1609777718591
             type: 'int',
           },
           {
+            name: 'tenancy_email_id',
+            type: 'int',
+          },
+          {
             name: 'active',
             type: 'bool',
             default: true,
@@ -81,6 +85,15 @@ export class createEmailActivitiesTemplateTable1609777718591
         columnNames: ['email_activity_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'public.email_activities',
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      'email_activities_template',
+      new TableForeignKey({
+        columnNames: ['tenancy_email_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'public.tenancy_emails',
       }),
     );
   }

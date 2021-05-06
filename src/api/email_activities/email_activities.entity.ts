@@ -11,6 +11,12 @@ export class EmailActivities extends Base {
   @Column({ type: 'varchar' })
   observations: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  default_subject?: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  default_body?: string;
+
   @OneToMany(
     () => EmailActivitiesTemplate,
     (email_template_activity) => email_template_activity.email_activity,

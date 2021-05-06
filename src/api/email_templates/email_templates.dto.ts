@@ -12,10 +12,7 @@ export class CreateEmailTemplatesDto extends CreateBaseDto {
 }
 
 export class UpdateEmailTemplatesDto extends UpdateBaseDto {
-  @ApiProperty({ required: false })
-  @IsNumber()
-  @IsOptional()
-  readonly language_id?: number;
+  @ApiProperty() @IsNumber() @IsNotEmpty() readonly language_id: number;
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

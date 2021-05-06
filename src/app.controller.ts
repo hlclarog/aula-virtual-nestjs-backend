@@ -10,6 +10,7 @@ export class AppController {
   getHello() {
     return this.appService.getHello();
   }
+
   @Get('generatepdf')
   async generateFilepdf() {
     const result = await generateFile(

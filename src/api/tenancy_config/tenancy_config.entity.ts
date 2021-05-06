@@ -1,7 +1,9 @@
 import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Roles } from '../acl/roles/roles.entity';
+import { Languages } from '../languages/languages.entity';
 import { Tenancies } from '../tenancies/tenancies.entity';
+import { TenancyEmails } from '../tenancy_emails/tenancy_emails.entity';
 import { Themes } from '../themes/themes.entity';
 import { TENANCY_CONFIG_ENTITY } from './tenancy_config.dto';
 
@@ -21,12 +23,28 @@ export class TenancyConfig extends Base {
   @Column({ type: 'integer' })
   theme_id: number;
 
+  @ManyToOne(() => Languages, (language) => language.tenancies_config)
+  @JoinColumn({ name: 'language_id' })
+  language: Languages;
+  @RelationId((tenancy_config: TenancyConfig) => tenancy_config.language)
+  @Column({ type: 'integer' })
+  language_id: number;
+
   @ManyToOne(() => Roles, (rol) => rol.tenancy_config)
   @JoinColumn({ name: 'rol_default_id' })
   rol_default: Roles;
   @RelationId((tenancy_config: TenancyConfig) => tenancy_config.rol_default)
   @Column({ type: 'integer' })
   rol_default_id: number;
+
+  @ManyToOne(() => TenancyEmails, (email) => email.tenancy_config)
+  @JoinColumn({ name: 'tenancy_email_default_id' })
+  tenancy_email_default: TenancyEmails;
+  @RelationId(
+    (tenancy_config: TenancyConfig) => tenancy_config.tenancy_email_default,
+  )
+  @Column({ type: 'integer' })
+  tenancy_email_default_id: number;
 
   @Column({ type: 'varchar' })
   title: string;

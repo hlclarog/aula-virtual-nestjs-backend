@@ -24,13 +24,13 @@ import { CreateUsersDto } from '../api/acl/users/users.dto';
 import { TenancyConfigService } from '../api/tenancy_config/tenancy_config.service';
 import { TypesReasonsPoints } from '../api/points_user_log/points_user_log.dto';
 import { PointsUserLogService } from '../api/points_user_log/points_user_log.service';
-import { TenancyDomains } from '../api/tenancy_domains/tenancy_domains.entity';
-import { Tenancies } from '../api/tenancies/tenancies.entity';
-import { Connection, createConnection, getConnectionManager } from 'typeorm';
+import { Connection } from 'typeorm';
 import { DATABASE_MANAGER_PROVIDER } from '../database/database.dto';
-import { Users } from '../api/acl/users/users.entity';
-import { THEME_DEFAULT_ID } from '../api/themes/themes.dto';
-import { UsersRoles } from '../api/acl/users_roles/users_roles.entity';
+import { EmailManagerService } from './../email/email-manager.service';
+import {
+  USER_REGISTER_PLATFORM,
+  USER_REGISTER_PLATFORM_ID,
+} from './../api/email_activities/email_activities_actions.dto';
 
 @Injectable()
 export class AuthService {
@@ -42,6 +42,7 @@ export class AuthService {
     private configService: ConfigService,
     private tenancyConfigService: TenancyConfigService,
     private pointsUserLogService: PointsUserLogService,
+    private emailService: EmailManagerService,
   ) {}
   async login(data: LoginDto) {
     const user = await this.usersService.verifyUser(data);
@@ -81,9 +82,24 @@ export class AuthService {
       users_roles: config.rol_default_id ? [config.rol_default_id] : [],
       rol_default: config.rol_default_id,
       theme_id: config.theme_id,
+      language_id: config.language_id,
     };
     if (config.allow_registration) {
       const newUser = await this.usersService.create(user);
+      try {
+        const dataEmail: USER_REGISTER_PLATFORM = {
+          STUDENT_NAME: `${user.name ? user.name : ''} ${
+            user.lastname ? user.lastname : ''
+          }`,
+          TENANCY_NAME: `${config.title ? config.title : ''}`,
+        };
+        await this.emailService.sendEmailFromActivity({
+          user_id: newUser.id,
+          email_activity_id: USER_REGISTER_PLATFORM_ID,
+          alias: this.tenancy.alias,
+          data: dataEmail,
+        });
+      } catch (error) {}
       return {
         registered: true,
         data: newUser,
@@ -94,9 +110,6 @@ export class AuthService {
           'ESTA ENTIDAD NO SE ENCUENTRA HABILITADA PARA REGISTRO DE USUARIOS',
       });
     }
-    return {
-      registered: false,
-    };
   }
 
   async verify(tokenaccept) {

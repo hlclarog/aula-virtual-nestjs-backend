@@ -34,7 +34,7 @@ export class createEmailTemplatesTable1609777572377
           {
             name: 'active',
             type: 'bool',
-            default: true,
+            default: false,
           },
           {
             name: 'created_at',

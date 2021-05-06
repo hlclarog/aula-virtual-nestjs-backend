@@ -14,6 +14,7 @@ import { LessonTryUsersModule } from '../lesson_try_users/lesson_try_users.modul
 import { ProgramUserCourseModule } from '../program_user_course/program_user_course.module';
 import { ProgramCoursesModule } from '../program_courses/program_courses.module';
 import { AwsModule } from './../../aws/aws.module';
+import { EmailModule } from './../../email/email.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AwsModule } from './../../aws/aws.module';
     ProgramUserCourseModule,
     ProgramCoursesModule,
     AwsModule,
+    EmailModule,
   ],
   controllers: [CourseUsersController],
   providers: [

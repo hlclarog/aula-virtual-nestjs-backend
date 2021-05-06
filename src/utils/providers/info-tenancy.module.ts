@@ -17,6 +17,7 @@ export interface InfoTenancyDomain {
   domain: TenancyDomains;
   schema: string;
   host: string;
+  alias: string;
   secret: string;
   tenancyOauth2Credentials: TenancyOauth2Credentials[];
 }
@@ -42,6 +43,11 @@ export class InfoTenancyModule {
             ? domain.tenancy.schema
             : ''
           : '';
+        const alias = domain
+          ? domain.tenancy
+            ? domain.tenancy.alias
+            : ''
+          : '';
         const payload = `${domain.tenancy.schema}.${host}`;
         const secret = await cryptoService.hashSecret(
           payload,
@@ -53,6 +59,7 @@ export class InfoTenancyModule {
           domain,
           host,
           schema,
+          alias,
           secret,
           tenancyOauth2Credentials,
         };

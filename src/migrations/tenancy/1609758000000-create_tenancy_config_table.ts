@@ -33,6 +33,16 @@ export class createTenancyConfigTable1609758000000
             isNullable: true,
           },
           {
+            name: 'tenancy_email_default_id',
+            isNullable: true,
+            type: 'int',
+          },
+          {
+            name: 'language_id',
+            type: 'int',
+            isNullable: true,
+          },
+          {
             name: 'web_client_oauth',
             type: 'varchar',
             isNullable: true,
@@ -147,6 +157,24 @@ export class createTenancyConfigTable1609758000000
         columnNames: ['theme_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'public.themes',
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      'tenancy_config',
+      new TableForeignKey({
+        columnNames: ['tenancy_email_default_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'public.tenancy_emails',
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      'tenancy_config',
+      new TableForeignKey({
+        columnNames: ['language_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'public.languages',
       }),
     );
   }

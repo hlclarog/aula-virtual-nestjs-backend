@@ -8,6 +8,14 @@ export const EMAIL_ACTIVITIES_ENTITY = 'email_activities';
 export class CreateEmailActivitiesDto extends CreateBaseDto {
   @ApiProperty() @IsString() @IsNotEmpty() readonly description: string;
   @ApiProperty() @IsString() @IsNotEmpty() readonly observations: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly default_subject?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly default_body?: string;
 }
 
 export class UpdateEmailActivitiesDto extends UpdateBaseDto {
@@ -19,4 +27,12 @@ export class UpdateEmailActivitiesDto extends UpdateBaseDto {
   @IsString()
   @IsOptional()
   readonly observations?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly default_subject?: string;
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly default_body?: string;
 }
