@@ -33,6 +33,11 @@ import { ProgramUserCourseService } from '../program_user_course/program_user_co
 import { TypesLesson } from '../lesson_types/lesson_types.dto';
 import { AwsService } from './../../aws/aws.service';
 import { durationFilesUrl } from './../../aws/aws.dto';
+import {
+  USER_SUBSCRIBE_COURSE,
+  USER_SUBSCRIBE_COURSE_ID,
+} from '../email_activities/email_activities_actions.dto';
+import { EmailManagerService } from './../../email/email-manager.service';
 
 @Injectable()
 export class CourseUsersService extends BaseService<
@@ -54,6 +59,7 @@ export class CourseUsersService extends BaseService<
     private lessonTryUsersService: LessonTryUsersService,
     private readonly programUserCourseService: ProgramUserCourseService,
     private awsService: AwsService,
+    private emailService: EmailManagerService,
   ) {
     super();
   }
@@ -140,7 +146,35 @@ export class CourseUsersService extends BaseService<
         TypesReasonsPoints.COURSE_INIT,
         createDto.course_id,
       );
-      return await this.repository.save(createDto);
+      const course_user_new = await this.repository.save(createDto);
+      try {
+        const course_user = await this.repository
+          .createQueryBuilder('course_user')
+          .select([
+            'course_user.user_id',
+            'course_user.course_id',
+            'user.name',
+            'user.lastname',
+            'course.name',
+          ])
+          .leftJoin('course_user.user', 'user')
+          .leftJoin('course_user.course', 'course')
+          .where('course_user.id = :id', { id: course_user_new.id })
+          .getOne();
+        const dataEmail: USER_SUBSCRIBE_COURSE = {
+          STUDENT_NAME: `${
+            course_user.user.name ? course_user.user.name : ''
+          } ${course_user.user.lastname ? course_user.user.lastname : ''}`,
+          COURSE_NAME: `${course_user.course.name}`,
+        };
+        await this.emailService.sendEmailFromActivity({
+          user_id: createDto.user_id,
+          email_activity_id: USER_SUBSCRIBE_COURSE_ID,
+          alias: this.tenancy.alias,
+          data: dataEmail,
+        });
+      } catch (error) {}
+      return course_user_new;
     } else {
       return await this.repository.update(match.id, {
         deleted_at: null,

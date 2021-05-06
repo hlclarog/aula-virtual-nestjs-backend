@@ -9,7 +9,7 @@ import { EmailActivities } from './email_activities.entity';
 import { ControllerApi } from '../../utils/decorators/controllers.decorator';
 import {
   EMAIL_ACTIVITITES_TYPES,
-  EMAIL_BUY_COURSE_HELP,
+  EMAIL_ACTIVITITES_HELP,
 } from './email_activities_actions.dto';
 
 @ControllerApi({ name: 'email_activities' })
@@ -40,7 +40,7 @@ export class EmailActivitiesController extends BaseController<
   @Get('actions/:activity_id')
   async actionsFind(@Param('activity_id') activity_id: number) {
     const leg = EMAIL_ACTIVITITES_TYPES[activity_id];
-    const result = EMAIL_BUY_COURSE_HELP[leg];
+    const result = EMAIL_ACTIVITITES_HELP[leg];
     return { data: result ? result : {} };
   }
 

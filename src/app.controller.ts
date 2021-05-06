@@ -1,15 +1,10 @@
-import { Controller, Get, Post } from '@nestjs/common';
-import { EMAIL_BUY_COURSE } from './api/email_activities/email_activities_actions.dto';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { EmailManagerService } from './email/email-manager.service';
 import { generateFile } from './utils/pdfmake/pdfmake.generator';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    private emailService: EmailManagerService,
-  ) {}
+  constructor(private readonly appService: AppService) {}
 
   @Get()
   getHello() {
@@ -27,21 +22,6 @@ export class AppController {
       },
       {},
     );
-    return { data: result };
-  }
-
-  @Post('test-email')
-  async sendEmail() {
-    const info: EMAIL_BUY_COURSE = {
-      STUDENT_NAME: 'Mathiws',
-      COURSE_NAME: 'JS',
-    };
-    const result = await this.emailService.sendEmailFromActivity({
-      user_id: 2,
-      email_activity_id: 1,
-      alias: 'cua',
-      data: info,
-    });
     return { data: result };
   }
 }

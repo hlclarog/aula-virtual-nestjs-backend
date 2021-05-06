@@ -12,6 +12,10 @@ export class SetTenancyConfigDto extends CreateBaseDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
+  readonly language_id?: number;
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
   readonly rol_default_id?: number;
   @ApiProperty() @IsNumber() @IsOptional() tenancy_email_default_id?: number;
   @ApiProperty() @IsString() @IsOptional() readonly title?: string;

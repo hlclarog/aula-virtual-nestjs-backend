@@ -1,32 +1,42 @@
-export const EMAIL_BUY_COURSE_CODE = 'EMAIL_BUY_COURSE';
-export enum EMAIL_BUY_COURSE_ACTIONS {
+// ! =================== USER_REGISTER_PLATFORM ===================
+export const USER_REGISTER_PLATFORM_ID = 1;
+export const USER_REGISTER_PLATFORM_CODE = 'USER_REGISTER_PLATFORM';
+export enum USER_REGISTER_PLATFORM_ACTIONS {
+  student_name = 'STUDENT_NAME',
+  tenancy_name = 'TENANCY_NAME',
+}
+export interface USER_REGISTER_PLATFORM {
+  [USER_REGISTER_PLATFORM_ACTIONS.student_name]: string;
+  [USER_REGISTER_PLATFORM_ACTIONS.tenancy_name]: string;
+}
+// ! =================== USER_SUBSCRIBE_COURSE ===================
+export const USER_SUBSCRIBE_COURSE_ID = 2;
+export const USER_SUBSCRIBE_COURSE_CODE = 'USER_SUBSCRIBE_COURSE';
+export enum USER_SUBSCRIBE_COURSE_ACTIONS {
   student_name = 'STUDENT_NAME',
   course_name = 'COURSE_NAME',
 }
-export interface EMAIL_BUY_COURSE {
-  [EMAIL_BUY_COURSE_ACTIONS.student_name]?: string;
-  [EMAIL_BUY_COURSE_ACTIONS.course_name]?: string;
+export interface USER_SUBSCRIBE_COURSE {
+  [USER_SUBSCRIBE_COURSE_ACTIONS.student_name]: string;
+  [USER_SUBSCRIBE_COURSE_ACTIONS.course_name]: string;
 }
-export const EMAIL_BUY_COURSE_HELP = {
-  [EMAIL_BUY_COURSE_CODE]: {
-    [EMAIL_BUY_COURSE_ACTIONS.student_name]: 'Nombre del estudiante',
-    [EMAIL_BUY_COURSE_ACTIONS.course_name]: 'Nombre del curso',
+
+//  TODO: =================== TYPES GENERAL ===================
+export const EMAIL_ACTIVITITES_HELP = {
+  [USER_REGISTER_PLATFORM_CODE]: {
+    [USER_REGISTER_PLATFORM_ACTIONS.student_name]: 'Nombre del estudiante',
+    [USER_REGISTER_PLATFORM_ACTIONS.tenancy_name]: 'Nombre de la tenencia',
+  },
+  [USER_SUBSCRIBE_COURSE_CODE]: {
+    [USER_SUBSCRIBE_COURSE_ACTIONS.student_name]: 'Nombre del estudiante',
+    [USER_SUBSCRIBE_COURSE_ACTIONS.course_name]: 'Nombre del curso',
   },
 };
-export enum EJECT_PURCHASE_ACTIONS {
-  reference = 'REFERENCE',
-}
-export const REJECT_PURCHASE_CODE = 'REJECT_PURCHASE';
-export interface REJECT_PURCHASE_COURSE {
-  [EJECT_PURCHASE_ACTIONS.reference]?: string;
-}
-export const REJECT_PURCHASE_COURSE_HELP = {};
-
 export const EMAIL_ACTIVITITES_TYPES = {
-  1: EMAIL_BUY_COURSE_CODE,
-  2: REJECT_PURCHASE_CODE,
+  [USER_REGISTER_PLATFORM_ID]: USER_REGISTER_PLATFORM_CODE,
+  [USER_SUBSCRIBE_COURSE_ID]: USER_SUBSCRIBE_COURSE_CODE,
 };
 
 export type EMAIL_ACTIVITITES_TYPES_DATA =
-  | EMAIL_BUY_COURSE
-  | REJECT_PURCHASE_COURSE;
+  | USER_REGISTER_PLATFORM
+  | USER_SUBSCRIBE_COURSE;

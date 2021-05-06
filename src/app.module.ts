@@ -28,7 +28,6 @@ import { PaymentModule } from './payment/payment.module';
 import { BannersModule } from './api/banners/banners.module';
 import { SlidersModule } from './api/sliders/sliders.module';
 import { EmailModule } from './email/email.module';
-import { EmailManagerService } from './email/email-manager.service';
 // import { Auth2ConfigModule } from './oauth2/oauth2-provider';
 
 const FOLDER_ENV = join(__dirname, '..', 'env');
@@ -68,7 +67,6 @@ const FILE_ENV = `${FOLDER_ENV}/${process.env.NODE_ENV || 'development'}.env`;
     AppService,
     TokenService,
     InfoTenancyService,
-    EmailManagerService,
   ],
 })
 export class AppModule {
