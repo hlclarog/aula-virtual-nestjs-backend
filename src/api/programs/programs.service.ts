@@ -101,6 +101,7 @@ export class ProgramsService extends BaseService<
       feeScheduleToday == undefined ? null : feeScheduleToday.program_val;
     program['inscription_val'] =
       feeScheduleToday == undefined ? null : feeScheduleToday.inscription_val;
+    program['currency_id'] = undefined ? null : feeScheduleToday.currency_id;
     program['credits'] = (
       await this.programCoursesService.getCreditsByProgram(id)
     ).credits;

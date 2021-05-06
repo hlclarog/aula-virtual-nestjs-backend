@@ -80,6 +80,7 @@ export class ProgramFeeSchedulesService extends BaseService<
         'program_fee_schedules.program_id',
         'program_fee_schedules.program_val',
         'program_fee_schedules.inscription_val',
+        'program_fee_schedules.currency_id',
         'program.name',
         'program.description',
         'program.shortname',

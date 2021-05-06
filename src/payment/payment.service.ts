@@ -135,6 +135,7 @@ export class PaymentService {
         },
       ])
       .execute();
+    console.log('Curso Creado', result);
 
     // EJECUTAR JOB PARA ENVIAR NOTIFICACION DE MATRICULA
   }
