@@ -12,7 +12,7 @@ import { EmailActivities } from '../email_activities/email_activities.entity';
 import {
   INFO_TENANCY_PROVIDER,
   InfoTenancyDomain,
-} from './../../utils/providers/info-tenancy.module';
+} from '../../utils/providers/info-tenancy.module';
 import { TenancyConfigService } from '../tenancy_config/tenancy_config.service';
 
 @Injectable()
@@ -53,5 +53,13 @@ export class EmailActivitiesTemplateService extends BaseService<
       .values(values)
       .execute();
     return { update: true };
+  }
+
+  async byEmailTemplate(id: number) {
+    console.log(id);
+    return this.repository
+      .createQueryBuilder()
+      .where('email_template_id = :id', { id })
+      .getMany();
   }
 }

@@ -1,4 +1,4 @@
-# MANGUS API
+# API
 
 ### Installation
 

@@ -15,7 +15,7 @@ export class EmailActivitiesTemplateController extends BaseController<
   UpdateEmailActivitiesTemplateDto
 > {
   constructor(
-    email_activities_templateService: EmailActivitiesTemplateService,
+    private email_activities_templateService: EmailActivitiesTemplateService,
   ) {
     super(email_activities_templateService);
   }
@@ -46,5 +46,13 @@ export class EmailActivitiesTemplateController extends BaseController<
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.remove(id);
+  }
+
+  @Get('ByEmailTemplate/:id')
+  async byEmailTemplate(@Param('id') id: number) {
+    const data = await this.email_activities_templateService.byEmailTemplate(
+      id,
+    );
+    return { data };
   }
 }
